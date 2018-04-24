@@ -41,6 +41,9 @@ dependencies {
     //Recycler view is only required here to replace the old version in the kotterknife module
     implementation "com.android.support:recyclerview-v7:$support_version"
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;
     }
