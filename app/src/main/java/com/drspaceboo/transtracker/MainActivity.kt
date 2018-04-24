@@ -13,14 +13,22 @@ package com.drspaceboo.transtracker
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import io.fabric.sdk.android.Fabric
-
+import kotterknife.bindView
 
 class MainActivity : AppCompatActivity() {
+    private val mAdView: AdView by bindView(R.id.adView)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(this, BuildConfig.ADS_APP_ID);
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 }

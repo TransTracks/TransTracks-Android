@@ -12,9 +12,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [FABRIC_API_KEY: getFabricApiKey()]
+        manifestPlaceholders = [FABRIC_API_KEY: getSecretString('FABRIC_API_KEY')]
     }
     buildTypes {
+        buildTypes.each {
+            it.buildConfigField 'String', 'ADS_APP_ID', '"' + getSecretString('ADS_APP_ID') + '"'
+            it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -24,8 +29,17 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "com.android.support:appcompat-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
+    //Custom tabs & Support V4 are only required here to replace the old version in the play-services-ads module
+    implementation "com.android.support:customtabs:$support_version"
+    implementation "com.android.support:support-v4:$support_version"
+
+    implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    //Recycler view is only required here to replace the old version in the kotterknife module
+    implementation "com.android.support:recyclerview-v7:$support_version"
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;
@@ -37,8 +51,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
-def getFabricApiKey() {
-    def Properties props = new Properties()
+static String getSecretString(String key) {
+    Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
-    return props['FABRIC_API_KEY']
+    return props[key]
 }
