@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<com.drspaceboo.transtracker.ui.home.HomeView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/home_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="HOME!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/home_to_select_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Photo"
+        app:layout_constraintEnd_toEndOf="@id/home_title"
+        app:layout_constraintStart_toStartOf="@id/home_title"
+        app:layout_constraintTop_toBottomOf="@id/home_title" />
+
+    <Button
+        android:id="@+id/home_to_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gallery"
+        app:layout_constraintEnd_toEndOf="@id/home_to_select_photo"
+        app:layout_constraintStart_toStartOf="@id/home_to_select_photo"
+        app:layout_constraintTop_toBottomOf="@id/home_to_select_photo" />
+
+    <Button
+        android:id="@+id/home_to_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        app:layout_constraintEnd_toEndOf="@id/home_to_gallery"
+        app:layout_constraintStart_toStartOf="@id/home_to_gallery"
+        app:layout_constraintTop_toBottomOf="@id/home_to_gallery" />
+</com.drspaceboo.transtracker.ui.home.HomeView>

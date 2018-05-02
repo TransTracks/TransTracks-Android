@@ -8,19 +8,17 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker
+package com.drspaceboo.transtracker.ui.gallery
 
-import android.app.Application
-import com.squareup.leakcanary.LeakCanary
+import android.support.annotation.NonNull
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.bluelinelabs.conductor.Controller
+import com.drspaceboo.transtracker.R
 
-class TransTrackerApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
+class GalleryController : Controller() {
+    override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
+        return inflater.inflate(R.layout.gallery, container, false)
     }
 }
