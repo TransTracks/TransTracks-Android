@@ -15,10 +15,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracker.R
+import com.drspaceboo.transtracker.ui.gallery.GalleryController
+import com.drspaceboo.transtracker.ui.selectphoto.SelectPhotoController
+import com.drspaceboo.transtracker.ui.settings.SettingsController
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 
 class HomeController : Controller() {
+    var resultDisposable: Disposable = Disposables.disposed()
+
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
-        return inflater.inflate(R.layout.home, container, false)
+        val view: HomeView = inflater.inflate(R.layout.home, container, false) as HomeView
+
+        resultDisposable = view.events.map { event ->
+            when (event) {
+                is HomeUiEvent.SelectPhoto -> SelectPhotoController()
+                is HomeUiEvent.Gallery -> GalleryController()
+                is HomeUiEvent.Settings -> SettingsController()
+            }
+        }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
+
+        return view;
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        resultDisposable.dispose()
     }
 }
