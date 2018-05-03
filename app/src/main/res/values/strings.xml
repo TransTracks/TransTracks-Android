@@ -10,4 +10,8 @@
 
 <resources>
     <string name="app_name">Trans Tracker</string>
+
+    <!-- Home -->
+    <string name="take_photo">Take Photo</string>
+    <string name="edit_settings">Edit Settings</string>
 </resources>

@@ -10,45 +10,73 @@
   -->
 
 <com.drspaceboo.transtracker.ui.home.HomeView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:background="@drawable/gradient_background">
 
-    <TextView
-        android:id="@+id/home_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="HOME!"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton android:layout_width="48dp"
+                 android:layout_height="48dp"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 android:src="@drawable/ic_photo_camera_white_24dp"
+                 android:contentDescription="@string/take_photo"
+                 android:background="@android:color/transparent"/>
 
-    <Button
-        android:id="@+id/home_to_select_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Photo"
-        app:layout_constraintEnd_toEndOf="@id/home_title"
-        app:layout_constraintStart_toStartOf="@id/home_title"
-        app:layout_constraintTop_toBottomOf="@id/home_title" />
+    <ImageButton android:layout_width="48dp"
+                 android:layout_height="48dp"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:src="@drawable/ic_settings_white_24dp"
+                 android:contentDescription="@string/edit_settings"
+                 android:background="@android:color/transparent"/>
 
-    <Button
-        android:id="@+id/home_to_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        app:layout_constraintEnd_toEndOf="@id/home_to_select_photo"
-        app:layout_constraintStart_toStartOf="@id/home_to_select_photo"
-        app:layout_constraintTop_toBottomOf="@id/home_to_select_photo" />
+    <TextView android:id="@+id/home_title"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="HOME!"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.5"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
-        android:id="@+id/home_to_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        app:layout_constraintEnd_toEndOf="@id/home_to_gallery"
-        app:layout_constraintStart_toStartOf="@id/home_to_gallery"
-        app:layout_constraintTop_toBottomOf="@id/home_to_gallery" />
+    <Button android:id="@+id/home_to_select_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Photo"
+            app:layout_constraintEnd_toEndOf="@id/home_title"
+            app:layout_constraintStart_toStartOf="@id/home_title"
+            app:layout_constraintTop_toBottomOf="@id/home_title"/>
+
+    <Button android:id="@+id/home_to_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gallery"
+            app:layout_constraintEnd_toEndOf="@id/home_to_select_photo"
+            app:layout_constraintStart_toStartOf="@id/home_to_select_photo"
+            app:layout_constraintTop_toBottomOf="@id/home_to_select_photo"/>
+
+    <Button android:id="@+id/home_to_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            app:layout_constraintEnd_toEndOf="@id/home_to_gallery"
+            app:layout_constraintStart_toStartOf="@id/home_to_gallery"
+            app:layout_constraintTop_toBottomOf="@id/home_to_gallery"/>
+
+
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 android:background="@drawable/ad_background"
+                 android:paddingTop="2dp">
+        <com.google.android.gms.ads.AdView android:id="@+id/home_ad_view"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           app:adSize="BANNER"
+                                           app:adUnitId="@string/ADS_HOME_AD_ID"/>
+    </FrameLayout>
 </com.drspaceboo.transtracker.ui.home.HomeView>

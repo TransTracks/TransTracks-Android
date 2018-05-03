@@ -10,13 +10,5 @@
   -->
 
 <resources>
-    <color name="femmeColorPrimaryLight">#ffbde4</color>
-    <color name="femmeColorPrimary">#E4A9CC</color>
-    <color name="femmeColorPrimaryDark">#b0829e</color>
-    <color name="femmeColorAccent">#9ECCF6</color>
-
-    <color name="mascColorPrimaryLight">#a3d3ff</color>
-    <color name="mascColorPrimary">#9ECCF6</color>
-    <color name="mascColorPrimaryDark">#7ca0c2</color>
-    <color name="mascColorAccent">#E4A9CC</color>
+    <attr name="colorPrimaryLight" format="reference"/>
 </resources>

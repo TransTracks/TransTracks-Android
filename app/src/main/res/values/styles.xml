@@ -9,13 +9,17 @@
   -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="FemmeAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryLight">@color/femmeColorPrimaryLight</item>
+        <item name="colorPrimary">@color/femmeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/femmeColorPrimaryDark</item>
+        <item name="colorAccent">@color/femmeColorAccent</item>
     </style>
 
+    <style name="MascAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryLight">@color/mascColorPrimaryLight</item>
+        <item name="colorPrimary">@color/mascColorPrimary</item>
+        <item name="colorPrimaryDark">@color/mascColorPrimaryDark</item>
+        <item name="colorAccent">@color/mascColorAccent</item>
+    </style>
 </resources>
