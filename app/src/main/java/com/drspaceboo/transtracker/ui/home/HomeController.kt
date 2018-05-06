@@ -22,9 +22,10 @@ import com.drspaceboo.transtracker.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracker.ui.settings.SettingsController
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import org.threeten.bp.LocalDate
 
 class HomeController : Controller() {
-    var resultDisposable: Disposable = Disposables.disposed()
+    private var resultDisposable: Disposable = Disposables.disposed()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
         val view: HomeView = inflater.inflate(R.layout.home, container, false) as HomeView
@@ -37,7 +38,14 @@ class HomeController : Controller() {
             }
         }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
 
-        return view;
+        view.display(HomeUiState.Loaded(12,
+                                        LocalDate.of(2017, 8, 17),
+                                        LocalDate.of(2018, 5, 14),
+                                        emptyList(),
+                                        emptyList(),
+                                        true))
+
+        return view
     }
 
     override fun onDestroy() {

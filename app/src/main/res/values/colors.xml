@@ -10,13 +10,15 @@
   -->
 
 <resources>
-    <color name="femmeColorPrimaryLight">#ffbde4</color>
-    <color name="femmeColorPrimary">#E4A9CC</color>
-    <color name="femmeColorPrimaryDark">#b0829e</color>
-    <color name="femmeColorAccent">#9ECCF6</color>
+    <color name="pinkColorPrimaryLight">#ffbde4</color>
+    <color name="pinkColorPrimary">#E4A9CC</color>
+    <color name="pinkColorPrimaryDark">#b0829e</color>
+    <color name="pinkColorAccent">#9ECCF6</color>
 
-    <color name="mascColorPrimaryLight">#a3d3ff</color>
-    <color name="mascColorPrimary">#9ECCF6</color>
-    <color name="mascColorPrimaryDark">#7ca0c2</color>
-    <color name="mascColorAccent">#E4A9CC</color>
+    <color name="blueColorPrimaryLight">#a3d3ff</color>
+    <color name="blueColorPrimary">#9ECCF6</color>
+    <color name="blueColorPrimaryDark">#7ca0c2</color>
+    <color name="blueColorAccent">#E4A9CC</color>
+
+    <color name="transparent_white_25">#40ffffff</color>
 </resources>

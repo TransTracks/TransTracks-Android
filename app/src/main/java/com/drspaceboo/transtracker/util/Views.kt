@@ -8,22 +8,20 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker
+package com.drspaceboo.transtracker.util
 
-import android.app.Application
-import com.google.android.gms.ads.MobileAds
-import com.squareup.leakcanary.LeakCanary
+import android.support.annotation.NonNull
+import android.support.annotation.StringRes
+import android.view.View
 
-class TransTrackerApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
+fun View.getIdName() = resources.getResourceEntryName(id)
 
-        MobileAds.initialize(this, BuildConfig.ADS_APP_ID);
-    }
+fun View.getString(@StringRes resId: Int, @NonNull vararg formatArgs: Any) = context.getString(resId, *formatArgs)
+
+fun View.gone() {
+    visibility = View.GONE
+}
+
+fun View.visible() {
+    visibility = View.VISIBLE
 }

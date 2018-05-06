@@ -20,33 +20,29 @@ import com.drspaceboo.transtracker.R
 import com.drspaceboo.transtracker.ui.home.HomeController
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
+import kotterknife.bindView
 
 class MainActivity : AppCompatActivity() {
     private var router: Router? = null
-//    private val mAdView: AdView by bindView(R.id.adView)
+
+    private val container: ViewGroup by bindView(R.id.controller_container)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
 
-        val container: ViewGroup = findViewById(R.id.controller_container);
-
-        router = Conductor.attachRouter(this, container, savedInstanceState);
+        router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {
-            router!!.setRoot(RouterTransaction.with(HomeController()));
+            router!!.setRoot(RouterTransaction.with(HomeController()))
         }
-
-//        MobileAds.initialize(this, BuildConfig.ADS_APP_ID);
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
     }
 
     override fun onBackPressed() {
         val localRouter = router
 
         if (localRouter == null || !localRouter.handleBack()) {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 }

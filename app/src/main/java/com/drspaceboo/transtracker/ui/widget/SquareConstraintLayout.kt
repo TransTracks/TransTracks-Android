@@ -8,22 +8,21 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker
+package com.drspaceboo.transtracker.ui.widget
 
-import android.app.Application
-import com.google.android.gms.ads.MobileAds
-import com.squareup.leakcanary.LeakCanary
+import android.content.Context
+import android.support.constraint.ConstraintLayout
+import android.util.AttributeSet
 
-class TransTrackerApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this);
+class SquareConstraintLayout : ConstraintLayout {
+    constructor(context: Context) : super(context)
 
-        MobileAds.initialize(this, BuildConfig.ADS_APP_ID);
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        setMeasuredDimension(measuredHeight, measuredHeight)
     }
 }

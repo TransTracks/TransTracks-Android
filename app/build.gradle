@@ -48,9 +48,13 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     //Recycler view is only required here to replace the old version in the kotterknife module
     implementation "com.android.support:recyclerview-v7:$support_version"
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
@@ -60,6 +64,7 @@ dependencies {
     }
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.threeten:threetenbp:1.3.4'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

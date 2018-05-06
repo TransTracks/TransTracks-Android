@@ -10,16 +10,16 @@
 
 <resources>
     <style name="FemmeAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryLight">@color/femmeColorPrimaryLight</item>
-        <item name="colorPrimary">@color/femmeColorPrimary</item>
-        <item name="colorPrimaryDark">@color/femmeColorPrimaryDark</item>
-        <item name="colorAccent">@color/femmeColorAccent</item>
+        <item name="colorPrimaryLight">@color/pinkColorPrimaryLight</item>
+        <item name="colorPrimary">@color/pinkColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pinkColorPrimaryDark</item>
+        <item name="colorAccent">@color/pinkColorAccent</item>
     </style>
 
     <style name="MascAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryLight">@color/mascColorPrimaryLight</item>
-        <item name="colorPrimary">@color/mascColorPrimary</item>
-        <item name="colorPrimaryDark">@color/mascColorPrimaryDark</item>
-        <item name="colorAccent">@color/mascColorAccent</item>
+        <item name="colorPrimaryLight">@color/blueColorPrimaryLight</item>
+        <item name="colorPrimary">@color/blueColorPrimary</item>
+        <item name="colorPrimaryDark">@color/blueColorPrimaryDark</item>
+        <item name="colorAccent">@color/blueColorAccent</item>
     </style>
 </resources>
