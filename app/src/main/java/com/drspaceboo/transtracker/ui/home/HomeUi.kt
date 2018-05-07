@@ -162,7 +162,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
                 if (state.showAds) {
                     adViewLayout.visible()
-                    adView.safeLoadAd()
+                    adView.loadAd()
                 } else {
                     adViewLayout.gone()
                 }
