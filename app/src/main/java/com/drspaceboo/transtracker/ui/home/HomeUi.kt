@@ -30,12 +30,17 @@ import org.threeten.bp.LocalDate
 
 sealed class HomeUiEvent {
     object SelectPhoto : HomeUiEvent()
-    object Gallery : HomeUiEvent()
     object Settings : HomeUiEvent()
+    object PreviousRecord : HomeUiEvent()
+    object NextRecord : HomeUiEvent()
+    object Gallery : HomeUiEvent()
+    object ImageClick : HomeUiEvent()
 }
 
 sealed class HomeUiState {
     data class Loaded(val dayNumber: Int,
+                      val showPreviousRecord: Boolean,
+                      val showNextRecord: Boolean,
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
                       val facePhotos: List<Uri>,
@@ -44,11 +49,13 @@ sealed class HomeUiState {
 }
 
 class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
-
     private val takePhoto: ImageButton by bindView(R.id.home_take_photo)
     private val settings: ImageButton by bindView(R.id.home_settings)
 
     private val day: TextView by bindView(R.id.home_day_title)
+
+    private val previousRecord: ImageButton by bindView(R.id.home_previous_record)
+    private val nextRecord: ImageButton by bindView(R.id.home_next_record)
 
     private val startDate: TextView by bindView(R.id.home_start_date)
     private val currentDate: TextView by bindView(R.id.home_current_date)
@@ -56,12 +63,14 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val faceGallery: Button by bindView(R.id.home_face_gallery)
     private val faceFirstImage: ImageView by bindView(R.id.home_face_first_image)
     private val faceSecondImage: ImageView by bindView(R.id.home_face_second_image)
+    private val faceThirdLayout: ViewGroup by bindView(R.id.home_face_third_image_layout)
     private val faceThirdImage: ImageView by bindView(R.id.home_face_third_image)
     private val faceExtraImages: TextView by bindView(R.id.home_face_extra_images)
 
     private val bodyGallery: Button by bindView(R.id.home_body_gallery)
     private val bodyFirstImage: ImageView by bindView(R.id.home_body_first_image)
     private val bodySecondImage: ImageView by bindView(R.id.home_body_second_image)
+    private val bodyThirdLayout: ViewGroup by bindView(R.id.home_body_third_image_layout)
     private val bodyThirdImage: ImageView by bindView(R.id.home_body_third_image)
     private val bodyExtraImages: TextView by bindView(R.id.home_body_extra_images)
 
@@ -69,21 +78,33 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val adView: AdView by bindView(R.id.home_ad_view)
 
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
-                         faceGallery.clicks().map { HomeUiEvent.Gallery },
-                         bodyGallery.clicks().map { HomeUiEvent.Gallery },
-                         settings.clicks().map { HomeUiEvent.Settings })
+        Observable.mergeArray(takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
+                              settings.clicks().map { HomeUiEvent.Settings },
+                              previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
+                              nextRecord.clicks().map { HomeUiEvent.NextRecord },
+                              faceGallery.clicks().map { HomeUiEvent.Gallery },
+                              faceFirstImage.clicks().map { HomeUiEvent.ImageClick },
+                              faceSecondImage.clicks().map { HomeUiEvent.ImageClick },
+                              faceThirdImage.clicks().map { HomeUiEvent.ImageClick },
+                              bodyGallery.clicks().map { HomeUiEvent.Gallery },
+                              bodyFirstImage.clicks().map { HomeUiEvent.ImageClick },
+                              bodySecondImage.clicks().map { HomeUiEvent.ImageClick },
+                              bodyThirdImage.clicks().map { HomeUiEvent.ImageClick })
     }
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
-            Picasso.get().load(R.drawable.ic_add_circle_white_24dp).into(bodyThirdImage)
+            bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent))
+            Picasso.get().cancelRequest(bodyThirdImage)
+            bodyThirdImage.setImageResource(R.drawable.add)
             bodyThirdImage.visible()
             bodyExtraImages.gone()
         }
 
         fun setAddAnotherFaceImage() {
-            Picasso.get().load(R.drawable.ic_add_circle_white_24dp).into(faceThirdImage)
+            faceThirdLayout.setBackgroundColor(getColor(R.color.transparent))
+            Picasso.get().cancelRequest(faceThirdImage)
+            faceThirdImage.setImageResource(R.drawable.add)
             faceThirdImage.visible()
             faceExtraImages.gone()
         }
@@ -91,6 +112,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
         when (state) {
             is HomeUiState.Loaded -> {
                 day.text = day.getString(R.string.day_number, state.dayNumber)
+
+                previousRecord.setVisibleOrGone(state.showPreviousRecord)
+                nextRecord.setVisibleOrGone(state.showNextRecord)
+
                 startDate.text = startDate.getString(R.string.start_date,
                                                      state.startDate.toFullDateString(startDate.context))
                 currentDate.text = currentDate.getString(R.string.current_date,
@@ -105,6 +130,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                         faceSecondImage.visible()
 
                         if (state.facePhotos.size > 2) {
+                            faceThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
                             Picasso.get().load(state.facePhotos[1]).into(faceThirdImage)
                             faceThirdImage.visible()
 
@@ -137,6 +163,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                         bodySecondImage.visible()
 
                         if (state.bodyPhotos.size > 2) {
+                            bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
                             Picasso.get().load(state.bodyPhotos[1]).into(bodyThirdImage)
                             bodyThirdImage.visible()
 

@@ -50,6 +50,30 @@
         app:layout_constraintTop_toBottomOf="@id/home_take_photo"
         tools:text="Day 12" />
 
+    <ImageButton
+        android:id="@+id/home_previous_record"
+        android:background="@color/transparent"
+        android:contentDescription="@string/previous_record"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/previous"
+        app:layout_constraintBottom_toBottomOf="@id/home_day_title"
+        app:layout_constraintEnd_toStartOf="@id/home_day_title"
+        app:layout_constraintTop_toTopOf="@id/home_day_title"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <ImageButton
+        android:id="@+id/home_next_record"
+        android:background="@color/transparent"
+        android:contentDescription="@string/next_record"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/next"
+        app:layout_constraintBottom_toBottomOf="@id/home_day_title"
+        app:layout_constraintStart_toEndOf="@id/home_day_title"
+        app:layout_constraintTop_toTopOf="@id/home_day_title"
+        app:layout_constraintVertical_bias="0.75" />
+
     <ImageView
         android:id="@+id/home_divider_one"
         android:importantForAccessibility="no"

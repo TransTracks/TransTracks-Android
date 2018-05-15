@@ -20,6 +20,7 @@ import com.drspaceboo.transtracker.R
 import com.drspaceboo.transtracker.ui.gallery.GalleryController
 import com.drspaceboo.transtracker.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracker.ui.settings.SettingsController
+import com.drspaceboo.transtracker.ui.singlephoto.SinglePhotoController
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import org.threeten.bp.LocalDate
@@ -33,12 +34,17 @@ class HomeController : Controller() {
         resultDisposable = view.events.map { event ->
             when (event) {
                 is HomeUiEvent.SelectPhoto -> SelectPhotoController()
-                is HomeUiEvent.Gallery -> GalleryController()
                 is HomeUiEvent.Settings -> SettingsController()
+                is HomeUiEvent.PreviousRecord -> HomeController()
+                is HomeUiEvent.NextRecord -> HomeController()
+                is HomeUiEvent.Gallery -> GalleryController()
+                is HomeUiEvent.ImageClick -> SinglePhotoController()
             }
         }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
 
         view.display(HomeUiState.Loaded(12,
+                                        true,
+                                        true,
                                         LocalDate.of(2017, 8, 17),
                                         LocalDate.of(2018, 5, 14),
                                         emptyList(),

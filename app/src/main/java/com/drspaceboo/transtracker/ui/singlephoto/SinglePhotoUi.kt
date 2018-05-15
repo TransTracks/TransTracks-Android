@@ -8,22 +8,12 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker.ui.widget
+package com.drspaceboo.transtracker.ui.singlephoto
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import android.widget.ImageView
 
-class SquareImageView : ImageView {
-    constructor(context: Context) : super(context)
+class SinglePhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val height = MeasureSpec.getSize(heightMeasureSpec)
-        val newMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-        super.onMeasure(newMeasureSpec, newMeasureSpec)
-    }
 }

@@ -22,7 +22,8 @@ class SquareConstraintLayout : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(measuredHeight, measuredHeight)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        val newMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+        super.onMeasure(newMeasureSpec, newMeasureSpec)
     }
 }

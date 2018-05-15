@@ -20,5 +20,6 @@
     <color name="blueColorPrimaryDark">#7ca0c2</color>
     <color name="blueColorAccent">#E4A9CC</color>
 
+    <color name="transparent">#00000000</color>
     <color name="transparent_white_25">#40ffffff</color>
 </resources>

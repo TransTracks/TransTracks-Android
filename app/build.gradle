@@ -33,7 +33,7 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    implementation 'com.google.android.gms:play-services-ads:15.0.0'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
     //Custom tabs & Support V4 are only required here to replace the old version in the play-services-ads module
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:support-v4:$support_version"
@@ -55,6 +55,9 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$support_version"
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //Exif interface is only required here to replace the old version in the picasso module
+    implementation "com.android.support:exifinterface:$support_version"
+
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'

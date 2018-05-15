@@ -10,9 +10,22 @@
 
 package com.drspaceboo.transtracker.util
 
+import android.os.Build
+import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
 import android.support.annotation.NonNull
 import android.support.annotation.StringRes
 import android.view.View
+
+@ColorInt
+fun View.getColor(@ColorRes colorRes: Int): Int = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> context.getColor(colorRes)
+
+    else -> {
+        @Suppress("DEPRECATION") //We are correctly handling this deprecation
+        resources.getColor(colorRes)
+    }
+}
 
 fun View.getIdName() = resources.getResourceEntryName(id)
 
@@ -24,4 +37,9 @@ fun View.gone() {
 
 fun View.visible() {
     visibility = View.VISIBLE
+}
+
+fun View.setVisibleOrGone(show: Boolean) = when (show) {
+    true -> visibility = View.VISIBLE
+    false -> visibility = View.GONE
 }
