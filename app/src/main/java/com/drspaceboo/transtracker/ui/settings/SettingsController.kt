@@ -10,15 +10,49 @@
 
 package com.drspaceboo.transtracker.ui.settings
 
+import android.app.DatePickerDialog
 import android.support.annotation.NonNull
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracker.R
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
+import org.threeten.bp.LocalDate
 
 class SettingsController : Controller() {
+    private var resultDisposable: Disposable = Disposables.disposed()
+
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
-        return inflater.inflate(R.layout.settings, container, false)
+        val view: SettingsView = inflater.inflate(R.layout.settings, container, false) as SettingsView
+
+        resultDisposable = view.events.subscribe { event ->
+            when (event) {
+                is SettingsUiEvent.ChangeStartDate -> {
+                    var dateToUse = event.current
+
+                    if (dateToUse == null) {
+                        dateToUse = LocalDate.now()
+                    }
+
+                    //Note: The DatePickerDialog uses 0 based months
+                    DatePickerDialog(view.context,
+                                     DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                                         view.display(SettingsUiState.Loaded(LocalDate.of(year, month + 1, dayOfMonth)))
+                                     },
+                                     dateToUse!!.year, dateToUse.monthValue - 1, dateToUse.dayOfMonth).show()
+                }
+            }
+        }
+
+        view.display(SettingsUiState.Loaded(LocalDate.of(2017, 8, 17)))
+
+        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        resultDisposable.dispose()
     }
 }

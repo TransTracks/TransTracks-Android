@@ -20,7 +20,13 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracker.R
-import com.drspaceboo.transtracker.util.*
+import com.drspaceboo.transtracker.util.getColor
+import com.drspaceboo.transtracker.util.getString
+import com.drspaceboo.transtracker.util.gone
+import com.drspaceboo.transtracker.util.loadAd
+import com.drspaceboo.transtracker.util.setVisibleOrGone
+import com.drspaceboo.transtracker.util.toFullDateString
+import com.drspaceboo.transtracker.util.visible
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso

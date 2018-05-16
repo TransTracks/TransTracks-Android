@@ -11,17 +11,97 @@
 
 <com.drspaceboo.transtracker.ui.settings.SettingsView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_background"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/gallery_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Settings!"
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/settings_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/settings_title"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:text="@string/settings"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:background="@color/transparent_white_25"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/settings_start_label" />
+
+            <TextView
+                android:id="@+id/settings_start_label"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:text="@string/start_date_label"
+                android:textColor="@color/transparent_white_90"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_title"
+                style="@style/TextAppearance.AppCompat.Title" />
+
+            <Button
+                android:id="@+id/settings_start_date"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/settings_start_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/settings_start_label"
+                app:layout_constraintTop_toTopOf="@id/settings_start_label"
+                tools:text="15/08/2017"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/settings_ad_layout"
+        android:background="@drawable/ad_background"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingTop="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/settings_ad_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="@string/ADS_SETTINGS_AD_ID" />
+    </FrameLayout>
 </com.drspaceboo.transtracker.ui.settings.SettingsView>
