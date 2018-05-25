@@ -12,8 +12,25 @@ package com.drspaceboo.transtracker.ui.selectphoto
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import android.widget.TextView
+import android.widget.Toolbar
+import com.drspaceboo.transtracker.R
+import com.jakewharton.rxbinding2.widget.navigationClicks
+import io.reactivex.Observable
+import kotterknife.bindView
+
+sealed class SelectPhotoUiEvent {
+    object Back : SelectPhotoUiEvent()
+}
 
 class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+    private val toolbar: Toolbar by bindView(R.id.select_photo_toolbar)
+    private val title: TextView by bindView(R.id.select_photo_title)
+    private val recyclerView: RecyclerView by bindView(R.id.select_photo_recycler_view)
 
+    val events: Observable<SelectPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
+        toolbar.navigationClicks().map<SelectPhotoUiEvent> { SelectPhotoUiEvent.Back }
+    }
 }

@@ -16,9 +16,27 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracker.R
+import com.drspaceboo.transtracker.util.plusAssign
+import io.reactivex.disposables.CompositeDisposable
 
 class SelectPhotoController : Controller() {
+    private val viewDisposables: CompositeDisposable = CompositeDisposable()
+
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
         return inflater.inflate(R.layout.select_photo, container, false)
+    }
+
+    override fun onAttach(view: View) {
+        if (view !is SelectPhotoView) throw AssertionError("View must be SelectPhotoView")
+
+        viewDisposables += view.events.subscribe { event ->
+            when (event) {
+                SelectPhotoUiEvent.Back -> router.handleBack()
+            }
+        }
+    }
+
+    override fun onDetach(view: View) {
+        viewDisposables.clear()
     }
 }

@@ -74,8 +74,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-static String getSecretString(String key) {
+String getSecretString(String key) {
     Properties props = new Properties()
-    props.load(new FileInputStream(new File('secrets.properties')))
+    props.load(new FileInputStream(file("$rootDir/secrets.properties")))
     return props[key]
 }
