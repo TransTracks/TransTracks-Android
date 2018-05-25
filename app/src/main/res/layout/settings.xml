@@ -29,17 +29,27 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-            <TextView
-                android:id="@+id/settings_title"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/settings_toolbar"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:text="@string/settings"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@color/white"
+                android:layout_width="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/AppTheme.PopupOverlay">
+
+                <TextView
+                    android:id="@+id/settings_title"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/settings"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@color/white" />
+            </android.support.v7.widget.Toolbar>
 
             <View
                 android:background="@color/transparent_white_25"
@@ -53,7 +63,6 @@
             <TextView
                 android:id="@+id/settings_start_label"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_width="0dp"
                 android:paddingBottom="8dp"
                 android:paddingEnd="0dp"
@@ -62,7 +71,7 @@
                 android:text="@string/start_date_label"
                 android:textColor="@color/transparent_white_90"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_title"
+                app:layout_constraintTop_toBottomOf="@id/settings_toolbar"
                 style="@style/TextAppearance.AppCompat.Title" />
 
             <Button

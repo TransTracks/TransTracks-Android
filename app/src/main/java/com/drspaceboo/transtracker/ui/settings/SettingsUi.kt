@@ -12,10 +12,12 @@ package com.drspaceboo.transtracker.ui.settings
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.widget.Button
 import com.drspaceboo.transtracker.R
 import com.drspaceboo.transtracker.util.toFullDateString
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import kotterknife.bindView
@@ -23,6 +25,7 @@ import org.threeten.bp.LocalDate
 
 sealed class SettingsUiEvent {
     data class ChangeStartDate(val current: LocalDate?) : SettingsUiEvent()
+    object Back : SettingsUiEvent()
 }
 
 sealed class SettingsUiState {
@@ -32,10 +35,12 @@ sealed class SettingsUiState {
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
     var currentStartDate: LocalDate? = null
 
+    private val toolbar: Toolbar by bindView(R.id.settings_toolbar)
     private val startDate: Button by bindView(R.id.settings_start_date)
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        startDate.clicks().map<SettingsUiEvent> { SettingsUiEvent.ChangeStartDate(currentStartDate) }
+        Observable.merge(toolbar.navigationClicks().map { SettingsUiEvent.Back },
+                         startDate.clicks().map { SettingsUiEvent.ChangeStartDate(currentStartDate) })
     }
 
     fun display(state: SettingsUiState) {

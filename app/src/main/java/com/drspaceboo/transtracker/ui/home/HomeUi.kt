@@ -39,7 +39,8 @@ sealed class HomeUiEvent {
     object Settings : HomeUiEvent()
     object PreviousRecord : HomeUiEvent()
     object NextRecord : HomeUiEvent()
-    object Gallery : HomeUiEvent()
+    object FaceGallery : HomeUiEvent()
+    object BodyGallery : HomeUiEvent()
     object ImageClick : HomeUiEvent()
 }
 
@@ -88,11 +89,11 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                               settings.clicks().map { HomeUiEvent.Settings },
                               previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
                               nextRecord.clicks().map { HomeUiEvent.NextRecord },
-                              faceGallery.clicks().map { HomeUiEvent.Gallery },
+                              faceGallery.clicks().map { HomeUiEvent.FaceGallery },
                               faceFirstImage.clicks().map { HomeUiEvent.ImageClick },
                               faceSecondImage.clicks().map { HomeUiEvent.ImageClick },
                               faceThirdImage.clicks().map { HomeUiEvent.ImageClick },
-                              bodyGallery.clicks().map { HomeUiEvent.Gallery },
+                              bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
                               bodyFirstImage.clicks().map { HomeUiEvent.ImageClick },
                               bodySecondImage.clicks().map { HomeUiEvent.ImageClick },
                               bodyThirdImage.clicks().map { HomeUiEvent.ImageClick })

@@ -29,15 +29,20 @@ class HomeController : Controller() {
     private var resultDisposable: Disposable = Disposables.disposed()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
-        val view: HomeView = inflater.inflate(R.layout.home, container, false) as HomeView
+        return inflater.inflate(R.layout.home, container, false)
+    }
+
+    override fun onAttach(view: View) {
+        if (view !is HomeView) throw AssertionError("View must be HomeView")
 
         resultDisposable = view.events.map { event ->
-            when (event) {
+            return@map when (event) {
                 is HomeUiEvent.SelectPhoto -> SelectPhotoController()
                 is HomeUiEvent.Settings -> SettingsController()
                 is HomeUiEvent.PreviousRecord -> HomeController()
                 is HomeUiEvent.NextRecord -> HomeController()
-                is HomeUiEvent.Gallery -> GalleryController()
+                is HomeUiEvent.FaceGallery -> GalleryController(isFaceGallery = true)
+                is HomeUiEvent.BodyGallery -> GalleryController(isFaceGallery = false)
                 is HomeUiEvent.ImageClick -> SinglePhotoController()
             }
         }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
@@ -50,8 +55,6 @@ class HomeController : Controller() {
                                         emptyList(),
                                         emptyList(),
                                         true))
-
-        return view
     }
 
     override fun onDestroy() {

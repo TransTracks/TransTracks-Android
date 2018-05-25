@@ -11,9 +11,41 @@
 package com.drspaceboo.transtracker.ui.gallery
 
 import android.content.Context
+import android.support.annotation.StringRes
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.widget.TextView
+import com.drspaceboo.transtracker.R
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import io.reactivex.Observable
+import kotterknife.bindView
+
+sealed class GalleryUiEvent {
+    object Back : GalleryUiEvent()
+}
+
+sealed class GalleryUiState {
+    object FaceGallery : GalleryUiState()
+    object BodyGallery : GalleryUiState()
+}
 
 class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+    private val toolbar: Toolbar by bindView(R.id.gallery_toolbar)
+    private val title: TextView by bindView(R.id.gallery_title)
+    private val recyclerView: RecyclerView by bindView(R.id.gallery_recycler_view)
 
+    val events: Observable<GalleryUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
+        toolbar.navigationClicks().map<GalleryUiEvent> { GalleryUiEvent.Back }
+    }
+
+    fun display(state: GalleryUiState) {
+        @StringRes val titleRes: Int = when (state) {
+            is GalleryUiState.FaceGallery -> R.string.face_gallery
+            is GalleryUiState.BodyGallery -> R.string.body_gallery
+        }
+
+        title.setText(titleRes)
+    }
 }

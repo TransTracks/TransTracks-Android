@@ -25,10 +25,16 @@ class SettingsController : Controller() {
     private var resultDisposable: Disposable = Disposables.disposed()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
-        val view: SettingsView = inflater.inflate(R.layout.settings, container, false) as SettingsView
+        return inflater.inflate(R.layout.settings, container, false)
+    }
+
+    override fun onAttach(view: View) {
+        if (view !is SettingsView) throw AssertionError("View must be SettingsView")
 
         resultDisposable = view.events.subscribe { event ->
             when (event) {
+                is SettingsUiEvent.Back -> router.handleBack()
+
                 is SettingsUiEvent.ChangeStartDate -> {
                     var dateToUse = event.current
 
@@ -47,8 +53,6 @@ class SettingsController : Controller() {
         }
 
         view.display(SettingsUiState.Loaded(LocalDate.of(2017, 8, 17)))
-
-        return view
     }
 
     override fun onDestroy() {
