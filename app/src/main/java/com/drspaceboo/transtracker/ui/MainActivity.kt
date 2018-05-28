@@ -16,9 +16,10 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.crashlytics.android.Crashlytics
+import com.drspaceboo.transtracker.BuildConfig
 import com.drspaceboo.transtracker.R
 import com.drspaceboo.transtracker.ui.home.HomeController
-import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import kotterknife.bindView
 
@@ -29,8 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
+
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, Crashlytics())
+        }
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {

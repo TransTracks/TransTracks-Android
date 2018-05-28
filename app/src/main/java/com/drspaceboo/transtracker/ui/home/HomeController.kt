@@ -21,12 +21,12 @@ import com.drspaceboo.transtracker.ui.gallery.GalleryController
 import com.drspaceboo.transtracker.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracker.ui.settings.SettingsController
 import com.drspaceboo.transtracker.ui.singlephoto.SinglePhotoController
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import com.drspaceboo.transtracker.util.plusAssign
+import io.reactivex.disposables.CompositeDisposable
 import org.threeten.bp.LocalDate
 
 class HomeController : Controller() {
-    private var resultDisposable: Disposable = Disposables.disposed()
+    private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
         return inflater.inflate(R.layout.home, container, false)
@@ -35,7 +35,7 @@ class HomeController : Controller() {
     override fun onAttach(view: View) {
         if (view !is HomeView) throw AssertionError("View must be HomeView")
 
-        resultDisposable = view.events.map { event ->
+        viewDisposables += view.events.map { event ->
             return@map when (event) {
                 is HomeUiEvent.SelectPhoto -> SelectPhotoController()
                 is HomeUiEvent.Settings -> SettingsController()
@@ -57,8 +57,7 @@ class HomeController : Controller() {
                                         true))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        resultDisposable.dispose()
+    override fun onDetach(view: View) {
+        viewDisposables.clear()
     }
 }

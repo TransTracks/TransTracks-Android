@@ -8,25 +8,25 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker
+package com.drspaceboo.transtracker.data
 
-import android.app.Application
-import com.google.android.gms.ads.MobileAds
-import com.squareup.leakcanary.LeakCanary
-import io.realm.Realm
+import android.support.annotation.IntDef
+import io.realm.RealmObject
 
-class TransTrackerApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this)
+class Photo : RealmObject() {
+    var timestamp: Long = 0
 
-        MobileAds.initialize(this, BuildConfig.ADS_APP_ID)
+    var filename: String = ""
 
-        Realm.init(this)
+    @Type
+    var type: Int = TYPE_FACE
+
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    @IntDef(TYPE_FACE, TYPE_BODY)
+    annotation class Type
+
+    companion object {
+        const val TYPE_FACE = 0
+        const val TYPE_BODY = 1
     }
 }

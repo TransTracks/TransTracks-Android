@@ -17,12 +17,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracker.R
+import com.drspaceboo.transtracker.util.plusAssign
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
 import org.threeten.bp.LocalDate
 
 class SettingsController : Controller() {
-    private var resultDisposable: Disposable = Disposables.disposed()
+    private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
         return inflater.inflate(R.layout.settings, container, false)
@@ -31,7 +33,7 @@ class SettingsController : Controller() {
     override fun onAttach(view: View) {
         if (view !is SettingsView) throw AssertionError("View must be SettingsView")
 
-        resultDisposable = view.events.subscribe { event ->
+        viewDisposables += view.events.subscribe { event ->
             when (event) {
                 is SettingsUiEvent.Back -> router.handleBack()
 
@@ -55,8 +57,7 @@ class SettingsController : Controller() {
         view.display(SettingsUiState.Loaded(LocalDate.of(2017, 8, 17)))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        resultDisposable.dispose()
+    override fun onDetach(view: View) {
+        viewDisposables.clear()
     }
 }

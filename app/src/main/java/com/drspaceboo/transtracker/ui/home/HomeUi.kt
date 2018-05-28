@@ -41,7 +41,7 @@ sealed class HomeUiEvent {
     object NextRecord : HomeUiEvent()
     object FaceGallery : HomeUiEvent()
     object BodyGallery : HomeUiEvent()
-    object ImageClick : HomeUiEvent()
+    data class ImageClick(val photoIndex: Int) : HomeUiEvent()
 }
 
 sealed class HomeUiState {
@@ -90,13 +90,13 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                               previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
                               nextRecord.clicks().map { HomeUiEvent.NextRecord },
                               faceGallery.clicks().map { HomeUiEvent.FaceGallery },
-                              faceFirstImage.clicks().map { HomeUiEvent.ImageClick },
-                              faceSecondImage.clicks().map { HomeUiEvent.ImageClick },
-                              faceThirdImage.clicks().map { HomeUiEvent.ImageClick },
+                              faceFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
+                              faceSecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
+                              faceThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) },
                               bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
-                              bodyFirstImage.clicks().map { HomeUiEvent.ImageClick },
-                              bodySecondImage.clicks().map { HomeUiEvent.ImageClick },
-                              bodyThirdImage.clicks().map { HomeUiEvent.ImageClick })
+                              bodyFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
+                              bodySecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
+                              bodyThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) })
     }
 
     fun display(state: HomeUiState) {
