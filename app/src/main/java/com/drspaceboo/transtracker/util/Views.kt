@@ -29,6 +29,8 @@ fun View.getColor(@ColorRes colorRes: Int): Int = when {
 
 fun View.getIdName() = resources.getResourceEntryName(id)
 
+fun View.getString(@StringRes resId: Int) = context.getString(resId)
+
 fun View.getString(@StringRes resId: Int, @NonNull vararg formatArgs: Any) = context.getString(resId, *formatArgs)
 
 fun View.gone() {

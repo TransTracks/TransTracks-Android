@@ -24,12 +24,13 @@ import kotterknife.bindView
 import org.threeten.bp.LocalDate
 
 sealed class SettingsUiEvent {
-    data class ChangeStartDate(val current: LocalDate?) : SettingsUiEvent()
     object Back : SettingsUiEvent()
+    object ChangeStartDate : SettingsUiEvent()
+    object ChangeTheme : SettingsUiEvent()
 }
 
 sealed class SettingsUiState {
-    data class Loaded(val startDate: LocalDate) : SettingsUiState()
+    data class Loaded(val startDate: LocalDate, val theme: String) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -37,10 +38,12 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     private val toolbar: Toolbar by bindView(R.id.settings_toolbar)
     private val startDate: Button by bindView(R.id.settings_start_date)
+    private val theme: Button by bindView(R.id.settings_theme)
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(toolbar.navigationClicks().map { SettingsUiEvent.Back },
-                         startDate.clicks().map { SettingsUiEvent.ChangeStartDate(currentStartDate) })
+                         startDate.clicks().map { SettingsUiEvent.ChangeStartDate },
+                         theme.clicks().map { SettingsUiEvent.ChangeTheme })
     }
 
     fun display(state: SettingsUiState) {
@@ -49,6 +52,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 currentStartDate = state.startDate
 
                 startDate.text = state.startDate.toFullDateString(startDate.context)
+                theme.text = state.theme
             }
         }
     }

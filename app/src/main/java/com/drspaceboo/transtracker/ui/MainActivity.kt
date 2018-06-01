@@ -12,6 +12,7 @@ package com.drspaceboo.transtracker.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.TypedValue
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
@@ -20,15 +21,28 @@ import com.crashlytics.android.Crashlytics
 import com.drspaceboo.transtracker.BuildConfig
 import com.drspaceboo.transtracker.R
 import com.drspaceboo.transtracker.ui.home.HomeController
+import com.drspaceboo.transtracker.util.PrefUtil
+import com.drspaceboo.transtracker.util.PrefUtil.THEME_BLUE
+import com.drspaceboo.transtracker.util.PrefUtil.THEME_PINK
+import com.drspaceboo.transtracker.util.plusAssign
 import io.fabric.sdk.android.Fabric
+import io.reactivex.disposables.CompositeDisposable
 import kotterknife.bindView
 
 class MainActivity : AppCompatActivity() {
     private var router: Router? = null
-
     private val container: ViewGroup by bindView(R.id.controller_container)
 
+    private val viewDisposables: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeRes = when (PrefUtil.theme.get()) {
+            THEME_PINK -> R.style.PinkAppTheme
+            THEME_BLUE -> R.style.BlueAppTheme
+            else -> throw IllegalArgumentException("Unhandled theme type")
+        }
+        setTheme(themeRes)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -42,11 +56,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        viewDisposables += PrefUtil.theme.asObservable()
+                .map { themeType ->
+                    return@map when (themeType) {
+                        THEME_PINK -> R.style.PinkAppTheme
+                        THEME_BLUE -> R.style.BlueAppTheme
+                        else -> throw IllegalArgumentException("Unhandled theme type")
+                    }
+                }
+                .subscribe { themeRes ->
+                    setTheme(themeRes)
+                    val value = TypedValue()
+                    if (theme.resolveAttribute(R.attr.colorPrimaryDark, value, true)) {
+                        window.statusBarColor = value.data
+                    }
+                }
+    }
+
     override fun onBackPressed() {
         val localRouter = router
 
         if (localRouter == null || !localRouter.handleBack()) {
             super.onBackPressed()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewDisposables.clear()
     }
 }

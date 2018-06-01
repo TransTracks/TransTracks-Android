@@ -12,12 +12,15 @@ package com.drspaceboo.transtracker
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import io.realm.Realm
 
 class TransTrackerApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        instance = this
+
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
@@ -27,6 +30,12 @@ class TransTrackerApp : Application() {
 
         MobileAds.initialize(this, BuildConfig.ADS_APP_ID)
 
+        AndroidThreeTen.init(this)
         Realm.init(this)
+    }
+
+    companion object {
+        lateinit var instance: TransTrackerApp
+            private set
     }
 }

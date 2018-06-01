@@ -10,7 +10,7 @@
 
 <resources>
 
-    <style name="FemmeAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="PinkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryLight">@color/pinkColorPrimaryLight</item>
         <item name="colorPrimary">@color/pinkColorPrimary</item>
         <item name="colorPrimaryDark">@color/pinkColorPrimaryDark</item>
@@ -18,7 +18,7 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="MascAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BlueAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryLight">@color/blueColorPrimaryLight</item>
         <item name="colorPrimary">@color/blueColorPrimary</item>
         <item name="colorPrimaryDark">@color/blueColorPrimaryDark</item>

@@ -15,6 +15,9 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
 
@@ -61,4 +64,44 @@ object RxSchedulers {
         is RxSchedulerMode.TEST -> (mode as RxSchedulerMode.TEST).testScheduler
         else -> Schedulers.trampoline()
     }
+}
+
+object Observables {
+    inline fun <T1, T2, R> combineLatest(source1: Observable<T1>,
+                                         source2: Observable<T2>,
+                                         crossinline combineFunction: (T1, T2) -> R) =
+            Observable.combineLatest(source1,
+                                     source2,
+                                     BiFunction { t1: T1, t2: T2 -> combineFunction(t1, t2) })!!
+
+    inline fun <T1, T2, T3, R> combineLatest(source1: Observable<T1>,
+                                             source2: Observable<T2>,
+                                             source3: Observable<T3>,
+                                             crossinline combineFunction: (T1, T2, T3) -> R) =
+            Observable.combineLatest(source1,
+                                     source2,
+                                     source3,
+                                     Function3 { t1: T1, t2: T2, t3: T3 ->
+                                         combineFunction(t1, t2, t3)
+                                     })!!
+
+    inline fun <T1, T2, T3, T4, R> combineLatest(source1: Observable<T1>,
+                                                 source2: Observable<T2>,
+                                                 source3: Observable<T3>,
+                                                 source4: Observable<T4>,
+                                                 crossinline combineFunction: (T1, T2, T3, T4) -> R) =
+            Observable.combineLatest(source1,
+                                     source2,
+                                     source3,
+                                     source4,
+                                     Function4 { t1: T1, t2: T2, t3: T3, t4: T4 ->
+                                         combineFunction(t1, t2, t3, t4)
+                                     })!!
+
+    inline fun <T1, T2, R> zip(source1: Observable<T1>,
+                               source2: Observable<T2>,
+                               crossinline zipper: (T1, T2) -> R) =
+            Observable.zip(source1,
+                           source2,
+                           BiFunction { t1: T1, t2: T2 -> zipper(t1, t2) })
 }

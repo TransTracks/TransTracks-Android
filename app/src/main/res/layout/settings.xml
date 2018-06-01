@@ -92,6 +92,37 @@
                 tools:text="15/08/2017"
                 style="@style/Widget.AppCompat.Button.Borderless" />
 
+            <TextView
+                android:id="@+id/settings_theme_label"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:text="@string/theme_label"
+                android:textColor="@color/transparent_white_90"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_start_label"
+                style="@style/TextAppearance.AppCompat.Title" />
+
+            <Button
+                android:id="@+id/settings_theme"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/settings_theme_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/settings_theme_label"
+                app:layout_constraintTop_toTopOf="@id/settings_theme_label"
+                tools:text="Blue"
+                style="@style/Widget.AppCompat.Button.Borderless" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
