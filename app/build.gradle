@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 27
@@ -47,7 +48,7 @@ dependencies {
         transitive = true;
     }
 
-    compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     //Recycler view is only required here to replace the old version in the kotterknife module

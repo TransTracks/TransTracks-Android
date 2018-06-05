@@ -19,6 +19,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import org.threeten.bp.LocalDate
 
 object PrefUtil {
+    const val KEY_SHOW_ADS = "showAds"
     const val KEY_START_DATE = "startDate"
     const val KEY_THEME = "theme"
 
@@ -31,6 +32,8 @@ object PrefUtil {
 
     private val rxPreferences: RxSharedPreferences =
             RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTrackerApp.instance))
+
+    val showAds: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_ADS, true)
 
     val startDate: Preference<LocalDate> = rxPreferences.getObject(KEY_START_DATE, LocalDate.now(),
             LocalDateConverter())

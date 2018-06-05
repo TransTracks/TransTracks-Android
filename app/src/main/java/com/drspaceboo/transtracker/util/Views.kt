@@ -37,11 +37,22 @@ fun View.gone() {
     visibility = View.GONE
 }
 
+fun View.invisible() {
+    visibility = View.INVISIBLE
+}
+
 fun View.visible() {
     visibility = View.VISIBLE
 }
 
+@Suppress("LiftReturnOrAssignment") //Lifting it out wouldn't look as clean
 fun View.setVisibleOrGone(show: Boolean) = when (show) {
     true -> visibility = View.VISIBLE
     false -> visibility = View.GONE
+}
+
+@Suppress("LiftReturnOrAssignment") //Lifting it out wouldn't look as clean
+fun View.setVisibleOrInvisible(show: Boolean) = when (show) {
+    true -> visibility = View.VISIBLE
+    false -> visibility = View.INVISIBLE
 }

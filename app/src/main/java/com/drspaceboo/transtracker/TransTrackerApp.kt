@@ -11,12 +11,15 @@
 package com.drspaceboo.transtracker
 
 import android.app.Application
+import com.drspaceboo.transtracker.domain.DomainManager
 import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import io.realm.Realm
 
 class TransTrackerApp : Application() {
+    val domainManager = DomainManager()
+
     override fun onCreate() {
         super.onCreate()
         instance = this

@@ -17,15 +17,23 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracker.R
+import com.drspaceboo.transtracker.TransTrackerApp
+import com.drspaceboo.transtracker.domain.HomeAction
+import com.drspaceboo.transtracker.domain.HomeDomain
+import com.drspaceboo.transtracker.domain.HomeResult
 import com.drspaceboo.transtracker.ui.gallery.GalleryController
 import com.drspaceboo.transtracker.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracker.ui.settings.SettingsController
 import com.drspaceboo.transtracker.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracker.util.ofType
 import com.drspaceboo.transtracker.util.plusAssign
+import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
-import org.threeten.bp.LocalDate
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 
 class HomeController : Controller() {
+    private var resultDisposable: Disposable = Disposables.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
@@ -35,29 +43,62 @@ class HomeController : Controller() {
     override fun onAttach(view: View) {
         if (view !is HomeView) throw AssertionError("View must be HomeView")
 
-        viewDisposables += view.events.map { event ->
-            return@map when (event) {
-                is HomeUiEvent.SelectPhoto -> SelectPhotoController()
-                is HomeUiEvent.Settings -> SettingsController()
-                is HomeUiEvent.PreviousRecord -> HomeController()
-                is HomeUiEvent.NextRecord -> HomeController()
-                is HomeUiEvent.FaceGallery -> GalleryController(isFaceGallery = true)
-                is HomeUiEvent.BodyGallery -> GalleryController(isFaceGallery = false)
-                is HomeUiEvent.ImageClick -> SinglePhotoController()
-            }
-        }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
+        val domain: HomeDomain = TransTrackerApp.instance.domainManager.homeDomain
 
-        view.display(HomeUiState.Loaded(12,
-                                        true,
-                                        true,
-                                        LocalDate.of(2017, 8, 17),
-                                        LocalDate.of(2018, 5, 14),
-                                        emptyList(),
-                                        emptyList(),
-                                        true))
+        if (resultDisposable.isDisposed) {
+            resultDisposable = domain.results.subscribe()
+        }
+
+        viewDisposables += domain.results
+                .compose(homeResultsToStates)
+                .subscribe { state -> view.display(state) }
+
+        val sharedEvents = view.events.share()
+
+        viewDisposables += sharedEvents
+                .ofType<HomeUiEvent.PreviousRecord>()
+                .map { HomeAction.PreviousDay }
+                .subscribe(domain.actions)
+
+        viewDisposables += sharedEvents
+                .ofType<HomeUiEvent.NextRecord>()
+                .map { HomeAction.NextDay }
+                .subscribe(domain.actions)
+
+        viewDisposables += sharedEvents
+                .filter { event -> event !== HomeUiEvent.PreviousRecord && event !== HomeUiEvent.NextRecord }
+                .map { event ->
+                    return@map when (event) {
+                        is HomeUiEvent.SelectPhoto -> SelectPhotoController()
+                        is HomeUiEvent.Settings -> SettingsController()
+                        is HomeUiEvent.PreviousRecord -> HomeController()
+                        is HomeUiEvent.NextRecord -> HomeController()
+                        is HomeUiEvent.FaceGallery -> GalleryController(isFaceGallery = true)
+                        is HomeUiEvent.BodyGallery -> GalleryController(isFaceGallery = false)
+                        is HomeUiEvent.ImageClick -> SinglePhotoController()
+                    }
+                }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
     }
 
     override fun onDetach(view: View) {
         viewDisposables.clear()
+    }
+
+    override fun onDestroy() {
+        if (!resultDisposable.isDisposed) {
+            resultDisposable.dispose()
+        }
+    }
+}
+
+val homeResultsToStates = ObservableTransformer<HomeResult, HomeUiState> { results ->
+    results.map { result ->
+        return@map when (result) {
+            is HomeResult.Loading -> HomeUiState.Loading
+
+            is HomeResult.Loaded -> HomeUiState.Loaded(result.dayString, result.showPreviousRecord,
+                    result.showNextRecord, result.startDate, result.currentDate,
+                    result.bodyPhotos, result.facePhotos, result.showAds)
+        }
     }
 }

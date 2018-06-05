@@ -8,30 +8,10 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracker.data
+package com.drspaceboo.transtracker.domain
 
-import android.support.annotation.IntDef
-import io.realm.RealmObject
-
-open class Photo : RealmObject() {
-    var epochDay: Long = 0
-    var timestamp: Long = 0
-
-    var filename: String = ""
-
-    @Photo.Type
-    var type: Int = TYPE_FACE
-
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(TYPE_FACE, TYPE_BODY)
-    annotation class Type
-
-    companion object {
-        const val TYPE_FACE = 0
-        const val TYPE_BODY = 1
-
-        const val FIELD_EPOCH_DAY = "epochDay"
-        const val FIELD_TIMESTAMP = "timestamp"
-        const val FIELD_TYPE = "type"
+class DomainManager {
+    val homeDomain: HomeDomain by lazy(LazyThreadSafetyMode.NONE) {
+        HomeDomain()
     }
 }

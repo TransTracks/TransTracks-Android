@@ -59,10 +59,10 @@ class SettingsController : Controller() {
 
                     //Note: The DatePickerDialog uses 0 based months
                     DatePickerDialog(view.context,
-                            { _, year, month, dayOfMonth ->
-                                PrefUtil.startDate.set(LocalDate.of(year, month, dayOfMonth))
-                            },
-                            startDate.year, startDate.monthValue, startDate.dayOfMonth).show()
+                                     { _, year, month, dayOfMonth ->
+                                         PrefUtil.startDate.set(LocalDate.of(year, month + 1, dayOfMonth))
+                                     },
+                                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth).show()
                 }
 
         viewDisposables += sharedEvents

@@ -11,7 +11,6 @@
 package com.drspaceboo.transtracker.ui.home
 
 import android.content.Context
-import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.ViewGroup
@@ -20,13 +19,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracker.R
-import com.drspaceboo.transtracker.util.getColor
-import com.drspaceboo.transtracker.util.getString
-import com.drspaceboo.transtracker.util.gone
-import com.drspaceboo.transtracker.util.loadAd
-import com.drspaceboo.transtracker.util.setVisibleOrGone
-import com.drspaceboo.transtracker.util.toFullDateString
-import com.drspaceboo.transtracker.util.visible
+import com.drspaceboo.transtracker.util.*
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso
@@ -45,13 +38,14 @@ sealed class HomeUiEvent {
 }
 
 sealed class HomeUiState {
-    data class Loaded(val dayNumber: Int,
+    object Loading : HomeUiState()
+    data class Loaded(val dayString: String,
                       val showPreviousRecord: Boolean,
                       val showNextRecord: Boolean,
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
-                      val facePhotos: List<Uri>,
-                      val bodyPhotos: List<Uri>,
+                      val facePhotos: List<String>,
+                      val bodyPhotos: List<String>,
                       val showAds: Boolean) : HomeUiState()
 }
 
@@ -86,17 +80,17 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
-                              settings.clicks().map { HomeUiEvent.Settings },
-                              previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
-                              nextRecord.clicks().map { HomeUiEvent.NextRecord },
-                              faceGallery.clicks().map { HomeUiEvent.FaceGallery },
-                              faceFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
-                              faceSecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
-                              faceThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) },
-                              bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
-                              bodyFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
-                              bodySecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
-                              bodyThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) })
+                settings.clicks().map { HomeUiEvent.Settings },
+                previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
+                nextRecord.clicks().map { HomeUiEvent.NextRecord },
+                faceGallery.clicks().map { HomeUiEvent.FaceGallery },
+                faceFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
+                faceSecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
+                faceThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) },
+                bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
+                bodyFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
+                bodySecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
+                bodyThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) })
     }
 
     fun display(state: HomeUiState) {
@@ -118,15 +112,15 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
         when (state) {
             is HomeUiState.Loaded -> {
-                day.text = day.getString(R.string.day_number, state.dayNumber)
+                day.text = state.dayString
 
-                previousRecord.setVisibleOrGone(state.showPreviousRecord)
-                nextRecord.setVisibleOrGone(state.showNextRecord)
+                previousRecord.setVisibleOrInvisible(state.showPreviousRecord)
+                nextRecord.setVisibleOrInvisible(state.showNextRecord)
 
                 startDate.text = startDate.getString(R.string.start_date,
-                                                     state.startDate.toFullDateString(startDate.context))
+                        state.startDate.toFullDateString(startDate.context))
                 currentDate.text = currentDate.getString(R.string.current_date,
-                                                         state.currentDate.toFullDateString(currentDate.context))
+                        state.currentDate.toFullDateString(currentDate.context))
 
                 if (state.facePhotos.isNotEmpty()) {
                     Picasso.get().load(state.facePhotos[0]).into(faceFirstImage)
