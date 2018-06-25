@@ -20,6 +20,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.crashlytics.android.Crashlytics
 import com.drspaceboo.transtracker.BuildConfig
 import com.drspaceboo.transtracker.R
+import com.drspaceboo.transtracker.background.StoragePermissionHandler
 import com.drspaceboo.transtracker.ui.home.HomeController
 import com.drspaceboo.transtracker.util.PrefUtil
 import com.drspaceboo.transtracker.util.PrefUtil.THEME_BLUE
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, Crashlytics())
         }
+
+        StoragePermissionHandler.install(this)
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {

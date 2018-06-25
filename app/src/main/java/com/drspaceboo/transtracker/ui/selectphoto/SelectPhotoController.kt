@@ -29,7 +29,9 @@ class SelectPhotoController : Controller() {
     override fun onAttach(view: View) {
         if (view !is SelectPhotoView) throw AssertionError("View must be SelectPhotoView")
 
-        viewDisposables += view.events.subscribe { event ->
+        val sharedEvents = view.events.share()
+
+        viewDisposables += sharedEvents.subscribe { event ->
             when (event) {
                 SelectPhotoUiEvent.Back -> router.handleBack()
             }
