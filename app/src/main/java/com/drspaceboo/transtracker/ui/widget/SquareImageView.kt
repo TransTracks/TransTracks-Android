@@ -12,18 +12,34 @@ package com.drspaceboo.transtracker.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageView
+import com.drspaceboo.transtracker.R
 
-class SquareImageView : ImageView {
-    constructor(context: Context) : super(context)
+class SquareImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
+                                                defStyleAttr: Int = 0)
+    : android.support.v7.widget.AppCompatImageView(context, attrs, defStyleAttr) {
+    var orientation: Int = 0 // Vertical
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    init {
+        val a = context.theme.obtainStyledAttributes(
+                attrs,
+                R.styleable.SquareImageView,
+                0, 0)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+        try {
+            orientation = a.getInteger(R.styleable.SquareImageView_orientation, 0)
+        } finally {
+            a.recycle()
+        }
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val height = MeasureSpec.getSize(heightMeasureSpec)
-        val newMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-        super.onMeasure(newMeasureSpec, newMeasureSpec)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        val dimensionToUse = when (orientation) {
+            0 -> measuredHeight
+            else -> measuredWidth
+        }
+
+        setMeasuredDimension(dimensionToUse, dimensionToUse)
     }
 }

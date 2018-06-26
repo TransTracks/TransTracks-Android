@@ -36,6 +36,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:design:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation "com.android.support:recyclerview-v7:$support_version"
 
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
     //Custom tabs & Support V4 are only required here to replace the old version in the play-services-ads module
@@ -51,8 +52,6 @@ dependencies {
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-    //Recycler view is only required here to replace the old version in the kotterknife module
-    implementation "com.android.support:recyclerview-v7:$support_version"
 
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
     implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rx_binding_version"

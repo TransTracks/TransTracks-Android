@@ -11,18 +11,25 @@
 package com.drspaceboo.transtracker.ui.selectphoto
 
 import android.content.Context
+import android.net.Uri
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.widget.TextView
-import android.widget.Toolbar
 import com.drspaceboo.transtracker.R
-import com.jakewharton.rxbinding2.widget.navigationClicks
+import com.drspaceboo.transtracker.util.isNotDisposed
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import kotterknife.bindView
 
 sealed class SelectPhotoUiEvent {
     object Back : SelectPhotoUiEvent()
+    data class PhotoSelected(val uri: Uri) : SelectPhotoUiEvent()
 }
 
 class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -30,7 +37,31 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val title: TextView by bindView(R.id.select_photo_title)
     private val recyclerView: RecyclerView by bindView(R.id.select_photo_recycler_view)
 
+    private var adapterDisposable: Disposable = Disposables.disposed()
+
+    private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
     val events: Observable<SelectPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        toolbar.navigationClicks().map<SelectPhotoUiEvent> { SelectPhotoUiEvent.Back }
+        Observable.merge(toolbar.navigationClicks().map<SelectPhotoUiEvent> { SelectPhotoUiEvent.Back },
+                eventRelay)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        if (adapterDisposable.isNotDisposed()) {
+            adapterDisposable.dispose()
+        }
+
+        val adapter = SelectPhotoAdapter(context)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        adapterDisposable = adapter.itemClick.map { uri -> SelectPhotoUiEvent.PhotoSelected(uri) }.subscribe(eventRelay)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        if (adapterDisposable.isNotDisposed()) {
+            adapterDisposable.dispose()
+        }
     }
 }
