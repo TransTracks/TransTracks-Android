@@ -15,12 +15,20 @@ import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import com.drspaceboo.transtracker.R
 
-class SquareConstraintLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null,
-                                                       defStyleAttr: Int = 0) : ConstraintLayout(context, attrs,
-        defStyleAttr) {
+class SquareConstraintLayout : ConstraintLayout {
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        loadAttributeSet(attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        loadAttributeSet(attrs)
+    }
+
     var orientation: Int = 0 // Vertical
 
-    init {
+    private fun loadAttributeSet(attrs: AttributeSet) {
         val a = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.SquareConstraintLayout,

@@ -29,6 +29,7 @@ import kotterknife.bindView
 
 sealed class SelectPhotoUiEvent {
     object Back : SelectPhotoUiEvent()
+    object TakePhoto : SelectPhotoUiEvent()
     data class PhotoSelected(val uri: Uri) : SelectPhotoUiEvent()
 }
 
@@ -55,7 +56,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
         val adapter = SelectPhotoAdapter(context)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        adapterDisposable = adapter.itemClick.map { uri -> SelectPhotoUiEvent.PhotoSelected(uri) }.subscribe(eventRelay)
+        adapterDisposable = adapter.itemClick.subscribe(eventRelay)
     }
 
     override fun onDetachedFromWindow() {
