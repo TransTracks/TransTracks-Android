@@ -9,7 +9,7 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.drspaceboo.transtracker.ui.widget.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.drspaceboo.transtracks.ui.widget.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/select_photo_adapter_item_image"
     android:gravity="center"

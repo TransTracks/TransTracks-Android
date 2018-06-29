@@ -9,7 +9,7 @@
   -->
 
 <resources>
-    <string name="app_name">Trans Tracker</string>
+    <string name="app_name">Trans Tracks</string>
 
     <!-- Home -->
     <string name="take_photo">Take Photo</string>

@@ -9,7 +9,7 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.drspaceboo.transtracker.ui.gallery.GalleryView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.drspaceboo.transtracks.ui.gallery.GalleryView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/gradient_background"
@@ -45,4 +45,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gallery_toolbar" />
-</com.drspaceboo.transtracker.ui.gallery.GalleryView>
+</com.drspaceboo.transtracks.ui.gallery.GalleryView>

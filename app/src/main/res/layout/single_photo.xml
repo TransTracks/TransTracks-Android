@@ -9,7 +9,7 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.drspaceboo.transtracker.ui.singlephoto.SinglePhotoView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -24,4 +24,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</com.drspaceboo.transtracker.ui.singlephoto.SinglePhotoView>
+</com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoView>

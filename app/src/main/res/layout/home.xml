@@ -9,7 +9,7 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.drspaceboo.transtracker.ui.home.HomeView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.drspaceboo.transtracks.ui.home.HomeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/gradient_background"
@@ -161,7 +161,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_face_gallery">
 
-        <com.drspaceboo.transtracker.ui.widget.SquareImageView
+        <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_face_first_image"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -174,7 +174,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.drspaceboo.transtracker.ui.widget.SquareImageView
+        <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_face_second_image"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -186,7 +186,7 @@
             app:layout_constraintStart_toEndOf="@id/home_face_first_image"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.drspaceboo.transtracker.ui.widget.SquareConstraintLayout
+        <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
             android:id="@+id/home_face_third_image_layout"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -216,7 +216,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
-        </com.drspaceboo.transtracker.ui.widget.SquareConstraintLayout>
+        </com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
     <Button
@@ -248,7 +248,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_body_gallery">
 
-        <com.drspaceboo.transtracker.ui.widget.SquareImageView
+        <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_body_first_image"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -261,7 +261,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.drspaceboo.transtracker.ui.widget.SquareImageView
+        <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_body_second_image"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -273,7 +273,7 @@
             app:layout_constraintStart_toEndOf="@id/home_body_first_image"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.drspaceboo.transtracker.ui.widget.SquareConstraintLayout
+        <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
             android:id="@+id/home_body_third_image_layout"
             android:background="@color/transparent_white_25"
             android:layout_height="match_parent"
@@ -303,7 +303,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
-        </com.drspaceboo.transtracker.ui.widget.SquareConstraintLayout>
+        </com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
     <FrameLayout
@@ -323,4 +323,4 @@
             app:adSize="SMART_BANNER"
             app:adUnitId="@string/ADS_HOME_AD_ID" />
     </FrameLayout>
-</com.drspaceboo.transtracker.ui.home.HomeView>
+</com.drspaceboo.transtracks.ui.home.HomeView>
