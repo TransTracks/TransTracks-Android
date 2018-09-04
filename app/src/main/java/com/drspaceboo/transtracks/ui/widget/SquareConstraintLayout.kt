@@ -49,6 +49,7 @@ class SquareConstraintLayout : ConstraintLayout {
             else -> measuredWidth
         }
 
-        setMeasuredDimension(dimensionToUse, dimensionToUse)
+        val spec = MeasureSpec.makeMeasureSpec(dimensionToUse, MeasureSpec.EXACTLY)
+        super.onMeasure(spec, spec)
     }
 }
