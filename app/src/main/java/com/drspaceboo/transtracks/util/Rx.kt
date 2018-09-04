@@ -40,7 +40,7 @@ sealed class RxSchedulerMode {
 }
 
 object RxSchedulers {
-    var mode: RxSchedulerMode = RxSchedulerMode.TRAMPOLINE
+    var mode: RxSchedulerMode = RxSchedulerMode.REAL
 
     fun main(): Scheduler = when (mode) {
         is RxSchedulerMode.REAL -> AndroidSchedulers.mainThread()

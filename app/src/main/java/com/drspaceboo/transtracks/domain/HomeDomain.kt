@@ -41,107 +41,110 @@ sealed class HomeResult {
 }
 
 class HomeDomain {
-    val realm: Realm = Realm.getDefaultInstance()
-
     val actions: PublishRelay<HomeAction> = PublishRelay.create()
     val results: Observable<HomeResult> = actions
             .startWith(HomeAction.LoadDay(LocalDate.now()))
-            .compose(homeActionsToResults(realm))
-            .distinctUntilChanged()
+            .compose(homeActionsToResults(this))
             .subscribeOn(RxSchedulers.io())
             .observeOn(RxSchedulers.main())
             .replay(1)
             .refCount()
 }
 
-fun homeActionsToResults(realm: Realm): ObservableTransformer<HomeAction, HomeResult> {
+fun homeActionsToResults(homeDomain: HomeDomain): ObservableTransformer<HomeAction, HomeResult> {
     fun getCurrentDate(result: HomeResult): LocalDate = when (result) {
         is HomeResult.Loading -> result.day
         is HomeResult.Loaded -> result.currentDate
     }
 
     fun getLoadedResult(currentDate: LocalDate): HomeResult.Loaded {
-        val startDate = PrefUtil.startDate.get()
+        Realm.getDefaultInstance().use { realm ->
+            val startDate = PrefUtil.startDate.get()
 
-        val period: Period = startDate.until(currentDate)
+            val period: Period = startDate.until(currentDate)
 
-        val previousRecordCount = realm.where(Photo::class.java)
-                .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay()).count()
-        val nextRecordCount = realm.where(Photo::class.java)
-                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay()).count()
+            val previousRecordCount = realm.where(Photo::class.java)
+                    .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay()).count()
+            val nextRecordCount = realm.where(Photo::class.java)
+                    .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay()).count()
 
-        val showPreviousRecord = previousRecordCount > 0 || currentDate.isAfter(LocalDate.now())
-                || currentDate.isAfter(startDate)
-        val showNextRecord = nextRecordCount > 0 || currentDate.isBefore(LocalDate.now())
-                || currentDate.isBefore(startDate)
+            val showPreviousRecord = previousRecordCount > 0 || currentDate.isAfter(LocalDate.now())
+                    || currentDate.isAfter(startDate)
+            val showNextRecord = nextRecordCount > 0 || currentDate.isBefore(LocalDate.now())
+                    || currentDate.isBefore(startDate)
 
-        val facePhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
-                .map { photo -> photo.filename }
+            val facePhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
+                    .map { photo -> photo.filename }
 
-        val bodyPhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
-                .map { photo -> photo.filename }
+            val bodyPhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
+                    .map { photo -> photo.filename }
 
-        return HomeResult.Loaded(period.getDisplayString(), showPreviousRecord, showNextRecord, startDate, currentDate,
-                                 facePhotos, bodyPhotos, PrefUtil.showAds.get())
+            return HomeResult.Loaded(period.getDisplayString(), showPreviousRecord, showNextRecord, startDate, currentDate,
+                                     facePhotos, bodyPhotos, PrefUtil.showAds.get())
+        }
     }
 
     fun getNextDate(currentDate: LocalDate): LocalDate {
-        val nextPhoto: Photo? = realm.where(Photo::class.java)
-                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Photo.FIELD_EPOCH_DAY)
-                .findFirst()
+        Realm.getDefaultInstance().use { realm ->
+            val nextPhoto: Photo? = realm.where(Photo::class.java)
+                    .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                    .sort(Photo.FIELD_EPOCH_DAY)
+                    .findFirst()
 
-        if (nextPhoto != null) {
-            return LocalDate.ofEpochDay(nextPhoto.epochDay)
-        }
-
-        val startDate = PrefUtil.startDate.get()
-        val today = LocalDate.now()
-
-        @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
-        if (startDate.isAfter(currentDate) && today.isAfter(currentDate)) {
-            if (startDate.isBefore(today)) {
-                return startDate
-            } else {
-                return today
+            if (nextPhoto != null) {
+                return LocalDate.ofEpochDay(nextPhoto.epochDay)
             }
-        } else if (startDate.isAfter(currentDate)) {
-            return startDate
-        } else if (today.isAfter(currentDate)) {
-            return today
-        } else {
-            return currentDate
+
+            val startDate = PrefUtil.startDate.get()
+            val today = LocalDate.now()
+
+            @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
+            if (startDate.isAfter(currentDate) && today.isAfter(currentDate)) {
+                if (startDate.isBefore(today)) {
+                    return startDate
+                } else {
+                    return today
+                }
+            } else if (startDate.isAfter(currentDate)) {
+                return startDate
+            } else if (today.isAfter(currentDate)) {
+                return today
+            } else {
+                return currentDate
+            }
         }
     }
 
     fun getPreviousDate(currentDate: LocalDate): LocalDate {
-        val previousPhoto: Photo? = realm.where(Photo::class.java)
-                .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING)
-                .findFirst()
+        Realm.getDefaultInstance().use { realm ->
+            val previousPhoto: Photo? = realm.where(Photo::class.java)
+                    .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                    .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING)
+                    .findFirst()
 
-        if (previousPhoto != null) {
-            return LocalDate.ofEpochDay(previousPhoto.epochDay)
-        }
-
-        val startDate = PrefUtil.startDate.get()
-        val today = LocalDate.now()
-
-        @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
-        if (startDate.isBefore(currentDate) && today.isBefore(currentDate)) {
-            if (startDate.isAfter(today)) {
-                return startDate
-            } else {
-                return today
+            if (previousPhoto != null) {
+                return LocalDate.ofEpochDay(previousPhoto.epochDay)
             }
-        } else if (startDate.isBefore(currentDate)) {
-            return startDate
-        } else if (today.isBefore(currentDate)) {
-            return today
-        } else {
-            return currentDate
+
+            val startDate = PrefUtil.startDate.get()
+            val today = LocalDate.now()
+
+            @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
+            if (startDate.isBefore(currentDate) && today.isBefore(currentDate)) {
+                if (startDate.isAfter(today)) {
+                    return startDate
+                } else {
+                    return today
+                }
+            } else if (startDate.isBefore(currentDate)) {
+                return startDate
+            } else if (today.isBefore(currentDate)) {
+                return today
+            } else {
+                return currentDate
+            }
         }
     }
 
