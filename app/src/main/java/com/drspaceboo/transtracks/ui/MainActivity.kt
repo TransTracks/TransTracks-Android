@@ -20,6 +20,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.crashlytics.android.Crashlytics
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.util.PrefUtil
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         StoragePermissionHandler.install(this)
+        CameraHandler.install(this)
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {

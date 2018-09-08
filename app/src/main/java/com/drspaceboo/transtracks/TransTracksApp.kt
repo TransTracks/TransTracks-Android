@@ -12,6 +12,7 @@ package com.drspaceboo.transtracks
 
 import android.app.Application
 import com.drspaceboo.transtracks.domain.DomainManager
+import com.drspaceboo.transtracks.util.FileUtil
 import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
@@ -35,6 +36,8 @@ class TransTracksApp : Application() {
 
         AndroidThreeTen.init(this)
         Realm.init(this)
+
+        FileUtil.clearTempFolder()
     }
 
     companion object {

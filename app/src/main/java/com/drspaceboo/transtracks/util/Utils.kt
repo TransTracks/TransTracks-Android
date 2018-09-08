@@ -10,6 +10,18 @@
 
 package com.drspaceboo.transtracks.util
 
-fun currentTimeSeconds(): Long {
-    return System.currentTimeMillis() / 1000L
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+
+object Utils {
+    fun goToDeviceSettings(activity: Activity) {
+        //Setting the user to the settings screen
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        val uri = Uri.fromParts("package", activity.packageName, null)
+        intent.data = uri
+        activity.startActivity(intent)
+    }
 }

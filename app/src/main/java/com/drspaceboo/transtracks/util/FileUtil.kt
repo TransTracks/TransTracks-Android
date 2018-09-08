@@ -18,6 +18,8 @@ import java.util.Date
 import java.util.Locale
 
 object FileUtil {
+    private const val TEMP_FOLDER = "temp/"
+
     fun getNewImageFile(photoDate: LocalDate): File {
         val photoDateString = photoDate.toFileDateFormat()
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
@@ -26,6 +28,24 @@ object FileUtil {
         storageDir.mkdirs()
 
         val file = File(storageDir, "photo_${photoDateString}_imported_$timeStamp.jpg")
+        file.createNewFile()
+        return file
+    }
+
+    fun clearTempFolder() {
+        getTempFolder().deleteRecursively()
+    }
+
+    private fun getTempFolder(): File {
+        val tempFolder = File(TransTracksApp.instance.filesDir, TEMP_FOLDER)
+        tempFolder.mkdirs()
+
+        return tempFolder
+    }
+
+    fun getTempImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(Date())
+        val file = File(getTempFolder(), "$timeStamp.jpg")
         file.createNewFile()
         return file
     }

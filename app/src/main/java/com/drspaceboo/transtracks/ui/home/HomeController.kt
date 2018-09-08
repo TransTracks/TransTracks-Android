@@ -11,9 +11,6 @@
 package com.drspaceboo.transtracks.ui.home
 
 import android.Manifest
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import android.support.annotation.NonNull
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
@@ -34,6 +31,7 @@ import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.settings.SettingsController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.Observables
+import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -84,7 +82,7 @@ class HomeController : Controller() {
                     if (storageEnabled) {
                         router.pushController(RouterTransaction.with(SelectPhotoController()))
                     } else {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             AlertDialog.Builder(activity!!)
                                     .setTitle(R.string.permission_required)
                                     .setMessage(R.string.storage_permission_required_message)
@@ -104,7 +102,7 @@ class HomeController : Controller() {
                 .subscribe { _ ->
                     Snackbar.make(view, R.string.storage_permission_disabled,
                                   Snackbar.LENGTH_LONG)
-                            .setAction(R.string.settings) { goToDeviceSettings() }
+                            .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity!!) }
                             .show()
                 }
 
@@ -152,15 +150,6 @@ class HomeController : Controller() {
         if (resultDisposable.isNotDisposed()) {
             resultDisposable.dispose()
         }
-    }
-
-    private fun goToDeviceSettings() {
-        //Setting the user to the settings screen
-        val intent = Intent()
-        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        val uri = Uri.fromParts("package", activity!!.packageName, null)
-        intent.data = uri
-        startActivity(intent)
     }
 
     companion object {

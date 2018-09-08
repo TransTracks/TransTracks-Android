@@ -24,9 +24,14 @@
     <string name="body_gallery">Body Gallery</string>
 
     <string name="permission_required">Permission Required</string>
+    <string name="grant_permission">Grant Permission</string>
+
     <string name="storage_permission_required_message">External Storage permission is required for us to access the photos on your device.</string>
     <string name="storage_permission_disabled">External Storage permission has been denied. You will need to enable it to use this feature.</string>
-    <string name="grant_permission">Grant Permission</string>
+
+    <string name="camera_permission_required_message">Camera permission is required for us to take a photo.</string>
+    <string name="camera_permission_disabled">Cannot take photo permission has been denied.</string>
+
     <string name="cancel">Cancel</string>
 
     <string name="start_day">Start Day</string>
