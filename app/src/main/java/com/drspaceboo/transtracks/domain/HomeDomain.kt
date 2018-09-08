@@ -26,6 +26,7 @@ sealed class HomeAction {
     object PreviousDay : HomeAction()
     data class LoadDay(val day: LocalDate = LocalDate.now()) : HomeAction()
     object NextDay : HomeAction()
+    object ReloadDay : HomeAction()
 }
 
 sealed class HomeResult {
@@ -44,14 +45,14 @@ class HomeDomain {
     val actions: PublishRelay<HomeAction> = PublishRelay.create()
     val results: Observable<HomeResult> = actions
             .startWith(HomeAction.LoadDay(LocalDate.now()))
-            .compose(homeActionsToResults(this))
+            .compose(homeActionsToResults())
             .subscribeOn(RxSchedulers.io())
             .observeOn(RxSchedulers.main())
             .replay(1)
             .refCount()
 }
 
-fun homeActionsToResults(homeDomain: HomeDomain): ObservableTransformer<HomeAction, HomeResult> {
+fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
     fun getCurrentDate(result: HomeResult): LocalDate = when (result) {
         is HomeResult.Loading -> result.day
         is HomeResult.Loaded -> result.currentDate
@@ -74,7 +75,7 @@ fun homeActionsToResults(homeDomain: HomeDomain): ObservableTransformer<HomeActi
                     || currentDate.isBefore(startDate)
 
             val facePhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
+                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_FACE).sort(Photo.FIELD_TIMESTAMP).findAll()
                     .map { photo -> photo.filename }
 
             val bodyPhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
@@ -153,9 +154,11 @@ fun homeActionsToResults(homeDomain: HomeDomain): ObservableTransformer<HomeActi
             return@scan when (action) {
                 HomeAction.PreviousDay -> getLoadedResult(getPreviousDate(getCurrentDate(previousResult)))
 
-                is HomeAction.LoadDay -> getLoadedResult(getCurrentDate(previousResult))
+                is HomeAction.LoadDay -> getLoadedResult(action.day)
 
                 HomeAction.NextDay -> getLoadedResult(getNextDate(getCurrentDate(previousResult)))
+
+                HomeAction.ReloadDay -> getLoadedResult(getCurrentDate(previousResult))
             }
         }
     }

@@ -13,4 +13,6 @@ package com.drspaceboo.transtracks.util
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
-fun AdView.loadAd() = loadAd(AdRequest.Builder().build())
+fun AdView.loadAd() = loadAd(AdRequest.Builder()
+                                     .addTestDevice("26119ECDDD2EC01B4DC74F4A94AF8FEA")
+                                     .build())

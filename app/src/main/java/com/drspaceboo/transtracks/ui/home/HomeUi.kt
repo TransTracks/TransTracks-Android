@@ -19,6 +19,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.getColor
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
@@ -32,6 +33,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
 import org.threeten.bp.LocalDate
+import java.io.File
 
 sealed class HomeUiEvent {
     object SelectPhoto : HomeUiEvent()
@@ -40,7 +42,8 @@ sealed class HomeUiEvent {
     object NextRecord : HomeUiEvent()
     object FaceGallery : HomeUiEvent()
     object BodyGallery : HomeUiEvent()
-    data class ImageClick(val photoIndex: Int) : HomeUiEvent()
+    data class ImageClick(val photoIndex: Int, @Photo.Type val type: Int) : HomeUiEvent()
+    data class AddPhoto(val currentDate: LocalDate, @Photo.Type val type: Int) : HomeUiEvent()
 }
 
 sealed class HomeUiState {
@@ -85,22 +88,47 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val adView: AdView by bindView(R.id.home_ad_view)
 
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.mergeArray(takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
-                              settings.clicks().map { HomeUiEvent.Settings },
-                              previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
-                              nextRecord.clicks().map { HomeUiEvent.NextRecord },
-                              faceGallery.clicks().map { HomeUiEvent.FaceGallery },
-                              faceFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
-                              faceSecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
-                              faceThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) },
-                              bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
-                              bodyFirstImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 0) },
-                              bodySecondImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 1) },
-                              bodyThirdImage.clicks().map { HomeUiEvent.ImageClick(photoIndex = 2) })
+        Observable.mergeArray(
+                takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
+                settings.clicks().map { HomeUiEvent.Settings },
+                previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
+                nextRecord.clicks().map { HomeUiEvent.NextRecord },
+                faceGallery.clicks().map { HomeUiEvent.FaceGallery },
+                faceFirstImage.clicks().map {
+                    HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_FACE)
+                },
+                faceSecondImage.clicks().map {
+                    HomeUiEvent.ImageClick(photoIndex = 1, type = Photo.TYPE_FACE)
+                },
+                faceThirdImage.clicks().map {
+                    return@map when (isAddFace) {
+                        true -> HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE)
+                        false -> HomeUiEvent.ImageClick(photoIndex = 2, type = Photo.TYPE_FACE)
+                    }
+                },
+                bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
+                bodyFirstImage.clicks().map {
+                    HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_BODY)
+                },
+                bodySecondImage.clicks().map {
+                    HomeUiEvent.ImageClick(photoIndex = 1, type = Photo.TYPE_BODY)
+                },
+                bodyThirdImage.clicks().map {
+                    return@map when (isAddBody) {
+                        true -> HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY)
+                        false -> HomeUiEvent.ImageClick(photoIndex = 2, type = Photo.TYPE_BODY)
+                    }
+                })
     }
+
+    private var isAddFace = false
+    private var isAddBody = false
+    private var date = LocalDate.now()
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
+            isAddBody = true
+
             bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(bodyThirdImage)
             bodyThirdImage.setImageResource(R.drawable.add)
@@ -109,6 +137,8 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
         }
 
         fun setAddAnotherFaceImage() {
+            isAddFace = true
+
             faceThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(faceThirdImage)
             faceThirdImage.setImageResource(R.drawable.add)
@@ -116,8 +146,14 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
             faceExtraImages.gone()
         }
 
+        isAddFace = false
+        isAddBody = false
+
+
         when (state) {
             is HomeUiState.Loaded -> {
+                date = state.currentDate
+
                 day.text = state.dayString
 
                 previousRecord.setVisibleOrInvisible(state.showPreviousRecord)
@@ -129,16 +165,19 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                                          state.currentDate.toFullDateString(currentDate.context))
 
                 if (state.facePhotos.isNotEmpty()) {
-                    Picasso.get().load(state.facePhotos[0]).into(faceFirstImage)
+                    Picasso.get().load(File(state.facePhotos[0])).fit().centerCrop()
+                            .into(faceFirstImage)
                     faceFirstImage.visible()
 
                     if (state.facePhotos.size > 1) {
-                        Picasso.get().load(state.facePhotos[1]).into(faceSecondImage)
+                        Picasso.get().load(File(state.facePhotos[1])).fit().centerCrop()
+                                .into(faceSecondImage)
                         faceSecondImage.visible()
 
                         if (state.facePhotos.size > 2) {
                             faceThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
-                            Picasso.get().load(state.facePhotos[1]).into(faceThirdImage)
+                            Picasso.get().load(File(state.facePhotos[2])).fit().centerCrop()
+                                    .into(faceThirdImage)
                             faceThirdImage.visible()
 
                             if (state.facePhotos.size > 3) {
@@ -162,16 +201,19 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 }
 
                 if (state.bodyPhotos.isNotEmpty()) {
-                    Picasso.get().load(state.bodyPhotos[0]).into(bodyFirstImage)
+                    Picasso.get().load(File(state.bodyPhotos[0])).fit().centerCrop()
+                            .into(bodyFirstImage)
                     bodyFirstImage.visible()
 
                     if (state.bodyPhotos.size > 1) {
-                        Picasso.get().load(state.bodyPhotos[1]).into(bodySecondImage)
+                        Picasso.get().load(File(state.bodyPhotos[1])).fit().centerCrop()
+                                .into(bodySecondImage)
                         bodySecondImage.visible()
 
                         if (state.bodyPhotos.size > 2) {
                             bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
-                            Picasso.get().load(state.bodyPhotos[1]).into(bodyThirdImage)
+                            Picasso.get().load(File(state.bodyPhotos[2])).fit().centerCrop()
+                                    .into(bodyThirdImage)
                             bodyThirdImage.visible()
 
                             if (state.bodyPhotos.size > 3) {

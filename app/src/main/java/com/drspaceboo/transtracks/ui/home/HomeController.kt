@@ -59,6 +59,8 @@ class HomeController : Controller() {
             resultDisposable = domain.results.subscribe()
         }
 
+        domain.actions.accept(HomeAction.ReloadDay)
+
         viewDisposables += domain.results
                 .compose(homeResultsToStates)
                 .subscribe { state -> view.display(state) }
@@ -99,7 +101,7 @@ class HomeController : Controller() {
 
         viewDisposables += StoragePermissionHandler.storagePermissionBlocked
                 .filter { showRationale -> !showRationale }
-                .subscribe {
+                .subscribe { _ ->
                     Snackbar.make(view, R.string.storage_permission_disabled,
                                   Snackbar.LENGTH_LONG)
                             .setAction(R.string.settings) { goToDeviceSettings() }
@@ -111,17 +113,35 @@ class HomeController : Controller() {
                     event !== HomeUiEvent.PreviousRecord && event !== HomeUiEvent.NextRecord
                             && event !== HomeUiEvent.SelectPhoto
                 }
-                .map { event ->
-                    return@map when (event) {
-                        is HomeUiEvent.Settings -> SettingsController()
-                        is HomeUiEvent.PreviousRecord -> HomeController()
-                        is HomeUiEvent.NextRecord -> HomeController()
-                        is HomeUiEvent.FaceGallery -> GalleryController(isFaceGallery = true)
-                        is HomeUiEvent.BodyGallery -> GalleryController(isFaceGallery = false)
-                        is HomeUiEvent.ImageClick -> SinglePhotoController()
-                        else -> throw IllegalArgumentException("Unhandled event - $event")
+                .subscribe { event ->
+                    when (event) {
+                        is HomeUiEvent.Settings ->
+                            router.pushController(RouterTransaction.with(SettingsController()))
+
+                        is HomeUiEvent.PreviousRecord ->
+                            router.pushController(RouterTransaction.with(HomeController())
+                                                          .tag(HomeController.TAG))
+
+                        is HomeUiEvent.NextRecord ->
+                            router.pushController(RouterTransaction.with(HomeController())
+                                                          .tag(HomeController.TAG))
+
+                        is HomeUiEvent.FaceGallery ->
+                            router.pushController(
+                                    RouterTransaction.with(GalleryController(isFaceGallery = true)))
+
+                        is HomeUiEvent.BodyGallery ->
+                            router.pushController(
+                                    RouterTransaction.with(GalleryController(isFaceGallery = false)))
+
+                        is HomeUiEvent.ImageClick ->
+                            router.pushController(RouterTransaction.with(SinglePhotoController()))
+
+                        is HomeUiEvent.AddPhoto ->
+                            router.pushController(RouterTransaction.with(
+                                    SelectPhotoController(event.currentDate.toEpochDay(), event.type)))
                     }
-                }.subscribe { controller -> router.pushController(RouterTransaction.with(controller)) }
+                }
     }
 
     override fun onDetach(view: View) {
@@ -142,6 +162,10 @@ class HomeController : Controller() {
         intent.data = uri
         startActivity(intent)
     }
+
+    companion object {
+        const val TAG = "HomeController"
+    }
 }
 
 val homeResultsToStates = ObservableTransformer<HomeResult, HomeUiState> { results ->
@@ -151,7 +175,7 @@ val homeResultsToStates = ObservableTransformer<HomeResult, HomeUiState> { resul
 
             is HomeResult.Loaded -> HomeUiState.Loaded(result.dayString, result.showPreviousRecord,
                                                        result.showNextRecord, result.startDate, result.currentDate,
-                                                       result.bodyPhotos, result.facePhotos, result.showAds)
+                                                       result.facePhotos, result.bodyPhotos, result.showAds)
         }
     }
 }

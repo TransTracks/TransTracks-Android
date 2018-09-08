@@ -35,7 +35,6 @@ sealed class SelectPhotoUiEvent {
 
 class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.select_photo_toolbar)
-    private val title: TextView by bindView(R.id.select_photo_title)
     private val recyclerView: RecyclerView by bindView(R.id.select_photo_recycler_view)
 
     private var adapterDisposable: Disposable = Disposables.disposed()

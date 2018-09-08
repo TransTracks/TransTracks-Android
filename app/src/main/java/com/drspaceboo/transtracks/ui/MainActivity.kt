@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {
-            router!!.setRoot(RouterTransaction.with(HomeController()))
+            router!!.setRoot(RouterTransaction.with(HomeController()).tag(HomeController.TAG))
         }
     }
 

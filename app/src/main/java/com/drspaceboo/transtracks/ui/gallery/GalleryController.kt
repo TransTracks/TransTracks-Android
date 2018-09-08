@@ -20,7 +20,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 
-class GalleryController(args: Bundle) : Controller() {
+class GalleryController(args: Bundle) : Controller(args) {
     constructor(isFaceGallery: Boolean) : this(Bundle().apply {
         putBoolean(KEY_IS_FACE_GALLERY, isFaceGallery)
     })

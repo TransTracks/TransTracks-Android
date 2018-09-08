@@ -21,7 +21,13 @@ fun localDateFromEpochMilli(millis: Long): LocalDate {
     return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
+fun LocalDate.toFileDateFormat(): String = format(getFileDateFormat())
+
 fun LocalDate.toFullDateString(context: Context): String = format(getFullDateFormat(context))
+
+private fun getFileDateFormat(): DateTimeFormatter {
+    return DateTimeFormatter.ISO_DATE
+}
 
 private fun getFullDateFormat(context: Context): DateTimeFormatter {
     return when (isDayBeforeMonth(context)) {

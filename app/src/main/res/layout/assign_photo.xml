@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_background"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/assign_photo_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/assign_photo_title"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/assign_photo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/white" />
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/assign_photo_image"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/assign_photo_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assign_photo_toolbar" />
+
+    <View
+        android:background="@color/transparent_white_25"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/assign_photo_date" />
+
+    <TextView
+        android:id="@+id/assign_photo_date_label"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/date_label"
+        android:textColor="@color/transparent_white_90"
+        app:layout_constraintBottom_toTopOf="@id/assign_photo_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assign_photo_image"
+        style="@style/TextAppearance.AppCompat.Title" />
+
+    <Button
+        android:id="@+id/assign_photo_date"
+        android:gravity="end"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/assign_photo_date_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/assign_photo_date_label"
+        app:layout_constraintTop_toTopOf="@id/assign_photo_date_label"
+        tools:text="15/08/2017"
+        style="@style/Widget.AppCompat.Button.Borderless" />
+
+    <TextView
+        android:id="@+id/assign_photo_type_label"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/type_label"
+        android:textColor="@color/transparent_white_90"
+        app:layout_constraintBottom_toTopOf="@+id/assign_photo_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assign_photo_date_label"
+        style="@style/TextAppearance.AppCompat.Title" />
+
+    <Button
+        android:id="@+id/assign_photo_type"
+        android:gravity="end"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/assign_photo_type_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/assign_photo_type_label"
+        app:layout_constraintTop_toTopOf="@id/assign_photo_type_label"
+        tools:text="Body"
+        style="@style/Widget.AppCompat.Button.Borderless" />
+
+    <Button
+        android:id="@+id/assign_photo_save"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/save_photo"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assign_photo_type"
+        style="@style/Base.Widget.AppCompat.Button.Colored" />
+
+</com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView>

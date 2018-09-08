@@ -10,16 +10,38 @@
 
 package com.drspaceboo.transtracks.ui.selectphoto
 
+import android.os.Bundle
 import android.support.annotation.NonNull
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
+import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.using
 import io.reactivex.disposables.CompositeDisposable
 
-class SelectPhotoController : Controller() {
+class SelectPhotoController(args: Bundle) : Controller(args) {
+    constructor(epochDay: Long? = null,
+                @Photo.Type type: Int = Photo.TYPE_FACE) : this(Bundle().apply {
+        if (epochDay != null) {
+            putLong(KEY_EPOCH_DAY, epochDay)
+        }
+        putInt(KEY_TYPE, type)
+    })
+
+    private val epochDay: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
+        true -> args.getLong(KEY_EPOCH_DAY)
+        false -> null
+    }
+
+    private val type: Int = args.getInt(KEY_TYPE)
+
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
@@ -31,14 +53,24 @@ class SelectPhotoController : Controller() {
 
         val sharedEvents = view.events.share()
 
-        viewDisposables += sharedEvents.subscribe { event ->
-            when (event) {
-                SelectPhotoUiEvent.Back -> router.handleBack()
-            }
-        }
+        viewDisposables += sharedEvents
+                .ofType<SelectPhotoUiEvent.Back>()
+                .subscribe { router.handleBack() }
+
+        viewDisposables += sharedEvents
+                .ofType<SelectPhotoUiEvent.PhotoSelected>()
+                .subscribe { event ->
+                    router.pushController(RouterTransaction.with(AssignPhotoController(event.uri, epochDay, type))
+                                                  .using(HorizontalChangeHandler()))
+                }
     }
 
     override fun onDetach(view: View) {
         viewDisposables.clear()
+    }
+
+    companion object {
+        private const val KEY_EPOCH_DAY = "epochDay"
+        private const val KEY_TYPE = "type"
     }
 }

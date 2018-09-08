@@ -10,7 +10,9 @@
 
 package com.drspaceboo.transtracks.data
 
+import android.content.Context
 import android.support.annotation.IntDef
+import com.drspaceboo.transtracks.R
 import io.realm.RealmObject
 
 open class Photo : RealmObject() {
@@ -33,5 +35,11 @@ open class Photo : RealmObject() {
         const val FIELD_EPOCH_DAY = "epochDay"
         const val FIELD_TIMESTAMP = "timestamp"
         const val FIELD_TYPE = "type"
+
+        fun getTypeName(@Type type: Int, context: Context) = when (type) {
+            TYPE_FACE -> context.getString(R.string.face)
+            TYPE_BODY -> context.getString(R.string.body)
+            else -> throw IllegalArgumentException("Unhandled Type '$type'")
+        }
     }
 }

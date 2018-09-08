@@ -9,12 +9,12 @@
         android:id="@+id/select_photo_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:theme="@style/AppTheme.PopupOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:theme="@style/AppTheme.PopupOverlay">
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
             android:id="@+id/select_photo_title"

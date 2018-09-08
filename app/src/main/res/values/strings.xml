@@ -57,4 +57,17 @@
 
     <!-- Select Photo -->
     <string name="select_photo">Select Photo</string>
+
+    <!-- Assign Photo -->
+    <string name="assign_photo">Assign Photo</string>
+    <string name="date_label">Date:</string>
+    <string name="type_label">Type:</string>
+    <string name="save_photo">Save Photo</string>
+
+    <string name="select_type">Select Type</string>
+    <string name="face">Face</string>
+    <string name="body">Body</string>
+
+    <string name="saving_photo">Saving Photo</string>
+    <string name="error_saving_photo">An error occurred saving this photo</string>
 </resources>

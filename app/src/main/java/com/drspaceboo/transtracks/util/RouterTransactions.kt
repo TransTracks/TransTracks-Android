@@ -8,10 +8,12 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracks.domain
+package com.drspaceboo.transtracks.util
 
-class DomainManager {
-    val assignPhotoDomain: AssignPhotoDomain by lazy(LazyThreadSafetyMode.NONE) { AssignPhotoDomain() }
+import com.bluelinelabs.conductor.ControllerChangeHandler
+import com.bluelinelabs.conductor.RouterTransaction
 
-    val homeDomain: HomeDomain by lazy(LazyThreadSafetyMode.NONE) { HomeDomain() }
+fun RouterTransaction.using(changeHandler: ControllerChangeHandler): RouterTransaction = this.apply {
+    popChangeHandler(changeHandler)
+    pushChangeHandler(changeHandler)
 }

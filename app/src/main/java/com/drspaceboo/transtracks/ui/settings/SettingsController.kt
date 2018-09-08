@@ -76,15 +76,14 @@ class SettingsController : Controller() {
 
                     AlertDialog.Builder(view.context)
                             .setTitle(R.string.select_theme)
-                            .setSingleChoiceItems(
-                                    arrayOf(view.getString(R.string.pink), view.getString(R.string.blue)), theme,
-                                    { dialog: DialogInterface, index: Int ->
-                                        if (theme != index) {
-                                            PrefUtil.theme.set(index)
-                                            router.replaceTopController(RouterTransaction.with(SettingsController()))
-                                        }
-                                        dialog.dismiss()
-                                    })
+                            .setSingleChoiceItems(arrayOf(view.getString(R.string.pink), view.getString(R.string.blue)),
+                                                  theme) { dialog: DialogInterface, index: Int ->
+                                if (theme != index) {
+                                    PrefUtil.theme.set(index)
+                                    router.replaceTopController(RouterTransaction.with(SettingsController()))
+                                }
+                                dialog.dismiss()
+                            }
                             .show()
                 }
     }

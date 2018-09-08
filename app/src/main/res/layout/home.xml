@@ -12,16 +12,16 @@
 <com.drspaceboo.transtracks.ui.home.HomeView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/gradient_background"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:background="@drawable/gradient_background">
 
     <ImageButton
         android:id="@+id/home_take_photo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="@color/transparent"
         android:contentDescription="@string/take_photo"
-        android:layout_height="48dp"
-        android:layout_width="48dp"
         android:src="@drawable/ic_photo_camera_white_24dp"
         app:layout_constraintBottom_toTopOf="@id/home_day_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,20 +29,20 @@
 
     <ImageButton
         android:id="@+id/home_settings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="@color/transparent"
         android:contentDescription="@string/edit_settings"
-        android:layout_height="48dp"
-        android:layout_width="48dp"
         android:src="@drawable/ic_settings_white_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/home_previous_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:contentDescription="@string/previous_record"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:src="@drawable/previous"
         app:layout_constraintBottom_toBottomOf="@id/home_day_title"
         app:layout_constraintEnd_toStartOf="@+id/home_day_title"
@@ -53,9 +53,9 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/home_day_title"
-        android:gravity="center"
-        android:layout_height="64dp"
         android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:gravity="center"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         android:textColor="@color/white"
@@ -68,10 +68,10 @@
 
     <ImageButton
         android:id="@+id/home_next_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:contentDescription="@string/next_record"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:src="@drawable/next"
         app:layout_constraintBottom_toBottomOf="@id/home_day_title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,11 +81,11 @@
 
     <ImageView
         android:id="@+id/home_divider_one"
-        android:importantForAccessibility="no"
+        android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_width="match_parent"
+        android:importantForAccessibility="no"
         android:src="@drawable/fading_line"
         app:layout_constraintBottom_toTopOf="@id/home_start_date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,9 +94,9 @@
 
     <TextView
         android:id="@+id/home_start_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_width="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/home_current_date"
@@ -107,9 +107,9 @@
 
     <TextView
         android:id="@+id/home_current_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_width="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/home_divider_two"
@@ -120,11 +120,11 @@
 
     <ImageView
         android:id="@+id/home_divider_two"
-        android:importantForAccessibility="no"
+        android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_width="match_parent"
+        android:importantForAccessibility="no"
         android:src="@drawable/fading_line"
         app:layout_constraintBottom_toTopOf="@id/home_face_gallery"
         app:layout_constraintEnd_toEndOf="parent"
@@ -133,10 +133,11 @@
 
     <Button
         android:id="@+id/home_face_gallery"
-        android:background="@drawable/rounded_transparent_button"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
+        android:background="@drawable/rounded_transparent_button"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
         android:text="@string/face_gallery"
@@ -145,17 +146,16 @@
         app:layout_constraintBottom_toTopOf="@id/home_face_images_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_divider_two"
-        style="@style/Base.Widget.AppCompat.Button.Borderless" />
+        app:layout_constraintTop_toBottomOf="@id/home_divider_two" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/home_face_images_layout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
         app:layout_constraintBottom_toTopOf="@id/home_body_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,11 +163,11 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_face_first_image"
-            android:background="@color/transparent_white_25"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/home_face_second_image"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -176,11 +176,11 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_face_second_image"
-            android:background="@color/transparent_white_25"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/home_face_third_image_layout"
             app:layout_constraintStart_toEndOf="@id/home_face_first_image"
@@ -188,10 +188,10 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
             android:id="@+id/home_face_third_image_layout"
-            android:background="@color/transparent_white_25"
-            android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_face_second_image"
@@ -199,8 +199,8 @@
 
             <ImageView
                 android:id="@+id/home_face_third_image"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -208,11 +208,14 @@
 
             <TextView
                 android:id="@+id/home_face_extra_images"
-                android:background="@drawable/rounded_transparent_button"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/rounded_transparent_button"
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
@@ -221,9 +224,10 @@
 
     <Button
         android:id="@+id/home_body_gallery"
-        android:background="@drawable/rounded_transparent_button"
-        android:layout_height="wrap_content"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_transparent_button"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
         android:text="@string/body_gallery"
@@ -232,17 +236,16 @@
         app:layout_constraintBottom_toTopOf="@id/home_body_images_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_face_images_layout"
-        style="@style/Base.Widget.AppCompat.Button.Borderless" />
+        app:layout_constraintTop_toBottomOf="@id/home_face_images_layout" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/home_body_images_layout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/home_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -250,11 +253,11 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_body_first_image"
-            android:background="@color/transparent_white_25"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/home_body_second_image"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -263,11 +266,11 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareImageView
             android:id="@+id/home_body_second_image"
-            android:background="@color/transparent_white_25"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/home_body_third_image_layout"
             app:layout_constraintStart_toEndOf="@id/home_body_first_image"
@@ -275,10 +278,10 @@
 
         <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
             android:id="@+id/home_body_third_image_layout"
-            android:background="@color/transparent_white_25"
-            android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:padding="8dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_white_25"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/home_body_second_image"
@@ -286,8 +289,8 @@
 
             <ImageView
                 android:id="@+id/home_body_third_image"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -295,11 +298,14 @@
 
             <TextView
                 android:id="@+id/home_body_extra_images"
-                android:background="@drawable/rounded_transparent_button"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/rounded_transparent_button"
                 android:paddingEnd="4dp"
                 android:paddingStart="4dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
@@ -308,9 +314,9 @@
 
     <FrameLayout
         android:id="@+id/home_ad_layout"
-        android:background="@drawable/ad_background"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ad_background"
         android:paddingTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -318,8 +324,8 @@
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/home_ad_view"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:adSize="SMART_BANNER"
             app:adUnitId="@string/ADS_HOME_AD_ID" />
     </FrameLayout>

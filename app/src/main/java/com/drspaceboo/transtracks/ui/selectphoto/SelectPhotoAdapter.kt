@@ -103,7 +103,7 @@ class SelectPhotoAdapter(context: Context)
         fun getGalleryCursor(context: Context): Cursor {
             return context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                                  arrayOf(MediaStore.Images.Media._ID, MediaStore.Files.FileColumns.DATA),
-                                                 null, null, MediaStore.Images.Media._ID + " DESC")
+                                                 null, null, MediaStore.Images.Media._ID + " DESC")!!
         }
     }
 }
