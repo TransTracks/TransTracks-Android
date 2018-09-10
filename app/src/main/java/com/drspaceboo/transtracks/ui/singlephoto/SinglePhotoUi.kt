@@ -17,6 +17,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -25,10 +26,11 @@ import java.io.File
 
 sealed class SinglePhotoUiEvent {
     object Back : SinglePhotoUiEvent()
+    data class Edit(val photoId: String) : SinglePhotoUiEvent()
 }
 
 sealed class SinglePhotoUiState {
-    data class Loaded(val photoPath: String, val details: String) : SinglePhotoUiState()
+    data class Loaded(val photoPath: String, val details: String, val photoId: String) : SinglePhotoUiState()
 }
 
 class SinglePhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -38,12 +40,28 @@ class SinglePhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val details: TextView by bindView(R.id.single_photo_details)
 
     val events: Observable<SinglePhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        toolbar.navigationClicks().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back }
+        Observable.merge(
+                toolbar.navigationClicks().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back },
+                toolbar.itemClicks().map { item ->
+                    return@map when (item.itemId) {
+                        R.id.single_photo_menu_edit -> SinglePhotoUiEvent.Edit(photoId)
+                        else -> throw IllegalArgumentException("Unhandled menu item")
+                    }
+                })
+    }
+
+    private var photoId: String = ""
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        toolbar.inflateMenu(R.menu.single_photo)
     }
 
     fun display(state: SinglePhotoUiState) {
         when (state) {
             is SinglePhotoUiState.Loaded -> {
+                photoId = state.photoId
+
                 Picasso.get()
                         .load(File(state.photoPath))
                         .fit()

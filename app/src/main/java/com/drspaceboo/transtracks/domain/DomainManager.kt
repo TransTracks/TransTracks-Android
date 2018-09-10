@@ -13,5 +13,7 @@ package com.drspaceboo.transtracks.domain
 class DomainManager {
     val assignPhotoDomain: AssignPhotoDomain by lazy(LazyThreadSafetyMode.NONE) { AssignPhotoDomain() }
 
+    val editPhotoDomain: EditPhotoDomain by lazy(LazyThreadSafetyMode.NONE) { EditPhotoDomain() }
+
     val homeDomain: HomeDomain by lazy(LazyThreadSafetyMode.NONE) { HomeDomain() }
 }

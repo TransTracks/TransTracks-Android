@@ -79,4 +79,14 @@
     <!-- Single Photo -->
     <string name="photo_details">Photo Details</string>
     <string name="photo_detail_replacement" translatable="false">%1$s - %2$s</string>
+    <string name="edit">Edit</string>
+
+    <!-- Edit Photo-->
+    <string name="edit_photo">Edit Photo</string>
+    <string name="update_photo">Update Photo</string>
+    <string name="error_loading_photo">Error Loading Photo</string>
+    <string name="error_loading_photo_message">An error occurred loading this photo.</string>
+    <string name="ok">OK</string>
+    <string name="updating_photo">Updating Photo</string>
+    <string name="error_updating_photo">An error occurred updating this photo</string>
 </resources>

@@ -16,12 +16,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.ui.editphoto.EditPhotoController
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.toFullDateString
+import com.drspaceboo.transtracks.util.using
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
 import io.realm.RealmObjectChangeListener
@@ -50,6 +54,13 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
         if (photo == null || !photo!!.isLoaded) {
             photo = realm.where(Photo::class.java).equalTo(Photo.FIELD_ID, photoId).findFirstAsync()
+        }else{
+            val details = view.getString(
+                    R.string.photo_detail_replacement,
+                    LocalDate.ofEpochDay(photo!!.epochDay).toFullDateString(view.context),
+                    Photo.getTypeName(photo!!.type, view.context))
+
+            view.display(SinglePhotoUiState.Loaded(photo!!.filename, details, photo!!.id))
         }
 
         photo?.addChangeListener(RealmObjectChangeListener<Photo> { innerPhoto, _ ->
@@ -58,13 +69,19 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                     LocalDate.ofEpochDay(innerPhoto.epochDay).toFullDateString(view.context),
                     Photo.getTypeName(innerPhoto.type, view.context))
 
-            view.display(SinglePhotoUiState.Loaded(innerPhoto.filename, details))
+            view.display(SinglePhotoUiState.Loaded(innerPhoto.filename, details, innerPhoto.id))
         })
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Back>()
                 .subscribe { router.handleBack() }
+
+        viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Edit>()
+                .subscribe { event ->
+                    router.pushController(RouterTransaction.with(EditPhotoController(event.photoId))
+                                                  .using(VerticalChangeHandler()))
+                }
     }
 
     override fun onDetach(view: View) {

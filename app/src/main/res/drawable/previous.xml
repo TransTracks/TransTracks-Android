@@ -11,5 +11,5 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="#e6e6e6e6">
-    <item android:drawable="@drawable/ic_chevron_left_black_64dp" />
+    <item android:drawable="@drawable/ic_chevron_left_white_64dp" />
 </ripple>
