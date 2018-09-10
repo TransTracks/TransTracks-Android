@@ -17,10 +17,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.using
 import io.reactivex.disposables.CompositeDisposable
 
 class GalleryController(args: Bundle) : Controller(args) {
@@ -54,7 +56,8 @@ class GalleryController(args: Bundle) : Controller(args) {
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.ImageClick>()
                 .subscribe { event ->
-                    router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId)))
+                    router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId))
+                                                  .using(HorizontalChangeHandler()))
                 }
     }
 

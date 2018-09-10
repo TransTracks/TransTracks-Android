@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
@@ -35,6 +36,7 @@ import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.using
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -80,7 +82,8 @@ class HomeController : Controller() {
                 StoragePermissionHandler.storagePermissionEnabled) { _, storageEnabled -> storageEnabled }
                 .subscribe { storageEnabled ->
                     if (storageEnabled) {
-                        router.pushController(RouterTransaction.with(SelectPhotoController()))
+                        router.pushController(RouterTransaction.with(SelectPhotoController())
+                                                      .using(VerticalChangeHandler()))
                     } else {
                         if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             AlertDialog.Builder(activity!!)
@@ -114,7 +117,8 @@ class HomeController : Controller() {
                 .subscribe { event ->
                     when (event) {
                         is HomeUiEvent.Settings ->
-                            router.pushController(RouterTransaction.with(SettingsController()))
+                            router.pushController(RouterTransaction.with(SettingsController())
+                                                          .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.PreviousRecord ->
                             router.pushController(RouterTransaction.with(HomeController())
@@ -126,18 +130,23 @@ class HomeController : Controller() {
 
                         is HomeUiEvent.FaceGallery ->
                             router.pushController(RouterTransaction.with(
-                                    GalleryController(isFaceGallery = true, initialDay = event.day)))
+                                    GalleryController(isFaceGallery = true, initialDay = event.day))
+                                                          .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.BodyGallery ->
                             router.pushController(RouterTransaction.with(
-                                    GalleryController(isFaceGallery = false, initialDay = event.day)))
+                                    GalleryController(isFaceGallery = false, initialDay = event.day))
+                                                          .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.ImageClick ->
-                            router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId)))
+                            router.pushController(RouterTransaction.with(
+                                    SinglePhotoController(event.photoId))
+                                                          .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.AddPhoto ->
                             router.pushController(RouterTransaction.with(
-                                    SelectPhotoController(event.currentDate.toEpochDay(), event.type)))
+                                    SelectPhotoController(event.currentDate.toEpochDay(), event.type))
+                                                          .using(VerticalChangeHandler()))
                     }
                 }
     }

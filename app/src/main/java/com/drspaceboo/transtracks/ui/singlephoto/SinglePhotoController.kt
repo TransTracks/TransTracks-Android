@@ -17,7 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.editphoto.EditPhotoController
@@ -54,7 +54,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
         if (photo == null || !photo!!.isLoaded) {
             photo = realm.where(Photo::class.java).equalTo(Photo.FIELD_ID, photoId).findFirstAsync()
-        }else{
+        } else {
             val details = view.getString(
                     R.string.photo_detail_replacement,
                     LocalDate.ofEpochDay(photo!!.epochDay).toFullDateString(view.context),
@@ -80,7 +80,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Edit>()
                 .subscribe { event ->
                     router.pushController(RouterTransaction.with(EditPhotoController(event.photoId))
-                                                  .using(VerticalChangeHandler()))
+                                                  .using(HorizontalChangeHandler()))
                 }
     }
 
