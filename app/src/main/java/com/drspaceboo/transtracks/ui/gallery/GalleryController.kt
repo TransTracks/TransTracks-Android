@@ -53,7 +53,9 @@ class GalleryController(args: Bundle) : Controller(args) {
                 .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.ImageClick>()
-                .subscribe { router.pushController(RouterTransaction.with(SinglePhotoController())) }
+                .subscribe { event ->
+                    router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId)))
+                }
     }
 
     override fun onDetach(view: View) {

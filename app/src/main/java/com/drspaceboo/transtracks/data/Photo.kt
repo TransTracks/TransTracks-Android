@@ -37,6 +37,7 @@ open class Photo : RealmObject() {
         const val TYPE_FACE = 0
         const val TYPE_BODY = 1
 
+        const val FIELD_ID = "id"
         const val FIELD_EPOCH_DAY = "epochDay"
         const val FIELD_TIMESTAMP = "timestamp"
         const val FIELD_TYPE = "type"

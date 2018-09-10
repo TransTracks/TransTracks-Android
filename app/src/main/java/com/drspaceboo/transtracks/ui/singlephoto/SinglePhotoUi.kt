@@ -12,8 +12,46 @@ package com.drspaceboo.transtracks.ui.singlephoto
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.widget.ImageView
+import android.widget.TextView
+import com.drspaceboo.transtracks.R
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import kotterknife.bindView
+import java.io.File
+
+sealed class SinglePhotoUiEvent {
+    object Back : SinglePhotoUiEvent()
+}
+
+sealed class SinglePhotoUiState {
+    data class Loaded(val photoPath: String, val details: String) : SinglePhotoUiState()
+}
 
 class SinglePhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+    private val toolbar: Toolbar by bindView(R.id.single_photo_toolbar)
 
+    private val image: ImageView by bindView(R.id.single_photo_image)
+    private val details: TextView by bindView(R.id.single_photo_details)
+
+    val events: Observable<SinglePhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
+        toolbar.navigationClicks().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back }
+    }
+
+    fun display(state: SinglePhotoUiState) {
+        when (state) {
+            is SinglePhotoUiState.Loaded -> {
+                Picasso.get()
+                        .load(File(state.photoPath))
+                        .fit()
+                        .centerInside()
+                        .into(image)
+
+                details.text = state.details
+            }
+        }
+    }
 }

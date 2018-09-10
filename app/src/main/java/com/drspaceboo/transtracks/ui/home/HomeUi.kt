@@ -24,6 +24,7 @@ import com.drspaceboo.transtracks.util.getColor
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
+import com.drspaceboo.transtracks.util.nullAllElements
 import com.drspaceboo.transtracks.util.setVisibleOrInvisible
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
@@ -42,7 +43,7 @@ sealed class HomeUiEvent {
     object NextRecord : HomeUiEvent()
     data class FaceGallery(val day: Long) : HomeUiEvent()
     data class BodyGallery(val day: Long) : HomeUiEvent()
-    data class ImageClick(val photoIndex: Int, @Photo.Type val type: Int) : HomeUiEvent()
+    data class ImageClick(val photoId: String) : HomeUiEvent()
     data class AddPhoto(val currentDate: LocalDate, @Photo.Type val type: Int) : HomeUiEvent()
 }
 
@@ -53,8 +54,8 @@ sealed class HomeUiState {
                       val showNextRecord: Boolean,
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
-                      val facePhotos: List<String>,
-                      val bodyPhotos: List<String>,
+                      val facePhotos: List<Pair<String, String>>,
+                      val bodyPhotos: List<Pair<String, String>>,
                       val showAds: Boolean) : HomeUiState()
 }
 
@@ -94,41 +95,40 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
                 nextRecord.clicks().map { HomeUiEvent.NextRecord },
                 faceGallery.clicks().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
-                faceFirstImage.clicks().map {
-                    HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_FACE)
+                faceFirstImage.clicks().filter { facePhotoIds[0] != null }.map {
+                    HomeUiEvent.ImageClick(facePhotoIds[0]!!)
                 },
-                faceSecondImage.clicks().map {
-                    HomeUiEvent.ImageClick(photoIndex = 1, type = Photo.TYPE_FACE)
+                faceSecondImage.clicks().filter { facePhotoIds[1] != null }.map {
+                    HomeUiEvent.ImageClick(facePhotoIds[1]!!)
                 },
                 faceThirdImage.clicks().map {
-                    return@map when (isAddFace) {
-                        true -> HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE)
-                        false -> HomeUiEvent.ImageClick(photoIndex = 2, type = Photo.TYPE_FACE)
+                    return@map when (facePhotoIds[2]) {
+                        null -> HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE)
+                        else -> HomeUiEvent.ImageClick(facePhotoIds[2]!!)
                     }
                 },
                 bodyGallery.clicks().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
-                bodyFirstImage.clicks().map {
-                    HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_BODY)
+                bodyFirstImage.clicks().filter { bodyPhotoIds[0] != null }.map {
+                    HomeUiEvent.ImageClick(bodyPhotoIds[0]!!)
                 },
-                bodySecondImage.clicks().map {
-                    HomeUiEvent.ImageClick(photoIndex = 1, type = Photo.TYPE_BODY)
+                bodySecondImage.clicks().filter { bodyPhotoIds[1] != null }.map {
+                    HomeUiEvent.ImageClick(bodyPhotoIds[1]!!)
                 },
                 bodyThirdImage.clicks().map {
-                    return@map when (isAddBody) {
-                        true -> HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY)
-                        false -> HomeUiEvent.ImageClick(photoIndex = 2, type = Photo.TYPE_BODY)
+                    return@map when (bodyPhotoIds[2]) {
+                        null -> HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY)
+                        else -> HomeUiEvent.ImageClick(bodyPhotoIds[2]!!)
                     }
                 })
     }
 
-    private var isAddFace = false
-    private var isAddBody = false
+    private val facePhotoIds = Array<String?>(3) { _ -> null }
+    private val bodyPhotoIds = Array<String?>(3) { _ -> null }
+
     private var date = LocalDate.now()
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
-            isAddBody = true
-
             bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(bodyThirdImage)
             bodyThirdImage.setImageResource(R.drawable.add)
@@ -137,8 +137,6 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
         }
 
         fun setAddAnotherFaceImage() {
-            isAddFace = true
-
             faceThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(faceThirdImage)
             faceThirdImage.setImageResource(R.drawable.add)
@@ -146,9 +144,8 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
             faceExtraImages.gone()
         }
 
-        isAddFace = false
-        isAddBody = false
-
+        facePhotoIds.nullAllElements()
+        bodyPhotoIds.nullAllElements()
 
         when (state) {
             is HomeUiState.Loaded -> {
@@ -165,18 +162,27 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                                          state.currentDate.toFullDateString(currentDate.context))
 
                 if (state.facePhotos.isNotEmpty()) {
-                    Picasso.get().load(File(state.facePhotos[0])).fit().centerCrop()
+                    val (facePhoto0Id, facePhoto0Path) = state.facePhotos[0]
+                    facePhotoIds[0] = facePhoto0Id
+
+                    Picasso.get().load(File(facePhoto0Path)).fit().centerCrop()
                             .into(faceFirstImage)
                     faceFirstImage.visible()
 
                     if (state.facePhotos.size > 1) {
-                        Picasso.get().load(File(state.facePhotos[1])).fit().centerCrop()
+                        val (facePhoto1Id, facePhoto1Path) = state.facePhotos[1]
+                        facePhotoIds[1] = facePhoto1Id
+
+                        Picasso.get().load(File(facePhoto1Path)).fit().centerCrop()
                                 .into(faceSecondImage)
                         faceSecondImage.visible()
 
                         if (state.facePhotos.size > 2) {
+                            val (facePhoto2Id, facePhoto2Path) = state.facePhotos[2]
+                            facePhotoIds[2] = facePhoto2Id
+
                             faceThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
-                            Picasso.get().load(File(state.facePhotos[2])).fit().centerCrop()
+                            Picasso.get().load(File(facePhoto2Path)).fit().centerCrop()
                                     .into(faceThirdImage)
                             faceThirdImage.visible()
 
@@ -201,18 +207,27 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 }
 
                 if (state.bodyPhotos.isNotEmpty()) {
-                    Picasso.get().load(File(state.bodyPhotos[0])).fit().centerCrop()
+                    val (bodyPhoto0Id, bodyPhoto0Path) = state.bodyPhotos[0]
+                    bodyPhotoIds[0] = bodyPhoto0Id
+
+                    Picasso.get().load(File(bodyPhoto0Path)).fit().centerCrop()
                             .into(bodyFirstImage)
                     bodyFirstImage.visible()
 
                     if (state.bodyPhotos.size > 1) {
-                        Picasso.get().load(File(state.bodyPhotos[1])).fit().centerCrop()
+                        val (bodyPhoto1Id, bodyPhoto1Path) = state.bodyPhotos[1]
+                        bodyPhotoIds[1] = bodyPhoto1Id
+
+                        Picasso.get().load(File(bodyPhoto1Path)).fit().centerCrop()
                                 .into(bodySecondImage)
                         bodySecondImage.visible()
 
                         if (state.bodyPhotos.size > 2) {
+                            val (bodyPhoto2Id, bodyPhoto2Path) = state.bodyPhotos[2]
+                            bodyPhotoIds[2] = bodyPhoto2Id
+
                             bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
-                            Picasso.get().load(File(state.bodyPhotos[2])).fit().centerCrop()
+                            Picasso.get().load(File(bodyPhoto2Path)).fit().centerCrop()
                                     .into(bodyThirdImage)
                             bodyThirdImage.visible()
 

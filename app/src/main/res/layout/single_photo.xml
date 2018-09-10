@@ -11,17 +11,66 @@
 
 <com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:background="@drawable/gradient_background">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/single_photo_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/single_photo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/photo_details"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/white" />
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/single_photo_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/single_photo_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/single_photo_toolbar" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/transparent_white_25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/single_photo_details" />
 
     <TextView
-        android:id="@+id/single_photo_title"
-        android:gravity="center"
+        android:id="@+id/single_photo_details"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Single Photo!"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/transparent_white_90"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/single_photo_image"
+        tools:text="10/09/2018 - Body" />
+
 </com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoView>

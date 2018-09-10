@@ -133,7 +133,7 @@ class HomeController : Controller() {
                                     GalleryController(isFaceGallery = false, initialDay = event.day)))
 
                         is HomeUiEvent.ImageClick ->
-                            router.pushController(RouterTransaction.with(SinglePhotoController()))
+                            router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId)))
 
                         is HomeUiEvent.AddPhoto ->
                             router.pushController(RouterTransaction.with(
