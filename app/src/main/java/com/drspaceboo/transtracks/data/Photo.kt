@@ -14,8 +14,13 @@ import android.content.Context
 import android.support.annotation.IntDef
 import com.drspaceboo.transtracks.R
 import io.realm.RealmObject
+import io.realm.annotations.Index
+import java.util.UUID
 
 open class Photo : RealmObject() {
+    @Index
+    var id: String = UUID.randomUUID().toString()
+
     var epochDay: Long = 0
     var timestamp: Long = 0
 
@@ -40,6 +45,6 @@ open class Photo : RealmObject() {
             TYPE_FACE -> context.getString(R.string.face)
             TYPE_BODY -> context.getString(R.string.body)
             else -> throw IllegalArgumentException("Unhandled Type '$type'")
-        }
+        }!!
     }
 }

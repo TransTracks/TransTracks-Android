@@ -16,16 +16,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 
 class GalleryController(args: Bundle) : Controller(args) {
-    constructor(isFaceGallery: Boolean) : this(Bundle().apply {
+    constructor(isFaceGallery: Boolean, initialDay: Long) : this(Bundle().apply {
         putBoolean(KEY_IS_FACE_GALLERY, isFaceGallery)
+        putLong(KEY_INITIAL_DAY, initialDay)
     })
 
     private val isFaceGallery: Boolean = args.getBoolean(KEY_IS_FACE_GALLERY)
+    private val initialDay: Long = args.getLong(KEY_INITIAL_DAY)
+
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
@@ -36,12 +42,18 @@ class GalleryController(args: Bundle) : Controller(args) {
         if (view !is GalleryView) throw AssertionError("View must be GalleryView")
 
         val initialState: GalleryUiState = when (isFaceGallery) {
-            true -> GalleryUiState.FaceGallery
-            else -> GalleryUiState.BodyGallery
+            true -> GalleryUiState.FaceGallery(initialDay)
+            false -> GalleryUiState.BodyGallery(initialDay)
         }
         view.display(initialState)
 
-        viewDisposables += view.events.subscribe { router.handleBack() }
+        val sharedEvents = view.events.share()
+
+        viewDisposables += sharedEvents.ofType<GalleryUiEvent.Back>()
+                .subscribe { router.handleBack() }
+
+        viewDisposables += sharedEvents.ofType<GalleryUiEvent.ImageClick>()
+                .subscribe { router.pushController(RouterTransaction.with(SinglePhotoController())) }
     }
 
     override fun onDetach(view: View) {
@@ -50,5 +62,6 @@ class GalleryController(args: Bundle) : Controller(args) {
 
     companion object {
         private const val KEY_IS_FACE_GALLERY = "isFaceGallery"
+        private const val KEY_INITIAL_DAY = "initialDay"
     }
 }

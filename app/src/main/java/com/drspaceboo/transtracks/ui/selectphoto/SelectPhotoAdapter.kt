@@ -37,7 +37,7 @@ class SelectPhotoAdapter(context: Context)
 
     override fun getItemViewType(position: Int): Int = when (position) {
         0 -> R.layout.select_photo_adapter_add_image_item
-        else -> R.layout.select_photo_adapter_gallery_item
+        else -> R.layout.select_photo_adapter_item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
@@ -48,7 +48,7 @@ class SelectPhotoAdapter(context: Context)
                 TakePhotoHolder(layoutInflater.inflate(R.layout.select_photo_adapter_add_image_item, parent, false),
                                 itemClickRelay)
 
-            else -> ImageHolder(layoutInflater.inflate(R.layout.select_photo_adapter_gallery_item, parent, false),
+            else -> ImageHolder(layoutInflater.inflate(R.layout.select_photo_adapter_item, parent, false),
                                 itemClickRelay)
         }
     }

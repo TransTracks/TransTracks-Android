@@ -125,12 +125,12 @@ class HomeController : Controller() {
                                                           .tag(HomeController.TAG))
 
                         is HomeUiEvent.FaceGallery ->
-                            router.pushController(
-                                    RouterTransaction.with(GalleryController(isFaceGallery = true)))
+                            router.pushController(RouterTransaction.with(
+                                    GalleryController(isFaceGallery = true, initialDay = event.day)))
 
                         is HomeUiEvent.BodyGallery ->
-                            router.pushController(
-                                    RouterTransaction.with(GalleryController(isFaceGallery = false)))
+                            router.pushController(RouterTransaction.with(
+                                    GalleryController(isFaceGallery = false, initialDay = event.day)))
 
                         is HomeUiEvent.ImageClick ->
                             router.pushController(RouterTransaction.with(SinglePhotoController()))

@@ -40,8 +40,8 @@ sealed class HomeUiEvent {
     object Settings : HomeUiEvent()
     object PreviousRecord : HomeUiEvent()
     object NextRecord : HomeUiEvent()
-    object FaceGallery : HomeUiEvent()
-    object BodyGallery : HomeUiEvent()
+    data class FaceGallery(val day: Long) : HomeUiEvent()
+    data class BodyGallery(val day: Long) : HomeUiEvent()
     data class ImageClick(val photoIndex: Int, @Photo.Type val type: Int) : HomeUiEvent()
     data class AddPhoto(val currentDate: LocalDate, @Photo.Type val type: Int) : HomeUiEvent()
 }
@@ -93,7 +93,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 settings.clicks().map { HomeUiEvent.Settings },
                 previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
                 nextRecord.clicks().map { HomeUiEvent.NextRecord },
-                faceGallery.clicks().map { HomeUiEvent.FaceGallery },
+                faceGallery.clicks().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
                 faceFirstImage.clicks().map {
                     HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_FACE)
                 },
@@ -106,7 +106,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                         false -> HomeUiEvent.ImageClick(photoIndex = 2, type = Photo.TYPE_FACE)
                     }
                 },
-                bodyGallery.clicks().map { HomeUiEvent.BodyGallery },
+                bodyGallery.clicks().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
                 bodyFirstImage.clicks().map {
                     HomeUiEvent.ImageClick(photoIndex = 0, type = Photo.TYPE_BODY)
                 },
