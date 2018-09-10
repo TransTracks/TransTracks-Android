@@ -85,34 +85,33 @@ class HomeController : Controller() {
                         router.pushController(RouterTransaction.with(SelectPhotoController())
                                                       .using(VerticalChangeHandler()))
                     } else {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            AlertDialog.Builder(activity!!)
-                                    .setTitle(R.string.permission_required)
-                                    .setMessage(R.string.storage_permission_required_message)
-                                    .setPositiveButton(R.string.grant_permission) { _, _ ->
-                                        StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
-                                    }
-                                    .setNeutralButton(R.string.cancel, null)
-                                    .show()
-                        } else {
-                            StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
-                        }
+                        handleRequestingPermission(view)
                     }
                 }
 
         viewDisposables += StoragePermissionHandler.storagePermissionBlocked
                 .filter { showRationale -> !showRationale }
                 .subscribe { _ ->
-                    Snackbar.make(view, R.string.storage_permission_disabled,
-                                  Snackbar.LENGTH_LONG)
-                            .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity!!) }
-                            .show()
+                    showStoragePermissionDisabledSnackBar(view)
+                }
+
+        viewDisposables += Observables.combineLatest(
+                sharedEvents.ofType<HomeUiEvent.AddPhoto>(),
+                StoragePermissionHandler.storagePermissionEnabled) { event, storageEnabled -> event to storageEnabled }
+                .subscribe { (event, storageEnabled) ->
+                    if (storageEnabled) {
+                        router.pushController(RouterTransaction.with(
+                                SelectPhotoController(event.currentDate.toEpochDay(), event.type))
+                                                      .using(VerticalChangeHandler()))
+                    } else {
+                        handleRequestingPermission(view)
+                    }
                 }
 
         viewDisposables += sharedEvents
                 .filter { event ->
                     event !== HomeUiEvent.PreviousRecord && event !== HomeUiEvent.NextRecord
-                            && event !== HomeUiEvent.SelectPhoto
+                            && event !== HomeUiEvent.SelectPhoto && event !is HomeUiEvent.AddPhoto
                 }
                 .subscribe { event ->
                     when (event) {
@@ -159,6 +158,32 @@ class HomeController : Controller() {
         if (resultDisposable.isNotDisposed()) {
             resultDisposable.dispose()
         }
+    }
+
+    private fun handleRequestingPermission(view: View) {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            AlertDialog.Builder(activity!!)
+                    .setTitle(R.string.permission_required)
+                    .setMessage(R.string.storage_permission_required_message)
+                    .setPositiveButton(R.string.grant_permission) { _, _ ->
+                        StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+        } else {
+            val didShow = StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
+
+            if (!didShow) {
+                showStoragePermissionDisabledSnackBar(view)
+            }
+        }
+    }
+
+    private fun showStoragePermissionDisabledSnackBar(view: View) {
+        Snackbar.make(view, R.string.storage_permission_disabled,
+                      Snackbar.LENGTH_LONG)
+                .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity!!) }
+                .show()
     }
 
     companion object {
