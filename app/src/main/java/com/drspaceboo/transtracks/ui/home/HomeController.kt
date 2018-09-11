@@ -11,6 +11,8 @@
 package com.drspaceboo.transtracks.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.support.annotation.NonNull
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
@@ -18,6 +20,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
@@ -32,10 +35,12 @@ import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.settings.SettingsController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.Observables
+import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.using
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
@@ -60,6 +65,29 @@ class HomeController : Controller() {
         }
 
         domain.actions.accept(HomeAction.ReloadDay)
+
+        if (PrefUtil.showWelcome.get()) {
+            val builder = AlertDialog.Builder(view.context)
+                    .setTitle(R.string.welcome)
+                    .setMessage(R.string.welcome_message)
+
+            @SuppressLint("InflateParams") //Cannot avoid passing null for the root here
+            val welcomeView = LayoutInflater.from(builder.context).inflate(R.layout.welcome, null)
+
+            val startDate: TextView = welcomeView.findViewById(R.id.welcome_start_date)
+            startDate.text = PrefUtil.startDate.get().toFullDateString(startDate.context)
+
+            builder.setView(welcomeView)
+                    .setPositiveButton(R.string.looks_good, null)
+                    .setNegativeButton(R.string.change_setting) { dialog: DialogInterface, _: Int ->
+                        router.pushController(RouterTransaction.with(SettingsController())
+                                                      .using(VerticalChangeHandler()))
+                        dialog.dismiss()
+                    }
+                    .show()
+
+            PrefUtil.showWelcome.set(false)
+        }
 
         viewDisposables += domain.results
                 .compose(homeResultsToStates)

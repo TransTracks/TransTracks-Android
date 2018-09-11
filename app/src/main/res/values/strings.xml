@@ -11,6 +11,12 @@
 <resources>
     <string name="app_name">Trans Tracks</string>
 
+    <!-- Welcome -->
+    <string name="welcome">Welcome</string>
+    <string name="welcome_message">Welcome to Trans Tracks, it\'s easy to get started but before you do we wanted to check this setting with you. How does it look?</string>
+    <string name="looks_good">Looks Good</string>
+    <string name="change_setting">Change Setting</string>
+
     <!-- Home -->
     <string name="take_photo">Take Photo</string>
     <string name="edit_settings">Edit Settings</string>

@@ -19,9 +19,10 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import org.threeten.bp.LocalDate
 
 object PrefUtil {
-    const val KEY_SHOW_ADS = "showAds"
-    const val KEY_START_DATE = "startDate"
-    const val KEY_THEME = "theme"
+    private const val KEY_SHOW_ADS = "showAds"
+    private const val KEY_SHOW_WELCOME = "showWelcome"
+    private const val KEY_START_DATE = "startDate"
+    private const val KEY_THEME = "theme"
 
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     @IntDef(THEME_PINK, THEME_BLUE)
@@ -34,6 +35,8 @@ object PrefUtil {
             RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance))
 
     val showAds: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_ADS, true)
+
+    val showWelcome: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_WELCOME, true)
 
     val startDate: Preference<LocalDate> = rxPreferences.getObject(KEY_START_DATE, LocalDate.now(),
             LocalDateConverter())
