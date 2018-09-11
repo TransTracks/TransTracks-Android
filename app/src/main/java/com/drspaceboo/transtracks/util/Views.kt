@@ -56,3 +56,7 @@ fun View.setVisibleOrInvisible(show: Boolean) = when (show) {
     true -> visibility = View.VISIBLE
     false -> visibility = View.INVISIBLE
 }
+
+fun setVisible(vararg views: View) = views.forEach { it.visibility = View.VISIBLE }
+
+fun setGone(vararg views: View) = views.forEach { it.visibility = View.GONE }

@@ -31,7 +31,8 @@ import java.io.File
 import java.lang.ref.WeakReference
 
 class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay<GalleryUiEvent>,
-                     private val postInitialLoad: (adapter: GalleryAdapter) -> Unit)
+                     private val postInitialLoad: (adapter: GalleryAdapter) -> Unit,
+                     private val postLoad: (adapter: GalleryAdapter) -> Unit)
     : RecyclerView.Adapter<GalleryAdapter.BaseViewHolder>(), AdapterSpanSizeLookup.Interface {
     private val realm = Realm.getDefaultInstance()
     private val result = realm.where(Photo::class.java).equalTo(Photo.FIELD_TYPE, type)
@@ -43,6 +44,8 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                         initialLoad = false
                         postInitialLoad.invoke(this@GalleryAdapter)
                     }
+
+                    postLoad.invoke(this@GalleryAdapter)
                 }
             }
 

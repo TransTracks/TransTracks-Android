@@ -19,12 +19,16 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.setGone
+import com.drspaceboo.transtracks.util.setVisible
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import kotterknife.bindView
@@ -56,7 +60,11 @@ sealed class GalleryUiState {
 class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.gallery_toolbar)
     private val title: TextView by bindView(R.id.gallery_title)
+
     private val recyclerView: RecyclerView by bindView(R.id.gallery_recycler_view)
+    private val emptyMessage: TextView by bindView(R.id.gallery_empty_message)
+    private val emptyAdd: View by bindView(R.id.gallery_empty_add)
+
     private var layoutManager = GridLayoutManager(context, GRID_SPAN)
 
     private val eventRelay: PublishRelay<GalleryUiEvent> = PublishRelay.create()
@@ -68,6 +76,7 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
                                  else -> throw IllegalArgumentException("Unhandled menu item id")
                              }
                          },
+                         emptyAdd.clicks().map { GalleryUiEvent.AddPhoto(type) },
                          eventRelay)
     }
 
@@ -93,14 +102,22 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
         title.setText(titleRes)
 
-        val adapter = GalleryAdapter(type, eventRelay) { adapter ->
+        val adapter = GalleryAdapter(type, eventRelay, postInitialLoad = { adapter ->
             val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
             if (scrollTo != -1) {
                 Handler(Looper.getMainLooper()).post {
                     layoutManager.scrollToPositionWithOffset(scrollTo, 0)
                 }
             }
-        }
+        }, postLoad = { adapter ->
+            if (adapter.itemCount > 0) {
+                setVisible(recyclerView)
+                setGone(emptyMessage, emptyAdd)
+            } else {
+                setVisible(emptyMessage, emptyAdd)
+                setGone(recyclerView)
+            }
+        })
         recyclerView.adapter = adapter
     }
 

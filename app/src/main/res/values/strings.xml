@@ -102,4 +102,5 @@
 
     <!-- Gallery -->
     <string name="add">Add</string>
+    <string name="gallery_empty">It doesn\'t look like there are any photos yet. Why not add some?</string>
 </resources>

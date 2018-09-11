@@ -12,14 +12,14 @@
 <com.drspaceboo.transtracks.ui.gallery.GalleryView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/gradient_background"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:background="@drawable/gradient_background">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/gallery_toolbar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.PopupOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +29,9 @@
 
         <TextView
             android:id="@+id/gallery_title"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/white"
             tools:text="@string/face_gallery" />
@@ -39,10 +39,40 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gallery_recycler_view"
-        android:layout_height="0dp"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gallery_toolbar" />
+
+    <TextView
+        android:id="@+id/gallery_empty_message"
+        style="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/gallery_empty"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_empty_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gallery_toolbar"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:visibility="visible" />
+
+    <com.drspaceboo.transtracks.ui.widget.SquareImageView
+        android:id="@+id/gallery_empty_add"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@color/transparent"
+        android:contentDescription="@string/add"
+        android:src="@drawable/ic_add_circle_white_24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_empty_message"
+        tools:visibility="visible" />
 </com.drspaceboo.transtracks.ui.gallery.GalleryView>
