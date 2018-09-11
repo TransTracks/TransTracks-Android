@@ -130,11 +130,13 @@ class HomeController : Controller() {
                         is HomeUiEvent.FaceGallery ->
                             router.pushController(RouterTransaction.with(
                                     GalleryController(isFaceGallery = true, initialDay = event.day))
+                                                          .tag(GalleryController.TAG)
                                                           .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.BodyGallery ->
                             router.pushController(RouterTransaction.with(
                                     GalleryController(isFaceGallery = false, initialDay = event.day))
+                                                          .tag(GalleryController.TAG)
                                                           .using(VerticalChangeHandler()))
 
                         is HomeUiEvent.ImageClick ->

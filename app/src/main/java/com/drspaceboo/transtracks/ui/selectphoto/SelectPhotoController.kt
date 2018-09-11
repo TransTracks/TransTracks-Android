@@ -27,6 +27,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
+import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
@@ -39,12 +40,13 @@ import io.reactivex.disposables.Disposables
 import java.io.File
 
 class SelectPhotoController(args: Bundle) : Controller(args) {
-    constructor(epochDay: Long? = null,
-                @Photo.Type type: Int = Photo.TYPE_FACE) : this(Bundle().apply {
+    constructor(epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
+                tagOfControllerToPopTo: String = HomeController.TAG) : this(Bundle().apply {
         if (epochDay != null) {
             putLong(KEY_EPOCH_DAY, epochDay)
         }
         putInt(KEY_TYPE, type)
+        putString(KEY_TAG_OF_CONTROLLER_TO_POP_TO, tagOfControllerToPopTo)
     })
 
     private val epochDay: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
@@ -105,16 +107,19 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
         viewDisposables += sharedEvents
                 .ofType<SelectPhotoUiEvent.PhotoSelected>()
                 .subscribe { event ->
-                    router.pushController(
-                            RouterTransaction.with(AssignPhotoController(event.uri, epochDay, type))
-                                    .using(HorizontalChangeHandler()))
+                    router.pushController(RouterTransaction.with(
+                            AssignPhotoController(event.uri, epochDay, type,
+                                                  args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
+                                                  .using(HorizontalChangeHandler()))
                 }
 
         if (photoTakenDisposable.isDisposed) {
             photoTakenDisposable = CameraHandler.photoTaken
                     .subscribe { absolutePath ->
                         router.pushController(RouterTransaction.with(
-                                AssignPhotoController(Uri.fromFile(File(absolutePath)), epochDay, type))
+                                AssignPhotoController(Uri.fromFile(File(absolutePath)), epochDay,
+                                                      type,
+                                                      args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
                                                       .using(HorizontalChangeHandler()))
                     }
         }
@@ -140,5 +145,6 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
     companion object {
         private const val KEY_EPOCH_DAY = "epochDay"
         private const val KEY_TYPE = "type"
+        private const val KEY_TAG_OF_CONTROLLER_TO_POP_TO = "tagOfControllerToPopTo"
     }
 }

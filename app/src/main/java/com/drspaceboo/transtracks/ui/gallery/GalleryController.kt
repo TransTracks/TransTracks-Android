@@ -18,7 +18,9 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -59,6 +61,12 @@ class GalleryController(args: Bundle) : Controller(args) {
                     router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId))
                                                   .using(HorizontalChangeHandler()))
                 }
+
+        viewDisposables += sharedEvents.ofType<GalleryUiEvent.AddPhoto>()
+                .subscribe {event ->
+                    router.pushController(RouterTransaction.with(SelectPhotoController(type = event.type, tagOfControllerToPopTo = TAG))
+                                                  .using(VerticalChangeHandler()))
+                }
     }
 
     override fun onDetach(view: View) {
@@ -68,5 +76,7 @@ class GalleryController(args: Bundle) : Controller(args) {
     companion object {
         private const val KEY_IS_FACE_GALLERY = "isFaceGallery"
         private const val KEY_INITIAL_DAY = "initialDay"
+
+        const val TAG = "GalleryController"
     }
 }

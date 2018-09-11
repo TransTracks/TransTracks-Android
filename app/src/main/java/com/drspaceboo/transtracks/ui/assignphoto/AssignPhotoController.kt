@@ -29,7 +29,6 @@ import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.domain.AssignPhotoAction
 import com.drspaceboo.transtracks.domain.AssignPhotoDomain
 import com.drspaceboo.transtracks.domain.AssignPhotoResult
-import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -41,12 +40,14 @@ import io.reactivex.disposables.Disposables
 import org.threeten.bp.LocalDate
 
 class AssignPhotoController(args: Bundle) : Controller(args) {
-    constructor(uri: Uri, epochDay: Long?, @Photo.Type type: Int) : this(Bundle().apply {
+    constructor(uri: Uri, epochDay: Long?, @Photo.Type type: Int,
+                tagOfControllerToPopTo: String) : this(Bundle().apply {
         putParcelable(KEY_URI, uri)
         if (epochDay != null) {
             putLong(KEY_EPOCH_DAY, epochDay)
         }
         putInt(KEY_TYPE, type)
+        putString(KEY_TAG_OF_CONTROLLER_TO_POP_TO, tagOfControllerToPopTo)
     })
 
     private var resultsDisposable: Disposable = Disposables.disposed()
@@ -84,7 +85,8 @@ class AssignPhotoController(args: Bundle) : Controller(args) {
 
         viewDisposables += domain.results
                 .filter { result ->
-                    result !== AssignPhotoResult.SavingImage && result !== AssignPhotoResult.SaveSuccess
+                    result !== AssignPhotoResult.SavingImage
+                            && result !== AssignPhotoResult.SaveSuccess
                 }
                 .compose(assignPhotoResultsToUiState(view.context))
                 .subscribe { state -> view.display(state) }
@@ -137,7 +139,7 @@ class AssignPhotoController(args: Bundle) : Controller(args) {
                     savingDialog?.dismiss()
                     savingDialog = null
 
-                    router.popToTag(HomeController.TAG)
+                    router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
                 }
 
         viewDisposables += domain.results
@@ -180,6 +182,7 @@ class AssignPhotoController(args: Bundle) : Controller(args) {
         private const val KEY_URI = "uri"
         private const val KEY_EPOCH_DAY = "epochDay"
         private const val KEY_TYPE = "type"
+        private const val KEY_TAG_OF_CONTROLLER_TO_POP_TO = "tagOfControllerToPopTo"
     }
 }
 

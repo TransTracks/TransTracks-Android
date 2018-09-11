@@ -23,6 +23,7 @@ import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -31,6 +32,7 @@ import kotterknife.bindView
 sealed class GalleryUiEvent {
     object Back : GalleryUiEvent()
     data class ImageClick(val photoId: String) : GalleryUiEvent()
+    data class AddPhoto(@Photo.Type val type: Int) : GalleryUiEvent()
 }
 
 sealed class GalleryUiState {
@@ -60,17 +62,30 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
     private val eventRelay: PublishRelay<GalleryUiEvent> = PublishRelay.create()
     val events: Observable<GalleryUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(toolbar.navigationClicks().map<GalleryUiEvent> { GalleryUiEvent.Back },
+                         toolbar.itemClicks().map<GalleryUiEvent> { item ->
+                             return@map when (item.itemId) {
+                                 R.id.gallery_menu_add -> GalleryUiEvent.AddPhoto(type)
+                                 else -> throw IllegalArgumentException("Unhandled menu item id")
+                             }
+                         },
                          eventRelay)
     }
 
+    @Photo.Type
+    private var type = Photo.TYPE_FACE
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        toolbar.inflateMenu(R.menu.gallery)
 
         layoutManager.spanSizeLookup = AdapterSpanSizeLookup(recyclerView)
         recyclerView.layoutManager = layoutManager
     }
 
     fun display(state: GalleryUiState) {
+        type = GalleryUiState.getType(state)
+
         @StringRes val titleRes: Int = when (state) {
             is GalleryUiState.FaceGallery -> R.string.face_gallery
             is GalleryUiState.BodyGallery -> R.string.body_gallery
@@ -78,7 +93,7 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
         title.setText(titleRes)
 
-        val adapter = GalleryAdapter(GalleryUiState.getType(state), eventRelay) { adapter ->
+        val adapter = GalleryAdapter(type, eventRelay) { adapter ->
             val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
             if (scrollTo != -1) {
                 Handler(Looper.getMainLooper()).post {
