@@ -89,4 +89,8 @@
     <string name="ok">OK</string>
     <string name="updating_photo">Updating Photo</string>
     <string name="error_updating_photo">An error occurred updating this photo</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="confirm_delete_photo">Deleting this photo will remove both the image and its details.</string>
+    <string name="error_deleting_photo">Error deleting photo</string>
 </resources>

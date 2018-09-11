@@ -124,7 +124,11 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                     return old.epochDay == new.epochDay
                 }
 
-                return old.photo!!.id == new.photo!!.id
+                if (old.photo == null || !old.photo.isValid) {
+                    return false
+                }
+
+                return old.photo.id == new.photo!!.id
             }
 
             override fun getOldListSize(): Int = items.size
