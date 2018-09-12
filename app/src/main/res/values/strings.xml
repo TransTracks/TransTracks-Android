@@ -13,9 +13,9 @@
 
     <!-- Welcome -->
     <string name="welcome">Welcome</string>
-    <string name="welcome_message">Welcome to Trans Tracks, it\'s easy to get started but before you do we wanted to check this setting with you. How does it look?</string>
+    <string name="welcome_message">Welcome to Trans Tracks, it\'s easy to get started but before you do we wanted to check these settings with you. How do they look?</string>
     <string name="looks_good">Looks Good</string>
-    <string name="change_setting">Change Setting</string>
+    <string name="change_setting">Change Settings</string>
 
     <!-- Home -->
     <string name="take_photo">Take Photo</string>
@@ -61,10 +61,27 @@
     <string name="settings">Settings</string>
     <string name="start_date_label">Start Date:</string>
     <string name="theme_label">Theme:</string>
+    <string name="lock_label">Lock Mode:</string>
+    <string name="lock_delay_label">Lock Delay:</string>
 
     <string name="select_theme">Select Theme</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
+
+    <string name="select_lock_mode">Select Lock Mode</string>
+    <string name="disabled">Disabled</string>
+    <string name="enabled_normal">Enabled (Normal)</string>
+    <string name="enabled_trains">Enabled (Train Tracks)</string>
+    <string name="set_lock_mode">Set Lock Mode</string>
+
+    <string name="select_lock_delay">Select Lock Delay</string>
+    <string name="instant">Instant</string>
+    <string name="one_minute">One minute</string>
+    <string name="two_minutes">Two minutes</string>
+    <string name="five_minutes">Five minutes</string>
+    <string name="fifteen_minutes">Fifteen minutes</string>
+
+    <string name="set_password">Set Password</string>
 
     <!-- Select Photo -->
     <string name="select_photo">Select Photo</string>
@@ -103,4 +120,23 @@
     <!-- Gallery -->
     <string name="add">Add</string>
     <string name="gallery_empty">It doesn\'t look like there are any photos yet. Why not add some?</string>
+
+    <!-- Lock -->
+    <string name="train_tracks_title">Train Tracks</string>
+    <string name="train_tracks_message">Enter the train\'s reporting number to find it. Depending on where you are they can be a mixture of letters an numbers, e.g. 2MS6 is the sixth Melbourne to Sydney ARTC train leave on Monday.</string>
+    <string name="enter_train_reporting_number">Enter Train Reporting Number</string>
+    <string name="search">Search</string>
+
+    <string name="train_incorrect">Couldn\'t locate the train, check code</string>
+
+    <string name="unlock_with_password">Unlock with Password</string>
+    <string name="enter_password_to_disable_lock">Enter Password to Disable Lock</string>
+    <string name="disable">Disable</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="confirm_password">Confirm  password</string>
+    <string name="unlock">Unlock</string>
+    <string name="incorrect_password">Incorrect password</string>
+
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="password_and_confirm">The passwords don\'t match</string>
 </resources>

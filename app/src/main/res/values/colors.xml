@@ -25,4 +25,7 @@
     <color name="transparent">#00000000</color>
     <color name="transparent_white_25">#40ffffff</color>
     <color name="transparent_white_90">#ccffffff</color>
+
+    <color name="disabled_white">#eaeaea</color>
+    <color name="disabled_transparent_white_90">#cceaeaea</color>
 </resources>

@@ -14,6 +14,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.toFullDateString
@@ -27,24 +28,32 @@ sealed class SettingsUiEvent {
     object Back : SettingsUiEvent()
     object ChangeStartDate : SettingsUiEvent()
     object ChangeTheme : SettingsUiEvent()
+    object ChangeLockMode : SettingsUiEvent()
+    object ChangeLockDelay : SettingsUiEvent()
 }
 
 sealed class SettingsUiState {
-    data class Loaded(val startDate: LocalDate, val theme: String) : SettingsUiState()
+    data class Loaded(val startDate: LocalDate, val theme: String, val lockMode: String,
+                      val enableLockDelay: Boolean, val lockDelay: String) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
-    var currentStartDate: LocalDate? = null
-
     private val toolbar: Toolbar by bindView(R.id.settings_toolbar)
     private val startDate: Button by bindView(R.id.settings_start_date)
     private val theme: Button by bindView(R.id.settings_theme)
+    private val lock: Button by bindView(R.id.settings_lock)
+    private val lockDelayLabel: View by bindView(R.id.settings_lock_delay_label)
+    private val lockDelay: Button by bindView(R.id.settings_lock_delay)
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { SettingsUiEvent.Back },
-                         startDate.clicks().map { SettingsUiEvent.ChangeStartDate },
-                         theme.clicks().map { SettingsUiEvent.ChangeTheme })
+        Observable.mergeArray(toolbar.navigationClicks().map { SettingsUiEvent.Back },
+                              startDate.clicks().map { SettingsUiEvent.ChangeStartDate },
+                              theme.clicks().map { SettingsUiEvent.ChangeTheme },
+                              lock.clicks().map { SettingsUiEvent.ChangeLockMode },
+                              lockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay })
     }
+
+    private var currentStartDate: LocalDate? = null
 
     fun display(state: SettingsUiState) {
         when (state) {
@@ -53,6 +62,12 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
                 startDate.text = state.startDate.toFullDateString(startDate.context)
                 theme.text = state.theme
+                lock.text = state.lockMode
+
+                lockDelayLabel.isEnabled = state.enableLockDelay
+                lockDelay.isEnabled = state.enableLockDelay
+
+                lockDelay.text = state.lockDelay
             }
         }
     }

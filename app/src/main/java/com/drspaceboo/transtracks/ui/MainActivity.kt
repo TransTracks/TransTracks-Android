@@ -14,19 +14,23 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.crashlytics.android.Crashlytics
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.home.HomeController
+import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.using
 import io.fabric.sdk.android.Fabric
 import io.reactivex.disposables.CompositeDisposable
 import kotterknife.bindView
@@ -57,7 +61,16 @@ class MainActivity : AppCompatActivity() {
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {
-            router!!.setRoot(RouterTransaction.with(HomeController()).tag(HomeController.TAG))
+            if (PrefUtil.lockType.get() == PrefUtil.LOCK_OFF) {
+                router!!.setRoot(RouterTransaction.with(HomeController()).tag(HomeController.TAG))
+            } else {
+                router!!.setBackstack(listOf(RouterTransaction.with(HomeController())
+                                                     .tag(HomeController.TAG),
+                                             RouterTransaction.with(LockController())
+                                                     .tag(LockController.TAG)
+                                                     .using(VerticalChangeHandler())),
+                                      null)
+            }
         }
     }
 
@@ -79,6 +92,16 @@ class MainActivity : AppCompatActivity() {
                         window.statusBarColor = value.data
                     }
                 }
+
+        viewDisposables += PrefUtil.lockType.asObservable()
+                .subscribe { lockType ->
+                    if (lockType == PrefUtil.LOCK_OFF) {
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                    } else {
+                        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                                        WindowManager.LayoutParams.FLAG_SECURE)
+                    }
+                }
     }
 
     override fun onBackPressed() {
@@ -86,6 +109,34 @@ class MainActivity : AppCompatActivity() {
 
         if (localRouter == null || !localRouter.handleBack()) {
             super.onBackPressed()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        //Minimum 1000ms to step issues with rotation
+        val timeToLock = PrefUtil.userLastSeen.get() + PrefUtil.getLockDelayMilli() + 1000L
+
+        if (PrefUtil.lockType.get() != PrefUtil.LOCK_OFF
+                && timeToLock <= System.currentTimeMillis()) {
+            showLockControllerIfNotAlreadyShowing()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        PrefUtil.userLastSeen.set(System.currentTimeMillis())
+    }
+
+    private fun showLockControllerIfNotAlreadyShowing() {
+        val lockController = router?.getControllerWithTag(LockController.TAG)
+
+        if (lockController == null) {
+            router?.pushController(RouterTransaction.with(LockController())
+                                           .tag(LockController.TAG)
+                                           .popChangeHandler(VerticalChangeHandler()))
         }
     }
 

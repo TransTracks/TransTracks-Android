@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/white"
+            android:textColor="@color/white_text_selector"
             tools:text="@string/face_gallery" />
     </android.support.v7.widget.Toolbar>
 

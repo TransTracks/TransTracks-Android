@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:text="@string/select_photo"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/white" />
+            android:textColor="@color/white_text_selector" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

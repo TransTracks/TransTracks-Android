@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:text="@string/photo_details"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/white" />
+            android:textColor="@color/white_text_selector" />
     </android.support.v7.widget.Toolbar>
 
     <ImageView
@@ -66,7 +66,7 @@
         android:paddingEnd="0dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
-        android:textColor="@color/transparent_white_90"
+        android:textColor="@color/transparent_white_90_text_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

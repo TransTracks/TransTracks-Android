@@ -13,7 +13,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="24dp">
 
     <TextView
@@ -45,4 +45,34 @@
         app:layout_constraintStart_toEndOf="@id/welcome_start_label"
         app:layout_constraintTop_toTopOf="@id/welcome_start_label"
         tools:text="15/08/2017" />
+
+    <TextView
+        android:id="@+id/welcome_lock_label"
+        style="@style/TextAppearance.AppCompat.Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/lock_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_start_label" />
+
+    <TextView
+        android:id="@+id/welcome_lock_type"
+        style="@style/TextAppearance.AppCompat.Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/disabled"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintBottom_toBottomOf="@id/welcome_lock_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/welcome_lock_label"
+        app:layout_constraintTop_toTopOf="@id/welcome_lock_label" />
 </android.support.constraint.ConstraintLayout>

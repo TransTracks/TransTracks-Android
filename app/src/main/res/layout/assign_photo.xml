@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:text="@string/assign_photo"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/white" />
+            android:textColor="@color/white_text_selector" />
     </android.support.v7.widget.Toolbar>
 
     <ImageView
@@ -65,7 +65,7 @@
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:text="@string/date_label"
-        android:textColor="@color/transparent_white_90"
+        android:textColor="@color/transparent_white_90_text_selector"
         app:layout_constraintBottom_toTopOf="@id/assign_photo_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assign_photo_image"
@@ -81,7 +81,7 @@
         android:paddingStart="8dp"
         android:paddingTop="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/white"
+        android:textColor="@color/white_text_selector"
         app:layout_constraintBottom_toBottomOf="@id/assign_photo_date_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/assign_photo_date_label"
@@ -98,7 +98,7 @@
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:text="@string/type_label"
-        android:textColor="@color/transparent_white_90"
+        android:textColor="@color/transparent_white_90_text_selector"
         app:layout_constraintBottom_toTopOf="@+id/assign_photo_save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assign_photo_date_label"
@@ -114,7 +114,7 @@
         android:paddingStart="8dp"
         android:paddingTop="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/white"
+        android:textColor="@color/white_text_selector"
         app:layout_constraintBottom_toBottomOf="@id/assign_photo_type_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/assign_photo_type_label"
@@ -129,7 +129,7 @@
         android:text="@string/save_photo"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/white"
+        android:textColor="@color/white_text_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
