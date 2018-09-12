@@ -152,7 +152,7 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                 return oldPhoto == newPhoto && oldPhoto.id == newPhoto.id
                         && oldPhoto.epochDay == newPhoto.epochDay
                         && oldPhoto.timestamp == newPhoto.timestamp
-                        && oldPhoto.filename == newPhoto.filename && oldPhoto.type == newPhoto.type
+                        && oldPhoto.filePath == newPhoto.filePath && oldPhoto.type == newPhoto.type
             }
         }, true)
 
@@ -202,7 +202,7 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
             currentPhotoId = item.photo!!.id
 
             Picasso.get()
-                    .load(File(item.photo.filename))
+                    .load(File(item.photo.filePath))
                     .fit()
                     .centerCrop()
                     .into(image)

@@ -76,11 +76,11 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
 
             val facePhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
                     .equalTo(Photo.FIELD_TYPE, Photo.TYPE_FACE).sort(Photo.FIELD_TIMESTAMP).findAll()
-                    .map { photo -> photo.id to photo.filename }
+                    .map { photo -> photo.id to photo.filePath }
 
             val bodyPhotos = realm.where(Photo::class.java).equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
                     .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
-                    .map { photo -> photo.id to photo.filename }
+                    .map { photo -> photo.id to photo.filePath }
 
             return HomeResult.Loaded(period.getDisplayString(), showPreviousRecord, showNextRecord, startDate, currentDate,
                                      facePhotos, bodyPhotos, PrefUtil.showAds.get())

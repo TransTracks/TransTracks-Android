@@ -69,7 +69,7 @@ class EditPhotoDomain {
                                             .equalTo(Photo.FIELD_ID, action.photoId)
                                             .findFirst() ?: return@map false
 
-                                    path = photo.filename
+                                    path = photo.filePath
                                     date = LocalDate.ofEpochDay(photo.epochDay)
                                     type = photo.type
 
@@ -128,7 +128,7 @@ class EditPhotoDomain {
 
                                 realm.executeTransaction { innerRealm ->
                                     if (newPath != null) {
-                                        photo.filename = newPath
+                                        photo.filePath = newPath
                                     }
 
                                     photo.epochDay = date.toEpochDay()

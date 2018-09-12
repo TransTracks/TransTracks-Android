@@ -12,6 +12,7 @@ package com.drspaceboo.transtracks.ui.gallery
 
 import android.os.Bundle
 import android.support.annotation.NonNull
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +21,10 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
@@ -62,10 +65,25 @@ class GalleryController(args: Bundle) : Controller(args) {
                                                   .using(HorizontalChangeHandler()))
                 }
 
-        viewDisposables += sharedEvents.ofType<GalleryUiEvent.AddPhoto>()
-                .subscribe {event ->
-                    router.pushController(RouterTransaction.with(SelectPhotoController(type = event.type, tagOfControllerToPopTo = TAG))
-                                                  .using(VerticalChangeHandler()))
+        viewDisposables += Observables.combineLatest(
+                sharedEvents.ofType<GalleryUiEvent.AddPhoto>(),
+                StoragePermissionHandler.storagePermissionEnabled) { event, storageEnabled -> event to storageEnabled }
+                .subscribe { (event, storageEnabled) ->
+                    if (storageEnabled) {
+                        router.pushController(RouterTransaction.with(
+                                SelectPhotoController(type = event.type, tagOfControllerToPopTo = TAG))
+                                                      .using(VerticalChangeHandler()))
+                    } else {
+                        StoragePermissionHandler.handleRequestingPermission(
+                                view, activity as AppCompatActivity)
+                    }
+                }
+
+        viewDisposables += StoragePermissionHandler.storagePermissionBlocked
+                .filter { showRationale -> !showRationale }
+                .subscribe { _ ->
+                    StoragePermissionHandler.showStoragePermissionDisabledSnackBar(
+                            view, activity as AppCompatActivity)
                 }
     }
 

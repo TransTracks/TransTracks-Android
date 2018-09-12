@@ -12,10 +12,15 @@ package com.drspaceboo.transtracks.background
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.Utils
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -103,6 +108,32 @@ class StoragePermissionHandler : Fragment() {
             } catch (e: Exception) {
                 throw IllegalStateException("install() not called before from()!", e)
             }
+        }
+
+        fun handleRequestingPermission(view: View, activity: AppCompatActivity) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder(activity)
+                        .setTitle(R.string.permission_required)
+                        .setMessage(R.string.storage_permission_required_message)
+                        .setPositiveButton(R.string.grant_permission) { _, _ ->
+                            StoragePermissionHandler.requestIfNeeded(activity)
+                        }
+                        .setNeutralButton(R.string.cancel, null)
+                        .show()
+            } else {
+                val didShow = StoragePermissionHandler.requestIfNeeded(activity)
+
+                if (!didShow) {
+                    showStoragePermissionDisabledSnackBar(view, activity)
+                }
+            }
+        }
+
+        fun showStoragePermissionDisabledSnackBar(view: View, activity: AppCompatActivity) {
+            Snackbar.make(view, R.string.storage_permission_disabled,
+                          Snackbar.LENGTH_LONG)
+                    .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity) }
+                    .show()
         }
     }
 }

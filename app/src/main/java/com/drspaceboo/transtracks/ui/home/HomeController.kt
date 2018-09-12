@@ -10,11 +10,9 @@
 
 package com.drspaceboo.transtracks.ui.home
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.support.annotation.NonNull
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -36,7 +34,6 @@ import com.drspaceboo.transtracks.ui.settings.SettingsController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.PrefUtil
-import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -113,14 +110,16 @@ class HomeController : Controller() {
                         router.pushController(RouterTransaction.with(SelectPhotoController())
                                                       .using(VerticalChangeHandler()))
                     } else {
-                        handleRequestingPermission(view)
+                        StoragePermissionHandler.handleRequestingPermission(
+                                view, activity as AppCompatActivity)
                     }
                 }
 
         viewDisposables += StoragePermissionHandler.storagePermissionBlocked
                 .filter { showRationale -> !showRationale }
                 .subscribe { _ ->
-                    showStoragePermissionDisabledSnackBar(view)
+                    StoragePermissionHandler.showStoragePermissionDisabledSnackBar(
+                            view, activity as AppCompatActivity)
                 }
 
         viewDisposables += Observables.combineLatest(
@@ -132,7 +131,8 @@ class HomeController : Controller() {
                                 SelectPhotoController(event.currentDate.toEpochDay(), event.type))
                                                       .using(VerticalChangeHandler()))
                     } else {
-                        handleRequestingPermission(view)
+                        StoragePermissionHandler.handleRequestingPermission(
+                                view, activity as AppCompatActivity)
                     }
                 }
 
@@ -188,32 +188,6 @@ class HomeController : Controller() {
         if (resultDisposable.isNotDisposed()) {
             resultDisposable.dispose()
         }
-    }
-
-    private fun handleRequestingPermission(view: View) {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            AlertDialog.Builder(activity!!)
-                    .setTitle(R.string.permission_required)
-                    .setMessage(R.string.storage_permission_required_message)
-                    .setPositiveButton(R.string.grant_permission) { _, _ ->
-                        StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
-                    }
-                    .setNeutralButton(R.string.cancel, null)
-                    .show()
-        } else {
-            val didShow = StoragePermissionHandler.requestIfNeeded(router.activity as AppCompatActivity)
-
-            if (!didShow) {
-                showStoragePermissionDisabledSnackBar(view)
-            }
-        }
-    }
-
-    private fun showStoragePermissionDisabledSnackBar(view: View) {
-        Snackbar.make(view, R.string.storage_permission_disabled,
-                      Snackbar.LENGTH_LONG)
-                .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity!!) }
-                .show()
     }
 
     companion object {

@@ -24,7 +24,7 @@ open class Photo : RealmObject() {
     var epochDay: Long = 0
     var timestamp: Long = 0
 
-    var filename: String = ""
+    var filePath: String = ""
 
     @Photo.Type
     var type: Int = TYPE_FACE

@@ -167,7 +167,7 @@ class AssignPhotoDomain {
                                     val photo = Photo()
                                     photo.epochDay = date.toEpochDay()
                                     photo.timestamp = System.currentTimeMillis()
-                                    photo.filename = imageFile.absolutePath
+                                    photo.filePath = imageFile.absolutePath
                                     photo.type = type
 
                                     innerRealm.insertOrUpdate(photo)

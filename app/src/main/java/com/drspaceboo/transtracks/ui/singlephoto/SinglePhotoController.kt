@@ -63,7 +63,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                         LocalDate.ofEpochDay(innerPhoto.epochDay).toFullDateString(view.context),
                         Photo.getTypeName(innerPhoto.type, view.context))
 
-                view.display(SinglePhotoUiState.Loaded(innerPhoto.filename, details, innerPhoto.id))
+                view.display(SinglePhotoUiState.Loaded(innerPhoto.filePath, details, innerPhoto.id))
                 photo.removeAllChangeListeners()
             })
         }
@@ -98,7 +98,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                                         return@use
                                     }
 
-                                    val image = File(photoToDelete.filename)
+                                    val image = File(photoToDelete.filePath)
 
                                     if (image.exists()) {
                                         image.delete()
