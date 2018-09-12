@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="455.1111" android:viewportHeight="455.1111">
+    <path android:pathData="M329.356 262.927c0-1.86 0.12-3.93-0.71-5-0.34-0.93-0.9-1-1.43-1.66h-0.66v-38.39c0-3.55 1-11.54-1.19-13.05s-7.46-0.72-10.67-0.72h-27.14v-31.58a5.76 5.76 0 0 0 2.85-1.19c0.59-2.52 1.88-10.69-0.48-12.34-1.75-1.22-6-0.71-8.78-0.71h-17.04c-3.67 0-7-0.11-9.26 1.19-0.57 2.38-1.74 9.17 0 11.39a2.89 2.89 0 0 0 2.85 1.66v31.55h-10c0-3.36 0-6.06-1.19-8.06-2.54-0.63-10.92-1.89-12.58 0.47-1.06 1.52-0.77 5.11-0.71 7.59h-19.89v-33.69c2.64 0 6.75 0.37 7.83-1.18s1.09-11.48 0-13.05a4.42 4.42 0 0 0-1.66-0.95c-1.74-0.55-4.31-0.24-6.41-0.24h-79c-2.59 0-6.22-0.4-7.83 0.71s-1.72 11.72-0.47 13.53c1.07 1.55 5.2 1.22 7.83 1.18v85.9c-0.23 0.38-1.39 1-1.67 1.66-0.84 1.91-0.8 10.35 0.24 11.86 1.41 2 8.52 1.22 11.87 1.19-1.48 12.19 3.63 19.34 11.62 23.49 4.12 2.13 10 3 14.95 0.94 7.69-3.21 9.59-8.32 13.53-15.18 5.49-1.08 12.78-0.24 18.74-0.24 1.76 0 5.4-0.54 6.64 0.24 1.68 0.65 1.82 3 2.61 4.51a22.44 22.44 0 0 0 5.7 7.35 29.6 29.6 0 0 0 5.69 3.32c9.16 3.86 19-1.64 23-7.35 1.63-2.31 2.62-5.37 4-7.83 5.57-1.1 13-0.24 19-0.24 1.81 0 5.59-0.57 6.88 0.24 2 0.8 2.45 4.61 3.56 6.41a23.41 23.41 0 0 0 7.11 7.11 26.33 26.33 0 0 0 5.46 2.38c4.57 1.47 9.53 0 12.81-1.66 8-4.14 13.13-11.32 11.63-23.49 3.3 0.07 10.24 0.79 11.63-1.19 1.04-1.45 0.74-4.53 0.74-6.88zm-124.36-59.16h-45.52v-32.53h45.52z" android:fillColor="#fff" android:fillType="evenOdd"/>
+</vector>
