@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
@@ -31,6 +32,7 @@ import java.io.File
 import java.lang.ref.WeakReference
 
 class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay<GalleryUiEvent>,
+                     initialSelectionMode: Boolean, private val selectedIds: ArrayList<String>,
                      private val postInitialLoad: (adapter: GalleryAdapter) -> Unit,
                      private val postLoad: (adapter: GalleryAdapter) -> Unit)
     : RecyclerView.Adapter<GalleryAdapter.BaseViewHolder>(), AdapterSpanSizeLookup.Interface {
@@ -52,12 +54,24 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
     private val eventRelayRef = WeakReference(eventRelay)
 
     private var items = ArrayList<GalleryAdapterItem>()
+
+    var selectionMode: Boolean = initialSelectionMode
+        set(value) {
+            val didChange = field != value
+
+            field = value
+
+            if (didChange) {
+                generateItems(true)
+            }
+        }
+
     private var initialLoad = true
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (holder) {
             is TitleViewHolder -> holder.bind(items[position])
-            is PhotoViewHolder -> holder.bind(items[position])
+            is PhotoViewHolder -> holder.bind(items[position], selectionMode)
         }
     }
 
@@ -66,7 +80,7 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
 
         return when (viewType) {
             TYPE_TITLE -> TitleViewHolder(view)
-            TYPE_PHOTO -> PhotoViewHolder(view, eventRelayRef.get())
+            TYPE_PHOTO -> PhotoViewHolder(view, this)
             else -> throw IllegalArgumentException("Unhandled item type")
         }
     }
@@ -95,7 +109,7 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
         return -1
     }
 
-    private fun generateItems() {
+    private fun generateItems(selectionModeChanged: Boolean = false) {
         val newItems = ArrayList<GalleryAdapterItem>()
 
         result.forEach { photo ->
@@ -115,7 +129,13 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                 }
             }
 
-            newItems.add(indexToInsertAt, GalleryAdapterItem(photo))
+            newItems.add(indexToInsertAt, GalleryAdapterItem(photo, selectedIds.contains(photo.id)))
+        }
+
+        if (selectionModeChanged) {
+            items = newItems
+            notifyDataSetChanged()
+            return
         }
 
         val results = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -149,8 +169,8 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                 val oldPhoto = old.photo!!
                 val newPhoto = new.photo!!
 
-                return oldPhoto == newPhoto && oldPhoto.id == newPhoto.id
-                        && oldPhoto.epochDay == newPhoto.epochDay
+                return old.selected == new.selected && oldPhoto == newPhoto
+                        && oldPhoto.id == newPhoto.id && oldPhoto.epochDay == newPhoto.epochDay
                         && oldPhoto.timestamp == newPhoto.timestamp
                         && oldPhoto.filePath == newPhoto.filePath && oldPhoto.type == newPhoto.type
             }
@@ -160,12 +180,23 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
         results.dispatchUpdatesTo(this)
     }
 
+    fun getSelectedIds() = selectedIds
+
+    fun updateSelectedIds(newSelectedIds: ArrayList<String>) {
+        selectedIds.clear()
+        selectedIds.addAll(newSelectedIds)
+
+        generateItems()
+    }
+
     class GalleryAdapterItem {
         val photo: Photo?
         val epochDay: Long?
+        var selected = false
 
-        constructor(photo: Photo) {
+        constructor(photo: Photo, isSelected: Boolean) {
             this.photo = photo
+            this.selected = isSelected
             epochDay = null
         }
 
@@ -185,20 +216,53 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
         }
     }
 
-    class PhotoViewHolder(itemView: View, eventRelay: PublishRelay<GalleryUiEvent>?) : BaseViewHolder(itemView) {
+    class PhotoViewHolder(itemView: View, creatingAdapter: GalleryAdapter?) : BaseViewHolder(itemView) {
         private val image: ImageView by bindView(R.id.gallery_adapter_item_image)
+        private val selection: ImageView by bindView(R.id.gallery_adapter_item_selection)
 
-        private val eventRelayRef = WeakReference(eventRelay)
+        private val adapterRef = WeakReference(creatingAdapter)
 
         private var currentPhotoId = ""
 
         init {
             itemView.setOnClickListener {
-                eventRelayRef.get()?.accept(GalleryUiEvent.ImageClick(currentPhotoId))
+                val adapter = adapterRef.get() ?: return@setOnClickListener
+
+                val event: GalleryUiEvent = when (adapter.selectionMode) {
+                    true -> {
+                        if (adapter.selectedIds.contains(currentPhotoId)) {
+                            adapter.selectedIds.remove(currentPhotoId)
+                        } else {
+                            adapter.selectedIds.add(currentPhotoId)
+                        }
+
+                        val returnList = ArrayList<String>(adapter.selectedIds.size)
+                        returnList.addAll(adapter.selectedIds)
+
+                        GalleryUiEvent.SelectionUpdated(returnList)
+                    }
+
+                    false -> GalleryUiEvent.ImageClick(currentPhotoId)
+                }
+
+                adapter.eventRelayRef.get()?.accept(event)
+            }
+
+            itemView.setOnLongClickListener {
+                val adapter = adapterRef.get() ?: return@setOnLongClickListener false
+
+                if (!adapter.selectionMode) {
+                    adapter.eventRelayRef.get()?.accept(
+                            GalleryUiEvent.SelectionUpdated(arrayListOf(currentPhotoId)))
+                } else {
+                    itemView.performClick()
+                }
+
+                return@setOnLongClickListener true
             }
         }
 
-        fun bind(item: GalleryAdapterItem) {
+        fun bind(item: GalleryAdapterItem, selectionMode: Boolean) {
             currentPhotoId = item.photo!!.id
 
             Picasso.get()
@@ -206,6 +270,17 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                     .fit()
                     .centerCrop()
                     .into(image)
+
+            selection.setVisibleOrGone(selectionMode)
+
+            if (selectionMode) {
+                val selectionRes = when (item.selected) {
+                    true -> R.drawable.ic_selected_primary_36dp
+                    false -> R.drawable.ic_unselected_primary_36dp
+                }
+
+                selection.setImageResource(selectionRes)
+            }
         }
     }
 

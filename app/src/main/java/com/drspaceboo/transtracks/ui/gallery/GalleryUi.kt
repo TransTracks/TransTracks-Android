@@ -19,6 +19,9 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
@@ -32,27 +35,34 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import kotterknife.bindView
+import java.lang.ref.WeakReference
 
 sealed class GalleryUiEvent {
     object Back : GalleryUiEvent()
     data class ImageClick(val photoId: String) : GalleryUiEvent()
     data class AddPhoto(@Photo.Type val type: Int) : GalleryUiEvent()
+    object StartMultiSelect : GalleryUiEvent()
+    data class SelectionUpdated(val selectedIds: ArrayList<String>) : GalleryUiEvent()
+    object EndActionMode : GalleryUiEvent()
+    data class Share(val selectedIds: ArrayList<String>) : GalleryUiEvent()
+    data class Delete(val selectedIds: ArrayList<String>) : GalleryUiEvent()
 }
 
 sealed class GalleryUiState {
-    data class FaceGallery(val initialDay: Long) : GalleryUiState()
-    data class BodyGallery(val initialDay: Long) : GalleryUiState()
+    data class Loaded(val type: Int, val initialDay: Long) : GalleryUiState()
+    data class Selection(val type: Int, val initialDay: Long,
+                         val selectedIds: ArrayList<String>) : GalleryUiState()
 
     companion object {
         @Photo.Type
         fun getType(state: GalleryUiState) = when (state) {
-            is FaceGallery -> Photo.TYPE_FACE
-            is BodyGallery -> Photo.TYPE_BODY
+            is Loaded -> state.type
+            is Selection -> state.type
         }
 
         fun getInitialDay(state: GalleryUiState) = when (state) {
-            is GalleryUiState.FaceGallery -> state.initialDay
-            is GalleryUiState.BodyGallery -> state.initialDay
+            is GalleryUiState.Loaded -> state.initialDay
+            is GalleryUiState.Selection -> state.initialDay
         }
     }
 }
@@ -73,6 +83,7 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
                          toolbar.itemClicks().map<GalleryUiEvent> { item ->
                              return@map when (item.itemId) {
                                  R.id.gallery_menu_add -> GalleryUiEvent.AddPhoto(type)
+                                 R.id.gallery_menu_share -> GalleryUiEvent.StartMultiSelect
                                  else -> throw IllegalArgumentException("Unhandled menu item id")
                              }
                          },
@@ -95,30 +106,108 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
     fun display(state: GalleryUiState) {
         type = GalleryUiState.getType(state)
 
-        @StringRes val titleRes: Int = when (state) {
-            is GalleryUiState.FaceGallery -> R.string.face_gallery
-            is GalleryUiState.BodyGallery -> R.string.body_gallery
+        @StringRes val titleRes: Int = when (type) {
+            Photo.TYPE_FACE -> R.string.face_gallery
+            Photo.TYPE_BODY -> R.string.body_gallery
+            else -> throw IllegalArgumentException("Unhandled type")
         }
 
         title.setText(titleRes)
 
-        val adapter = GalleryAdapter(type, eventRelay, postInitialLoad = { adapter ->
-            val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
-            if (scrollTo != -1) {
-                Handler(Looper.getMainLooper()).post {
-                    layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+        val shouldShowActionMode = state is GalleryUiState.Selection
+
+        if (shouldShowActionMode && !actionModeHandler.isActive()) {
+            toolbar.startActionMode(actionModeHandler)
+        } else if (!shouldShowActionMode && actionModeHandler.isActive()) {
+            actionModeHandler.finish()
+        }
+
+        val selectedIds: ArrayList<String> = when (state) {
+            is GalleryUiState.Selection -> state.selectedIds
+            else -> ArrayList()
+        }
+
+        if (shouldShowActionMode) {
+            actionModeHandler.setTitle((state as GalleryUiState.Selection).selectedIds.size.toString())
+        }
+
+        if (recyclerView.adapter == null) {
+            val adapter = GalleryAdapter(type, eventRelay, state is GalleryUiState.Selection,
+                                         selectedIds, postInitialLoad = { adapter ->
+                val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
+                if (scrollTo != -1) {
+                    Handler(Looper.getMainLooper()).post {
+                        layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+                    }
                 }
+            }, postLoad = { adapter ->
+                if (adapter.itemCount > 0) {
+                    setVisible(recyclerView)
+                    setGone(emptyMessage, emptyAdd)
+                } else {
+                    setVisible(emptyMessage, emptyAdd)
+                    setGone(recyclerView)
+                }
+            })
+            recyclerView.adapter = adapter
+        } else {
+            val adapter: GalleryAdapter = recyclerView.adapter!! as GalleryAdapter
+
+            adapter.selectionMode = state is GalleryUiState.Selection
+
+            if (adapter.selectionMode) {
+                adapter.updateSelectedIds(selectedIds)
             }
-        }, postLoad = { adapter ->
-            if (adapter.itemCount > 0) {
-                setVisible(recyclerView)
-                setGone(emptyMessage, emptyAdd)
-            } else {
-                setVisible(emptyMessage, emptyAdd)
-                setGone(recyclerView)
+        }
+    }
+
+    private val actionModeHandler = object : ActionMode.Callback {
+        private var modeRef = WeakReference<ActionMode>(null)
+        private var titleText = ""
+
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            val adapter: GalleryAdapter = recyclerView.adapter as GalleryAdapter? ?: return false
+
+            val event: GalleryUiEvent = when (item.itemId) {
+                R.id.gallery_menu_selection_share -> GalleryUiEvent.Share(adapter.getSelectedIds())
+                R.id.gallery_menu_selection_delete -> GalleryUiEvent.Delete(adapter.getSelectedIds())
+                else -> throw IllegalArgumentException("Unhandled item")
             }
-        })
-        recyclerView.adapter = adapter
+
+            eventRelay.accept(event)
+
+            return true
+        }
+
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            modeRef = WeakReference(mode)
+            mode.menuInflater.inflate(R.menu.gallery_selection, menu)
+            mode.title = titleText
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            mode.title = titleText
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode) {
+            modeRef = WeakReference<ActionMode>(null)
+            eventRelay.accept(GalleryUiEvent.EndActionMode)
+        }
+
+        fun finish() {
+            modeRef.get()?.finish()
+        }
+
+        fun isActive(): Boolean {
+            return modeRef.get() != null
+        }
+
+        fun setTitle(newTitleText: String) {
+            titleText = newTitleText
+            modeRef.get()?.title = titleText
+        }
     }
 
     companion object {

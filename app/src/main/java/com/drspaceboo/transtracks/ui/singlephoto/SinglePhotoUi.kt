@@ -27,6 +27,7 @@ import java.io.File
 sealed class SinglePhotoUiEvent {
     object Back : SinglePhotoUiEvent()
     data class Edit(val photoId: String) : SinglePhotoUiEvent()
+    data class Share(val photoId: String) : SinglePhotoUiEvent()
     data class Delete(val photoId: String) : SinglePhotoUiEvent()
 }
 
@@ -46,6 +47,7 @@ class SinglePhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                 toolbar.itemClicks().map { item ->
                     return@map when (item.itemId) {
                         R.id.single_photo_menu_edit -> SinglePhotoUiEvent.Edit(photoId)
+                        R.id.single_photo_menu_share -> SinglePhotoUiEvent.Share(photoId)
                         R.id.single_photo_menu_delete -> SinglePhotoUiEvent.Delete(photoId)
                         else -> throw IllegalArgumentException("Unhandled menu item")
                     }

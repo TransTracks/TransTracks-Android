@@ -9,13 +9,29 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.drspaceboo.transtracks.ui.widget.SquareImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/gallery_adapter_item_image"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
     android:layout_margin="2dp"
-    android:layout_weight="1"
-    android:gravity="center"
-    app:orientation="horizontal" />
+    app:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/gallery_adapter_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/gallery_adapter_item_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/not_selected"
+        android:src="@drawable/ic_unselected_primary_36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout>

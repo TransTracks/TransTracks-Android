@@ -24,6 +24,7 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.editphoto.EditPhotoController
+import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
@@ -77,6 +78,27 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                 .subscribe { event ->
                     router.pushController(RouterTransaction.with(EditPhotoController(event.photoId))
                                                   .using(HorizontalChangeHandler()))
+                }
+
+        viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Share>()
+                .subscribe { event ->
+                    var filePath: String? = null
+
+                    Realm.getDefaultInstance().use { realm ->
+                        val photoToDelete: Photo = realm.where(Photo::class.java)
+                                .equalTo(Photo.FIELD_ID, event.photoId)
+                                .findFirst() ?: return@use
+
+                        filePath = photoToDelete.filePath
+                    }
+
+                    if (filePath == null) {
+                        Snackbar.make(view, R.string.error_sharing_photo, Snackbar.LENGTH_LONG)
+                                .show()
+                        return@subscribe
+                    }
+
+                    ShareUtil.sharePhoto(File(filePath), view.context, this)
                 }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Delete>()
