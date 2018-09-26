@@ -20,6 +20,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
+import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
@@ -40,7 +41,7 @@ class MilestonesController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.MilestonesControllerShown)
 
-        view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY)))
+        view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY), PrefUtil.showAds.get()))
 
         val sharedEvents = view.events.share()
 

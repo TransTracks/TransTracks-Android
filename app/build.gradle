@@ -20,7 +20,9 @@ android {
     buildTypes {
         buildTypes.each {
             it.buildConfigField 'String', 'ADS_APP_ID', '"' + getSecretString('ADS_APP_ID') + '"'
+            it.resValue 'string', 'ADS_GALLERY_AD_ID', getSecretString('ADS_GALLERY_AD_ID')
             it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
+            it.resValue 'string', 'ADS_MILESTONES_AD_ID', getSecretString('ADS_MILESTONES_AD_ID')
             it.resValue 'string', 'ADS_SETTINGS_AD_ID', getSecretString('ADS_SETTINGS_AD_ID')
             it.buildConfigField 'String', 'CODE_SALT', '"' + getSecretString('CODE_SALT') + '"'
         }

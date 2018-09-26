@@ -31,6 +31,7 @@ import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
+import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.ofType
@@ -67,7 +68,7 @@ class GalleryController(args: Bundle) : Controller(args) {
             false -> Photo.TYPE_BODY
         }
 
-        view.display(GalleryUiState.Loaded(type, initialDay))
+        view.display(GalleryUiState.Loaded(type, initialDay, PrefUtil.showAds.get()))
 
         val sharedEvents = view.events.share()
 
@@ -91,11 +92,11 @@ class GalleryController(args: Bundle) : Controller(args) {
                         else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
                     }
 
-                    view.display(GalleryUiState.Selection(type, initialDay, selectedIds))
+                    view.display(GalleryUiState.Selection(type, initialDay, selectedIds, PrefUtil.showAds.get()))
                 }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.EndActionMode>()
-                .subscribe { view.display(GalleryUiState.Loaded(type, initialDay)) }
+                .subscribe { view.display(GalleryUiState.Loaded(type, initialDay, PrefUtil.showAds.get())) }
 
         viewDisposables += Observables.combineLatest(
                 sharedEvents.ofType<GalleryUiEvent.AddPhoto>(),
@@ -144,7 +145,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                         return@subscribe
                     }
 
-                    view.display(GalleryUiState.Loaded(type, initialDay))
+                    view.display(GalleryUiState.Loaded(type, initialDay, PrefUtil.showAds.get()))
 
                     ShareUtil.sharePhotos(filePaths.map { path -> File(path) }, view.context, this)
                 }
@@ -198,7 +199,7 @@ class GalleryController(args: Bundle) : Controller(args) {
 
                                 dialog.dismiss()
                                 if (success) {
-                                    view.display(GalleryUiState.Loaded(type, initialDay))
+                                    view.display(GalleryUiState.Loaded(type, initialDay, PrefUtil.showAds.get()))
                                 } else {
                                     Snackbar.make(view, R.string.error_deleting_photos,
                                                   Snackbar.LENGTH_LONG)

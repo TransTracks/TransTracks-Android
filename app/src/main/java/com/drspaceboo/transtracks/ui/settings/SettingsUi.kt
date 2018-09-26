@@ -17,7 +17,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.toFullDateString
+import com.drspaceboo.transtracks.util.visible
+import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
@@ -34,7 +38,7 @@ sealed class SettingsUiEvent {
 
 sealed class SettingsUiState {
     data class Loaded(val startDate: LocalDate, val theme: String, val lockMode: String,
-                      val enableLockDelay: Boolean, val lockDelay: String) : SettingsUiState()
+                      val enableLockDelay: Boolean, val lockDelay: String, val showAds: Boolean) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -44,6 +48,9 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     private val lock: Button by bindView(R.id.settings_lock)
     private val lockDelayLabel: View by bindView(R.id.settings_lock_delay_label)
     private val lockDelay: Button by bindView(R.id.settings_lock_delay)
+
+    private val adViewLayout: View by bindView(R.id.settings_ad_layout)
+    private val adView: AdView by bindView(R.id.settings_ad_view)
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(toolbar.navigationClicks().map { SettingsUiEvent.Back },
@@ -68,6 +75,13 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 lockDelay.isEnabled = state.enableLockDelay
 
                 lockDelay.text = state.lockDelay
+
+                if (state.showAds) {
+                    adViewLayout.visible()
+                    adView.loadAd()
+                } else {
+                    adViewLayout.gone()
+                }
             }
         }
     }

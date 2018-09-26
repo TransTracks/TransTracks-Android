@@ -89,7 +89,8 @@ class SettingsController : Controller() {
 
                     return@map SettingsUiState.Loaded(startDate, themeName, lockName,
                                                       enableLockDelay = lockType != LOCK_OFF,
-                                                      lockDelay = lockDelayName)
+                                                      lockDelay = lockDelayName,
+                                                      showAds = PrefUtil.showAds.get())
                 }
                 .subscribe { state -> view.display(state) }
 

@@ -21,8 +21,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.setGone
 import com.drspaceboo.transtracks.util.setVisible
+import com.drspaceboo.transtracks.util.visible
+import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
@@ -37,7 +41,7 @@ sealed class MilestonesUiEvent {
 }
 
 sealed class MilestonesUiState {
-    data class Loaded(val initialDay: Long) : MilestonesUiState()
+    data class Loaded(val initialDay: Long, val showAds: Boolean) : MilestonesUiState()
 
     companion object {
         fun getInitialDay(state: MilestonesUiState): Long = when (state) {
@@ -53,6 +57,9 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
 
     private val emptyMessage: TextView by bindView(R.id.milestones_empty_message)
     private val emptyAdd: View by bindView(R.id.milestones_empty_add)
+
+    private val adViewLayout: View by bindView(R.id.milestones_ad_layout)
+    private val adView: AdView by bindView(R.id.milestones_ad_view)
 
     private val eventRelay: PublishRelay<MilestonesUiEvent> = PublishRelay.create()
     val events: Observable<MilestonesUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
@@ -101,6 +108,13 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
                             setGone(recyclerView)
                         }
                     })
+                }
+
+                if (state.showAds) {
+                    adViewLayout.visible()
+                    adView.loadAd()
+                } else {
+                    adViewLayout.gone()
                 }
             }
         }

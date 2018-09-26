@@ -27,8 +27,12 @@ import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.setGone
 import com.drspaceboo.transtracks.util.setVisible
+import com.drspaceboo.transtracks.util.visible
+import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
@@ -49,20 +53,26 @@ sealed class GalleryUiEvent {
 }
 
 sealed class GalleryUiState {
-    data class Loaded(val type: Int, val initialDay: Long) : GalleryUiState()
+    data class Loaded(val type: Int, val initialDay: Long, val showAds: Boolean) : GalleryUiState()
     data class Selection(val type: Int, val initialDay: Long,
-                         val selectedIds: ArrayList<String>) : GalleryUiState()
+                         val selectedIds: ArrayList<String>,
+                         val showAds: Boolean) : GalleryUiState()
 
     companion object {
+        fun getInitialDay(state: GalleryUiState) = when (state) {
+            is GalleryUiState.Loaded -> state.initialDay
+            is GalleryUiState.Selection -> state.initialDay
+        }
+
+        fun getShowAds(state: GalleryUiState): Boolean = when (state) {
+            is GalleryUiState.Loaded -> state.showAds
+            is GalleryUiState.Selection -> state.showAds
+        }
+
         @Photo.Type
         fun getType(state: GalleryUiState) = when (state) {
             is Loaded -> state.type
             is Selection -> state.type
-        }
-
-        fun getInitialDay(state: GalleryUiState) = when (state) {
-            is GalleryUiState.Loaded -> state.initialDay
-            is GalleryUiState.Selection -> state.initialDay
         }
     }
 }
@@ -74,6 +84,9 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
     private val recyclerView: RecyclerView by bindView(R.id.gallery_recycler_view)
     private val emptyMessage: TextView by bindView(R.id.gallery_empty_message)
     private val emptyAdd: View by bindView(R.id.gallery_empty_add)
+
+    private val adViewLayout: View by bindView(R.id.gallery_ad_layout)
+    private val adView: AdView by bindView(R.id.gallery_ad_view)
 
     private var layoutManager = GridLayoutManager(context, GRID_SPAN)
 
@@ -158,6 +171,13 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
             if (adapter.selectionMode) {
                 adapter.updateSelectedIds(selectedIds)
             }
+        }
+
+        if (GalleryUiState.getShowAds(state)) {
+            adViewLayout.visible()
+            adView.loadAd()
+        } else {
+            adViewLayout.gone()
         }
     }
 
