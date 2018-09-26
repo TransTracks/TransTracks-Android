@@ -18,6 +18,8 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
@@ -35,6 +37,8 @@ class MilestonesController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is MilestonesView) throw AssertionError("View must be MilestonesView")
+
+        AnalyticsUtil.logEvent(Event.MilestonesControllerShown)
 
         view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY)))
 

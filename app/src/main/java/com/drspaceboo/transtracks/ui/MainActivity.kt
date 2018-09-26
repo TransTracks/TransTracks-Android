@@ -26,6 +26,7 @@ import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
@@ -52,7 +53,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
+            AnalyticsUtil.disable()
+        } else {
             Fabric.with(this, Crashlytics())
         }
 

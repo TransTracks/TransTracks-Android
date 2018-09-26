@@ -29,6 +29,8 @@ import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.domain.AssignPhotoAction
 import com.drspaceboo.transtracks.domain.AssignPhotoDomain
 import com.drspaceboo.transtracks.domain.AssignPhotoResult
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -61,6 +63,8 @@ class AssignPhotoController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is AssignPhotoView) throw AssertionError("View must be AssignPhotoView")
+
+        AnalyticsUtil.logEvent(Event.AssignPhotoControllerShown)
 
         val domain: AssignPhotoDomain = TransTracksApp.instance.domainManager.assignPhotoDomain
 

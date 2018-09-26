@@ -28,6 +28,8 @@ import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.domain.EditPhotoAction
 import com.drspaceboo.transtracks.domain.EditPhotoDomain
 import com.drspaceboo.transtracks.domain.EditPhotoResult
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -54,6 +56,8 @@ class EditPhotoController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is EditPhotoView) throw AssertionError("View must be EditPhotoView")
+
+        AnalyticsUtil.logEvent(Event.EditPhotoControllerShown)
 
         val domain: EditPhotoDomain = TransTracksApp.instance.domainManager.editPhotoDomain
 

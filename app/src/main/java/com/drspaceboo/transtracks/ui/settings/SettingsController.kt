@@ -25,7 +25,9 @@ import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_DELAY_FIFTEEN_MINUTES
@@ -53,6 +55,8 @@ class SettingsController : Controller() {
 
     override fun onAttach(view: View) {
         if (view !is SettingsView) throw AssertionError("View must be SettingsView")
+
+        AnalyticsUtil.logEvent(Event.SettingsControllerShown)
 
         val sharedEvents = view.events.share()
 

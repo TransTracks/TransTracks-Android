@@ -28,6 +28,8 @@ import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
 import com.drspaceboo.transtracks.ui.home.HomeController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
@@ -65,6 +67,8 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is SelectPhotoView) throw AssertionError("View must be SelectPhotoView")
+
+        AnalyticsUtil.logEvent(Event.SelectPhotoControllerShown)
 
         val sharedEvents = view.events.share()
 

@@ -22,6 +22,8 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Milestone
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -51,6 +53,8 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is AddEditMilestoneView) throw AssertionError("View must be AddEditMilestoneView")
+
+        AnalyticsUtil.logEvent(Event.AddEditMilestoneControllerShown)
 
         if (initialDay != -1L) {
             view.display(AddEditMilestoneUiState.Add(initialDay, "", "",

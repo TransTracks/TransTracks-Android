@@ -18,7 +18,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_NORMAL
 import com.drspaceboo.transtracks.util.ofType
@@ -39,6 +41,8 @@ class LockController() : Controller() {
 
     override fun onAttach(view: View) {
         if (view !is LockView) throw AssertionError("View must be LockView")
+
+        AnalyticsUtil.logEvent(Event.LockControllerShown(PrefUtil.lockType.get()))
 
         viewDisposables += view.events
                 .ofType<LockUiEvent.Unlock>()

@@ -28,6 +28,8 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
@@ -57,6 +59,8 @@ class GalleryController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is GalleryView) throw AssertionError("View must be GalleryView")
+
+        AnalyticsUtil.logEvent(Event.GalleryControllerShown(isFaceGallery))
 
         val type: Int = when (isFaceGallery) {
             true -> Photo.TYPE_FACE

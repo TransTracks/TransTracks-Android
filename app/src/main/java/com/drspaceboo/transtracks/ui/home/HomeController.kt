@@ -33,6 +33,8 @@ import com.drspaceboo.transtracks.ui.milestones.MilestonesController
 import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.settings.SettingsController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
@@ -55,6 +57,8 @@ class HomeController : Controller() {
 
     override fun onAttach(view: View) {
         if (view !is HomeView) throw AssertionError("View must be HomeView")
+
+        AnalyticsUtil.logEvent(Event.HomeControllerShown)
 
         val domain: HomeDomain = TransTracksApp.instance.domainManager.homeDomain
 

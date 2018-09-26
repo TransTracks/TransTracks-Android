@@ -24,6 +24,8 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.editphoto.EditPhotoController
+import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.getString
@@ -54,6 +56,8 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is SinglePhotoView) throw AssertionError("View must be SinglePhotoView")
+
+        AnalyticsUtil.logEvent(Event.SinglePhotoControllerShown)
 
         Realm.getDefaultInstance().use { realm ->
             val photo = realm.where(Photo::class.java).equalTo(Photo.FIELD_ID, photoId)
