@@ -109,21 +109,21 @@ class EditPhotoDomain {
                                         .equalTo(Photo.FIELD_ID, id)
                                         .findFirst() ?: return@map false
 
-                                val newPath: String?
+                                val newPath: String? = when {
+                                    photo.epochDay != date.toEpochDay() -> {
+                                        // We need to rename our image file since we keep the day in the
+                                        // name so they are ordered correctly in any export
+                                        val file = File(path)
+                                        if (!file.exists()) return@map false
 
-                                if (photo.epochDay != date.toEpochDay()) {
-                                    // We need to rename our image file since we keep the day in the
-                                    // name so they are ordered correctly in any export
-                                    val file = File(path)
-                                    if (!file.exists()) return@map false
+                                        val newFile = FileUtil.getNewImageFile(date)
 
-                                    val newFile = FileUtil.getNewImageFile(date)
+                                        if (!file.renameTo(newFile)) return@map false
 
-                                    if (!file.renameTo(newFile)) return@map false
+                                        newFile.absolutePath
+                                    }
 
-                                    newPath = newFile.absolutePath
-                                } else {
-                                    newPath = null
+                                    else -> null
                                 }
 
                                 realm.executeTransaction { innerRealm ->

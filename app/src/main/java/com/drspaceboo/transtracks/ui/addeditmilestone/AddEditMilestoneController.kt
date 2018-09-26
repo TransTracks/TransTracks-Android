@@ -94,7 +94,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                     if (milestoneId != null) {
                         confirmDeleteDialog = AlertDialog.Builder(view.context)
                                 .setTitle(R.string.are_you_sure)
-                                .setMessage(R.string.confirm_delete_photo)
+                                .setMessage(R.string.confirm_delete_milestone)
                                 .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
                                     var success = false
                                     Realm.getDefaultInstance().use { realm ->

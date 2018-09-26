@@ -39,4 +39,4 @@ data class Quadruple<out A, out B, out C, out D>(val first: A, val second: B, va
 /**
  * Converts this triple into a list.
  */
-public fun <T> Quadruple<T, T, T, T>.toList(): List<T> = listOf(first, second, third, forth)
+fun <T> Quadruple<T, T, T, T>.toList(): List<T> = listOf(first, second, third, forth)

@@ -10,12 +10,13 @@
 
 package com.drspaceboo.transtracks.util
 
-import android.media.ExifInterface.TAG_DATETIME
-import android.media.ExifInterface.TAG_SUBSEC_TIME
 import android.os.Build
 import android.support.media.ExifInterface
+import android.support.media.ExifInterface.TAG_DATETIME
+import android.support.media.ExifInterface.TAG_SUBSEC_TIME
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.regex.Pattern
 
 fun ExifInterface.copyFrom(other: ExifInterface) {
@@ -67,7 +68,7 @@ fun ExifInterface.compatGetDateTime(): Long {
 
 // Pattern to check non zero timestamp
 private val sNonZeroTimePattern = Pattern.compile(".*[1-9].*")
-private val sFormatter = SimpleDateFormat("yyyy:MM:dd HH:mm:ss")
+private val sFormatter = SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US)
 
 private val EXIF_TAGS = arrayOf(ExifInterface.TAG_APERTURE_VALUE,
                                 ExifInterface.TAG_ARTIST,

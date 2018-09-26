@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxrelay2.PublishRelay
@@ -280,6 +281,10 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                 }
 
                 selection.setImageResource(selectionRes)
+                selection.contentDescription = when (item.selected) {
+                    true -> itemView.getString(R.string.selected)
+                    false -> itemView.getString(R.string.not_selected)
+                }
             }
         }
     }

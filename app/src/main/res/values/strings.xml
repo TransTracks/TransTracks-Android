@@ -22,7 +22,6 @@
     <string name="edit_settings">Edit Settings</string>
     <string name="previous_record">Previous Record</string>
     <string name="next_record">Next Record</string>
-    <string name="day_number">Day %1$s</string>
     <string name="start_date">Start: %1$s</string>
     <string name="current_date">Current: %1$s</string>
     <string name="face_gallery">Face Gallery</string>
@@ -72,9 +71,7 @@
     <string name="disabled">Disabled</string>
     <string name="enabled_normal">Enabled (Normal)</string>
     <string name="enabled_trains">Enabled (Train Tracks)</string>
-    <string name="set_lock_mode">Set Lock Mode</string>
 
-    <string name="select_lock_delay">Select Lock Delay</string>
     <string name="instant">Instant</string>
     <string name="one_minute">One minute</string>
     <string name="two_minutes">Two minutes</string>

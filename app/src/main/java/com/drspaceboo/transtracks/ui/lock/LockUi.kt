@@ -56,6 +56,7 @@ class LockView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
         if (background != null) {
             Picasso.get()
                     .load(R.drawable.train_track_background)
+                    .placeholder(R.color.black)
                     .fit()
                     .centerCrop()
                     .into(background)

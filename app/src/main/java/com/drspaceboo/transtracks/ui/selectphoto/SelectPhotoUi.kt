@@ -17,7 +17,6 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
-import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks

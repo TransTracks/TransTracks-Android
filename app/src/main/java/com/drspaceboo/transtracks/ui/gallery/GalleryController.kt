@@ -200,7 +200,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                                 if (success) {
                                     view.display(GalleryUiState.Loaded(type, initialDay))
                                 } else {
-                                    Snackbar.make(view, R.string.error_deleting_photo,
+                                    Snackbar.make(view, R.string.error_deleting_photos,
                                                   Snackbar.LENGTH_LONG)
                                             .show()
                                 }

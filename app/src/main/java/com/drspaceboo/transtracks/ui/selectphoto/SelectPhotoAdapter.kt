@@ -70,16 +70,16 @@ class SelectPhotoAdapter(context: Context)
         }
     }
 
-    open class BaseHolder(itemView: View, private val itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : RecyclerView.ViewHolder(itemView)
+    open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    class TakePhotoHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView, itemClickRelay) {
+    class TakePhotoHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView) {
         init {
             //Avoiding subscription so we don't need to dispose it
             itemView.setOnClickListener { itemClickRelay.accept(SelectPhotoUiEvent.TakePhoto) }
         }
     }
 
-    class ImageHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView, itemClickRelay) {
+    class ImageHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView) {
         private val image: ImageView by bindView(R.id.select_photo_adapter_item_image)
 
         private var currentUri: Uri? = null
