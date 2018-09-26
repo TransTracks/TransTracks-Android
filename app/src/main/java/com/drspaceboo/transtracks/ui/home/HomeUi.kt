@@ -41,6 +41,7 @@ sealed class HomeUiEvent {
     object Settings : HomeUiEvent()
     object PreviousRecord : HomeUiEvent()
     object NextRecord : HomeUiEvent()
+    data class Milestones(val day: Long) : HomeUiEvent()
     data class FaceGallery(val day: Long) : HomeUiEvent()
     data class BodyGallery(val day: Long) : HomeUiEvent()
     data class ImageClick(val photoId: String) : HomeUiEvent()
@@ -54,6 +55,7 @@ sealed class HomeUiState {
                       val showNextRecord: Boolean,
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
+                      val hasMilestones: Boolean,
                       val facePhotos: List<Pair<String, String>>,
                       val bodyPhotos: List<Pair<String, String>>,
                       val showAds: Boolean) : HomeUiState()
@@ -70,6 +72,8 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
     private val startDate: TextView by bindView(R.id.home_start_date)
     private val currentDate: TextView by bindView(R.id.home_current_date)
+
+    private val milestones: ImageButton by bindView(R.id.home_milestones)
 
     private val faceGallery: Button by bindView(R.id.home_face_gallery)
     private val faceFirstImage: ImageView by bindView(R.id.home_face_first_image)
@@ -94,6 +98,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 settings.clicks().map { HomeUiEvent.Settings },
                 previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
                 nextRecord.clicks().map { HomeUiEvent.NextRecord },
+                milestones.clicks().map { HomeUiEvent.Milestones(date.toEpochDay()) },
                 faceGallery.clicks().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
                 faceFirstImage.clicks().filter { facePhotoIds[0] != null }.map {
                     HomeUiEvent.ImageClick(facePhotoIds[0]!!)
@@ -160,6 +165,12 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                                      state.startDate.toFullDateString(startDate.context))
                 currentDate.text = currentDate.getString(R.string.current_date,
                                                          state.currentDate.toFullDateString(currentDate.context))
+
+                val milestonesRes = when (state.hasMilestones) {
+                    true -> R.drawable.ic_milestone_selected
+                    false -> R.drawable.ic_milestone_unselected
+                }
+                milestones.setImageResource(milestonesRes)
 
                 if (state.facePhotos.isNotEmpty()) {
                     val (facePhoto0Id, facePhoto0Path) = state.facePhotos[0]

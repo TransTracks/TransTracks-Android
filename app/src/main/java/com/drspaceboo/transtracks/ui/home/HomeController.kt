@@ -29,6 +29,7 @@ import com.drspaceboo.transtracks.domain.HomeAction
 import com.drspaceboo.transtracks.domain.HomeDomain
 import com.drspaceboo.transtracks.domain.HomeResult
 import com.drspaceboo.transtracks.ui.gallery.GalleryController
+import com.drspaceboo.transtracks.ui.milestones.MilestonesController
 import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.settings.SettingsController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
@@ -155,6 +156,10 @@ class HomeController : Controller() {
                             router.pushController(RouterTransaction.with(HomeController())
                                                           .tag(HomeController.TAG))
 
+                        is HomeUiEvent.Milestones ->
+                            router.pushController(RouterTransaction.with(
+                                    MilestonesController(event.day)).tag(MilestonesController.TAG))
+
                         is HomeUiEvent.FaceGallery ->
                             router.pushController(RouterTransaction.with(
                                     GalleryController(isFaceGallery = true, initialDay = event.day))
@@ -200,9 +205,11 @@ val homeResultsToStates = ObservableTransformer<HomeResult, HomeUiState> { resul
         return@map when (result) {
             is HomeResult.Loading -> HomeUiState.Loading
 
-            is HomeResult.Loaded -> HomeUiState.Loaded(result.dayString, result.showPreviousRecord,
-                                                       result.showNextRecord, result.startDate, result.currentDate,
-                                                       result.facePhotos, result.bodyPhotos, result.showAds)
+            is HomeResult.Loaded ->
+                HomeUiState.Loaded(result.dayString, result.showPreviousRecord,
+                                   result.showNextRecord, result.startDate, result.currentDate,
+                                   result.hasMilestones, result.facePhotos, result.bodyPhotos,
+                                   result.showAds)
         }
     }
 }

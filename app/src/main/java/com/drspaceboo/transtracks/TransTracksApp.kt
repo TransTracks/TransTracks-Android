@@ -17,6 +17,7 @@ import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
@@ -36,6 +37,8 @@ class TransTracksApp : Application() {
 
         AndroidThreeTen.init(this)
         Realm.init(this)
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder().deleteRealmIfMigrationNeeded()
+                                              .build())
 
         FileUtil.clearTempFolder()
     }

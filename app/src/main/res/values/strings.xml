@@ -148,4 +148,21 @@
 
     <string name="password_cannot_be_empty">Password cannot be empty</string>
     <string name="password_and_confirm">The passwords don\'t match</string>
+
+    <!-- Milestones -->
+    <string name="milestones">Milestones</string>
+    <string name="milestones_empty">No Milestones currently recorded. Want to add some?</string>
+
+    <!-- Add Milestone -->
+    <string name="add_milestone">Add Milestone</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="title_label">Title:</string>
+    <string name="add_milestone_title_hint">Enter title e.g. Started HRT</string>
+    <string name="description_label">Description:</string>
+    <string name="add_milestone_description_hint">Add a description or details, if you want</string>
+    <string name="unable_to_find_milestone">Unable to find this Milestone</string>
+    <string name="milestone_saved">Milestone saved</string>
+    <string name="milestone_updated">Milestone updated</string>
+    <string name="confirm_delete_milestone">Deleting this milestone will remove it permanently.</string>
+    <string name="error_deleting_milestone">Error deleting milestone</string>
 </resources>

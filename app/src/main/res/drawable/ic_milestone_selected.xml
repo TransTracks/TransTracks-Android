@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="36dp" android:height="36dp" android:viewportHeight="23" android:viewportWidth="22">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M3.5 13V1.5H21V13zm2.81-5.09l3.68 3.69 7.52-7.51-1.2-1.19-6.32 6.35-2.48-2.53z"/>
+    <path android:fillColor="#FFFFFFFF" android:pathData="M20.75 1.75v11h-17v-11h17M9.99 8.85L7.86 6.72 7.51 6.37 7.15 6.72 6.31 7.56 5.95 7.91l0.36 0.34 3.33 3.33 0.35 0.36 0.36-0.36 7.16-7.16 0.35-0.35-0.35-0.35-0.84-0.84-0.36-0.36-0.35 0.36-6 5.95m11.29-7.58h-18v12h18v-12zM9.99 9.56l6.32-6.31 0.84 0.84-7.16 7.16-3.33-3.33 0.85-0.85 2.48 2.49z"/>
+    <path android:fillColor="#FFFFFFFF" android:pathData="M3.25 0.25h-2v20h-1v2h4v-2h-1z" android:strokeColor="#FFFFFFFF" android:strokeWidth="0.5"/>
+</vector>
