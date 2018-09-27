@@ -20,7 +20,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.util.getColor
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -80,6 +79,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val faceSecondImage: ImageView by bindView(R.id.home_face_second_image)
     private val faceThirdLayout: ViewGroup by bindView(R.id.home_face_third_image_layout)
     private val faceThirdImage: ImageView by bindView(R.id.home_face_third_image)
+    private val faceAddImage: ImageView by bindView(R.id.home_face_add_image)
     private val faceExtraImages: TextView by bindView(R.id.home_face_extra_images)
 
     private val bodyGallery: Button by bindView(R.id.home_body_gallery)
@@ -87,6 +87,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val bodySecondImage: ImageView by bindView(R.id.home_body_second_image)
     private val bodyThirdLayout: ViewGroup by bindView(R.id.home_body_third_image_layout)
     private val bodyThirdImage: ImageView by bindView(R.id.home_body_third_image)
+    private val bodyAddImage: ImageView by bindView(R.id.home_body_add_image)
     private val bodyExtraImages: TextView by bindView(R.id.home_body_extra_images)
 
     private val adViewLayout: ViewGroup by bindView(R.id.home_ad_layout)
@@ -106,12 +107,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 faceSecondImage.clicks().filter { facePhotoIds[1] != null }.map {
                     HomeUiEvent.ImageClick(facePhotoIds[1]!!)
                 },
-                faceThirdImage.clicks().map {
-                    return@map when (facePhotoIds[2]) {
-                        null -> HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE)
-                        else -> HomeUiEvent.ImageClick(facePhotoIds[2]!!)
-                    }
+                faceThirdImage.clicks().filter { facePhotoIds[2] != null }.map {
+                    HomeUiEvent.ImageClick(facePhotoIds[2]!!)
                 },
+                faceAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE) },
                 bodyGallery.clicks().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
                 bodyFirstImage.clicks().filter { bodyPhotoIds[0] != null }.map {
                     HomeUiEvent.ImageClick(bodyPhotoIds[0]!!)
@@ -119,12 +118,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 bodySecondImage.clicks().filter { bodyPhotoIds[1] != null }.map {
                     HomeUiEvent.ImageClick(bodyPhotoIds[1]!!)
                 },
-                bodyThirdImage.clicks().map {
-                    return@map when (bodyPhotoIds[2]) {
-                        null -> HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY)
-                        else -> HomeUiEvent.ImageClick(bodyPhotoIds[2]!!)
-                    }
-                })
+                bodyThirdImage.clicks().filter { bodyPhotoIds[2] != null }.map {
+                    HomeUiEvent.ImageClick(bodyPhotoIds[2]!!)
+                },
+                bodyAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY) })
     }
 
     private val facePhotoIds = Array<String?>(3) { _ -> null }
@@ -134,19 +131,17 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
-            bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(bodyThirdImage)
-            bodyThirdImage.setImageResource(R.drawable.add)
-            bodyThirdImage.visible()
+            bodyThirdImage.gone()
             bodyExtraImages.gone()
+            bodyAddImage.visible()
         }
 
         fun setAddAnotherFaceImage() {
-            faceThirdLayout.setBackgroundColor(getColor(R.color.transparent))
             Picasso.get().cancelRequest(faceThirdImage)
-            faceThirdImage.setImageResource(R.drawable.add)
-            faceThirdImage.visible()
+            faceThirdImage.gone()
             faceExtraImages.gone()
+            faceAddImage.visible()
         }
 
         facePhotoIds.nullAllElements()
@@ -192,10 +187,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                             val (facePhoto2Id, facePhoto2Path) = state.facePhotos[2]
                             facePhotoIds[2] = facePhoto2Id
 
-                            faceThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
                             Picasso.get().load(File(facePhoto2Path)).fit().centerCrop()
                                     .into(faceThirdImage)
                             faceThirdImage.visible()
+                            faceAddImage.gone()
 
                             if (state.facePhotos.size > 3) {
                                 val extraImages = state.facePhotos.size - 3
@@ -237,10 +232,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                             val (bodyPhoto2Id, bodyPhoto2Path) = state.bodyPhotos[2]
                             bodyPhotoIds[2] = bodyPhoto2Id
 
-                            bodyThirdLayout.setBackgroundColor(getColor(R.color.transparent_white_25))
                             Picasso.get().load(File(bodyPhoto2Path)).fit().centerCrop()
                                     .into(bodyThirdImage)
                             bodyThirdImage.visible()
+                            bodyAddImage.gone()
 
                             if (state.bodyPhotos.size > 3) {
                                 val extraImages = state.bodyPhotos.size - 3

@@ -28,6 +28,9 @@
     <string name="extra_photos">+%1$d</string>
     <string name="body_gallery">Body Gallery</string>
 
+    <string name="add_face_photo">Add face photo</string>
+    <string name="add_body_photo">Add body photo</string>
+
     <string name="permission_required">Permission Required</string>
     <string name="grant_permission">Grant Permission</string>
 

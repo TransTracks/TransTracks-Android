@@ -67,7 +67,7 @@
         android:layout_height="64dp"
         android:background="@color/transparent"
         android:contentDescription="@string/add"
-        android:src="@drawable/ic_add_circle_white_24dp"
+        android:src="@drawable/ic_add_circle_white_48dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/milestones_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"

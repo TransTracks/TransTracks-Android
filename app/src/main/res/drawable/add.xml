@@ -11,5 +11,5 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="#e6e6e6e6">
-    <item android:drawable="@drawable/ic_add_circle_white_24dp" />
+    <item android:drawable="@drawable/ic_add_circle_white_48dp" />
 </ripple>
