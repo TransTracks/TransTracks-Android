@@ -126,7 +126,6 @@
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
                 android:text="@string/lock_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +140,6 @@
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/white_text_selector"
                 app:layout_constraintBottom_toBottomOf="@id/settings_lock_label"
@@ -149,6 +147,19 @@
                 app:layout_constraintStart_toEndOf="@id/settings_lock_label"
                 app:layout_constraintTop_toTopOf="@id/settings_lock_label"
                 tools:text="Disabled" />
+
+            <TextView
+                android:id="@+id/settings_lock_description"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/lock_description"
+                android:textColor="@color/transparent_white_90_text_selector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_lock_label" />
 
             <TextView
                 android:id="@+id/settings_lock_delay_label"
@@ -163,7 +174,7 @@
                 android:text="@string/lock_delay_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_lock_label" />
+                app:layout_constraintTop_toBottomOf="@id/settings_lock_description" />
 
             <Button
                 android:id="@+id/settings_lock_delay"
