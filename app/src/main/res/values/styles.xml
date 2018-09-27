@@ -10,24 +10,25 @@
 
 <resources>
 
-    <style name="PinkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="PinkAppTheme" parent="BaseAppTheme">
         <item name="colorPrimaryLight">@color/pinkColorPrimaryLight</item>
         <item name="colorPrimary">@color/pinkColorPrimary</item>
         <item name="colorPrimaryDark">@color/pinkColorPrimaryDark</item>
         <item name="colorAccent">@color/pinkColorAccent</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_close_black_24dp</item>
-        <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="BlueAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BlueAppTheme" parent="BaseAppTheme">
         <item name="colorPrimaryLight">@color/blueColorPrimaryLight</item>
         <item name="colorPrimary">@color/blueColorPrimary</item>
         <item name="colorPrimaryDark">@color/blueColorPrimaryDark</item>
         <item name="colorAccent">@color/blueColorAccent</item>
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionModeCloseDrawable">@drawable/ic_close_black_24dp</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:fontFamily">@font/arvo</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

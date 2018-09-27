@@ -157,8 +157,8 @@
                 android:paddingEnd="16dp"
                 android:text="@string/lock_description"
                 android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settings_lock_label" />
 
             <TextView
