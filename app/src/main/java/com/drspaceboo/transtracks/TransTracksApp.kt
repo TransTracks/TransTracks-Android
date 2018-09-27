@@ -37,8 +37,6 @@ class TransTracksApp : Application() {
 
         AndroidThreeTen.init(this)
         Realm.init(this)
-        Realm.setDefaultConfiguration(RealmConfiguration.Builder().deleteRealmIfMigrationNeeded()
-                                              .build())
 
         FileUtil.clearTempFolder()
     }
