@@ -16,63 +16,57 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <ScrollView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/settings_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:theme="@style/AppTheme.PopupOverlay"
+        app:layout_constraintBottom_toTopOf="@+id/settings_scroll_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/settings"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/white_text_selector" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/settings_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/transparent_white_25"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/settings_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/settings_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:theme="@style/AppTheme.PopupOverlay"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                <TextView
-                    android:id="@+id/settings_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/settings"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@color/white_text_selector" />
-            </android.support.v7.widget.Toolbar>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/transparent_white_25"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/settings_start_label" />
 
             <TextView
                 android:id="@+id/settings_start_label"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
                 android:text="@string/start_date_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_toolbar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/settings_start_date"
@@ -80,10 +74,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/white_text_selector"
                 app:layout_constraintBottom_toBottomOf="@id/settings_start_label"
@@ -97,10 +91,10 @@
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
                 android:text="@string/theme_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
@@ -112,10 +106,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/white_text_selector"
                 app:layout_constraintBottom_toBottomOf="@id/settings_theme_label"
@@ -129,10 +123,10 @@
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
                 android:text="@string/lock_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,10 +138,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/white_text_selector"
                 app:layout_constraintBottom_toBottomOf="@id/settings_lock_label"
@@ -162,10 +156,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:paddingBottom="8dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
                 android:text="@string/lock_delay_label"
                 android:textColor="@color/transparent_white_90_text_selector"
                 app:layout_constraintStart_toStartOf="parent"
@@ -178,10 +172,10 @@
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:gravity="end"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/white_text_selector"
                 app:layout_constraintBottom_toBottomOf="@id/settings_lock_delay_label"
@@ -189,6 +183,85 @@
                 app:layout_constraintStart_toEndOf="@id/settings_lock_delay_label"
                 app:layout_constraintTop_toTopOf="@id/settings_lock_delay_label"
                 tools:text="Instant" />
+
+            <ImageView
+                android:id="@+id/settings_divider_one"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/fading_line"
+                app:layout_constraintBottom_toTopOf="@id/home_start_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_lock_delay_label" />
+
+            <TextView
+                android:id="@+id/settings_app_version_label"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="8dp"
+                android:text="@string/app_version_label"
+                android:textColor="@color/transparent_white_90_text_selector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_divider_one" />
+
+            <TextView
+                android:id="@+id/settings_app_version"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/white_text_selector"
+                app:layout_constraintBottom_toBottomOf="@id/settings_app_version_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/settings_app_version_label"
+                app:layout_constraintTop_toTopOf="@id/settings_app_version_label"
+                tools:text="1.0.0 (8)" />
+
+            <Button
+                android:id="@+id/settings_privacy_policy"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/privacy_policy"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/white_text_selector"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_app_version_label" />
+
+            <TextView
+                android:id="@+id/settings_copyright"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/white_text_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_privacy_policy"
+                app:layout_constraintVertical_bias="1"
+                tools:text="@string/copyright" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

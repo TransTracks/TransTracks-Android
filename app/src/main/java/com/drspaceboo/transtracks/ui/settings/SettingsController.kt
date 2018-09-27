@@ -13,6 +13,8 @@ package com.drspaceboo.transtracks.ui.settings
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.support.annotation.NonNull
 import android.support.v7.app.AlertDialog
 import android.text.Editable
@@ -24,6 +26,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
+import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
@@ -45,6 +48,7 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
 import org.threeten.bp.LocalDate
+import java.util.Calendar
 
 class SettingsController : Controller() {
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
@@ -87,10 +91,13 @@ class SettingsController : Controller() {
                                 else -> throw IllegalArgumentException("Unhandled lock delay")
                             })
 
-                    return@map SettingsUiState.Loaded(startDate, themeName, lockName,
-                                                      enableLockDelay = lockType != LOCK_OFF,
-                                                      lockDelay = lockDelayName,
-                                                      showAds = PrefUtil.showAds.get())
+                    return@map SettingsUiState.Loaded(
+                            startDate, themeName, lockName, enableLockDelay = lockType != LOCK_OFF,
+                            lockDelay = lockDelayName,
+                            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                            copyright = view.getString(R.string.copyright,
+                                                       Calendar.getInstance().get(Calendar.YEAR).toString()),
+                            showAds = PrefUtil.showAds.get())
                 }
                 .subscribe { state -> view.display(state) }
 
@@ -297,6 +304,17 @@ class SettingsController : Controller() {
                             }
                             .setNegativeButton(R.string.cancel, null)
                             .show()
+                }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.PrivacyPolicy>()
+                .subscribe {
+                    val activity = activity ?: return@subscribe
+
+                    val webpage = Uri.parse("http://www.drspaceboo.com/privacy-policy/")
+                    val intent = Intent(Intent.ACTION_VIEW, webpage)
+                    if (intent.resolveActivity(activity.packageManager) != null) {
+                        startActivity(intent)
+                    }
                 }
     }
 

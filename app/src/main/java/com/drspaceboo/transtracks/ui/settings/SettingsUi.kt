@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -34,11 +35,12 @@ sealed class SettingsUiEvent {
     object ChangeTheme : SettingsUiEvent()
     object ChangeLockMode : SettingsUiEvent()
     object ChangeLockDelay : SettingsUiEvent()
+    object PrivacyPolicy : SettingsUiEvent()
 }
 
 sealed class SettingsUiState {
     data class Loaded(val startDate: LocalDate, val theme: String, val lockMode: String,
-                      val enableLockDelay: Boolean, val lockDelay: String, val showAds: Boolean) : SettingsUiState()
+                      val enableLockDelay: Boolean, val lockDelay: String, val appVersion: String, val copyright: String, val showAds: Boolean) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -49,6 +51,11 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     private val lockDelayLabel: View by bindView(R.id.settings_lock_delay_label)
     private val lockDelay: Button by bindView(R.id.settings_lock_delay)
 
+    private val appVersion: TextView by bindView(R.id.settings_app_version)
+    private val privacyPolicy: Button by bindView(R.id.settings_privacy_policy)
+
+    private val copyright: TextView by bindView(R.id.settings_copyright)
+
     private val adViewLayout: View by bindView(R.id.settings_ad_layout)
     private val adView: AdView by bindView(R.id.settings_ad_view)
 
@@ -57,7 +64,8 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                               startDate.clicks().map { SettingsUiEvent.ChangeStartDate },
                               theme.clicks().map { SettingsUiEvent.ChangeTheme },
                               lock.clicks().map { SettingsUiEvent.ChangeLockMode },
-                              lockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay })
+                              lockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+                              privacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy })
     }
 
     private var currentStartDate: LocalDate? = null
@@ -75,6 +83,10 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 lockDelay.isEnabled = state.enableLockDelay
 
                 lockDelay.text = state.lockDelay
+
+                appVersion.text = state.appVersion
+
+                copyright.text = state.copyright
 
                 if (state.showAds) {
                     adViewLayout.visible()
