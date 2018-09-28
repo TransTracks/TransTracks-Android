@@ -167,63 +167,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_divider_two" />
 
-    <android.support.constraint.ConstraintLayout
+    <com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout
         android:id="@+id/home_face_images_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/home_body_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_face_gallery">
 
-        <com.drspaceboo.transtracks.ui.widget.SquareImageView
+        <ImageView
             android:id="@+id/home_face_first_image"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/home_face_second_image"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="4dp" />
 
-        <com.drspaceboo.transtracks.ui.widget.SquareImageView
+        <ImageView
             android:id="@+id/home_face_second_image"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/home_face_third_image_layout"
-            app:layout_constraintStart_toEndOf="@id/home_face_first_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="4dp" />
 
-        <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
+        <RelativeLayout
             android:id="@+id/home_face_third_image_layout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_face_second_image"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="4dp">
 
             <ImageView
                 android:id="@+id/home_face_third_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent" />
 
             <ImageButton
                 android:id="@+id/home_face_add_image"
@@ -231,27 +216,23 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
                 android:contentDescription="@string/add_face_photo"
-                android:src="@drawable/add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/add" />
 
             <TextView
                 android:id="@+id/home_face_extra_images"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/rounded_transparent_button"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
-        </com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
+        </RelativeLayout>
+    </com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout>
 
     <Button
         android:id="@+id/home_body_gallery"
@@ -269,63 +250,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_face_images_layout" />
 
-    <android.support.constraint.ConstraintLayout
+    <com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout
         android:id="@+id/home_body_images_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/home_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_body_gallery">
 
-        <com.drspaceboo.transtracks.ui.widget.SquareImageView
+        <ImageView
             android:id="@+id/home_body_first_image"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/home_body_second_image"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="4dp" />
 
-        <com.drspaceboo.transtracks.ui.widget.SquareImageView
+        <ImageView
             android:id="@+id/home_body_second_image"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/home_body_third_image_layout"
-            app:layout_constraintStart_toEndOf="@id/home_body_first_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="4dp" />
 
-        <com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout
+        <RelativeLayout
             android:id="@+id/home_body_third_image_layout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/transparent_white_25"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_body_second_image"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="4dp">
 
             <ImageView
                 android:id="@+id/home_body_third_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent" />
 
             <ImageButton
                 android:id="@+id/home_body_add_image"
@@ -333,27 +299,23 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
                 android:contentDescription="@string/add_body_photo"
-                android:src="@drawable/add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/add" />
 
             <TextView
                 android:id="@+id/home_body_extra_images"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/rounded_transparent_button"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="+200" />
-        </com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
+        </RelativeLayout>
+    </com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout>
 
     <FrameLayout
         android:id="@+id/home_ad_layout"

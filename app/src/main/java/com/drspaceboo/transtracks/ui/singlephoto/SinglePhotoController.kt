@@ -35,7 +35,6 @@ import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.using
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
-import io.realm.RealmObjectChangeListener
 import org.threeten.bp.LocalDate
 import java.io.File
 
@@ -61,16 +60,27 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
         Realm.getDefaultInstance().use { realm ->
             val photo = realm.where(Photo::class.java).equalTo(Photo.FIELD_ID, photoId)
-                    .findFirstAsync()
-            photo.addChangeListener(RealmObjectChangeListener<Photo> { innerPhoto, _ ->
-                val details = view.getString(
-                        R.string.photo_detail_replacement,
-                        LocalDate.ofEpochDay(innerPhoto.epochDay).toFullDateString(view.context),
-                        Photo.getTypeName(innerPhoto.type, view.context))
+                    .findFirst()
 
-                view.display(SinglePhotoUiState.Loaded(innerPhoto.filePath, details, innerPhoto.id))
-                photo.removeAllChangeListeners()
-            })
+            if (photo == null) {
+                AlertDialog.Builder(view.context)
+                        .setTitle(R.string.error_loading_photo)
+                        .setMessage(R.string.error_loading_photo_message)
+                        .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
+                            dialog.dismiss()
+                            router.handleBack()
+                        }
+                        .setCancelable(false)
+                        .show()
+                return@use
+            }
+
+            val details = view.getString(
+                    R.string.photo_detail_replacement,
+                    LocalDate.ofEpochDay(photo.epochDay).toFullDateString(view.context),
+                    Photo.getTypeName(photo.type, view.context))
+
+            view.display(SinglePhotoUiState.Loaded(photo.filePath, details, photo.id))
         }
 
         val sharedEvents = view.events.share()
