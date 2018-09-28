@@ -15,10 +15,12 @@ import android.support.annotation.StringRes
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.showKeyboard
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
@@ -49,6 +51,7 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
 
     private val title: EditText by bindView(R.id.add_milestone_title)
     private val date: Button by bindView(R.id.add_milestone_date)
+    private val descriptionLabel: View by bindView(R.id.add_milestone_description_label)
     private val description: EditText by bindView(R.id.add_milestone_description)
 
     private val save: Button by bindView(R.id.add_milestone_save)
@@ -77,6 +80,10 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
         super.onAttachedToWindow()
 
         toolbar.inflateMenu(R.menu.add_edit_milestone)
+        descriptionLabel.setOnClickListener {
+            description.requestFocus()
+            description.showKeyboard()
+        }
     }
 
     fun display(state: AddEditMilestoneUiState) {

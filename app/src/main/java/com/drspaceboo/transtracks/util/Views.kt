@@ -10,12 +10,14 @@
 
 package com.drspaceboo.transtracks.util
 
+import android.content.Context
 import android.os.Build
 import android.support.annotation.ColorInt
 import android.support.annotation.ColorRes
 import android.support.annotation.NonNull
 import android.support.annotation.StringRes
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 @ColorInt
 fun View.getColor(@ColorRes colorRes: Int): Int = when {
@@ -55,6 +57,11 @@ fun View.setVisibleOrGone(show: Boolean) = when (show) {
 fun View.setVisibleOrInvisible(show: Boolean) = when (show) {
     true -> visibility = View.VISIBLE
     false -> visibility = View.INVISIBLE
+}
+
+fun View.showKeyboard() {
+    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun setVisible(vararg views: View) = views.forEach { it.visibility = View.VISIBLE }
