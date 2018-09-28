@@ -23,6 +23,7 @@ import com.drspaceboo.transtracks.util.EncryptionUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_NORMAL
+import com.drspaceboo.transtracks.util.hideKeyboard
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable
@@ -49,6 +50,7 @@ class LockController : Controller() {
                 .subscribe { event ->
                     if (PrefUtil.lockCode.get()
                             == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
+                        view.hideKeyboard()
                         router.popCurrentController()
                     } else {
                         @StringRes
