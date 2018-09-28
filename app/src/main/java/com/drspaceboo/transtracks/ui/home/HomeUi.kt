@@ -127,7 +127,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val facePhotoIds = Array<String?>(3) { _ -> null }
     private val bodyPhotoIds = Array<String?>(3) { _ -> null }
 
-    private var date = LocalDate.now()
+    private var date = LocalDate.MIN
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
