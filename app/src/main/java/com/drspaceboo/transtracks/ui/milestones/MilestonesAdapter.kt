@@ -116,11 +116,12 @@ class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,
                     return old.epochDay == new.epochDay
                 }
 
-                if (old.milestone == null || !old.milestone.isValid) {
+                if (old.milestone == null || !old.milestone.isValid || new.milestone == null
+                        || !new.milestone.isValid) {
                     return false
                 }
 
-                return old.milestone.id == new.milestone!!.id
+                return old.milestone.id == new.milestone.id
             }
 
             override fun getOldListSize(): Int = items.size
@@ -135,14 +136,15 @@ class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,
                     return old.epochDay == new.epochDay
                 }
 
-                val oldMilestone = old.milestone!!
-                val newMilestone = new.milestone!!
+                if (old.milestone == null || new.milestone == null) {
+                    return false
+                }
 
-                return oldMilestone == newMilestone && oldMilestone.id == newMilestone.id
-                        && oldMilestone.epochDay == newMilestone.epochDay
-                        && oldMilestone.timestamp == newMilestone.timestamp
-                        && oldMilestone.title == newMilestone.title
-                        && oldMilestone.description == newMilestone.description
+                return old.milestone == new.milestone && old.milestone.id == new.milestone.id
+                        && old.milestone.epochDay == new.milestone.epochDay
+                        && old.milestone.timestamp == new.milestone.timestamp
+                        && old.milestone.title == new.milestone.title
+                        && old.milestone.description == new.milestone.description
             }
         }, true)
 
