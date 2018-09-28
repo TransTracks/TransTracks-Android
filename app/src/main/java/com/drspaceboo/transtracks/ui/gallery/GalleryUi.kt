@@ -32,6 +32,7 @@ import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.setGone
 import com.drspaceboo.transtracks.util.setVisible
 import com.drspaceboo.transtracks.util.visible
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
@@ -114,6 +115,12 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
         layoutManager.spanSizeLookup = AdapterSpanSizeLookup(recyclerView)
         recyclerView.layoutManager = layoutManager
+
+        adView.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(code: Int) {
+                adViewLayout.gone()
+            }
+        }
     }
 
     fun display(state: GalleryUiState) {

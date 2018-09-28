@@ -27,6 +27,7 @@ import com.drspaceboo.transtracks.util.nullAllElements
 import com.drspaceboo.transtracks.util.setVisibleOrInvisible
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso
@@ -126,6 +127,16 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val bodyPhotoIds = Array<String?>(3) { _ -> null }
 
     private var date = LocalDate.MIN
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        adView.adListener = object : AdListener() {
+            override fun onAdFailedToLoad(code: Int) {
+                adViewLayout.gone()
+            }
+        }
+    }
 
     fun display(state: HomeUiState) {
         fun setAddAnotherBodyImage() {
