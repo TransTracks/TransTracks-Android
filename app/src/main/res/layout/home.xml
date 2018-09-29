@@ -187,23 +187,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp" />
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp" />
 
         <ImageView
             android:id="@+id/home_face_second_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp" />
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp" />
 
         <RelativeLayout
             android:id="@+id/home_face_third_image_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp">
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp">
 
             <ImageView
                 android:id="@+id/home_face_third_image"
@@ -270,23 +270,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp" />
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp" />
 
         <ImageView
             android:id="@+id/home_body_second_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp" />
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp" />
 
         <RelativeLayout
             android:id="@+id/home_body_third_image_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transparent_white_25"
-            android:padding="4dp">
+            android:background="@drawable/rounded_image_background"
+            android:padding="6dp">
 
             <ImageView
                 android:id="@+id/home_body_third_image"
