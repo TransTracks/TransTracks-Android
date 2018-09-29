@@ -23008,7 +23008,7 @@ com.drspaceboo.transtracks.R$styleable -> com.drspaceboo.transtracks.a$a:
     int ViewStubCompat_android_id -> ViewStubCompat_android_id
     int ViewStubCompat_android_layout -> ViewStubCompat_android_layout
     int ViewStubCompat_android_inflatedId -> ViewStubCompat_android_inflatedId
-    6537:20779:void <clinit>() -> <clinit>
+    6107:19668:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.TransTracksApp -> com.drspaceboo.transtracks.TransTracksApp:
     com.drspaceboo.transtracks.domain.DomainManager domainManager -> b
     com.drspaceboo.transtracks.TransTracksApp instance -> c
@@ -23704,51 +23704,51 @@ com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController$onAtta
     void <init>(com.drspaceboo.transtracks.data.Milestone,com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController$onAttach$5,com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save) -> <init>
     169:174:void execute(io.realm.Realm) -> a
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent -> com.drspaceboo.transtracks.ui.addeditmilestone.b:
-    20:20:void <init>() -> <init>
-    20:20:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    22:22:void <init>() -> <init>
+    22:22:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back -> com.drspaceboo.transtracks.ui.addeditmilestone.b$a:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back INSTANCE -> a
-    21:21:void <init>() -> <init>
-    21:21:void <clinit>() -> <clinit>
+    23:23:void <init>() -> <init>
+    23:23:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.addeditmilestone.b$b:
     long day -> a
     java.lang.String title -> b
     java.lang.String description -> c
-    23:23:long getDay() -> a
-    23:23:java.lang.String getTitle() -> b
-    24:24:java.lang.String getDescription() -> c
-    23:24:void <init>(long,java.lang.String,java.lang.String) -> <init>
+    25:25:long getDay() -> a
+    25:25:java.lang.String getTitle() -> b
+    26:26:java.lang.String getDescription() -> c
+    25:26:void <init>(long,java.lang.String,java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete -> com.drspaceboo.transtracks.ui.addeditmilestone.b$c:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete INSTANCE -> a
-    22:22:void <init>() -> <init>
-    22:22:void <clinit>() -> <clinit>
+    24:24:void <init>() -> <init>
+    24:24:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save -> com.drspaceboo.transtracks.ui.addeditmilestone.b$d:
     long day -> a
     java.lang.String title -> b
     java.lang.String description -> c
-    26:26:long getDay() -> a
-    26:26:java.lang.String getTitle() -> b
-    27:27:java.lang.String getDescription() -> c
-    26:27:void <init>(long,java.lang.String,java.lang.String) -> <init>
+    28:28:long getDay() -> a
+    28:28:java.lang.String getTitle() -> b
+    29:29:java.lang.String getDescription() -> c
+    28:29:void <init>(long,java.lang.String,java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState -> com.drspaceboo.transtracks.ui.addeditmilestone.c:
-    30:30:void <init>() -> <init>
-    30:30:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    32:32:void <init>() -> <init>
+    32:32:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState$Add -> com.drspaceboo.transtracks.ui.addeditmilestone.c$a:
     long day -> a
     java.lang.String title -> b
     java.lang.String description -> c
     boolean isAdd -> d
-    31:31:long getDay() -> a
-    31:31:java.lang.String getTitle() -> b
-    32:32:java.lang.String getDescription() -> c
-    32:32:boolean isAdd() -> d
-    31:32:void <init>(long,java.lang.String,java.lang.String,boolean) -> <init>
+    33:33:long getDay() -> a
+    33:33:java.lang.String getTitle() -> b
+    34:34:java.lang.String getDescription() -> c
+    34:34:boolean isAdd() -> d
+    33:34:void <init>(long,java.lang.String,java.lang.String,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -23758,54 +23758,60 @@ com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView -> com.drspa
     kotlin.properties.ReadOnlyProperty toolbarTitle$delegate -> i
     kotlin.properties.ReadOnlyProperty title$delegate -> j
     kotlin.properties.ReadOnlyProperty date$delegate -> k
-    kotlin.properties.ReadOnlyProperty description$delegate -> l
-    kotlin.properties.ReadOnlyProperty save$delegate -> m
-    kotlin.Lazy events$delegate -> n
-    long day -> o
+    kotlin.properties.ReadOnlyProperty descriptionLabel$delegate -> l
+    kotlin.properties.ReadOnlyProperty description$delegate -> m
+    kotlin.properties.ReadOnlyProperty save$delegate -> n
+    kotlin.Lazy events$delegate -> o
+    long day -> p
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
     android.widget.TextView getToolbarTitle() -> getToolbarTitle
     android.widget.EditText getTitle() -> getTitle
     android.widget.Button getDate() -> getDate
+    android.view.View getDescriptionLabel() -> getDescriptionLabel
     android.widget.EditText getDescription() -> getDescription
     android.widget.Button getSave() -> getSave
     io.reactivex.Observable getEvents() -> getEvents
-    67:70:void onAttachedToWindow() -> onAttachedToWindow
-    73:91:void display(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState) -> a
-    36:46:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    36:36:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> a
-    36:36:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> b
-    36:36:long access$getDay$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> c
-    36:36:android.widget.EditText access$getTitle$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> d
-    36:36:android.widget.EditText access$getDescription$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> e
-    36:36:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> f
+    70:77:void onAttachedToWindow() -> onAttachedToWindow
+    80:98:void display(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState) -> a
+    38:49:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    38:38:android.widget.EditText access$getDescription$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> a
+    38:38:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> b
+    38:38:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> c
+    38:38:long access$getDay$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> d
+    38:38:android.widget.EditText access$getTitle$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> e
+    38:38:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> f
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
-    36:36:java.lang.Object invoke() -> a
-    47:97:io.reactivex.Observable invoke() -> b
+    38:38:java.lang.Object invoke() -> a
+    50:104:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$1 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$1:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$1 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    47:47:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back apply(kotlin.Unit) -> a
+    38:38:java.lang.Object apply(java.lang.Object) -> a
+    50:50:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$2 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$2:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$2 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    49:51:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete apply(android.view.MenuItem) -> a
+    38:38:java.lang.Object apply(java.lang.Object) -> a
+    52:54:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete apply(android.view.MenuItem) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$3 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$3:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 this$0 -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    55:56:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$ChangeDate apply(kotlin.Unit) -> a
+    38:38:java.lang.Object apply(java.lang.Object) -> a
+    58:59:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$ChangeDate apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$4 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$4:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 this$0 -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    59:60:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save apply(kotlin.Unit) -> a
+    38:38:java.lang.Object apply(java.lang.Object) -> a
+    62:63:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$b:
+    com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
+    74:76:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController -> com.drspaceboo.transtracks.ui.assignphoto.a:
     io.reactivex.disposables.Disposable resultsDisposable -> c
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
@@ -24391,74 +24397,74 @@ com.drspaceboo.transtracks.ui.gallery.GalleryController$onAttach$9 -> com.drspac
     108:110:void accept(java.lang.Boolean) -> a
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent -> com.drspaceboo.transtracks.ui.gallery.c:
-    34:34:void <init>() -> <init>
-    34:34:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    35:35:void <init>() -> <init>
+    35:35:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$AddPhoto -> com.drspaceboo.transtracks.ui.gallery.c$a:
     int type -> a
-    37:37:int getType() -> a
-    37:37:void <init>(int) -> <init>
+    38:38:int getType() -> a
+    38:38:void <init>(int) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Back -> com.drspaceboo.transtracks.ui.gallery.c$b:
     com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Back INSTANCE -> a
-    35:35:void <init>() -> <init>
-    35:35:void <clinit>() -> <clinit>
+    36:36:void <init>() -> <init>
+    36:36:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Delete -> com.drspaceboo.transtracks.ui.gallery.c$c:
+    java.util.ArrayList selectedIds -> a
+    43:43:java.util.ArrayList getSelectedIds() -> a
+    43:43:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$EndActionMode -> com.drspaceboo.transtracks.ui.gallery.c$d:
+    com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$EndActionMode INSTANCE -> a
+    41:41:void <init>() -> <init>
+    41:41:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$ImageClick -> com.drspaceboo.transtracks.ui.gallery.c$e:
+    java.lang.String photoId -> a
+    37:37:java.lang.String getPhotoId() -> a
+    37:37:void <init>(java.lang.String) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$SelectionUpdated -> com.drspaceboo.transtracks.ui.gallery.c$f:
+    java.util.ArrayList selectedIds -> a
+    40:40:java.util.ArrayList getSelectedIds() -> a
+    40:40:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Share -> com.drspaceboo.transtracks.ui.gallery.c$g:
     java.util.ArrayList selectedIds -> a
     42:42:java.util.ArrayList getSelectedIds() -> a
     42:42:void <init>(java.util.ArrayList) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$EndActionMode -> com.drspaceboo.transtracks.ui.gallery.c$d:
-    com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$EndActionMode INSTANCE -> a
-    40:40:void <init>() -> <init>
-    40:40:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$ImageClick -> com.drspaceboo.transtracks.ui.gallery.c$e:
-    java.lang.String photoId -> a
-    36:36:java.lang.String getPhotoId() -> a
-    36:36:void <init>(java.lang.String) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$SelectionUpdated -> com.drspaceboo.transtracks.ui.gallery.c$f:
-    java.util.ArrayList selectedIds -> a
-    39:39:java.util.ArrayList getSelectedIds() -> a
-    39:39:void <init>(java.util.ArrayList) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Share -> com.drspaceboo.transtracks.ui.gallery.c$g:
-    java.util.ArrayList selectedIds -> a
-    41:41:java.util.ArrayList getSelectedIds() -> a
-    41:41:void <init>(java.util.ArrayList) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$StartMultiSelect -> com.drspaceboo.transtracks.ui.gallery.c$h:
     com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$StartMultiSelect INSTANCE -> a
-    38:38:void <init>() -> <init>
-    38:38:void <clinit>() -> <clinit>
+    39:39:void <init>() -> <init>
+    39:39:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiState -> com.drspaceboo.transtracks.ui.gallery.d:
     com.drspaceboo.transtracks.ui.gallery.GalleryUiState$Companion Companion -> a
-    45:45:void <init>() -> <init>
+    46:46:void <init>() -> <init>
     void <clinit>() -> <clinit>
-    45:45:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    46:46:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiState$Companion -> com.drspaceboo.transtracks.ui.gallery.d$a:
-    52:55:long getInitialDay(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> a
-    57:60:boolean getShowAds(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> b
-    63:66:int getType(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> c
-    51:51:void <init>() -> <init>
-    51:51:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    53:56:long getInitialDay(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> a
+    58:61:boolean getShowAds(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> b
+    64:67:int getType(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> c
+    52:52:void <init>() -> <init>
+    52:52:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryUiState$Loaded -> com.drspaceboo.transtracks.ui.gallery.d$b:
     int type -> b
     long initialDay -> c
     boolean showAds -> d
-    46:46:int getType() -> a
-    46:46:long getInitialDay() -> b
-    46:46:boolean getShowAds() -> c
-    46:46:void <init>(int,long,boolean) -> <init>
+    47:47:int getType() -> a
+    47:47:long getInitialDay() -> b
+    47:47:boolean getShowAds() -> c
+    47:47:void <init>(int,long,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -24467,11 +24473,11 @@ com.drspaceboo.transtracks.ui.gallery.GalleryUiState$Selection -> com.drspaceboo
     long initialDay -> c
     java.util.ArrayList selectedIds -> d
     boolean showAds -> e
-    47:47:int getType() -> a
-    47:47:long getInitialDay() -> b
-    48:48:java.util.ArrayList getSelectedIds() -> c
-    49:49:boolean getShowAds() -> d
-    47:49:void <init>(int,long,java.util.ArrayList,boolean) -> <init>
+    48:48:int getType() -> a
+    48:48:long getInitialDay() -> b
+    49:49:java.util.ArrayList getSelectedIds() -> c
+    50:50:boolean getShowAds() -> d
+    48:50:void <init>(int,long,java.util.ArrayList,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -24499,68 +24505,73 @@ com.drspaceboo.transtracks.ui.gallery.GalleryView -> com.drspaceboo.transtracks.
     android.view.View getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    101:107:void onAttachedToWindow() -> onAttachedToWindow
-    110:172:void display(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> a
-    70:174:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    70:70:android.support.v7.widget.GridLayoutManager access$getLayoutManager$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> a
-    70:70:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> b
-    70:70:android.widget.TextView access$getEmptyMessage$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> c
-    70:70:android.view.View access$getEmptyAdd$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> d
-    70:70:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> e
-    70:70:int access$getType$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> f
-    70:70:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> g
+    102:114:void onAttachedToWindow() -> onAttachedToWindow
+    117:179:void display(com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> a
+    71:181:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    71:71:android.view.View access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> a
+    71:71:android.support.v7.widget.GridLayoutManager access$getLayoutManager$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> b
+    71:71:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> c
+    71:71:android.widget.TextView access$getEmptyMessage$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> d
+    71:71:android.view.View access$getEmptyAdd$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> e
+    71:71:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> f
+    71:71:int access$getType$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> g
+    71:71:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> h
 com.drspaceboo.transtracks.ui.gallery.GalleryView$Companion -> com.drspaceboo.transtracks.ui.gallery.GalleryView$a:
-    223:223:void <init>() -> <init>
-    223:223:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    230:230:void <init>() -> <init>
+    230:230:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$actionModeHandler$1 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$b:
     java.lang.ref.WeakReference modeRef -> b
     java.lang.String titleText -> c
     com.drspaceboo.transtracks.ui.gallery.GalleryView this$0 -> a
-    179:189:boolean onActionItemClicked(android.view.ActionMode,android.view.MenuItem) -> onActionItemClicked
-    193:196:boolean onCreateActionMode(android.view.ActionMode,android.view.Menu) -> onCreateActionMode
-    200:201:boolean onPrepareActionMode(android.view.ActionMode,android.view.Menu) -> onPrepareActionMode
-    205:207:void onDestroyActionMode(android.view.ActionMode) -> onDestroyActionMode
-    210:211:void finish() -> a
-    214:214:boolean isActive() -> b
-    218:220:void setTitle(java.lang.String) -> a
-    174:176:void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
+    186:196:boolean onActionItemClicked(android.view.ActionMode,android.view.MenuItem) -> onActionItemClicked
+    200:203:boolean onCreateActionMode(android.view.ActionMode,android.view.Menu) -> onCreateActionMode
+    207:208:boolean onPrepareActionMode(android.view.ActionMode,android.view.Menu) -> onPrepareActionMode
+    212:214:void onDestroyActionMode(android.view.ActionMode) -> onDestroyActionMode
+    217:218:void finish() -> a
+    221:221:boolean isActive() -> b
+    225:227:void setTitle(java.lang.String) -> a
+    181:183:void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$display$adapter$1 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$c:
     com.drspaceboo.transtracks.ui.gallery.GalleryView this$0 -> a
     com.drspaceboo.transtracks.ui.gallery.GalleryUiState $state -> b
-    70:70:java.lang.Object invoke(java.lang.Object) -> a
-    140:146:void invoke(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> a
+    71:71:java.lang.Object invoke(java.lang.Object) -> a
+    147:153:void invoke(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> a
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView,com.drspaceboo.transtracks.ui.gallery.GalleryUiState) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$display$adapter$1$1 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$c$1:
     com.drspaceboo.transtracks.ui.gallery.GalleryView$display$adapter$1 this$0 -> a
     int $scrollTo -> b
-    143:144:void run() -> run
+    150:151:void run() -> run
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView$display$adapter$1,int) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$display$adapter$2 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$d:
     com.drspaceboo.transtracks.ui.gallery.GalleryView this$0 -> a
-    70:70:java.lang.Object invoke(java.lang.Object) -> a
-    147:154:void invoke(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> a
+    71:71:java.lang.Object invoke(java.lang.Object) -> a
+    154:161:void invoke(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> a
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$e:
     com.drspaceboo.transtracks.ui.gallery.GalleryView this$0 -> a
-    70:70:java.lang.Object invoke() -> a
-    85:230:io.reactivex.Observable invoke() -> b
+    71:71:java.lang.Object invoke() -> a
+    86:237:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2$1 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$e$1:
     com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2$1 INSTANCE -> a
-    70:70:java.lang.Object apply(java.lang.Object) -> a
-    85:85:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Back apply(kotlin.Unit) -> a
+    71:71:java.lang.Object apply(java.lang.Object) -> a
+    86:86:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2$2 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$e$2:
     com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2 this$0 -> a
-    70:70:java.lang.Object apply(java.lang.Object) -> a
-    87:90:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent apply(android.view.MenuItem) -> a
+    71:71:java.lang.Object apply(java.lang.Object) -> a
+    88:91:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent apply(android.view.MenuItem) -> a
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2$3 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$e$3:
     com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2 this$0 -> a
-    70:70:java.lang.Object apply(java.lang.Object) -> a
-    93:93:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$AddPhoto apply(kotlin.Unit) -> a
+    71:71:java.lang.Object apply(java.lang.Object) -> a
+    94:94:com.drspaceboo.transtracks.ui.gallery.GalleryUiEvent$AddPhoto apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.gallery.GalleryView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.gallery.GalleryView$f:
+    com.drspaceboo.transtracks.ui.gallery.GalleryView this$0 -> a
+    111:112:void onAdFailedToLoad(int) -> a
+    109:109:void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeController -> com.drspaceboo.transtracks.ui.home.a:
     io.reactivex.disposables.Disposable resultDisposable -> c
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
@@ -24751,14 +24762,14 @@ com.drspaceboo.transtracks.ui.home.HomeView -> com.drspaceboo.transtracks.ui.hom
     kotlin.properties.ReadOnlyProperty faceGallery$delegate -> p
     kotlin.properties.ReadOnlyProperty faceFirstImage$delegate -> q
     kotlin.properties.ReadOnlyProperty faceSecondImage$delegate -> r
-    kotlin.properties.ReadOnlyProperty faceThirdLayout$delegate -> s
-    kotlin.properties.ReadOnlyProperty faceThirdImage$delegate -> t
+    kotlin.properties.ReadOnlyProperty faceThirdImage$delegate -> s
+    kotlin.properties.ReadOnlyProperty faceAddImage$delegate -> t
     kotlin.properties.ReadOnlyProperty faceExtraImages$delegate -> u
     kotlin.properties.ReadOnlyProperty bodyGallery$delegate -> v
     kotlin.properties.ReadOnlyProperty bodyFirstImage$delegate -> w
     kotlin.properties.ReadOnlyProperty bodySecondImage$delegate -> x
-    kotlin.properties.ReadOnlyProperty bodyThirdLayout$delegate -> y
-    kotlin.properties.ReadOnlyProperty bodyThirdImage$delegate -> z
+    kotlin.properties.ReadOnlyProperty bodyThirdImage$delegate -> y
+    kotlin.properties.ReadOnlyProperty bodyAddImage$delegate -> z
     kotlin.properties.ReadOnlyProperty bodyExtraImages$delegate -> A
     kotlin.properties.ReadOnlyProperty adViewLayout$delegate -> B
     kotlin.properties.ReadOnlyProperty adView$delegate -> C
@@ -24778,54 +24789,56 @@ com.drspaceboo.transtracks.ui.home.HomeView -> com.drspaceboo.transtracks.ui.hom
     android.widget.Button getFaceGallery() -> getFaceGallery
     android.widget.ImageView getFaceFirstImage() -> getFaceFirstImage
     android.widget.ImageView getFaceSecondImage() -> getFaceSecondImage
-    android.view.ViewGroup getFaceThirdLayout() -> getFaceThirdLayout
     android.widget.ImageView getFaceThirdImage() -> getFaceThirdImage
+    android.widget.ImageView getFaceAddImage() -> getFaceAddImage
     android.widget.TextView getFaceExtraImages() -> getFaceExtraImages
     android.widget.Button getBodyGallery() -> getBodyGallery
     android.widget.ImageView getBodyFirstImage() -> getBodyFirstImage
     android.widget.ImageView getBodySecondImage() -> getBodySecondImage
-    android.view.ViewGroup getBodyThirdLayout() -> getBodyThirdLayout
     android.widget.ImageView getBodyThirdImage() -> getBodyThirdImage
+    android.widget.ImageView getBodyAddImage() -> getBodyAddImage
     android.widget.TextView getBodyExtraImages() -> getBodyExtraImages
     android.view.ViewGroup getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    126:263:void display(com.drspaceboo.transtracks.ui.home.HomeUiState) -> a
-    54:275:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    54:54:android.view.ViewGroup access$getBodyThirdLayout$p(com.drspaceboo.transtracks.ui.home.HomeView) -> a
+    122:129:void onAttachedToWindow() -> onAttachedToWindow
+    132:267:void display(com.drspaceboo.transtracks.ui.home.HomeUiState) -> a
+    54:279:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    54:54:android.view.ViewGroup access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.home.HomeView) -> a
     54:54:android.widget.ImageView access$getBodyThirdImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> b
     54:54:android.widget.TextView access$getBodyExtraImages$p(com.drspaceboo.transtracks.ui.home.HomeView) -> c
-    54:54:android.view.ViewGroup access$getFaceThirdLayout$p(com.drspaceboo.transtracks.ui.home.HomeView) -> d
+    54:54:android.widget.ImageView access$getBodyAddImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> d
     54:54:android.widget.ImageView access$getFaceThirdImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> e
     54:54:android.widget.TextView access$getFaceExtraImages$p(com.drspaceboo.transtracks.ui.home.HomeView) -> f
-    54:54:android.widget.ImageButton access$getTakePhoto$p(com.drspaceboo.transtracks.ui.home.HomeView) -> g
-    54:54:android.widget.ImageButton access$getSettings$p(com.drspaceboo.transtracks.ui.home.HomeView) -> h
-    54:54:android.widget.ImageButton access$getPreviousRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> i
-    54:54:android.widget.ImageButton access$getNextRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> j
-    54:54:android.widget.ImageButton access$getMilestones$p(com.drspaceboo.transtracks.ui.home.HomeView) -> k
-    54:54:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.ui.home.HomeView) -> l
-    54:54:android.widget.Button access$getFaceGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> m
-    54:54:android.widget.ImageView access$getFaceFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> n
-    54:54:java.lang.String[] access$getFacePhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> o
-    54:54:android.widget.ImageView access$getFaceSecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> p
-    54:54:android.widget.Button access$getBodyGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> q
-    54:54:android.widget.ImageView access$getBodyFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> r
-    54:54:java.lang.String[] access$getBodyPhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> s
-    54:54:android.widget.ImageView access$getBodySecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> t
+    54:54:android.widget.ImageView access$getFaceAddImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> g
+    54:54:android.widget.ImageButton access$getTakePhoto$p(com.drspaceboo.transtracks.ui.home.HomeView) -> h
+    54:54:android.widget.ImageButton access$getSettings$p(com.drspaceboo.transtracks.ui.home.HomeView) -> i
+    54:54:android.widget.ImageButton access$getPreviousRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> j
+    54:54:android.widget.ImageButton access$getNextRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> k
+    54:54:android.widget.ImageButton access$getMilestones$p(com.drspaceboo.transtracks.ui.home.HomeView) -> l
+    54:54:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.ui.home.HomeView) -> m
+    54:54:android.widget.Button access$getFaceGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> n
+    54:54:android.widget.ImageView access$getFaceFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> o
+    54:54:java.lang.String[] access$getFacePhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> p
+    54:54:android.widget.ImageView access$getFaceSecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> q
+    54:54:android.widget.Button access$getBodyGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> r
+    54:54:android.widget.ImageView access$getBodyFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> s
+    54:54:java.lang.String[] access$getBodyPhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> t
+    54:54:android.widget.ImageView access$getBodySecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> u
 com.drspaceboo.transtracks.ui.home.HomeView$display$1 -> com.drspaceboo.transtracks.ui.home.HomeView$a:
     com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
     54:54:java.lang.Object invoke() -> a
-    127:132:void invoke() -> b
+    133:137:void invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$display$2 -> com.drspaceboo.transtracks.ui.home.HomeView$b:
     com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
     54:54:java.lang.Object invoke() -> a
-    135:140:void invoke() -> b
+    140:144:void invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c:
     com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
     54:54:java.lang.Object invoke() -> a
-    86:278:io.reactivex.Observable invoke() -> b
+    86:284:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$1 -> com.drspaceboo.transtracks.ui.home.HomeView$c$1:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$1 INSTANCE -> a
@@ -24840,99 +24853,123 @@ com.drspaceboo.transtracks.ui.home.HomeView$events$2$10 -> com.drspaceboo.transt
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$11 -> com.drspaceboo.transtracks.ui.home.HomeView$c$3:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    100:102:com.drspaceboo.transtracks.ui.home.HomeUiEvent apply(kotlin.Unit) -> a
+    54:54:boolean test(java.lang.Object) -> a
+    99:99:boolean test(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$12 -> com.drspaceboo.transtracks.ui.home.HomeView$c$4:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
-    105:105:com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery apply(kotlin.Unit) -> a
+    100:100:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$13 -> com.drspaceboo.transtracks.ui.home.HomeView$c$5:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    106:106:boolean test(kotlin.Unit) -> a
+    54:54:java.lang.Object apply(java.lang.Object) -> a
+    102:102:com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$14 -> com.drspaceboo.transtracks.ui.home.HomeView$c$6:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
-    107:107:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
+    103:103:com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$15 -> com.drspaceboo.transtracks.ui.home.HomeView$c$7:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:boolean test(java.lang.Object) -> a
-    109:109:boolean test(kotlin.Unit) -> a
+    104:104:boolean test(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$16 -> com.drspaceboo.transtracks.ui.home.HomeView$c$8:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
-    110:110:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
+    105:105:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeView$events$2$17 -> com.drspaceboo.transtracks.ui.home.HomeView$c$9:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    113:115:com.drspaceboo.transtracks.ui.home.HomeUiEvent apply(kotlin.Unit) -> a
+    54:54:boolean test(java.lang.Object) -> a
+    107:107:boolean test(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c$10:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$18 -> com.drspaceboo.transtracks.ui.home.HomeView$c$10:
+    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
+    54:54:java.lang.Object apply(java.lang.Object) -> a
+    108:108:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$19 -> com.drspaceboo.transtracks.ui.home.HomeView$c$11:
+    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
+    54:54:boolean test(java.lang.Object) -> a
+    110:110:boolean test(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c$12:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 INSTANCE -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     88:88:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 -> com.drspaceboo.transtracks.ui.home.HomeView$c$11:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$20 -> com.drspaceboo.transtracks.ui.home.HomeView$c$13:
+    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
+    54:54:java.lang.Object apply(java.lang.Object) -> a
+    111:111:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$21 -> com.drspaceboo.transtracks.ui.home.HomeView$c$14:
+    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
+    54:54:java.lang.Object apply(java.lang.Object) -> a
+    113:113:com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 -> com.drspaceboo.transtracks.ui.home.HomeView$c$15:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 INSTANCE -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     89:89:com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 -> com.drspaceboo.transtracks.ui.home.HomeView$c$12:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 -> com.drspaceboo.transtracks.ui.home.HomeView$c$16:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 INSTANCE -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     90:90:com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$5 -> com.drspaceboo.transtracks.ui.home.HomeView$c$13:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$5 -> com.drspaceboo.transtracks.ui.home.HomeView$c$17:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     91:91:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Milestones apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$6 -> com.drspaceboo.transtracks.ui.home.HomeView$c$14:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$6 -> com.drspaceboo.transtracks.ui.home.HomeView$c$18:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     92:92:com.drspaceboo.transtracks.ui.home.HomeUiEvent$FaceGallery apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$7 -> com.drspaceboo.transtracks.ui.home.HomeView$c$15:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$7 -> com.drspaceboo.transtracks.ui.home.HomeView$c$19:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:boolean test(java.lang.Object) -> a
     93:93:boolean test(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$8 -> com.drspaceboo.transtracks.ui.home.HomeView$c$16:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$8 -> com.drspaceboo.transtracks.ui.home.HomeView$c$20:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:java.lang.Object apply(java.lang.Object) -> a
     94:94:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$9 -> com.drspaceboo.transtracks.ui.home.HomeView$c$17:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$9 -> com.drspaceboo.transtracks.ui.home.HomeView$c$21:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
     54:54:boolean test(java.lang.Object) -> a
     96:96:boolean test(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.home.HomeView$d:
+    com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
+    126:127:void onAdFailedToLoad(int) -> a
+    124:124:void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.lock.LockController -> com.drspaceboo.transtracks.ui.lock.a:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> c
     com.drspaceboo.transtracks.ui.lock.LockController$Companion Companion -> b
-    24:29:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    33:69:void onAttach(android.view.View) -> b
-    56:57:void onDetach(android.view.View) -> c
-    61:61:boolean handleBack() -> k
-    20:21:void <init>() -> <init>
+    25:30:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    34:71:void onAttach(android.view.View) -> b
+    58:59:void onDetach(android.view.View) -> c
+    63:63:boolean handleBack() -> k
+    21:22:void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.lock.LockController$Companion -> com.drspaceboo.transtracks.ui.lock.a$a:
-    64:64:void <init>() -> <init>
-    64:64:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    66:66:void <init>() -> <init>
+    66:66:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.lock.LockController$onAttach$1 -> com.drspaceboo.transtracks.ui.lock.a$b:
     com.drspaceboo.transtracks.ui.lock.LockController this$0 -> a
     android.view.View $view -> b
-    20:20:void accept(java.lang.Object) -> a
-    40:52:void accept(com.drspaceboo.transtracks.ui.lock.LockUiEvent$Unlock) -> a
+    21:21:void accept(java.lang.Object) -> a
+    41:54:void accept(com.drspaceboo.transtracks.ui.lock.LockUiEvent$Unlock) -> a
     void <init>(com.drspaceboo.transtracks.ui.lock.LockController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.lock.LockUiEvent -> com.drspaceboo.transtracks.ui.lock.b:
     18:18:void <init>() -> <init>
@@ -24995,8 +25032,8 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter -> com.drspaceboo.tra
     20:20:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> a
     58:63:com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$BaseViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> c
     20:20:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
-    68:205:int getPositionOfDay(long) -> a
-    78:214:void generateItems() -> d
+    68:207:int getPositionOfDay(long) -> a
+    78:216:void generateItems() -> d
     20:40:void <init>(com.jakewharton.rxrelay2.PublishRelay,kotlin.jvm.functions.Function1,kotlin.jvm.functions.Function1) -> <init>
     void <clinit>() -> <clinit>
     20:20:java.util.ArrayList access$getItems$p(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter) -> a
@@ -25011,17 +25048,17 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$$special$$inlined$app
     20:20:void onChange(java.lang.Object) -> a
     27:34:void onChange(io.realm.RealmResults) -> a
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$BaseViewHolder -> com.drspaceboo.transtracks.ui.milestones.a$b:
-    161:161:void <init>(android.view.View) -> <init>
+    163:163:void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$Companion -> com.drspaceboo.transtracks.ui.milestones.a$c:
-    197:197:void <init>() -> <init>
-    197:197:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    199:199:void <init>() -> <init>
+    199:199:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$DayTitleViewHolder -> com.drspaceboo.transtracks.ui.milestones.a$d:
     kotlin.reflect.KProperty[] $$delegatedProperties -> q
     kotlin.properties.ReadOnlyProperty title$delegate -> r
     void <clinit>() -> <clinit>
     android.widget.TextView getTitle() -> A
-    167:168:void bind(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestonesAdapterItem) -> a
-    163:164:void <init>(android.view.View) -> <init>
+    169:170:void bind(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestonesAdapterItem) -> a
+    165:166:void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder -> com.drspaceboo.transtracks.ui.milestones.a$e:
     kotlin.reflect.KProperty[] $$delegatedProperties -> q
     kotlin.properties.ReadOnlyProperty title$delegate -> r
@@ -25033,28 +25070,28 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder -
     android.widget.TextView getTitle() -> A
     android.view.View getDescriptionIcon() -> B
     android.widget.TextView getDescription() -> C
-    186:194:void bind(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestonesAdapterItem) -> a
-    171:180:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
-    171:171:java.lang.ref.WeakReference access$getEventRelayRef$p(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder) -> a
-    171:171:java.lang.String access$getMilestoneId$p(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder) -> b
+    188:196:void bind(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestonesAdapterItem) -> a
+    173:182:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    173:173:java.lang.ref.WeakReference access$getEventRelayRef$p(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder) -> a
+    173:173:java.lang.String access$getMilestoneId$p(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder) -> b
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder$1 -> com.drspaceboo.transtracks.ui.milestones.a$e$1:
     com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder this$0 -> a
-    181:182:void onClick(android.view.View) -> onClick
+    183:184:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestoneViewHolder) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$MilestonesAdapterItem -> com.drspaceboo.transtracks.ui.milestones.a$f:
     java.lang.Long epochDay -> a
     com.drspaceboo.transtracks.data.Milestone milestone -> b
-    144:144:java.lang.Long getEpochDay() -> a
-    146:146:com.drspaceboo.transtracks.data.Milestone getMilestone() -> b
-    149:151:void <init>(long) -> <init>
-    155:157:void <init>(com.drspaceboo.transtracks.data.Milestone) -> <init>
+    146:146:java.lang.Long getEpochDay() -> a
+    148:148:com.drspaceboo.transtracks.data.Milestone getMilestone() -> b
+    151:153:void <init>(long) -> <init>
+    157:159:void <init>(com.drspaceboo.transtracks.data.Milestone) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$generateItems$results$1 -> com.drspaceboo.transtracks.ui.milestones.a$g:
     com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter this$0 -> a
     java.util.ArrayList $newItems -> b
-    102:113:boolean areItemsTheSame(int,int) -> a
-    116:116:int getOldListSize() -> a
-    118:118:int getNewListSize() -> b
-    121:135:boolean areContentsTheSame(int,int) -> b
+    102:114:boolean areItemsTheSame(int,int) -> a
+    117:117:int getOldListSize() -> a
+    119:119:int getNewListSize() -> b
+    122:137:boolean areContentsTheSame(int,int) -> b
     100:100:void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter,java.util.ArrayList) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesController -> com.drspaceboo.transtracks.ui.milestones.b:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> c
@@ -25084,41 +25121,41 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesController$onAttach$3 -> com.
     49:51:void accept(com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$EditMilestone) -> a
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesController) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent -> com.drspaceboo.transtracks.ui.milestones.c:
-    27:27:void <init>() -> <init>
-    27:27:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    28:28:void <init>() -> <init>
+    28:28:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$AddMilestone -> com.drspaceboo.transtracks.ui.milestones.c$a:
     long day -> a
-    29:29:long getDay() -> a
-    29:29:void <init>(long) -> <init>
+    30:30:long getDay() -> a
+    30:30:void <init>(long) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$Back -> com.drspaceboo.transtracks.ui.milestones.c$b:
     com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$Back INSTANCE -> a
-    28:28:void <init>() -> <init>
-    28:28:void <clinit>() -> <clinit>
+    29:29:void <init>() -> <init>
+    29:29:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$EditMilestone -> com.drspaceboo.transtracks.ui.milestones.c$c:
     java.lang.String id -> a
-    30:30:java.lang.String getId() -> a
-    30:30:void <init>(java.lang.String) -> <init>
+    31:31:java.lang.String getId() -> a
+    31:31:void <init>(java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiState -> com.drspaceboo.transtracks.ui.milestones.d:
     com.drspaceboo.transtracks.ui.milestones.MilestonesUiState$Companion Companion -> a
-    33:33:void <init>() -> <init>
+    34:34:void <init>() -> <init>
     void <clinit>() -> <clinit>
-    33:33:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    34:34:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiState$Companion -> com.drspaceboo.transtracks.ui.milestones.d$a:
-    37:39:long getInitialDay(com.drspaceboo.transtracks.ui.milestones.MilestonesUiState) -> a
-    36:36:void <init>() -> <init>
-    36:36:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    38:40:long getInitialDay(com.drspaceboo.transtracks.ui.milestones.MilestonesUiState) -> a
+    37:37:void <init>() -> <init>
+    37:37:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesUiState$Loaded -> com.drspaceboo.transtracks.ui.milestones.d$b:
     long initialDay -> b
     boolean showAds -> c
-    34:34:long getInitialDay() -> a
-    34:34:boolean getShowAds() -> b
-    34:34:void <init>(long,boolean) -> <init>
+    35:35:long getInitialDay() -> a
+    35:35:boolean getShowAds() -> b
+    35:35:void <init>(long,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -25142,53 +25179,58 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesView -> com.drspaceboo.transt
     android.view.View getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    72:77:void onAttachedToWindow() -> onAttachedToWindow
-    80:111:void display(com.drspaceboo.transtracks.ui.milestones.MilestonesUiState) -> a
-    43:69:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    43:43:android.support.v7.widget.LinearLayoutManager access$getLayoutManager$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> a
-    43:43:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> b
-    43:43:android.widget.TextView access$getEmptyMessage$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> c
-    43:43:android.view.View access$getEmptyAdd$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> d
-    43:43:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> e
-    43:43:long access$getDay$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> f
-    43:43:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> g
+    73:84:void onAttachedToWindow() -> onAttachedToWindow
+    87:118:void display(com.drspaceboo.transtracks.ui.milestones.MilestonesUiState) -> a
+    44:70:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    44:44:android.view.View access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> a
+    44:44:android.support.v7.widget.LinearLayoutManager access$getLayoutManager$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> b
+    44:44:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> c
+    44:44:android.widget.TextView access$getEmptyMessage$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> d
+    44:44:android.view.View access$getEmptyAdd$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> e
+    44:44:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> f
+    44:44:long access$getDay$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> g
+    44:44:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> h
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$display$1 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$a:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView this$0 -> a
     com.drspaceboo.transtracks.ui.milestones.MilestonesUiState $state -> b
-    43:43:java.lang.Object invoke(java.lang.Object) -> a
-    86:92:void invoke(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter) -> a
+    44:44:java.lang.Object invoke(java.lang.Object) -> a
+    93:99:void invoke(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter) -> a
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView,com.drspaceboo.transtracks.ui.milestones.MilestonesUiState) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$display$1$1 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$a$1:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView$display$1 this$0 -> a
     int $scrollTo -> b
-    89:90:void run() -> run
+    96:97:void run() -> run
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView$display$1,int) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$display$2 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$b:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView this$0 -> a
-    43:43:java.lang.Object invoke(java.lang.Object) -> a
-    93:100:void invoke(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter) -> a
+    44:44:java.lang.Object invoke(java.lang.Object) -> a
+    100:107:void invoke(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter) -> a
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$c:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView this$0 -> a
-    43:43:java.lang.Object invoke() -> a
-    56:116:io.reactivex.Observable invoke() -> b
+    44:44:java.lang.Object invoke() -> a
+    57:123:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2$1 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$c$1:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2$1 INSTANCE -> a
-    43:43:java.lang.Object apply(java.lang.Object) -> a
-    57:57:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$Back apply(kotlin.Unit) -> a
+    44:44:java.lang.Object apply(java.lang.Object) -> a
+    58:58:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2$2 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$c$2:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2 this$0 -> a
-    43:43:java.lang.Object apply(java.lang.Object) -> a
-    59:61:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent apply(android.view.MenuItem) -> a
+    44:44:java.lang.Object apply(java.lang.Object) -> a
+    60:62:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent apply(android.view.MenuItem) -> a
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2$3 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$c$3:
     com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2 this$0 -> a
-    43:43:java.lang.Object apply(java.lang.Object) -> a
-    64:64:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$AddMilestone apply(kotlin.Unit) -> a
+    44:44:java.lang.Object apply(java.lang.Object) -> a
+    65:65:com.drspaceboo.transtracks.ui.milestones.MilestonesUiEvent$AddMilestone apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.milestones.MilestonesView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.milestones.MilestonesView$d:
+    com.drspaceboo.transtracks.ui.milestones.MilestonesView this$0 -> a
+    81:82:void onAdFailedToLoad(int) -> a
+    79:79:void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter -> com.drspaceboo.transtracks.ui.selectphoto.a:
     com.jakewharton.rxrelay2.PublishRelay itemClickRelay -> b
     io.reactivex.Observable itemClick -> c
@@ -25457,35 +25499,35 @@ com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$9 -> com.drsp
     301:308:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsUiEvent -> com.drspaceboo.transtracks.ui.settings.b:
-    22:22:void <init>() -> <init>
-    22:22:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    23:23:void <init>() -> <init>
+    23:23:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back -> com.drspaceboo.transtracks.ui.settings.b$a:
     com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back INSTANCE -> a
-    23:23:void <init>() -> <init>
-    23:23:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay -> com.drspaceboo.transtracks.ui.settings.b$b:
-    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay INSTANCE -> a
-    27:27:void <init>() -> <init>
-    27:27:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode -> com.drspaceboo.transtracks.ui.settings.b$c:
-    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode INSTANCE -> a
-    26:26:void <init>() -> <init>
-    26:26:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate -> com.drspaceboo.transtracks.ui.settings.b$d:
-    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate INSTANCE -> a
     24:24:void <init>() -> <init>
     24:24:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme -> com.drspaceboo.transtracks.ui.settings.b$e:
-    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme INSTANCE -> a
-    25:25:void <init>() -> <init>
-    25:25:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy -> com.drspaceboo.transtracks.ui.settings.b$f:
-    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy INSTANCE -> a
+com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay -> com.drspaceboo.transtracks.ui.settings.b$b:
+    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay INSTANCE -> a
     28:28:void <init>() -> <init>
     28:28:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode -> com.drspaceboo.transtracks.ui.settings.b$c:
+    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode INSTANCE -> a
+    27:27:void <init>() -> <init>
+    27:27:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate -> com.drspaceboo.transtracks.ui.settings.b$d:
+    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate INSTANCE -> a
+    25:25:void <init>() -> <init>
+    25:25:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme -> com.drspaceboo.transtracks.ui.settings.b$e:
+    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme INSTANCE -> a
+    26:26:void <init>() -> <init>
+    26:26:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy -> com.drspaceboo.transtracks.ui.settings.b$f:
+    com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy INSTANCE -> a
+    29:29:void <init>() -> <init>
+    29:29:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsUiState -> com.drspaceboo.transtracks.ui.settings.c:
-    31:31:void <init>() -> <init>
-    31:31:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    32:32:void <init>() -> <init>
+    32:32:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded -> com.drspaceboo.transtracks.ui.settings.c$a:
     org.threeten.bp.LocalDate startDate -> a
     java.lang.String theme -> b
@@ -25495,15 +25537,15 @@ com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded -> com.drspaceboo.
     java.lang.String appVersion -> f
     java.lang.String copyright -> g
     boolean showAds -> h
-    32:32:org.threeten.bp.LocalDate getStartDate() -> a
-    32:32:java.lang.String getTheme() -> b
-    32:32:java.lang.String getLockMode() -> c
-    33:33:boolean getEnableLockDelay() -> d
-    33:33:java.lang.String getLockDelay() -> e
-    33:33:java.lang.String getAppVersion() -> f
-    33:33:java.lang.String getCopyright() -> g
-    33:33:boolean getShowAds() -> h
-    32:33:void <init>(org.threeten.bp.LocalDate,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,boolean) -> <init>
+    33:33:org.threeten.bp.LocalDate getStartDate() -> a
+    33:33:java.lang.String getTheme() -> b
+    33:33:java.lang.String getLockMode() -> c
+    34:34:boolean getEnableLockDelay() -> d
+    34:34:java.lang.String getLockDelay() -> e
+    34:34:java.lang.String getAppVersion() -> f
+    34:34:java.lang.String getCopyright() -> g
+    34:34:boolean getShowAds() -> h
+    33:34:void <init>(org.threeten.bp.LocalDate,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -25535,114 +25577,118 @@ com.drspaceboo.transtracks.ui.settings.SettingsView -> com.drspaceboo.transtrack
     android.view.View getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    64:89:void display(com.drspaceboo.transtracks.ui.settings.SettingsUiState) -> a
-    36:52:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    36:36:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> a
-    36:36:android.widget.Button access$getStartDate$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> b
-    36:36:android.widget.Button access$getTheme$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> c
-    36:36:android.widget.Button access$getLock$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> d
-    36:36:android.widget.Button access$getLockDelay$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> e
-    36:36:android.widget.Button access$getPrivacyPolicy$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> f
+    65:72:void onAttachedToWindow() -> onAttachedToWindow
+    75:100:void display(com.drspaceboo.transtracks.ui.settings.SettingsUiState) -> a
+    37:53:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    37:37:android.view.View access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> a
+    37:37:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> b
+    37:37:android.widget.Button access$getStartDate$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> c
+    37:37:android.widget.Button access$getTheme$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> d
+    37:37:android.widget.Button access$getLock$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> e
+    37:37:android.widget.Button access$getLockDelay$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> f
+    37:37:android.widget.Button access$getPrivacyPolicy$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> g
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a:
     com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
-    36:36:java.lang.Object invoke() -> a
-    53:97:io.reactivex.Observable invoke() -> b
+    37:37:java.lang.Object invoke() -> a
+    54:108:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$1 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$1:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$1 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    53:53:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    54:54:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$2 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$2:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$2 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    54:54:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    55:55:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$3 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$3:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$3 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    55:55:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    56:56:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$4 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$4:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$4 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    56:56:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    57:57:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$5 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$5:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$5 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    57:57:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    58:58:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$6 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$6:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$6 INSTANCE -> a
-    36:36:java.lang.Object apply(java.lang.Object) -> a
-    58:58:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy apply(kotlin.Unit) -> a
+    37:37:java.lang.Object apply(java.lang.Object) -> a
+    59:59:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.settings.SettingsView$b:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    69:70:void onAdFailedToLoad(int) -> a
+    67:67:void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController -> com.drspaceboo.transtracks.ui.singlephoto.a:
     java.lang.String photoId -> c
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
     android.support.v7.app.AlertDialog confirmDeleteDialog -> e
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$Companion Companion -> b
-    44:44:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    48:158:void onAttach(android.view.View) -> b
-    147:148:void onDetach(android.view.View) -> c
-    32:39:void <init>(android.os.Bundle) -> <init>
-    33:35:void <init>(java.lang.String) -> <init>
+    43:43:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    47:168:void onAttach(android.view.View) -> b
+    157:158:void onDetach(android.view.View) -> c
+    31:38:void <init>(android.os.Bundle) -> <init>
+    32:34:void <init>(java.lang.String) -> <init>
     void <clinit>() -> <clinit>
-    32:32:android.support.v7.app.AlertDialog access$getConfirmDeleteDialog$p(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController) -> a
-    32:32:void access$setConfirmDeleteDialog$p(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.support.v7.app.AlertDialog) -> a
+    31:31:android.support.v7.app.AlertDialog access$getConfirmDeleteDialog$p(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController) -> a
+    31:31:void access$setConfirmDeleteDialog$p(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.support.v7.app.AlertDialog) -> a
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$Companion -> com.drspaceboo.transtracks.ui.singlephoto.a$a:
-    150:150:void <init>() -> <init>
-    150:150:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    160:160:void <init>() -> <init>
+    160:160:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$$inlined$use$lambda$1 -> com.drspaceboo.transtracks.ui.singlephoto.a$b:
-    com.drspaceboo.transtracks.data.Photo $photo -> a
-    com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> b
-    android.view.View $view$inlined -> c
-    void <init>(com.drspaceboo.transtracks.data.Photo,com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.view.View) -> <init>
-    32:32:void onChange(io.realm.RealmModel,io.realm.ObjectChangeSet) -> a
-    56:63:void onChange(com.drspaceboo.transtracks.data.Photo,io.realm.ObjectChangeSet) -> a
+    com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> a
+    android.view.View $view$inlined -> b
+    void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.view.View) -> <init>
+    60:62:void onClick(android.content.DialogInterface,int) -> onClick
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$2 -> com.drspaceboo.transtracks.ui.singlephoto.a$c:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> a
-    32:32:void accept(java.lang.Object) -> a
-    69:69:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Back) -> a
+    31:31:void accept(java.lang.Object) -> a
+    79:79:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Back) -> a
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$3 -> com.drspaceboo.transtracks.ui.singlephoto.a$d:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> a
-    32:32:void accept(java.lang.Object) -> a
-    73:75:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Edit) -> a
+    31:31:void accept(java.lang.Object) -> a
+    83:85:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Edit) -> a
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$4 -> com.drspaceboo.transtracks.ui.singlephoto.a$e:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> a
     android.view.View $view -> b
-    32:32:void accept(java.lang.Object) -> a
-    79:96:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Share) -> a
+    31:31:void accept(java.lang.Object) -> a
+    89:106:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Share) -> a
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5 -> com.drspaceboo.transtracks.ui.singlephoto.a$f:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController this$0 -> a
     android.view.View $view -> b
-    32:32:void accept(java.lang.Object) -> a
-    100:143:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Delete) -> a
+    31:31:void accept(java.lang.Object) -> a
+    110:153:void accept(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Delete) -> a
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5$1 -> com.drspaceboo.transtracks.ui.singlephoto.a$f$1:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5 this$0 -> a
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Delete $event -> b
-    106:137:void onClick(android.content.DialogInterface,int) -> onClick
+    116:147:void onClick(android.content.DialogInterface,int) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5,com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent$Delete) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5$1$$special$$inlined$use$lambda$1 -> com.drspaceboo.transtracks.ui.singlephoto.a$f$1$a:
     com.drspaceboo.transtracks.data.Photo $photoToDelete -> a
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5$1 this$0 -> b
     kotlin.jvm.internal.Ref$BooleanRef $success$inlined -> c
     void <init>(com.drspaceboo.transtracks.data.Photo,com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5$1,kotlin.jvm.internal.Ref$BooleanRef) -> <init>
-    124:126:void execute(io.realm.Realm) -> a
+    134:136:void execute(io.realm.Realm) -> a
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5$2 -> com.drspaceboo.transtracks.ui.singlephoto.a$f$2:
     com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5 this$0 -> a
-    139:139:void onDismiss(android.content.DialogInterface) -> onDismiss
+    149:149:void onDismiss(android.content.DialogInterface) -> onDismiss
     void <init>(com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$onAttach$5) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoUiEvent -> com.drspaceboo.transtracks.ui.singlephoto.b:
     17:17:void <init>() -> <init>
@@ -25743,6 +25789,9 @@ com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter$NotifyingDataSetO
     121:124:void onChanged() -> onChanged
     127:131:void onInvalidated() -> onInvalidated
     119:119:void <init>(com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter) -> <init>
+com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout -> com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout:
+    11:40:void onMeasure(int,int) -> onMeasure
+    8:9:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
 com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout -> com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout:
     int orientation -> g
     19:19:int getOrientation() -> getOrientation
@@ -25937,15 +25986,16 @@ com.drspaceboo.transtracks.util.Utils -> com.drspaceboo.transtracks.c.v:
     8:8:void <init>() -> <init>
     8:8:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.ViewsKt -> com.drspaceboo.transtracks.c.w:
-    11:18:int getColor(android.view.View,int) -> a
-    22:22:java.lang.String getString(android.view.View,int) -> b
-    24:24:java.lang.String getString(android.view.View,int,java.lang.Object[]) -> a
-    27:28:void gone(android.view.View) -> a
-    35:36:void visible(android.view.View) -> b
-    39:42:void setVisibleOrGone(android.view.View,boolean) -> a
-    45:48:void setVisibleOrInvisible(android.view.View,boolean) -> b
-    50:55:void setVisible(android.view.View[]) -> a
-    52:57:void setGone(android.view.View[]) -> b
+    25:25:java.lang.String getString(android.view.View,int) -> a
+    27:27:java.lang.String getString(android.view.View,int,java.lang.Object[]) -> a
+    30:31:void gone(android.view.View) -> a
+    38:39:void visible(android.view.View) -> b
+    42:45:void setVisibleOrGone(android.view.View,boolean) -> a
+    48:51:void setVisibleOrInvisible(android.view.View,boolean) -> b
+    54:56:void showKeyboard(android.view.View) -> c
+    59:61:void hideKeyboard(android.view.View) -> d
+    63:68:void setVisible(android.view.View[]) -> a
+    65:70:void setGone(android.view.View[]) -> b
 com.f2prateek.rx.preferences2.BooleanAdapter -> com.a.a.a.a:
     com.f2prateek.rx.preferences2.BooleanAdapter INSTANCE -> a
     6:6:void <init>() -> <init>
@@ -54591,14 +54641,13 @@ io.realm.BaseRealm -> io.realm.a:
     496:496:io.realm.RealmConfiguration getConfiguration() -> h
     553:562:void close() -> close
     568:573:void doClose() -> i
-    582:586:boolean isClosed() -> j
-    io.realm.RealmSchema getSchema() -> k
+    io.realm.RealmSchema getSchema() -> j
     606:618:io.realm.RealmModel get(java.lang.Class,java.lang.String,io.realm.internal.UncheckedRow) -> a
     632:649:io.realm.RealmModel get(java.lang.Class,java.lang.String,long) -> a
     675:690:boolean deleteRealm(io.realm.RealmConfiguration) -> a
     775:775:io.realm.internal.OsSharedRealm$MigrationCallback createMigrationCallback(io.realm.RealmMigration) -> a
     785:795:void finalize() -> finalize
-    798:798:io.realm.internal.OsSharedRealm getSharedRealm() -> l
+    798:798:io.realm.internal.OsSharedRealm getSharedRealm() -> k
     82:854:void <clinit>() -> <clinit>
 io.realm.BaseRealm$1 -> io.realm.a$1:
     io.realm.BaseRealm this$0 -> a
@@ -54668,8 +54717,7 @@ io.realm.DynamicRealm -> io.realm.c:
     85:87:void <init>(io.realm.internal.OsSharedRealm) -> <init>
     276:276:io.realm.DynamicRealm createInstance(io.realm.RealmCache) -> a
     287:287:io.realm.DynamicRealm createInstance(io.realm.internal.OsSharedRealm) -> a
-    394:394:io.realm.RealmSchema getSchema() -> k
-    55:55:boolean isClosed() -> j
+    394:394:io.realm.RealmSchema getSchema() -> j
     55:55:void close() -> close
     55:55:io.realm.RealmConfiguration getConfiguration() -> h
     55:55:java.lang.String getPath() -> g
@@ -54791,12 +54839,10 @@ io.realm.ProxyState -> io.realm.m:
     112:112:boolean getAcceptDefaultValue$realm() -> c
     116:117:void setAcceptDefaultValue$realm(boolean) -> a
     125:126:void setExcludeFields$realm(java.util.List) -> a
-    132:133:void notifyQueryFinished() -> g
-    136:144:void addChangeListener(io.realm.RealmObjectChangeListener) -> a
-    155:160:void removeAllChangeListeners() -> d
-    163:163:boolean isUnderConstruction() -> e
-    167:170:void setConstructionFinished() -> f
-    173:183:void registerToObjectNotifier() -> h
+    132:133:void notifyQueryFinished() -> f
+    163:163:boolean isUnderConstruction() -> d
+    167:170:void setConstructionFinished() -> e
+    173:183:void registerToObjectNotifier() -> g
     197:203:void onQueryFinished(io.realm.internal.Row) -> b
     87:87:void <clinit>() -> <clinit>
 io.realm.ProxyState$1 -> io.realm.m$1:
@@ -54812,12 +54858,12 @@ io.realm.Realm -> io.realm.n:
     161:181:void <init>(io.realm.RealmCache) -> <init>
     184:187:void <init>(io.realm.internal.OsSharedRealm) -> <init>
     190:190:io.realm.internal.OsSchemaInfo createExpectedSchemaInfo(io.realm.internal.RealmProxyMediator) -> a
-    225:225:io.realm.RealmSchema getSchema() -> k
+    225:225:io.realm.RealmSchema getSchema() -> j
     263:279:void init(android.content.Context) -> a
     294:331:void checkFilesDirAvailable(android.content.Context) -> b
-    346:354:io.realm.Realm getDefaultInstance() -> m
+    346:354:io.realm.Realm getDefaultInstance() -> l
     409:415:void setDefaultConfiguration(io.realm.RealmConfiguration) -> b
-    424:426:io.realm.RealmConfiguration getDefaultConfiguration() -> n
+    424:426:io.realm.RealmConfiguration getDefaultConfiguration() -> m
     446:446:io.realm.Realm createInstance(io.realm.RealmCache) -> a
     454:454:io.realm.Realm createInstance(io.realm.internal.OsSharedRealm) -> a
     993:997:io.realm.RealmModel createObjectInternal(java.lang.Class,java.lang.Object,boolean,java.util.List) -> a
@@ -54829,8 +54875,7 @@ io.realm.Realm -> io.realm.n:
     1644:1647:void checkNotNullObject(io.realm.RealmModel) -> c
     1650:1656:void checkHasPrimaryKey(java.lang.Class) -> c
     1870:1870:io.realm.internal.Table getTable(java.lang.Class) -> b
-    1883:1898:java.lang.Object getDefaultModule() -> o
-    143:143:boolean isClosed() -> j
+    1883:1898:java.lang.Object getDefaultModule() -> n
     143:143:void close() -> close
     143:143:io.realm.RealmConfiguration getConfiguration() -> h
     143:143:java.lang.String getPath() -> g
@@ -55052,10 +55097,6 @@ io.realm.RealmObject -> io.realm.u:
     100:117:void deleteFromRealm(io.realm.RealmModel) -> a
     139:139:boolean isValid() -> l
     150:156:boolean isValid(io.realm.RealmModel) -> b
-    404:405:void addChangeListener(io.realm.RealmObjectChangeListener) -> a
-    486:503:void addChangeListener(io.realm.RealmModel,io.realm.RealmObjectChangeListener) -> a
-    616:617:void removeAllChangeListeners() -> m
-    626:637:void removeAllChangeListeners(io.realm.RealmModel) -> c
 io.realm.RealmObjectChangeListener -> io.realm.v:
     void onChange(io.realm.RealmModel,io.realm.ObjectChangeSet) -> a
 io.realm.RealmObjectSchema -> io.realm.w:
@@ -55100,17 +55141,16 @@ io.realm.RealmQuery -> io.realm.x:
     1149:1153:io.realm.RealmQuery lessThan(java.lang.String,long) -> b
     1750:1756:long count() -> a
     1768:1769:io.realm.RealmResults findAll() -> b
-    1781:1782:io.realm.internal.OsResults lazyFindAll() -> f
+    1781:1782:io.realm.internal.OsResults lazyFindAll() -> e
     1800:1811:io.realm.RealmResults findAllAsync() -> c
     1851:1852:io.realm.RealmQuery sort(java.lang.String) -> a
     1867:1868:io.realm.RealmQuery sort(java.lang.String,io.realm.Sort) -> a
     1903:1906:io.realm.RealmQuery sort(java.lang.String[],io.realm.Sort[]) -> a
-    2011:2011:boolean isDynamicQuery() -> g
+    2011:2011:boolean isDynamicQuery() -> f
     2022:2031:java.lang.Object findFirst() -> d
-    2045:2084:java.lang.Object findFirstAsync() -> e
     2094:2109:io.realm.RealmResults createRealmResults(io.realm.internal.TableQuery,io.realm.internal.core.DescriptorOrdering,boolean,io.realm.internal.sync.SubscriptionAction) -> a
-    2113:2121:long getSourceRowIndexForFirstObject() -> h
-    2126:2126:io.realm.SchemaConnector getSchemaConnector() -> i
+    2113:2121:long getSourceRowIndexForFirstObject() -> g
+    2126:2126:io.realm.SchemaConnector getSchemaConnector() -> h
 io.realm.RealmResults -> io.realm.y:
     86:87:void <init>(io.realm.BaseRealm,io.realm.internal.OsResults,java.lang.Class) -> <init>
     90:91:void <init>(io.realm.BaseRealm,io.realm.internal.OsResults,java.lang.String) -> <init>
@@ -55185,8 +55225,8 @@ io.realm.com_drspaceboo_transtracks_data_MilestoneRealmProxy -> io.realm.ac:
     170:187:void realmSet$title(java.lang.String) -> d
     192:193:java.lang.String realmGet$description() -> j
     198:215:void realmSet$description(java.lang.String) -> e
-    218:224:io.realm.internal.OsObjectSchemaInfo createExpectedObjectSchemaInfo() -> o
-    228:228:io.realm.internal.OsObjectSchemaInfo getExpectedObjectSchemaInfo() -> n
+    218:224:io.realm.internal.OsObjectSchemaInfo createExpectedObjectSchemaInfo() -> n
+    228:228:io.realm.internal.OsObjectSchemaInfo getExpectedObjectSchemaInfo() -> m
     232:232:io.realm.com_drspaceboo_transtracks_data_MilestoneRealmProxy$MilestoneColumnInfo createColumnInfo(io.realm.internal.OsSchemaInfo) -> a
     369:404:com.drspaceboo.transtracks.data.Milestone copyOrUpdate(io.realm.Realm,com.drspaceboo.transtracks.data.Milestone,boolean,java.util.Map) -> a
     408:424:com.drspaceboo.transtracks.data.Milestone copy(io.realm.Realm,com.drspaceboo.transtracks.data.Milestone,boolean,java.util.Map) -> b
@@ -55231,8 +55271,8 @@ io.realm.com_drspaceboo_transtracks_data_PhotoRealmProxy -> io.realm.ae:
     170:187:void realmSet$filePath(java.lang.String) -> c
     192:193:int realmGet$type() -> j
     198:209:void realmSet$type(int) -> b
-    212:218:io.realm.internal.OsObjectSchemaInfo createExpectedObjectSchemaInfo() -> o
-    222:222:io.realm.internal.OsObjectSchemaInfo getExpectedObjectSchemaInfo() -> n
+    212:218:io.realm.internal.OsObjectSchemaInfo createExpectedObjectSchemaInfo() -> n
+    222:222:io.realm.internal.OsObjectSchemaInfo getExpectedObjectSchemaInfo() -> m
     226:226:io.realm.com_drspaceboo_transtracks_data_PhotoRealmProxy$PhotoColumnInfo createColumnInfo(io.realm.internal.OsSchemaInfo) -> a
     363:398:com.drspaceboo.transtracks.data.Photo copyOrUpdate(io.realm.Realm,com.drspaceboo.transtracks.data.Photo,boolean,java.util.Map) -> a
     402:418:com.drspaceboo.transtracks.data.Photo copy(io.realm.Realm,com.drspaceboo.transtracks.data.Photo,boolean,java.util.Map) -> b
@@ -55688,7 +55728,6 @@ io.realm.internal.OsResults -> io.realm.internal.OsResults:
     boolean isSnapshot -> h
     io.realm.internal.ObserverPairList observerPairs -> b
     287:289:io.realm.internal.OsResults createFromQuery(io.realm.internal.OsSharedRealm,io.realm.internal.TableQuery,io.realm.internal.core.DescriptorOrdering) -> a
-    293:293:io.realm.internal.OsResults createFromQuery(io.realm.internal.OsSharedRealm,io.realm.internal.TableQuery) -> a
     208:303:void <init>(io.realm.internal.OsSharedRealm,io.realm.internal.Table,long) -> <init>
     306:311:io.realm.internal.OsResults createSnapshot() -> a
     316:316:long getNativePtr() -> getNativePtr
@@ -55883,8 +55922,6 @@ io.realm.internal.PendingRow -> io.realm.internal.l:
     io.realm.RealmChangeListener listener -> c
     java.lang.ref.WeakReference frontEndRef -> d
     boolean returnCheckedRow -> e
-    42:55:void <init>(io.realm.internal.OsSharedRealm,io.realm.internal.TableQuery,io.realm.internal.core.DescriptorOrdering,boolean) -> <init>
-    59:60:void setFrontEnd(io.realm.internal.PendingRow$FrontEnd) -> a
     64:64:long getColumnCount() -> a
     69:69:java.lang.String getColumnName(long) -> d
     74:74:long getColumnIndex(java.lang.String) -> a
@@ -55908,12 +55945,6 @@ io.realm.internal.PendingRow -> io.realm.internal.l:
     218:222:void clearPendingCollection() -> f
     225:254:void notifyFrontEnd() -> g
     258:263:void executeQuery() -> e
-    21:21:void access$000(io.realm.internal.PendingRow) -> a
-io.realm.internal.PendingRow$1 -> io.realm.internal.l$1:
-    io.realm.internal.PendingRow this$0 -> a
-    46:46:void <init>(io.realm.internal.PendingRow) -> <init>
-    49:50:void onChange(io.realm.internal.PendingRow) -> a
-    46:46:void onChange(java.lang.Object) -> a
 io.realm.internal.PendingRow$FrontEnd -> io.realm.internal.l$a:
     void onQueryFinished(io.realm.internal.Row) -> b
 io.realm.internal.Property -> io.realm.internal.Property:
