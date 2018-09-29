@@ -13,11 +13,11 @@ package com.drspaceboo.transtracks
 import android.app.Application
 import com.drspaceboo.transtracks.domain.DomainManager
 import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.PrefUtil
 import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
 import io.realm.Realm
-import io.realm.RealmConfiguration
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
@@ -37,6 +37,11 @@ class TransTracksApp : Application() {
 
         AndroidThreeTen.init(this)
         Realm.init(this)
+
+        if (!PrefUtil.startDate.isSet) {
+            //Make sure that the startDate
+            PrefUtil.startDate.set(PrefUtil.startDate.defaultValue())
+        }
 
         FileUtil.clearTempFolder()
     }
