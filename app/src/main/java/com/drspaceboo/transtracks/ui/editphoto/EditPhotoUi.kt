@@ -14,6 +14,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import com.drspaceboo.transtracks.R
@@ -40,7 +41,9 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
     private val toolbar: Toolbar by bindView(R.id.edit_photo_toolbar)
     private val image: ImageView by bindView(R.id.edit_photo_image)
 
+    private val dateLabel: View by bindView(R.id.edit_photo_date_label)
     private val date: Button by bindView(R.id.edit_photo_date)
+    private val typeLabel: View by bindView(R.id.edit_photo_type_label)
     private val type: Button by bindView(R.id.edit_photo_type)
 
     private val save: Button by bindView(R.id.edit_photo_save)
@@ -50,6 +53,13 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
                          date.clicks().map { EditPhotoUiEvent.ChangeDate },
                          type.clicks().map { EditPhotoUiEvent.ChangeType },
                          save.clicks().map { EditPhotoUiEvent.Update })
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        dateLabel.setOnClickListener { date.performClick() }
+        typeLabel.setOnClickListener { type.performClick() }
     }
 
     fun display(state: EditPhotoUiState) {

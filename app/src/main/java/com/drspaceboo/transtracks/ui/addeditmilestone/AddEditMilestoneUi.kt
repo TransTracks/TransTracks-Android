@@ -49,7 +49,9 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
     private val toolbar: Toolbar by bindView(R.id.add_milestone_toolbar)
     private val toolbarTitle: TextView by bindView(R.id.add_milestone_toolbar_title)
 
+    private val titleLabel: View by bindView(R.id.add_milestone_title_label)
     private val title: EditText by bindView(R.id.add_milestone_title)
+    private val dateLabel: View by bindView(R.id.add_milestone_date_label)
     private val date: Button by bindView(R.id.add_milestone_date)
     private val descriptionLabel: View by bindView(R.id.add_milestone_description_label)
     private val description: EditText by bindView(R.id.add_milestone_description)
@@ -80,6 +82,14 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
         super.onAttachedToWindow()
 
         toolbar.inflateMenu(R.menu.add_edit_milestone)
+
+        titleLabel.setOnClickListener {
+            title.requestFocus()
+            title.showKeyboard()
+        }
+
+        dateLabel.setOnClickListener { date.performClick() }
+
         descriptionLabel.setOnClickListener {
             description.requestFocus()
             description.showKeyboard()

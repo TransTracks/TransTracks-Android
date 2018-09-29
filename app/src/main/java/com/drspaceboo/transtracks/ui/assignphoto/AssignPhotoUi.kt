@@ -15,6 +15,7 @@ import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import com.drspaceboo.transtracks.R
@@ -40,7 +41,9 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val toolbar: Toolbar by bindView(R.id.assign_photo_toolbar)
     private val image: ImageView by bindView(R.id.assign_photo_image)
 
+    private val dateLabel: View by bindView(R.id.assign_photo_date_label)
     private val date: Button by bindView(R.id.assign_photo_date)
+    private val typeLabel: View by bindView(R.id.assign_photo_type_label)
     private val type: Button by bindView(R.id.assign_photo_type)
 
     private val save: Button by bindView(R.id.assign_photo_save)
@@ -50,6 +53,13 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                          date.clicks().map { AssignPhotoUiEvent.ChangeDate },
                          type.clicks().map { AssignPhotoUiEvent.ChangeType },
                          save.clicks().map { AssignPhotoUiEvent.Save })
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        dateLabel.setOnClickListener { date.performClick() }
+        typeLabel.setOnClickListener { type.performClick() }
     }
 
     fun display(state: AssignPhotoUiState) {

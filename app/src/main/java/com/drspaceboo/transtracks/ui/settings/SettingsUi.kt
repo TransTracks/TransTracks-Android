@@ -46,9 +46,14 @@ sealed class SettingsUiState {
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.settings_toolbar)
+
+    private val startLabel: View by bindView(R.id.settings_start_label)
     private val startDate: Button by bindView(R.id.settings_start_date)
+    private val themeLabel: View by bindView(R.id.settings_theme_label)
     private val theme: Button by bindView(R.id.settings_theme)
+    private val lockLabel: View by bindView(R.id.settings_lock_label)
     private val lock: Button by bindView(R.id.settings_lock)
+    private val lockDescription: View by bindView(R.id.settings_lock_description)
     private val lockDelayLabel: View by bindView(R.id.settings_lock_delay_label)
     private val lockDelay: Button by bindView(R.id.settings_lock_delay)
 
@@ -73,6 +78,12 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        startLabel.setOnClickListener { startDate.performClick() }
+        themeLabel.setOnClickListener { theme.performClick() }
+        lockLabel.setOnClickListener { lock.performClick() }
+        lockDescription.setOnClickListener { lock.performClick() }
+        lockDelayLabel.setOnClickListener { lockDelay.performClick() }
 
         adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(code: Int) {
