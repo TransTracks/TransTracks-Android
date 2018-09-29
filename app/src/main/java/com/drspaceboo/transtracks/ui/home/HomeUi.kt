@@ -13,6 +13,7 @@ package com.drspaceboo.transtracks.ui.home
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
@@ -20,6 +21,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.ui.widget.SwipeGestureListener
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -30,6 +32,7 @@ import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
@@ -92,6 +95,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val adViewLayout: ViewGroup by bindView(R.id.home_ad_layout)
     private val adView: AdView by bindView(R.id.home_ad_view)
 
+    private val eventRelay: PublishRelay<HomeUiEvent> = PublishRelay.create()
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
                 takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
@@ -120,16 +124,41 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 bodyThirdImage.clicks().filter { bodyPhotoIds[2] != null }.map {
                     HomeUiEvent.ImageClick(bodyPhotoIds[2]!!)
                 },
-                bodyAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY) })
+                bodyAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY) },
+                eventRelay)
     }
 
     private val facePhotoIds = Array<String?>(3) { _ -> null }
     private val bodyPhotoIds = Array<String?>(3) { _ -> null }
 
     private var date = LocalDate.MIN
+    private var hasPrevious = false
+    private var hasNext = true
+
+    private val swipeListener = object : SwipeGestureListener() {
+        override fun swipeLeft(): Boolean {
+            if (hasPrevious) {
+                eventRelay.accept(HomeUiEvent.PreviousRecord)
+            }
+
+            return hasPrevious
+        }
+
+        override fun swipeRight(): Boolean {
+            if (hasNext) {
+                eventRelay.accept(HomeUiEvent.NextRecord)
+            }
+            return hasNext
+        }
+    }
+    private val gestureDetector = GestureDetector(context, swipeListener)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            return@setOnTouchListener true
+        }
 
         adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(code: Int) {
@@ -161,6 +190,9 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 date = state.currentDate
 
                 day.text = state.dayString
+
+                hasPrevious = state.showPreviousRecord
+                hasNext = state.showNextRecord
 
                 previousRecord.setVisibleOrInvisible(state.showPreviousRecord)
                 nextRecord.setVisibleOrInvisible(state.showNextRecord)
