@@ -12,12 +12,17 @@ package com.drspaceboo.transtracks.ui.home
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.transition.ChangeBounds
+import android.transition.Slide
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
@@ -33,11 +38,9 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
-import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
 import org.threeten.bp.LocalDate
-import java.io.File
 
 sealed class HomeUiEvent {
     object SelectPhoto : HomeUiEvent()
@@ -59,8 +62,6 @@ sealed class HomeUiState {
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
                       val hasMilestones: Boolean,
-                      val facePhotos: List<Pair<String, String>>,
-                      val bodyPhotos: List<Pair<String, String>>,
                       val showAds: Boolean) : HomeUiState()
 }
 
@@ -79,18 +80,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val milestones: ImageButton by bindView(R.id.home_milestones)
 
     private val faceGallery: Button by bindView(R.id.home_face_gallery)
-    private val faceFirstImage: ImageView by bindView(R.id.home_face_first_image)
-    private val faceSecondImage: ImageView by bindView(R.id.home_face_second_image)
-    private val faceThirdImage: ImageView by bindView(R.id.home_face_third_image)
-    private val faceAddImage: ImageView by bindView(R.id.home_face_add_image)
-    private val faceExtraImages: TextView by bindView(R.id.home_face_extra_images)
+    private val faceRecyclerView: RecyclerView by bindView(R.id.home_face_images)
 
     private val bodyGallery: Button by bindView(R.id.home_body_gallery)
-    private val bodyFirstImage: ImageView by bindView(R.id.home_body_first_image)
-    private val bodySecondImage: ImageView by bindView(R.id.home_body_second_image)
-    private val bodyThirdImage: ImageView by bindView(R.id.home_body_third_image)
-    private val bodyAddImage: ImageView by bindView(R.id.home_body_add_image)
-    private val bodyExtraImages: TextView by bindView(R.id.home_body_extra_images)
+    private val bodyRecyclerView: RecyclerView by bindView(R.id.home_body_images)
 
     private val adViewLayout: ViewGroup by bindView(R.id.home_ad_layout)
     private val adView: AdView by bindView(R.id.home_ad_view)
@@ -104,27 +97,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 nextRecord.clicks().map { HomeUiEvent.NextRecord },
                 milestones.clicks().map { HomeUiEvent.Milestones(date.toEpochDay()) },
                 faceGallery.clicks().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
-                faceFirstImage.clicks().filter { facePhotoIds[0] != null }.map {
-                    HomeUiEvent.ImageClick(facePhotoIds[0]!!)
-                },
-                faceSecondImage.clicks().filter { facePhotoIds[1] != null }.map {
-                    HomeUiEvent.ImageClick(facePhotoIds[1]!!)
-                },
-                faceThirdImage.clicks().filter { facePhotoIds[2] != null }.map {
-                    HomeUiEvent.ImageClick(facePhotoIds[2]!!)
-                },
-                faceAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_FACE) },
                 bodyGallery.clicks().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
-                bodyFirstImage.clicks().filter { bodyPhotoIds[0] != null }.map {
-                    HomeUiEvent.ImageClick(bodyPhotoIds[0]!!)
-                },
-                bodySecondImage.clicks().filter { bodyPhotoIds[1] != null }.map {
-                    HomeUiEvent.ImageClick(bodyPhotoIds[1]!!)
-                },
-                bodyThirdImage.clicks().filter { bodyPhotoIds[2] != null }.map {
-                    HomeUiEvent.ImageClick(bodyPhotoIds[2]!!)
-                },
-                bodyAddImage.clicks().map { HomeUiEvent.AddPhoto(date, Photo.TYPE_BODY) },
                 eventRelay)
     }
 
@@ -160,28 +133,26 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
             return@setOnTouchListener true
         }
 
+        faceRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
+                                                             false)
+        bodyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
+                                                             false)
+
         adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(code: Int) {
+                val transitionSet = TransitionSet()
+                        .addTransition(Slide().addTarget(adViewLayout).addTarget(faceGallery)
+                                               .addTarget(bodyRecyclerView))
+                        .addTransition(ChangeBounds().addTarget(faceRecyclerView)
+                                               .addTarget(bodyRecyclerView))
+
+                TransitionManager.beginDelayedTransition(this@HomeView, transitionSet)
                 adViewLayout.gone()
             }
         }
     }
 
     fun display(state: HomeUiState) {
-        fun setAddAnotherBodyImage() {
-            Picasso.get().cancelRequest(bodyThirdImage)
-            bodyThirdImage.gone()
-            bodyExtraImages.gone()
-            bodyAddImage.visible()
-        }
-
-        fun setAddAnotherFaceImage() {
-            Picasso.get().cancelRequest(faceThirdImage)
-            faceThirdImage.gone()
-            faceExtraImages.gone()
-            faceAddImage.visible()
-        }
-
         facePhotoIds.nullAllElements()
         bodyPhotoIds.nullAllElements()
 
@@ -197,10 +168,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 previousRecord.setVisibleOrInvisible(state.showPreviousRecord)
                 nextRecord.setVisibleOrInvisible(state.showNextRecord)
 
-                startDate.text = startDate.getString(R.string.start_date,
-                                                     state.startDate.toFullDateString(startDate.context))
-                currentDate.text = currentDate.getString(R.string.current_date,
-                                                         state.currentDate.toFullDateString(currentDate.context))
+                startDate.text = startDate.getString(
+                        R.string.start_date, state.startDate.toFullDateString(startDate.context))
+                currentDate.text = currentDate.getString(
+                        R.string.current_date, state.currentDate.toFullDateString(currentDate.context))
 
                 val milestonesRes = when (state.hasMilestones) {
                     true -> R.drawable.ic_milestone_selected
@@ -208,95 +179,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 }
                 milestones.setImageResource(milestonesRes)
 
-                if (state.facePhotos.isNotEmpty()) {
-                    val (facePhoto0Id, facePhoto0Path) = state.facePhotos[0]
-                    facePhotoIds[0] = facePhoto0Id
-
-                    Picasso.get().load(File(facePhoto0Path)).fit().centerCrop()
-                            .into(faceFirstImage)
-                    faceFirstImage.visible()
-
-                    if (state.facePhotos.size > 1) {
-                        val (facePhoto1Id, facePhoto1Path) = state.facePhotos[1]
-                        facePhotoIds[1] = facePhoto1Id
-
-                        Picasso.get().load(File(facePhoto1Path)).fit().centerCrop()
-                                .into(faceSecondImage)
-                        faceSecondImage.visible()
-
-                        if (state.facePhotos.size > 2) {
-                            val (facePhoto2Id, facePhoto2Path) = state.facePhotos[2]
-                            facePhotoIds[2] = facePhoto2Id
-
-                            Picasso.get().load(File(facePhoto2Path)).fit().centerCrop()
-                                    .into(faceThirdImage)
-                            faceThirdImage.visible()
-                            faceAddImage.gone()
-
-                            if (state.facePhotos.size > 3) {
-                                val extraImages = state.facePhotos.size - 3
-                                faceExtraImages.text = getString(R.string.extra_photos, extraImages)
-                                faceExtraImages.visible()
-                            } else {
-                                faceExtraImages.gone()
-                            }
-                        } else {
-                            setAddAnotherFaceImage()
-                        }
-                    } else {
-                        faceSecondImage.gone()
-                        setAddAnotherFaceImage()
-                    }
-                } else {
-                    faceFirstImage.gone()
-                    faceSecondImage.gone()
-                    setAddAnotherFaceImage()
-                }
-
-                if (state.bodyPhotos.isNotEmpty()) {
-                    val (bodyPhoto0Id, bodyPhoto0Path) = state.bodyPhotos[0]
-                    bodyPhotoIds[0] = bodyPhoto0Id
-
-                    Picasso.get().load(File(bodyPhoto0Path)).fit().centerCrop()
-                            .into(bodyFirstImage)
-                    bodyFirstImage.visible()
-
-                    if (state.bodyPhotos.size > 1) {
-                        val (bodyPhoto1Id, bodyPhoto1Path) = state.bodyPhotos[1]
-                        bodyPhotoIds[1] = bodyPhoto1Id
-
-                        Picasso.get().load(File(bodyPhoto1Path)).fit().centerCrop()
-                                .into(bodySecondImage)
-                        bodySecondImage.visible()
-
-                        if (state.bodyPhotos.size > 2) {
-                            val (bodyPhoto2Id, bodyPhoto2Path) = state.bodyPhotos[2]
-                            bodyPhotoIds[2] = bodyPhoto2Id
-
-                            Picasso.get().load(File(bodyPhoto2Path)).fit().centerCrop()
-                                    .into(bodyThirdImage)
-                            bodyThirdImage.visible()
-                            bodyAddImage.gone()
-
-                            if (state.bodyPhotos.size > 3) {
-                                val extraImages = state.bodyPhotos.size - 3
-                                bodyExtraImages.text = getString(R.string.extra_photos, extraImages)
-                                bodyExtraImages.visible()
-                            } else {
-                                bodyExtraImages.gone()
-                            }
-                        } else {
-                            setAddAnotherBodyImage()
-                        }
-                    } else {
-                        bodySecondImage.gone()
-                        setAddAnotherBodyImage()
-                    }
-                } else {
-                    bodyFirstImage.gone()
-                    bodySecondImage.gone()
-                    setAddAnotherBodyImage()
-                }
+                faceRecyclerView.adapter = HomeGalleryAdapter(state.currentDate, Photo.TYPE_FACE,
+                                                              eventRelay)
+                bodyRecyclerView.adapter = HomeGalleryAdapter(state.currentDate, Photo.TYPE_BODY,
+                                                              eventRelay)
 
                 if (state.showAds) {
                     adViewLayout.visible()

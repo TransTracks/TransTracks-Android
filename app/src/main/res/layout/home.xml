@@ -162,77 +162,25 @@
         android:text="@string/face_gallery"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/white_text_selector"
-        app:layout_constraintBottom_toTopOf="@id/home_face_images_layout"
+        app:layout_constraintBottom_toTopOf="@id/home_face_images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_divider_two" />
 
-    <com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout
-        android:id="@+id/home_face_images_layout"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/home_face_images"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
-        android:gravity="top|center_horizontal"
-        android:orientation="horizontal"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         app:layout_constraintBottom_toTopOf="@id/home_body_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_face_gallery">
-
-        <ImageView
-            android:id="@+id/home_face_first_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp" />
-
-        <ImageView
-            android:id="@+id/home_face_second_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp" />
-
-        <RelativeLayout
-            android:id="@+id/home_face_third_image_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp">
-
-            <ImageView
-                android:id="@+id/home_face_third_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageButton
-                android:id="@+id/home_face_add_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:contentDescription="@string/add_face_photo"
-                android:src="@drawable/add" />
-
-            <TextView
-                android:id="@+id/home_face_extra_images"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_transparent_button"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textColor="@color/white_text_selector"
-                tools:text="+200" />
-        </RelativeLayout>
-    </com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/home_face_gallery" />
 
     <Button
         android:id="@+id/home_body_gallery"
@@ -245,77 +193,25 @@
         android:text="@string/body_gallery"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/white_text_selector"
-        app:layout_constraintBottom_toTopOf="@id/home_body_images_layout"
+        app:layout_constraintBottom_toTopOf="@id/home_body_images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_face_images_layout" />
+        app:layout_constraintTop_toBottomOf="@id/home_face_images" />
 
-    <com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout
-        android:id="@+id/home_body_images_layout"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/home_body_images"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
-        android:gravity="top|center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/home_ad_layout"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@id/home_ad_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_body_gallery">
-
-        <ImageView
-            android:id="@+id/home_body_first_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp" />
-
-        <ImageView
-            android:id="@+id/home_body_second_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp" />
-
-        <RelativeLayout
-            android:id="@+id/home_body_third_image_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_image_background"
-            android:padding="6dp">
-
-            <ImageView
-                android:id="@+id/home_body_third_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageButton
-                android:id="@+id/home_body_add_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:contentDescription="@string/add_body_photo"
-                android:src="@drawable/add" />
-
-            <TextView
-                android:id="@+id/home_body_extra_images"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/rounded_transparent_button"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textColor="@color/white_text_selector"
-                tools:text="+200" />
-        </RelativeLayout>
-    </com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/home_body_gallery" />
 
     <FrameLayout
         android:id="@+id/home_ad_layout"

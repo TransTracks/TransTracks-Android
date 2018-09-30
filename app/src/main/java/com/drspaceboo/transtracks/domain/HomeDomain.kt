@@ -38,8 +38,6 @@ sealed class HomeResult {
                       val startDate: LocalDate,
                       val currentDate: LocalDate,
                       val hasMilestones: Boolean,
-                      val facePhotos: List<Pair<String, String>>,
-                      val bodyPhotos: List<Pair<String, String>>,
                       val showAds: Boolean) : HomeResult()
 }
 
@@ -84,19 +82,8 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
             val hasMilestones = realm.where(Milestone::class.java)
                     .equalTo(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).findFirst() != null
 
-            val facePhotos = realm.where(Photo::class.java)
-                    .equalTo(Photo.FIELD_EPOCH_DAY, currentDateEpochDay)
-                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_FACE).sort(Photo.FIELD_TIMESTAMP).findAll()
-                    .map { photo -> photo.id to photo.filePath }
-
-            val bodyPhotos = realm.where(Photo::class.java)
-                    .equalTo(Photo.FIELD_EPOCH_DAY, currentDateEpochDay)
-                    .equalTo(Photo.FIELD_TYPE, Photo.TYPE_BODY).sort(Photo.FIELD_TIMESTAMP).findAll()
-                    .map { photo -> photo.id to photo.filePath }
-
             return HomeResult.Loaded(period.getDisplayString(), showPreviousRecord, showNextRecord,
-                                     startDate, currentDate, hasMilestones, facePhotos, bodyPhotos,
-                                     PrefUtil.showAds.get())
+                                     startDate, currentDate, hasMilestones, PrefUtil.showAds.get())
         }
     }
 
