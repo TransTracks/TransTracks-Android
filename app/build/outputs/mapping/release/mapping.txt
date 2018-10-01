@@ -16435,7 +16435,7 @@ android.support.v7.widget.AppCompatEditText -> android.support.v7.widget.m:
     55:55:java.lang.CharSequence getText() -> getText
 android.support.v7.widget.AppCompatHintHelper -> android.support.v7.widget.n:
     28:40:android.view.inputmethod.InputConnection onCreateInputConnection(android.view.inputmethod.InputConnection,android.view.inputmethod.EditorInfo,android.view.View) -> a
-android.support.v7.widget.AppCompatImageButton -> android.support.v7.widget.o:
+android.support.v7.widget.AppCompatImageButton -> android.support.v7.widget.AppCompatImageButton:
     android.support.v7.widget.AppCompatBackgroundHelper mBackgroundTintHelper -> a
     android.support.v7.widget.AppCompatImageHelper mImageHelper -> b
     65:66:void <init>(android.content.Context) -> <init>
@@ -16457,7 +16457,7 @@ android.support.v7.widget.AppCompatImageButton -> android.support.v7.widget.o:
     235:236:android.graphics.PorterDuff$Mode getSupportImageTintMode() -> getSupportImageTintMode
     241:248:void drawableStateChanged() -> drawableStateChanged
     252:252:boolean hasOverlappingRendering() -> hasOverlappingRendering
-android.support.v7.widget.AppCompatImageHelper -> android.support.v7.widget.p:
+android.support.v7.widget.AppCompatImageHelper -> android.support.v7.widget.o:
     android.widget.ImageView mView -> a
     android.support.v7.widget.TintInfo mInternalImageTint -> b
     android.support.v7.widget.TintInfo mImageTint -> c
@@ -16473,7 +16473,7 @@ android.support.v7.widget.AppCompatImageHelper -> android.support.v7.widget.p:
     137:158:void applySupportImageTint() -> d
     174:186:boolean shouldApplyFrameworkTintUsingColorFilter() -> e
     196:218:boolean applyFrameworkTintUsingColorFilter(android.graphics.drawable.Drawable) -> a
-android.support.v7.widget.AppCompatImageView -> android.support.v7.widget.q:
+android.support.v7.widget.AppCompatImageView -> android.support.v7.widget.p:
     android.support.v7.widget.AppCompatBackgroundHelper mBackgroundTintHelper -> a
     android.support.v7.widget.AppCompatImageHelper mImageHelper -> b
     64:65:void <init>(android.content.Context) -> <init>
@@ -16495,7 +16495,7 @@ android.support.v7.widget.AppCompatImageView -> android.support.v7.widget.q:
     246:247:android.graphics.PorterDuff$Mode getSupportImageTintMode() -> getSupportImageTintMode
     252:259:void drawableStateChanged() -> drawableStateChanged
     263:263:boolean hasOverlappingRendering() -> hasOverlappingRendering
-android.support.v7.widget.AppCompatMultiAutoCompleteTextView -> android.support.v7.widget.r:
+android.support.v7.widget.AppCompatMultiAutoCompleteTextView -> android.support.v7.widget.q:
     int[] TINT_ATTRS -> a
     android.support.v7.widget.AppCompatBackgroundHelper mBackgroundTintHelper -> b
     android.support.v7.widget.AppCompatTextHelper mTextHelper -> c
@@ -16512,7 +16512,7 @@ android.support.v7.widget.AppCompatMultiAutoCompleteTextView -> android.support.
     178:182:void setTextAppearance(android.content.Context,int) -> setTextAppearance
     186:186:android.view.inputmethod.InputConnection onCreateInputConnection(android.view.inputmethod.EditorInfo) -> onCreateInputConnection
     55:55:void <clinit>() -> <clinit>
-android.support.v7.widget.AppCompatPopupWindow -> android.support.v7.widget.s:
+android.support.v7.widget.AppCompatPopupWindow -> android.support.v7.widget.r:
     boolean COMPAT_OVERLAP_ANCHOR -> a
     boolean mOverlapAnchor -> b
     46:48:void <init>(android.content.Context,android.util.AttributeSet,int,int) -> <init>
@@ -16522,7 +16522,7 @@ android.support.v7.widget.AppCompatPopupWindow -> android.support.v7.widget.s:
     82:87:void update(android.view.View,int,int,int,int) -> update
     90:95:void setSupportOverlapAnchor(boolean) -> a
     34:34:void <clinit>() -> <clinit>
-android.support.v7.widget.AppCompatProgressBarHelper -> android.support.v7.widget.t:
+android.support.v7.widget.AppCompatProgressBarHelper -> android.support.v7.widget.s:
     int[] TINT_ATTRS -> a
     android.widget.ProgressBar mView -> b
     android.graphics.Bitmap mSampleTile -> c
@@ -16533,7 +16533,7 @@ android.support.v7.widget.AppCompatProgressBarHelper -> android.support.v7.widge
     140:141:android.graphics.drawable.shapes.Shape getDrawableShape() -> b
     145:145:android.graphics.Bitmap getSampleTime() -> a
     38:38:void <clinit>() -> <clinit>
-android.support.v7.widget.AppCompatRadioButton -> android.support.v7.widget.u:
+android.support.v7.widget.AppCompatRadioButton -> android.support.v7.widget.t:
     android.support.v7.widget.AppCompatCompoundButtonHelper mCompoundButtonHelper -> a
     android.support.v7.widget.AppCompatTextHelper mTextHelper -> b
     60:61:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
@@ -16545,19 +16545,19 @@ android.support.v7.widget.AppCompatRadioButton -> android.support.v7.widget.u:
     112:113:android.content.res.ColorStateList getSupportButtonTintList() -> getSupportButtonTintList
     124:127:void setSupportButtonTintMode(android.graphics.PorterDuff$Mode) -> setSupportButtonTintMode
     137:138:android.graphics.PorterDuff$Mode getSupportButtonTintMode() -> getSupportButtonTintMode
-android.support.v7.widget.AppCompatRatingBar -> android.support.v7.widget.v:
+android.support.v7.widget.AppCompatRatingBar -> android.support.v7.widget.u:
     android.support.v7.widget.AppCompatProgressBarHelper mAppCompatProgressBarHelper -> a
     44:45:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
     48:52:void <init>(android.content.Context,android.util.AttributeSet,int) -> <init>
     56:64:void onMeasure(int,int) -> onMeasure
-android.support.v7.widget.AppCompatSeekBar -> android.support.v7.widget.w:
+android.support.v7.widget.AppCompatSeekBar -> android.support.v7.widget.v:
     android.support.v7.widget.AppCompatSeekBarHelper mAppCompatSeekBarHelper -> a
     43:44:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
     47:51:void <init>(android.content.Context,android.util.AttributeSet,int) -> <init>
     55:57:void onDraw(android.graphics.Canvas) -> onDraw
     61:63:void drawableStateChanged() -> drawableStateChanged
     67:69:void jumpDrawablesToCurrentState() -> jumpDrawablesToCurrentState
-android.support.v7.widget.AppCompatSeekBarHelper -> android.support.v7.widget.x:
+android.support.v7.widget.AppCompatSeekBarHelper -> android.support.v7.widget.w:
     android.widget.SeekBar mView -> a
     android.graphics.drawable.Drawable mTickMark -> b
     android.content.res.ColorStateList mTickMarkTintList -> c
@@ -16571,7 +16571,7 @@ android.support.v7.widget.AppCompatSeekBarHelper -> android.support.v7.widget.x:
     145:148:void jumpDrawablesToCurrentState() -> b
     151:156:void drawableStateChanged() -> c
     162:182:void drawTickMarks(android.graphics.Canvas) -> a
-android.support.v7.widget.AppCompatSpinner -> android.support.v7.widget.y:
+android.support.v7.widget.AppCompatSpinner -> android.support.v7.widget.x:
     int[] ATTRS_ANDROID_SPINNERMODE -> d
     android.support.v7.widget.AppCompatBackgroundHelper mBackgroundTintHelper -> e
     android.content.Context mPopupContext -> f
@@ -16612,13 +16612,13 @@ android.support.v7.widget.AppCompatSpinner -> android.support.v7.widget.y:
     543:583:int compatMeasureContentWidth(android.widget.SpinnerAdapter,android.graphics.drawable.Drawable) -> a
     69:69:void setAdapter(android.widget.Adapter) -> setAdapter
     71:71:void <clinit>() -> <clinit>
-android.support.v7.widget.AppCompatSpinner$1 -> android.support.v7.widget.y$1:
+android.support.v7.widget.AppCompatSpinner$1 -> android.support.v7.widget.x$1:
     android.support.v7.widget.AppCompatSpinner$DropdownPopup val$popup -> a
     android.support.v7.widget.AppCompatSpinner this$0 -> b
     246:246:void <init>(android.support.v7.widget.AppCompatSpinner,android.view.View,android.support.v7.widget.AppCompatSpinner$DropdownPopup) -> <init>
     249:249:android.support.v7.view.menu.ShowableListMenu getPopup() -> a
     254:257:boolean onForwardingStarted() -> b
-android.support.v7.widget.AppCompatSpinner$DropDownAdapter -> android.support.v7.widget.y$a:
+android.support.v7.widget.AppCompatSpinner$DropDownAdapter -> android.support.v7.widget.x$a:
     android.widget.SpinnerAdapter mAdapter -> a
     android.widget.ListAdapter mListAdapter -> b
     604:626:void <init>(android.widget.SpinnerAdapter,android.content.res.Resources$Theme) -> <init>
@@ -16635,7 +16635,7 @@ android.support.v7.widget.AppCompatSpinner$DropDownAdapter -> android.support.v7
     703:703:int getItemViewType(int) -> getItemViewType
     708:708:int getViewTypeCount() -> getViewTypeCount
     713:713:boolean isEmpty() -> isEmpty
-android.support.v7.widget.AppCompatSpinner$DropdownPopup -> android.support.v7.widget.y$b:
+android.support.v7.widget.AppCompatSpinner$DropdownPopup -> android.support.v7.widget.x$b:
     java.lang.CharSequence mHintText -> h
     android.widget.ListAdapter mAdapter -> a
     android.graphics.Rect mVisibleRect -> i
@@ -16648,21 +16648,21 @@ android.support.v7.widget.AppCompatSpinner$DropdownPopup -> android.support.v7.w
     796:843:void show() -> a
     849:849:boolean isVisibleToUser(android.view.View) -> a
     717:717:void access$001(android.support.v7.widget.AppCompatSpinner$DropdownPopup) -> a
-android.support.v7.widget.AppCompatSpinner$DropdownPopup$1 -> android.support.v7.widget.y$b$1:
+android.support.v7.widget.AppCompatSpinner$DropdownPopup$1 -> android.support.v7.widget.x$b$1:
     android.support.v7.widget.AppCompatSpinner val$this$0 -> a
     android.support.v7.widget.AppCompatSpinner$DropdownPopup this$1 -> b
     729:729:void <init>(android.support.v7.widget.AppCompatSpinner$DropdownPopup,android.support.v7.widget.AppCompatSpinner) -> <init>
     732:738:void onItemClick(android.widget.AdapterView,android.view.View,int,long) -> onItemClick
-android.support.v7.widget.AppCompatSpinner$DropdownPopup$2 -> android.support.v7.widget.y$b$2:
+android.support.v7.widget.AppCompatSpinner$DropdownPopup$2 -> android.support.v7.widget.x$b$2:
     android.support.v7.widget.AppCompatSpinner$DropdownPopup this$1 -> a
     818:818:void <init>(android.support.v7.widget.AppCompatSpinner$DropdownPopup) -> <init>
     821:830:void onGlobalLayout() -> onGlobalLayout
-android.support.v7.widget.AppCompatSpinner$DropdownPopup$3 -> android.support.v7.widget.y$b$3:
+android.support.v7.widget.AppCompatSpinner$DropdownPopup$3 -> android.support.v7.widget.x$b$3:
     android.view.ViewTreeObserver$OnGlobalLayoutListener val$layoutListener -> a
     android.support.v7.widget.AppCompatSpinner$DropdownPopup this$1 -> b
     833:833:void <init>(android.support.v7.widget.AppCompatSpinner$DropdownPopup,android.view.ViewTreeObserver$OnGlobalLayoutListener) -> <init>
     836:840:void onDismiss() -> onDismiss
-android.support.v7.widget.AppCompatTextHelper -> android.support.v7.widget.z:
+android.support.v7.widget.AppCompatTextHelper -> android.support.v7.widget.y:
     android.widget.TextView mView -> a
     android.support.v7.widget.TintInfo mDrawableLeftTint -> b
     android.support.v7.widget.TintInfo mDrawableTopTint -> c
@@ -16696,7 +16696,7 @@ android.support.v7.widget.AppCompatTextHelper -> android.support.v7.widget.z:
     449:449:int getAutoSizeMinTextSize() -> f
     453:453:int getAutoSizeMaxTextSize() -> g
     457:457:int[] getAutoSizeTextAvailableSizes() -> h
-android.support.v7.widget.AppCompatTextHelper$1 -> android.support.v7.widget.z$1:
+android.support.v7.widget.AppCompatTextHelper$1 -> android.support.v7.widget.y$1:
     java.lang.ref.WeakReference val$textViewWeak -> a
     android.support.v7.widget.AppCompatTextHelper this$0 -> b
     252:252:void <init>(android.support.v7.widget.AppCompatTextHelper,java.lang.ref.WeakReference) -> <init>
@@ -16742,7 +16742,7 @@ android.support.v7.widget.AppCompatTextView -> android.support.v7.widget.AppComp
     477:478:java.lang.CharSequence getText() -> getText
     494:496:void setTextFuture(java.util.concurrent.Future) -> setTextFuture
     500:502:void onMeasure(int,int) -> onMeasure
-android.support.v7.widget.AppCompatTextViewAutoSizeHelper -> android.support.v7.widget.aa:
+android.support.v7.widget.AppCompatTextViewAutoSizeHelper -> android.support.v7.widget.z:
     android.graphics.RectF TEMP_RECTF -> a
     java.util.concurrent.ConcurrentHashMap sTextViewMethodByNameCache -> b
     int mAutoSizeTextType -> c
@@ -16794,7 +16794,7 @@ android.support.v7.widget.ButtonBarLayout -> android.support.v7.widget.ButtonBar
     150:150:int getMinimumHeight() -> getMinimumHeight
     154:168:void setStacked(boolean) -> setStacked
     171:171:boolean isStacked() -> a
-android.support.v7.widget.CardView -> android.support.v7.widget.ab:
+android.support.v7.widget.CardView -> android.support.v7.widget.aa:
     int[] COLOR_BACKGROUND_ATTR -> d
     android.support.v7.widget.CardViewImpl IMPL -> e
     boolean mCompatPadding -> f
@@ -16826,14 +16826,14 @@ android.support.v7.widget.CardView -> android.support.v7.widget.ab:
     424:424:boolean getPreventCornerOverlap() -> getPreventCornerOverlap
     441:445:void setPreventCornerOverlap(boolean) -> setPreventCornerOverlap
     81:93:void <clinit>() -> <clinit>
-android.support.v7.widget.CardViewApi17Impl -> android.support.v7.widget.ac:
+android.support.v7.widget.CardViewApi17Impl -> android.support.v7.widget.ab:
     25:25:void <init>() -> <init>
     29:37:void initStatic() -> a
-android.support.v7.widget.CardViewApi17Impl$1 -> android.support.v7.widget.ac$1:
+android.support.v7.widget.CardViewApi17Impl$1 -> android.support.v7.widget.ab$1:
     android.support.v7.widget.CardViewApi17Impl this$0 -> a
     30:30:void <init>(android.support.v7.widget.CardViewApi17Impl) -> <init>
     34:35:void drawRoundRect(android.graphics.Canvas,android.graphics.RectF,float,android.graphics.Paint) -> a
-android.support.v7.widget.CardViewApi21Impl -> android.support.v7.widget.ad:
+android.support.v7.widget.CardViewApi21Impl -> android.support.v7.widget.ac:
     26:26:void <init>() -> <init>
     42:43:void setRadius(android.support.v7.widget.CardViewDelegate,float) -> a
     47:47:void initStatic() -> a
@@ -16850,7 +16850,7 @@ android.support.v7.widget.CardViewApi21Impl -> android.support.v7.widget.ad:
     113:114:void setBackgroundColor(android.support.v7.widget.CardViewDelegate,android.content.res.ColorStateList) -> a
     118:118:android.content.res.ColorStateList getBackgroundColor(android.support.v7.widget.CardViewDelegate) -> i
     122:122:android.support.v7.widget.RoundRectDrawable getCardBackground(android.support.v7.widget.CardViewDelegate) -> j
-android.support.v7.widget.CardViewBaseImpl -> android.support.v7.widget.ae:
+android.support.v7.widget.CardViewBaseImpl -> android.support.v7.widget.ad:
     android.graphics.RectF mCornerRect -> a
     27:29:void <init>() -> <init>
     37:78:void initStatic() -> a
@@ -16868,18 +16868,18 @@ android.support.v7.widget.CardViewBaseImpl -> android.support.v7.widget.ae:
     162:162:float getMinWidth(android.support.v7.widget.CardViewDelegate) -> b
     167:167:float getMinHeight(android.support.v7.widget.CardViewDelegate) -> c
     171:171:android.support.v7.widget.RoundRectDrawableWithShadow getShadowBackground(android.support.v7.widget.CardViewDelegate) -> j
-android.support.v7.widget.CardViewBaseImpl$1 -> android.support.v7.widget.ae$1:
+android.support.v7.widget.CardViewBaseImpl$1 -> android.support.v7.widget.ad$1:
     android.support.v7.widget.CardViewBaseImpl this$0 -> a
     38:38:void <init>(android.support.v7.widget.CardViewBaseImpl) -> <init>
     42:76:void drawRoundRect(android.graphics.Canvas,android.graphics.RectF,float,android.graphics.Paint) -> a
-android.support.v7.widget.CardViewDelegate -> android.support.v7.widget.af:
+android.support.v7.widget.CardViewDelegate -> android.support.v7.widget.ae:
     android.graphics.drawable.Drawable getCardBackground() -> a
     boolean getUseCompatPadding() -> b
     boolean getPreventCornerOverlap() -> c
     void setShadowPadding(int,int,int,int) -> a
     void setMinWidthHeightInternal(int,int) -> a
     android.view.View getCardView() -> d
-android.support.v7.widget.CardViewImpl -> android.support.v7.widget.ag:
+android.support.v7.widget.CardViewImpl -> android.support.v7.widget.af:
     void setRadius(android.support.v7.widget.CardViewDelegate,float) -> a
     float getRadius(android.support.v7.widget.CardViewDelegate) -> d
     void setElevation(android.support.v7.widget.CardViewDelegate,float) -> c
@@ -16893,7 +16893,7 @@ android.support.v7.widget.CardViewImpl -> android.support.v7.widget.ag:
     void onPreventCornerOverlapChanged(android.support.v7.widget.CardViewDelegate) -> h
     void setBackgroundColor(android.support.v7.widget.CardViewDelegate,android.content.res.ColorStateList) -> a
     android.content.res.ColorStateList getBackgroundColor(android.support.v7.widget.CardViewDelegate) -> i
-android.support.v7.widget.ChildHelper -> android.support.v7.widget.ah:
+android.support.v7.widget.ChildHelper -> android.support.v7.widget.ag:
     android.support.v7.widget.ChildHelper$Callback mCallback -> a
     android.support.v7.widget.ChildHelper$Bucket mBucket -> b
     java.util.List mHiddenViews -> c
@@ -16919,7 +16919,7 @@ android.support.v7.widget.ChildHelper -> android.support.v7.widget.ah:
     350:359:void unhide(android.view.View) -> e
     363:363:java.lang.String toString() -> toString
     373:389:boolean removeViewIfHidden(android.view.View) -> f
-android.support.v7.widget.ChildHelper$Bucket -> android.support.v7.widget.ah$a:
+android.support.v7.widget.ChildHelper$Bucket -> android.support.v7.widget.ag$a:
     long mData -> a
     android.support.v7.widget.ChildHelper$Bucket mNext -> b
     395:401:void <init>() -> <init>
@@ -16932,7 +16932,7 @@ android.support.v7.widget.ChildHelper$Bucket -> android.support.v7.widget.ah$a:
     470:488:boolean remove(int) -> d
     493:502:int countOnesBefore(int) -> e
     508:509:java.lang.String toString() -> toString
-android.support.v7.widget.ChildHelper$Callback -> android.support.v7.widget.ah$b:
+android.support.v7.widget.ChildHelper$Callback -> android.support.v7.widget.ag$b:
     int getChildCount() -> a
     void addView(android.view.View,int) -> a
     int indexOfChild(android.view.View) -> a
@@ -16971,7 +16971,7 @@ android.support.v7.widget.ContentFrameLayout -> android.support.v7.widget.Conten
 android.support.v7.widget.ContentFrameLayout$OnAttachListener -> android.support.v7.widget.ContentFrameLayout$a:
     void onDetachedFromWindow() -> b
     void onAttachedFromWindow() -> a
-android.support.v7.widget.DecorContentParent -> android.support.v7.widget.ai:
+android.support.v7.widget.DecorContentParent -> android.support.v7.widget.ah:
     void setWindowCallback(android.view.Window$Callback) -> setWindowCallback
     void setWindowTitle(java.lang.CharSequence) -> setWindowTitle
     void initFeature(int) -> a
@@ -16983,7 +16983,7 @@ android.support.v7.widget.DecorContentParent -> android.support.v7.widget.ai:
     void setMenuPrepared() -> j
     void setMenu(android.view.Menu,android.support.v7.view.menu.MenuPresenter$Callback) -> a
     void dismissPopups() -> k
-android.support.v7.widget.DecorToolbar -> android.support.v7.widget.aj:
+android.support.v7.widget.DecorToolbar -> android.support.v7.widget.ai:
     android.view.ViewGroup getViewGroup() -> a
     android.content.Context getContext() -> b
     boolean hasExpandedActionView() -> c
@@ -17014,7 +17014,7 @@ android.support.v7.widget.DecorToolbar -> android.support.v7.widget.aj:
     void setVisibility(int) -> d
     void setMenuCallbacks(android.support.v7.view.menu.MenuPresenter$Callback,android.support.v7.view.menu.MenuBuilder$Callback) -> a
     android.view.Menu getMenu() -> q
-android.support.v7.widget.DefaultItemAnimator -> android.support.v7.widget.ak:
+android.support.v7.widget.DefaultItemAnimator -> android.support.v7.widget.aj:
     android.animation.TimeInterpolator sDefaultInterpolator -> i
     java.util.ArrayList mPendingRemovals -> j
     java.util.ArrayList mPendingAdditions -> k
@@ -17047,22 +17047,22 @@ android.support.v7.widget.DefaultItemAnimator -> android.support.v7.widget.ak:
     557:638:void endAnimations() -> d
     641:644:void cancelAll(java.util.List) -> a
     665:665:boolean canReuseUpdatedViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,java.util.List) -> a
-android.support.v7.widget.DefaultItemAnimator$1 -> android.support.v7.widget.ak$1:
+android.support.v7.widget.DefaultItemAnimator$1 -> android.support.v7.widget.aj$1:
     java.util.ArrayList val$moves -> a
     android.support.v7.widget.DefaultItemAnimator this$0 -> b
     121:121:void <init>(android.support.v7.widget.DefaultItemAnimator,java.util.ArrayList) -> <init>
     124:130:void run() -> run
-android.support.v7.widget.DefaultItemAnimator$2 -> android.support.v7.widget.ak$2:
+android.support.v7.widget.DefaultItemAnimator$2 -> android.support.v7.widget.aj$2:
     java.util.ArrayList val$changes -> a
     android.support.v7.widget.DefaultItemAnimator this$0 -> b
     145:145:void <init>(android.support.v7.widget.DefaultItemAnimator,java.util.ArrayList) -> <init>
     148:153:void run() -> run
-android.support.v7.widget.DefaultItemAnimator$3 -> android.support.v7.widget.ak$3:
+android.support.v7.widget.DefaultItemAnimator$3 -> android.support.v7.widget.aj$3:
     java.util.ArrayList val$additions -> a
     android.support.v7.widget.DefaultItemAnimator this$0 -> b
     168:168:void <init>(android.support.v7.widget.DefaultItemAnimator,java.util.ArrayList) -> <init>
     171:176:void run() -> run
-android.support.v7.widget.DefaultItemAnimator$4 -> android.support.v7.widget.ak$4:
+android.support.v7.widget.DefaultItemAnimator$4 -> android.support.v7.widget.aj$4:
     android.support.v7.widget.RecyclerView$ViewHolder val$holder -> a
     android.view.ViewPropertyAnimator val$animation -> b
     android.view.View val$view -> c
@@ -17070,7 +17070,7 @@ android.support.v7.widget.DefaultItemAnimator$4 -> android.support.v7.widget.ak$
     203:203:void <init>(android.support.v7.widget.DefaultItemAnimator,android.support.v7.widget.RecyclerView$ViewHolder,android.view.ViewPropertyAnimator,android.view.View) -> <init>
     206:207:void onAnimationStart(android.animation.Animator) -> onAnimationStart
     211:216:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-android.support.v7.widget.DefaultItemAnimator$5 -> android.support.v7.widget.ak$5:
+android.support.v7.widget.DefaultItemAnimator$5 -> android.support.v7.widget.aj$5:
     android.support.v7.widget.RecyclerView$ViewHolder val$holder -> a
     android.view.View val$view -> b
     android.view.ViewPropertyAnimator val$animation -> c
@@ -17079,7 +17079,7 @@ android.support.v7.widget.DefaultItemAnimator$5 -> android.support.v7.widget.ak$
     236:237:void onAnimationStart(android.animation.Animator) -> onAnimationStart
     241:242:void onAnimationCancel(android.animation.Animator) -> onAnimationCancel
     246:250:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-android.support.v7.widget.DefaultItemAnimator$6 -> android.support.v7.widget.ak$6:
+android.support.v7.widget.DefaultItemAnimator$6 -> android.support.v7.widget.aj$6:
     android.support.v7.widget.RecyclerView$ViewHolder val$holder -> a
     int val$deltaX -> b
     android.view.View val$view -> c
@@ -17090,7 +17090,7 @@ android.support.v7.widget.DefaultItemAnimator$6 -> android.support.v7.widget.ak$
     295:296:void onAnimationStart(android.animation.Animator) -> onAnimationStart
     300:306:void onAnimationCancel(android.animation.Animator) -> onAnimationCancel
     310:314:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-android.support.v7.widget.DefaultItemAnimator$7 -> android.support.v7.widget.ak$7:
+android.support.v7.widget.DefaultItemAnimator$7 -> android.support.v7.widget.aj$7:
     android.support.v7.widget.DefaultItemAnimator$ChangeInfo val$changeInfo -> a
     android.view.ViewPropertyAnimator val$oldViewAnim -> b
     android.view.View val$view -> c
@@ -17098,7 +17098,7 @@ android.support.v7.widget.DefaultItemAnimator$7 -> android.support.v7.widget.ak$
     358:358:void <init>(android.support.v7.widget.DefaultItemAnimator,android.support.v7.widget.DefaultItemAnimator$ChangeInfo,android.view.ViewPropertyAnimator,android.view.View) -> <init>
     361:362:void onAnimationStart(android.animation.Animator) -> onAnimationStart
     366:373:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-android.support.v7.widget.DefaultItemAnimator$8 -> android.support.v7.widget.ak$8:
+android.support.v7.widget.DefaultItemAnimator$8 -> android.support.v7.widget.aj$8:
     android.support.v7.widget.DefaultItemAnimator$ChangeInfo val$changeInfo -> a
     android.view.ViewPropertyAnimator val$newViewAnimation -> b
     android.view.View val$newView -> c
@@ -17106,7 +17106,7 @@ android.support.v7.widget.DefaultItemAnimator$8 -> android.support.v7.widget.ak$
     380:380:void <init>(android.support.v7.widget.DefaultItemAnimator,android.support.v7.widget.DefaultItemAnimator$ChangeInfo,android.view.ViewPropertyAnimator,android.view.View) -> <init>
     383:384:void onAnimationStart(android.animation.Animator) -> onAnimationStart
     387:394:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
-android.support.v7.widget.DefaultItemAnimator$ChangeInfo -> android.support.v7.widget.ak$a:
+android.support.v7.widget.DefaultItemAnimator$ChangeInfo -> android.support.v7.widget.aj$a:
     android.support.v7.widget.RecyclerView$ViewHolder oldHolder -> a
     android.support.v7.widget.RecyclerView$ViewHolder newHolder -> b
     int fromX -> c
@@ -17116,7 +17116,7 @@ android.support.v7.widget.DefaultItemAnimator$ChangeInfo -> android.support.v7.w
     73:76:void <init>(android.support.v7.widget.RecyclerView$ViewHolder,android.support.v7.widget.RecyclerView$ViewHolder) -> <init>
     80:85:void <init>(android.support.v7.widget.RecyclerView$ViewHolder,android.support.v7.widget.RecyclerView$ViewHolder,int,int,int,int) -> <init>
     89:89:java.lang.String toString() -> toString
-android.support.v7.widget.DefaultItemAnimator$MoveInfo -> android.support.v7.widget.ak$b:
+android.support.v7.widget.DefaultItemAnimator$MoveInfo -> android.support.v7.widget.aj$b:
     android.support.v7.widget.RecyclerView$ViewHolder holder -> a
     int fromX -> b
     int fromY -> c
@@ -17129,7 +17129,7 @@ android.support.v7.widget.DialogTitle -> android.support.v7.widget.DialogTitle:
     51:52:void <init>(android.content.Context) -> <init>
     56:83:void onMeasure(int,int) -> onMeasure
     91:93:void setCustomSelectionActionModeCallback(android.view.ActionMode$Callback) -> setCustomSelectionActionModeCallback
-android.support.v7.widget.DrawableUtils -> android.support.v7.widget.al:
+android.support.v7.widget.DrawableUtils -> android.support.v7.widget.ak:
     android.graphics.Rect INSETS_NONE -> a
     java.lang.Class sInsetsClazz -> b
     118:122:void fixDrawable(android.graphics.drawable.Drawable) -> a
@@ -17137,7 +17137,7 @@ android.support.v7.widget.DrawableUtils -> android.support.v7.widget.al:
     171:181:void fixVectorDrawableTinting(android.graphics.drawable.Drawable) -> c
     187:194:android.graphics.PorterDuff$Mode parseTintMode(int,android.graphics.PorterDuff$Mode) -> a
     46:60:void <clinit>() -> <clinit>
-android.support.v7.widget.DropDownListView -> android.support.v7.widget.am:
+android.support.v7.widget.DropDownListView -> android.support.v7.widget.al:
     android.graphics.Rect mSelectorRect -> b
     int mSelectionLeftPadding -> c
     int mSelectionTopPadding -> d
@@ -17176,7 +17176,7 @@ android.support.v7.widget.DropDownListView -> android.support.v7.widget.am:
     629:643:void clearPressedItem() -> b
     646:690:void setPressedItem(android.view.View,int,float,float) -> a
     693:693:boolean touchModeDrawsInPressedStateCompat() -> c
-android.support.v7.widget.DropDownListView$GateKeeperDrawable -> android.support.v7.widget.am$a:
+android.support.v7.widget.DropDownListView$GateKeeperDrawable -> android.support.v7.widget.al$a:
     boolean mEnabled -> a
     382:384:void <init>(android.graphics.drawable.Drawable) -> <init>
     387:388:void setEnabled(boolean) -> a
@@ -17185,13 +17185,13 @@ android.support.v7.widget.DropDownListView$GateKeeperDrawable -> android.support
     407:410:void setHotspot(float,float) -> setHotspot
     414:417:void setHotspotBounds(int,int,int,int) -> setHotspotBounds
     421:424:boolean setVisible(boolean,boolean) -> setVisible
-android.support.v7.widget.DropDownListView$ResolveHoverRunnable -> android.support.v7.widget.am$b:
+android.support.v7.widget.DropDownListView$ResolveHoverRunnable -> android.support.v7.widget.al$b:
     android.support.v7.widget.DropDownListView this$0 -> a
     700:701:void <init>(android.support.v7.widget.DropDownListView) -> <init>
     706:708:void run() -> run
     711:713:void cancel() -> a
     716:717:void post() -> b
-android.support.v7.widget.FastScroller -> android.support.v7.widget.an:
+android.support.v7.widget.FastScroller -> android.support.v7.widget.am:
     int[] PRESSED_STATE_SET -> k
     int[] EMPTY_STATE_SET -> l
     int mScrollbarMinimumRange -> m
@@ -17249,21 +17249,21 @@ android.support.v7.widget.FastScroller -> android.support.v7.widget.an:
     542:544:int[] getVerticalRange() -> g
     551:553:int[] getHorizontalRange() -> h
     74:75:void <clinit>() -> <clinit>
-android.support.v7.widget.FastScroller$1 -> android.support.v7.widget.an$1:
+android.support.v7.widget.FastScroller$1 -> android.support.v7.widget.am$1:
     android.support.v7.widget.FastScroller this$0 -> a
     123:123:void <init>(android.support.v7.widget.FastScroller) -> <init>
     126:127:void run() -> run
-android.support.v7.widget.FastScroller$2 -> android.support.v7.widget.an$2:
+android.support.v7.widget.FastScroller$2 -> android.support.v7.widget.am$2:
     android.support.v7.widget.FastScroller this$0 -> a
     130:130:void <init>(android.support.v7.widget.FastScroller) -> <init>
     133:135:void onScrolled(android.support.v7.widget.RecyclerView,int,int) -> a
-android.support.v7.widget.FastScroller$AnimatorListener -> android.support.v7.widget.an$a:
+android.support.v7.widget.FastScroller$AnimatorListener -> android.support.v7.widget.am$a:
     boolean mCanceled -> b
     android.support.v7.widget.FastScroller this$0 -> a
     558:561:void <init>(android.support.v7.widget.FastScroller) -> <init>
     566:577:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
     581:582:void onAnimationCancel(android.animation.Animator) -> onAnimationCancel
-android.support.v7.widget.FastScroller$AnimatorUpdater -> android.support.v7.widget.an$b:
+android.support.v7.widget.FastScroller$AnimatorUpdater -> android.support.v7.widget.am$b:
     android.support.v7.widget.FastScroller this$0 -> a
     586:587:void <init>(android.support.v7.widget.FastScroller) -> <init>
     591:595:void onAnimationUpdate(android.animation.ValueAnimator) -> onAnimationUpdate
@@ -17279,11 +17279,11 @@ android.support.v7.widget.FitWindowsLinearLayout -> android.support.v7.widget.Fi
     41:42:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
     46:47:void setOnFitSystemWindowsListener(android.support.v7.widget.FitWindowsViewGroup$OnFitSystemWindowsListener) -> setOnFitSystemWindowsListener
     51:54:boolean fitSystemWindows(android.graphics.Rect) -> fitSystemWindows
-android.support.v7.widget.FitWindowsViewGroup -> android.support.v7.widget.ao:
+android.support.v7.widget.FitWindowsViewGroup -> android.support.v7.widget.an:
     void setOnFitSystemWindowsListener(android.support.v7.widget.FitWindowsViewGroup$OnFitSystemWindowsListener) -> setOnFitSystemWindowsListener
-android.support.v7.widget.FitWindowsViewGroup$OnFitSystemWindowsListener -> android.support.v7.widget.ao$a:
+android.support.v7.widget.FitWindowsViewGroup$OnFitSystemWindowsListener -> android.support.v7.widget.an$a:
     void onFitSystemWindows(android.graphics.Rect) -> a
-android.support.v7.widget.ForwardingListener -> android.support.v7.widget.ap:
+android.support.v7.widget.ForwardingListener -> android.support.v7.widget.ao:
     float mScaledTouchSlop -> a
     int mTapTimeout -> b
     int mLongPressTimeout -> d
@@ -17307,15 +17307,15 @@ android.support.v7.widget.ForwardingListener -> android.support.v7.widget.ap:
     288:290:boolean pointInView(android.view.View,float,float,float) -> a
     298:301:boolean toLocalMotionEvent(android.view.View,android.view.MotionEvent) -> a
     309:312:boolean toGlobalMotionEvent(android.view.View,android.view.MotionEvent) -> b
-android.support.v7.widget.ForwardingListener$DisallowIntercept -> android.support.v7.widget.ap$a:
+android.support.v7.widget.ForwardingListener$DisallowIntercept -> android.support.v7.widget.ao$a:
     android.support.v7.widget.ForwardingListener this$0 -> a
     316:317:void <init>(android.support.v7.widget.ForwardingListener) -> <init>
     321:325:void run() -> run
-android.support.v7.widget.ForwardingListener$TriggerLongPress -> android.support.v7.widget.ap$b:
+android.support.v7.widget.ForwardingListener$TriggerLongPress -> android.support.v7.widget.ao$b:
     android.support.v7.widget.ForwardingListener this$0 -> a
     329:330:void <init>(android.support.v7.widget.ForwardingListener) -> <init>
     334:335:void run() -> run
-android.support.v7.widget.GapWorker -> android.support.v7.widget.aq:
+android.support.v7.widget.GapWorker -> android.support.v7.widget.ap:
     java.lang.ThreadLocal sGapWorker -> a
     java.util.ArrayList mRecyclerViews -> b
     long mPostTimeNs -> c
@@ -17335,11 +17335,11 @@ android.support.v7.widget.GapWorker -> android.support.v7.widget.aq:
     365:367:void prefetch(long) -> a
     372:404:void run() -> run
     31:188:void <clinit>() -> <clinit>
-android.support.v7.widget.GapWorker$1 -> android.support.v7.widget.aq$1:
+android.support.v7.widget.GapWorker$1 -> android.support.v7.widget.ap$1:
     188:188:void <init>() -> <init>
     192:209:int compare(android.support.v7.widget.GapWorker$Task,android.support.v7.widget.GapWorker$Task) -> a
     188:188:int compare(java.lang.Object,java.lang.Object) -> compare
-android.support.v7.widget.GapWorker$LayoutPrefetchRegistryImpl -> android.support.v7.widget.aq$a:
+android.support.v7.widget.GapWorker$LayoutPrefetchRegistryImpl -> android.support.v7.widget.ap$a:
     int mPrefetchDx -> a
     int mPrefetchDy -> b
     int[] mPrefetchArray -> c
@@ -17350,7 +17350,7 @@ android.support.v7.widget.GapWorker$LayoutPrefetchRegistryImpl -> android.suppor
     110:134:void addPosition(int,int) -> b
     137:143:boolean lastPrefetchIncludedPosition(int) -> a
     150:154:void clearPrefetchPositions() -> a
-android.support.v7.widget.GapWorker$Task -> android.support.v7.widget.aq$b:
+android.support.v7.widget.GapWorker$Task -> android.support.v7.widget.ap$b:
     boolean immediate -> a
     int viewVelocity -> b
     int distanceToItem -> c
@@ -17433,7 +17433,7 @@ android.support.v7.widget.GridLayoutManager$SpanSizeLookup -> android.support.v7
     909:936:int getSpanIndex(int,int) -> a
     940:956:int findReferenceIndexFromCache(int) -> b
     970:988:int getSpanGroupIndex(int,int) -> c
-android.support.v7.widget.LayoutState -> android.support.v7.widget.ar:
+android.support.v7.widget.LayoutState -> android.support.v7.widget.aq:
     boolean mRecycle -> a
     int mAvailable -> b
     int mCurrentPosition -> c
@@ -17447,7 +17447,7 @@ android.support.v7.widget.LayoutState -> android.support.v7.widget.ar:
     90:90:boolean hasMore(android.support.v7.widget.RecyclerView$State) -> a
     100:102:android.view.View next(android.support.v7.widget.RecyclerView$Recycler) -> a
     107:107:java.lang.String toString() -> toString
-android.support.v7.widget.LinearLayoutCompat -> android.support.v7.widget.as:
+android.support.v7.widget.LinearLayoutCompat -> android.support.v7.widget.ar:
     boolean mBaselineAligned -> a
     int mBaselineAlignedChildIndex -> b
     int mBaselineChildTop -> c
@@ -17518,7 +17518,7 @@ android.support.v7.widget.LinearLayoutCompat -> android.support.v7.widget.as:
     57:57:android.view.ViewGroup$LayoutParams generateDefaultLayoutParams() -> generateDefaultLayoutParams
     57:57:android.view.ViewGroup$LayoutParams generateLayoutParams(android.view.ViewGroup$LayoutParams) -> generateLayoutParams
     57:57:android.view.ViewGroup$LayoutParams generateLayoutParams(android.util.AttributeSet) -> generateLayoutParams
-android.support.v7.widget.LinearLayoutCompat$LayoutParams -> android.support.v7.widget.as$a:
+android.support.v7.widget.LinearLayoutCompat$LayoutParams -> android.support.v7.widget.ar$a:
     float weight -> g
     int gravity -> h
     1783:1797:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
@@ -17681,7 +17681,7 @@ android.support.v7.widget.LinearLayoutManager$SavedState$1 -> android.support.v7
     2364:2364:android.support.v7.widget.LinearLayoutManager$SavedState[] newArray(int) -> a
     2356:2356:java.lang.Object[] newArray(int) -> newArray
     2356:2356:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-android.support.v7.widget.ListPopupWindow -> android.support.v7.widget.at:
+android.support.v7.widget.ListPopupWindow -> android.support.v7.widget.as:
     java.lang.reflect.Method sClipToWindowEnabledMethod -> a
     java.lang.reflect.Method sGetMaxAvailableHeightMethod -> b
     java.lang.reflect.Method sSetEpicenterBoundsMethod -> h
@@ -17756,41 +17756,41 @@ android.support.v7.widget.ListPopupWindow -> android.support.v7.widget.at:
     1411:1418:void setPopupClipToScreenEnabled(boolean) -> c
     1421:1430:int getMaxAvailableHeight(android.view.View,int,boolean) -> a
     84:102:void <clinit>() -> <clinit>
-android.support.v7.widget.ListPopupWindow$2 -> android.support.v7.widget.at$1:
+android.support.v7.widget.ListPopupWindow$2 -> android.support.v7.widget.as$1:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1147:1147:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1151:1155:void run() -> run
-android.support.v7.widget.ListPopupWindow$3 -> android.support.v7.widget.at$2:
+android.support.v7.widget.ListPopupWindow$3 -> android.support.v7.widget.as$2:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1166:1166:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1171:1178:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     1182:1182:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-android.support.v7.widget.ListPopupWindow$ListSelectorHider -> android.support.v7.widget.at$a:
+android.support.v7.widget.ListPopupWindow$ListSelectorHider -> android.support.v7.widget.as$a:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1341:1342:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1346:1347:void run() -> run
-android.support.v7.widget.ListPopupWindow$PopupDataSetObserver -> android.support.v7.widget.at$b:
+android.support.v7.widget.ListPopupWindow$PopupDataSetObserver -> android.support.v7.widget.as$b:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1323:1324:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1328:1332:void onChanged() -> onChanged
     1336:1337:void onInvalidated() -> onInvalidated
-android.support.v7.widget.ListPopupWindow$PopupScrollListener -> android.support.v7.widget.at$c:
+android.support.v7.widget.ListPopupWindow$PopupScrollListener -> android.support.v7.widget.as$c:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1387:1388:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1394:1394:void onScroll(android.widget.AbsListView,int,int,int) -> onScroll
     1398:1403:void onScrollStateChanged(android.widget.AbsListView,int) -> onScrollStateChanged
-android.support.v7.widget.ListPopupWindow$PopupTouchInterceptor -> android.support.v7.widget.at$d:
+android.support.v7.widget.ListPopupWindow$PopupTouchInterceptor -> android.support.v7.widget.as$d:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1366:1367:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1371:1382:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
-android.support.v7.widget.ListPopupWindow$ResizePopupRunnable -> android.support.v7.widget.at$e:
+android.support.v7.widget.ListPopupWindow$ResizePopupRunnable -> android.support.v7.widget.as$e:
     android.support.v7.widget.ListPopupWindow this$0 -> a
     1351:1352:void <init>(android.support.v7.widget.ListPopupWindow) -> <init>
     1356:1362:void run() -> run
-android.support.v7.widget.MenuItemHoverListener -> android.support.v7.widget.au:
+android.support.v7.widget.MenuItemHoverListener -> android.support.v7.widget.at:
     void onItemHoverExit(android.support.v7.view.menu.MenuBuilder,android.view.MenuItem) -> a
     void onItemHoverEnter(android.support.v7.view.menu.MenuBuilder,android.view.MenuItem) -> b
-android.support.v7.widget.MenuPopupWindow -> android.support.v7.widget.av:
+android.support.v7.widget.MenuPopupWindow -> android.support.v7.widget.au:
     java.lang.reflect.Method sSetTouchModalMethod -> a
     android.support.v7.widget.MenuItemHoverListener mHoverListener -> b
     70:71:void <init>(android.content.Context,android.util.AttributeSet,int,int) -> <init>
@@ -17802,7 +17802,7 @@ android.support.v7.widget.MenuPopupWindow -> android.support.v7.widget.av:
     113:116:void onItemHoverEnter(android.support.v7.view.menu.MenuBuilder,android.view.MenuItem) -> b
     121:124:void onItemHoverExit(android.support.v7.view.menu.MenuBuilder,android.view.MenuItem) -> a
     60:65:void <clinit>() -> <clinit>
-android.support.v7.widget.MenuPopupWindow$MenuDropDownListView -> android.support.v7.widget.av$a:
+android.support.v7.widget.MenuPopupWindow$MenuDropDownListView -> android.support.v7.widget.au$a:
     int mAdvanceKey -> b
     int mRetreatKey -> c
     android.support.v7.widget.MenuItemHoverListener mHoverListener -> d
@@ -17819,7 +17819,7 @@ android.support.v7.widget.MenuPopupWindow$MenuDropDownListView -> android.suppor
     129:129:boolean isFocused() -> isFocused
     129:129:boolean hasWindowFocus() -> hasWindowFocus
     129:129:boolean isInTouchMode() -> isInTouchMode
-android.support.v7.widget.OpReorderer -> android.support.v7.widget.aw:
+android.support.v7.widget.OpReorderer -> android.support.v7.widget.av:
     android.support.v7.widget.OpReorderer$Callback mCallback -> a
     25:27:void <init>(android.support.v7.widget.OpReorderer$Callback) -> <init>
     33:36:void reorderOps(java.util.List) -> a
@@ -17828,10 +17828,10 @@ android.support.v7.widget.OpReorderer -> android.support.v7.widget.aw:
     155:172:void swapMoveAdd(java.util.List,int,android.support.v7.widget.AdapterHelper$UpdateOp,int,android.support.v7.widget.AdapterHelper$UpdateOp) -> c
     176:210:void swapMoveUpdate(java.util.List,int,android.support.v7.widget.AdapterHelper$UpdateOp,int,android.support.v7.widget.AdapterHelper$UpdateOp) -> b
     213:224:int getLastMoveOutOfOrder(java.util.List) -> b
-android.support.v7.widget.OpReorderer$Callback -> android.support.v7.widget.aw$a:
+android.support.v7.widget.OpReorderer$Callback -> android.support.v7.widget.av$a:
     android.support.v7.widget.AdapterHelper$UpdateOp obtainUpdateOp(int,int,int,java.lang.Object) -> a
     void recycleUpdateOp(android.support.v7.widget.AdapterHelper$UpdateOp) -> a
-android.support.v7.widget.OrientationHelper -> android.support.v7.widget.ax:
+android.support.v7.widget.OrientationHelper -> android.support.v7.widget.aw:
     android.support.v7.widget.RecyclerView$LayoutManager mLayoutManager -> a
     int mLastTotalSpace -> c
     android.graphics.Rect mTmpRect -> b
@@ -17856,7 +17856,7 @@ android.support.v7.widget.OrientationHelper -> android.support.v7.widget.ax:
     258:258:android.support.v7.widget.OrientationHelper createHorizontalHelper(android.support.v7.widget.RecyclerView$LayoutManager) -> a
     356:356:android.support.v7.widget.OrientationHelper createVerticalHelper(android.support.v7.widget.RecyclerView$LayoutManager) -> b
     32:32:void <init>(android.support.v7.widget.RecyclerView$LayoutManager,android.support.v7.widget.OrientationHelper$1) -> <init>
-android.support.v7.widget.OrientationHelper$1 -> android.support.v7.widget.ax$1:
+android.support.v7.widget.OrientationHelper$1 -> android.support.v7.widget.aw$1:
     258:258:void <init>(android.support.v7.widget.RecyclerView$LayoutManager) -> <init>
     261:261:int getEndAfterPadding() -> d
     266:266:int getEnd() -> e
@@ -17872,7 +17872,7 @@ android.support.v7.widget.OrientationHelper$1 -> android.support.v7.widget.ax$1:
     334:334:int getEndPadding() -> g
     339:339:int getMode() -> h
     344:344:int getModeInOther() -> i
-android.support.v7.widget.OrientationHelper$2 -> android.support.v7.widget.ax$2:
+android.support.v7.widget.OrientationHelper$2 -> android.support.v7.widget.aw$2:
     356:356:void <init>(android.support.v7.widget.RecyclerView$LayoutManager) -> <init>
     359:359:int getEndAfterPadding() -> d
     364:364:int getEnd() -> e
@@ -18777,7 +18777,7 @@ android.support.v7.widget.RecyclerView$ViewHolder -> android.support.v7.widget.R
     11195:11195:boolean doesTransientStatePreventRecycling() -> y
     11199:11199:boolean isUpdated() -> z
     10804:10804:void <clinit>() -> <clinit>
-android.support.v7.widget.RecyclerViewAccessibilityDelegate -> android.support.v7.widget.ay:
+android.support.v7.widget.RecyclerViewAccessibilityDelegate -> android.support.v7.widget.ax:
     android.support.v7.widget.RecyclerView mRecyclerView -> a
     android.support.v4.view.AccessibilityDelegateCompat mItemDelegate -> b
     37:40:void <init>(android.support.v7.widget.RecyclerView) -> <init>
@@ -18786,12 +18786,12 @@ android.support.v7.widget.RecyclerViewAccessibilityDelegate -> android.support.v
     60:65:void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat) -> a
     69:77:void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent) -> a
     86:86:android.support.v4.view.AccessibilityDelegateCompat getItemDelegate() -> c
-android.support.v7.widget.RecyclerViewAccessibilityDelegate$ItemDelegate -> android.support.v7.widget.ay$a:
+android.support.v7.widget.RecyclerViewAccessibilityDelegate$ItemDelegate -> android.support.v7.widget.ax$a:
     android.support.v7.widget.RecyclerViewAccessibilityDelegate mRecyclerViewDelegate -> a
     105:107:void <init>(android.support.v7.widget.RecyclerViewAccessibilityDelegate) -> <init>
     111:117:void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat) -> a
     121:129:boolean performAccessibilityAction(android.view.View,int,android.os.Bundle) -> a
-android.support.v7.widget.ResourcesWrapper -> android.support.v7.widget.az:
+android.support.v7.widget.ResourcesWrapper -> android.support.v7.widget.ay:
     android.content.res.Resources mResources -> a
     48:50:void <init>(android.content.res.Resources) -> <init>
     54:54:java.lang.CharSequence getText(int) -> getText
@@ -18838,7 +18838,7 @@ android.support.v7.widget.ResourcesWrapper -> android.support.v7.widget.az:
     270:270:java.lang.String getResourceEntryName(int) -> getResourceEntryName
     276:277:void parseBundleExtras(android.content.res.XmlResourceParser,android.os.Bundle) -> parseBundleExtras
     282:283:void parseBundleExtra(java.lang.String,android.util.AttributeSet,android.os.Bundle) -> parseBundleExtra
-android.support.v7.widget.RoundRectDrawable -> android.support.v7.widget.ba:
+android.support.v7.widget.RoundRectDrawable -> android.support.v7.widget.az:
     float mRadius -> a
     android.graphics.Paint mPaint -> b
     android.graphics.RectF mBoundsF -> c
@@ -18869,7 +18869,7 @@ android.support.v7.widget.RoundRectDrawable -> android.support.v7.widget.ba:
     183:192:boolean onStateChange(int[]) -> onStateChange
     197:198:boolean isStateful() -> isStateful
     206:210:android.graphics.PorterDuffColorFilter createTintFilter(android.content.res.ColorStateList,android.graphics.PorterDuff$Mode) -> a
-android.support.v7.widget.RoundRectDrawableWithShadow -> android.support.v7.widget.bb:
+android.support.v7.widget.RoundRectDrawableWithShadow -> android.support.v7.widget.ba:
     double COS_45 -> b
     int mInsetShadow -> c
     android.support.v7.widget.RoundRectDrawableWithShadow$RoundRectHelper sRoundRectHelper -> a
@@ -18917,9 +18917,9 @@ android.support.v7.widget.RoundRectDrawableWithShadow -> android.support.v7.widg
     377:379:void setColor(android.content.res.ColorStateList) -> a
     382:382:android.content.res.ColorStateList getColor() -> f
     41:41:void <clinit>() -> <clinit>
-android.support.v7.widget.RoundRectDrawableWithShadow$RoundRectHelper -> android.support.v7.widget.bb$a:
+android.support.v7.widget.RoundRectDrawableWithShadow$RoundRectHelper -> android.support.v7.widget.ba$a:
     void drawRoundRect(android.graphics.Canvas,android.graphics.RectF,float,android.graphics.Paint) -> a
-android.support.v7.widget.RtlSpacingHelper -> android.support.v7.widget.bc:
+android.support.v7.widget.RtlSpacingHelper -> android.support.v7.widget.bb:
     int mLeft -> a
     int mRight -> b
     int mStart -> c
@@ -18936,11 +18936,11 @@ android.support.v7.widget.RtlSpacingHelper -> android.support.v7.widget.bc:
     55:65:void setRelative(int,int) -> a
     68:71:void setAbsolute(int,int) -> b
     74:90:void setDirection(boolean) -> a
-android.support.v7.widget.ScrollbarHelper -> android.support.v7.widget.bd:
+android.support.v7.widget.ScrollbarHelper -> android.support.v7.widget.bc:
     32:53:int computeScrollOffset(android.support.v7.widget.RecyclerView$State,android.support.v7.widget.OrientationHelper,android.view.View,android.view.View,android.support.v7.widget.RecyclerView$LayoutManager,boolean,boolean) -> a
     63:72:int computeScrollExtent(android.support.v7.widget.RecyclerView$State,android.support.v7.widget.OrientationHelper,android.view.View,android.view.View,android.support.v7.widget.RecyclerView$LayoutManager,boolean) -> a
     82:96:int computeScrollRange(android.support.v7.widget.RecyclerView$State,android.support.v7.widget.OrientationHelper,android.view.View,android.view.View,android.support.v7.widget.RecyclerView$LayoutManager,boolean) -> b
-android.support.v7.widget.ScrollingTabContainerView -> android.support.v7.widget.be:
+android.support.v7.widget.ScrollingTabContainerView -> android.support.v7.widget.bd:
     java.lang.Runnable mTabSelector -> a
     android.support.v7.widget.ScrollingTabContainerView$TabClickListener mTabClickListener -> e
     android.support.v7.widget.LinearLayoutCompat mTabLayout -> b
@@ -18967,23 +18967,23 @@ android.support.v7.widget.ScrollingTabContainerView -> android.support.v7.widget
     371:373:void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     378:378:void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
     77:77:void <clinit>() -> <clinit>
-android.support.v7.widget.ScrollingTabContainerView$1 -> android.support.v7.widget.be$1:
+android.support.v7.widget.ScrollingTabContainerView$1 -> android.support.v7.widget.bd$1:
     android.view.View val$tabView -> a
     android.support.v7.widget.ScrollingTabContainerView this$0 -> b
     264:264:void <init>(android.support.v7.widget.ScrollingTabContainerView,android.view.View) -> <init>
     267:270:void run() -> run
-android.support.v7.widget.ScrollingTabContainerView$TabAdapter -> android.support.v7.widget.be$a:
+android.support.v7.widget.ScrollingTabContainerView$TabAdapter -> android.support.v7.widget.bd$a:
     android.support.v7.widget.ScrollingTabContainerView this$0 -> a
     522:523:void <init>(android.support.v7.widget.ScrollingTabContainerView) -> <init>
     527:527:int getCount() -> getCount
     532:532:java.lang.Object getItem(int) -> getItem
     537:537:long getItemId(int) -> getItemId
     542:547:android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
-android.support.v7.widget.ScrollingTabContainerView$TabClickListener -> android.support.v7.widget.be$b:
+android.support.v7.widget.ScrollingTabContainerView$TabClickListener -> android.support.v7.widget.bd$b:
     android.support.v7.widget.ScrollingTabContainerView this$0 -> a
     552:553:void <init>(android.support.v7.widget.ScrollingTabContainerView) -> <init>
     557:564:void onClick(android.view.View) -> onClick
-android.support.v7.widget.ScrollingTabContainerView$TabView -> android.support.v7.widget.be$c:
+android.support.v7.widget.ScrollingTabContainerView$TabView -> android.support.v7.widget.bd$c:
     int[] BG_ATTRS -> b
     android.support.v7.app.ActionBar$Tab mTab -> c
     android.widget.TextView mTextView -> d
@@ -19239,7 +19239,7 @@ android.support.v7.widget.SearchView$UpdatableTouchDelegate -> android.support.v
     1755:1762:void <init>(android.graphics.Rect,android.graphics.Rect,android.view.View) -> <init>
     1765:1769:void setBounds(android.graphics.Rect,android.graphics.Rect) -> a
     1773:1814:boolean onTouchEvent(android.view.MotionEvent) -> onTouchEvent
-android.support.v7.widget.SimpleItemAnimator -> android.support.v7.widget.bf:
+android.support.v7.widget.SimpleItemAnimator -> android.support.v7.widget.be:
     boolean mSupportsChangeAnimations -> h
     35:41:void <init>() -> <init>
     84:84:boolean canReuseUpdatedViewHolder(android.support.v7.widget.RecyclerView$ViewHolder) -> h
@@ -19510,7 +19510,7 @@ android.support.v7.widget.StaggeredGridLayoutManager$Span -> android.support.v7.
     2758:2785:int findOnePartiallyOrCompletelyVisibleChild(int,int,boolean,boolean,boolean) -> a
     2795:2795:int findOnePartiallyVisibleChild(int,int,boolean) -> a
     2803:2832:android.view.View getFocusableViewAfter(int,int) -> a
-android.support.v7.widget.SuggestionsAdapter -> android.support.v7.widget.bg:
+android.support.v7.widget.SuggestionsAdapter -> android.support.v7.widget.bf:
     android.app.SearchManager mSearchManager -> j
     android.support.v7.widget.SearchView mSearchView -> k
     android.app.SearchableInfo mSearchable -> l
@@ -19556,14 +19556,14 @@ android.support.v7.widget.SuggestionsAdapter -> android.support.v7.widget.bg:
     681:690:java.lang.String getStringOrNull(android.database.Cursor,int) -> a
     699:730:android.graphics.drawable.Drawable getDrawableFromResourceUri(android.net.Uri) -> a
     737:778:android.database.Cursor getSearchManagerSuggestions(android.app.SearchableInfo,java.lang.String,int) -> a
-android.support.v7.widget.SuggestionsAdapter$ChildViewCache -> android.support.v7.widget.bg$a:
+android.support.v7.widget.SuggestionsAdapter$ChildViewCache -> android.support.v7.widget.bf$a:
     android.widget.TextView mText1 -> a
     android.widget.TextView mText2 -> b
     android.widget.ImageView mIcon1 -> c
     android.widget.ImageView mIcon2 -> d
     android.widget.ImageView mIconRefine -> e
     264:270:void <init>(android.view.View) -> <init>
-android.support.v7.widget.ThemeUtils -> android.support.v7.widget.bh:
+android.support.v7.widget.ThemeUtils -> android.support.v7.widget.bg:
     java.lang.ThreadLocal TL_TYPED_VALUE -> i
     int[] DISABLED_STATE_SET -> a
     int[] FOCUSED_STATE_SET -> b
@@ -19580,10 +19580,10 @@ android.support.v7.widget.ThemeUtils -> android.support.v7.widget.bh:
     100:105:android.util.TypedValue getTypedValue() -> a
     109:111:int getThemeAttrColor(android.content.Context,int,float) -> a
     28:40:void <clinit>() -> <clinit>
-android.support.v7.widget.ThemedSpinnerAdapter -> android.support.v7.widget.bi:
+android.support.v7.widget.ThemedSpinnerAdapter -> android.support.v7.widget.bh:
     void setDropDownViewTheme(android.content.res.Resources$Theme) -> a
     android.content.res.Resources$Theme getDropDownViewTheme() -> a
-android.support.v7.widget.TintContextWrapper -> android.support.v7.widget.bj:
+android.support.v7.widget.TintContextWrapper -> android.support.v7.widget.bi:
     java.lang.Object CACHE_LOCK -> a
     java.util.ArrayList sCache -> b
     android.content.res.Resources mResources -> c
@@ -19596,18 +19596,18 @@ android.support.v7.widget.TintContextWrapper -> android.support.v7.widget.bj:
     122:122:android.content.res.Resources getResources() -> getResources
     128:128:android.content.res.AssetManager getAssets() -> getAssets
     42:42:void <clinit>() -> <clinit>
-android.support.v7.widget.TintInfo -> android.support.v7.widget.bk:
+android.support.v7.widget.TintInfo -> android.support.v7.widget.bj:
     android.content.res.ColorStateList mTintList -> a
     android.graphics.PorterDuff$Mode mTintMode -> b
     boolean mHasTintMode -> c
     boolean mHasTintList -> d
     22:22:void <init>() -> <init>
     29:33:void clear() -> a
-android.support.v7.widget.TintResources -> android.support.v7.widget.bl:
+android.support.v7.widget.TintResources -> android.support.v7.widget.bk:
     java.lang.ref.WeakReference mContextRef -> a
     35:37:void <init>(android.content.Context,android.content.res.Resources) -> <init>
     46:51:android.graphics.drawable.Drawable getDrawable(int) -> getDrawable
-android.support.v7.widget.TintTypedArray -> android.support.v7.widget.bm:
+android.support.v7.widget.TintTypedArray -> android.support.v7.widget.bl:
     android.content.Context mContext -> a
     android.content.res.TypedArray mWrapped -> b
     android.util.TypedValue mTypedValue -> c
@@ -19836,7 +19836,7 @@ android.support.v7.widget.Toolbar$SavedState$1 -> android.support.v7.widget.Tool
     2287:2287:java.lang.Object createFromParcel(android.os.Parcel,java.lang.ClassLoader) -> createFromParcel
     2287:2287:java.lang.Object[] newArray(int) -> newArray
     2287:2287:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
-android.support.v7.widget.ToolbarWidgetWrapper -> android.support.v7.widget.bn:
+android.support.v7.widget.ToolbarWidgetWrapper -> android.support.v7.widget.bm:
     android.support.v7.widget.Toolbar mToolbar -> a
     int mDisplayOpts -> e
     android.view.View mTabView -> f
@@ -19899,12 +19899,12 @@ android.support.v7.widget.ToolbarWidgetWrapper -> android.support.v7.widget.bn:
     661:662:void setVisibility(int) -> d
     672:673:void setMenuCallbacks(android.support.v7.view.menu.MenuPresenter$Callback,android.support.v7.view.menu.MenuBuilder$Callback) -> a
     677:677:android.view.Menu getMenu() -> q
-android.support.v7.widget.ToolbarWidgetWrapper$1 -> android.support.v7.widget.bn$1:
+android.support.v7.widget.ToolbarWidgetWrapper$1 -> android.support.v7.widget.bm$1:
     android.support.v7.view.menu.ActionMenuItem mNavItem -> a
     android.support.v7.widget.ToolbarWidgetWrapper this$0 -> b
     182:183:void <init>(android.support.v7.widget.ToolbarWidgetWrapper) -> <init>
     187:190:void onClick(android.view.View) -> onClick
-android.support.v7.widget.ToolbarWidgetWrapper$2 -> android.support.v7.widget.bn$2:
+android.support.v7.widget.ToolbarWidgetWrapper$2 -> android.support.v7.widget.bm$2:
     boolean mCanceled -> c
     int val$visibility -> a
     android.support.v7.widget.ToolbarWidgetWrapper this$0 -> b
@@ -19912,9 +19912,9 @@ android.support.v7.widget.ToolbarWidgetWrapper$2 -> android.support.v7.widget.bn
     574:575:void onAnimationStart(android.view.View) -> a
     579:582:void onAnimationEnd(android.view.View) -> b
     586:587:void onAnimationCancel(android.view.View) -> c
-android.support.v7.widget.TooltipCompat -> android.support.v7.widget.bo:
+android.support.v7.widget.TooltipCompat -> android.support.v7.widget.bn:
     41:46:void setTooltipText(android.view.View,java.lang.CharSequence) -> a
-android.support.v7.widget.TooltipCompatHandler -> android.support.v7.widget.bp:
+android.support.v7.widget.TooltipCompatHandler -> android.support.v7.widget.bo:
     android.view.View mAnchor -> a
     java.lang.CharSequence mTooltipText -> b
     int mHoverSlop -> c
@@ -19939,15 +19939,15 @@ android.support.v7.widget.TooltipCompatHandler -> android.support.v7.widget.bp:
     224:225:void cancelPendingShow() -> c
     235:243:boolean updateAnchorPos(android.view.MotionEvent) -> a
     250:252:void clearAnchorPos() -> d
-android.support.v7.widget.TooltipCompatHandler$1 -> android.support.v7.widget.bp$1:
+android.support.v7.widget.TooltipCompatHandler$1 -> android.support.v7.widget.bo$1:
     android.support.v7.widget.TooltipCompatHandler this$0 -> a
     54:54:void <init>(android.support.v7.widget.TooltipCompatHandler) -> <init>
     57:58:void run() -> run
-android.support.v7.widget.TooltipCompatHandler$2 -> android.support.v7.widget.bp$2:
+android.support.v7.widget.TooltipCompatHandler$2 -> android.support.v7.widget.bo$2:
     android.support.v7.widget.TooltipCompatHandler this$0 -> a
     60:60:void <init>(android.support.v7.widget.TooltipCompatHandler) -> <init>
     63:64:void run() -> run
-android.support.v7.widget.TooltipPopup -> android.support.v7.widget.bq:
+android.support.v7.widget.TooltipPopup -> android.support.v7.widget.bp:
     android.content.Context mContext -> a
     android.view.View mContentView -> b
     android.widget.TextView mMessageView -> c
@@ -19961,7 +19961,7 @@ android.support.v7.widget.TooltipPopup -> android.support.v7.widget.bq:
     99:99:boolean isShowing() -> b
     104:184:void computePosition(android.view.View,int,int,boolean,android.view.WindowManager$LayoutParams) -> a
     187:207:android.view.View getAppRootView(android.view.View) -> a
-android.support.v7.widget.VectorEnabledTintResources -> android.support.v7.widget.br:
+android.support.v7.widget.VectorEnabledTintResources -> android.support.v7.widget.bq:
     boolean sCompatVectorFromResourcesEnabled -> a
     java.lang.ref.WeakReference mContextRef -> b
     42:42:boolean shouldBeUsed() -> a
@@ -19970,13 +19970,13 @@ android.support.v7.widget.VectorEnabledTintResources -> android.support.v7.widge
     75:75:android.graphics.drawable.Drawable superGetDrawable(int) -> a
     93:93:boolean isCompatVectorFromResourcesEnabled() -> b
     39:39:void <clinit>() -> <clinit>
-android.support.v7.widget.ViewBoundsCheck -> android.support.v7.widget.bs:
+android.support.v7.widget.ViewBoundsCheck -> android.support.v7.widget.br:
     android.support.v7.widget.ViewBoundsCheck$Callback mCallback -> a
     android.support.v7.widget.ViewBoundsCheck$BoundFlags mBoundFlags -> b
     131:134:void <init>(android.support.v7.widget.ViewBoundsCheck$Callback) -> <init>
     217:242:android.view.View findOneViewWithinBoundFlags(int,int,int,int) -> a
     252:259:boolean isViewWithinBoundFlags(android.view.View,int) -> a
-android.support.v7.widget.ViewBoundsCheck$BoundFlags -> android.support.v7.widget.bs$a:
+android.support.v7.widget.ViewBoundsCheck$BoundFlags -> android.support.v7.widget.br$a:
     int mBoundFlags -> a
     int mRvStart -> b
     int mRvEnd -> c
@@ -19988,13 +19988,13 @@ android.support.v7.widget.ViewBoundsCheck$BoundFlags -> android.support.v7.widge
     156:157:void resetFlags() -> a
     160:166:int compare(int,int) -> a
     170:193:boolean boundsMatch() -> b
-android.support.v7.widget.ViewBoundsCheck$Callback -> android.support.v7.widget.bs$b:
+android.support.v7.widget.ViewBoundsCheck$Callback -> android.support.v7.widget.br$b:
     android.view.View getChildAt(int) -> a
     int getParentStart() -> a
     int getParentEnd() -> b
     int getChildStart(android.view.View) -> a
     int getChildEnd(android.view.View) -> b
-android.support.v7.widget.ViewInfoStore -> android.support.v7.widget.bt:
+android.support.v7.widget.ViewInfoStore -> android.support.v7.widget.bs:
     android.support.v4.util.ArrayMap mLayoutHolderMap -> a
     android.support.v4.util.LongSparseArray mOldChangedHolders -> b
     35:288:void <init>() -> <init>
@@ -20015,7 +20015,7 @@ android.support.v7.widget.ViewInfoStore -> android.support.v7.widget.bt:
     258:268:void removeViewHolder(android.support.v7.widget.RecyclerView$ViewHolder) -> g
     271:272:void onDetach() -> b
     275:276:void onViewDetached(android.support.v7.widget.RecyclerView$ViewHolder) -> h
-android.support.v7.widget.ViewInfoStore$InfoRecord -> android.support.v7.widget.bt$a:
+android.support.v7.widget.ViewInfoStore$InfoRecord -> android.support.v7.widget.bs$a:
     int flags -> a
     android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo preInfo -> b
     android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo postInfo -> c
@@ -20025,7 +20025,7 @@ android.support.v7.widget.ViewInfoStore$InfoRecord -> android.support.v7.widget.
     316:320:void recycle(android.support.v7.widget.ViewInfoStore$InfoRecord) -> a
     324:325:void drainCache() -> b
     305:305:void <clinit>() -> <clinit>
-android.support.v7.widget.ViewInfoStore$ProcessCallback -> android.support.v7.widget.bt$b:
+android.support.v7.widget.ViewInfoStore$ProcessCallback -> android.support.v7.widget.bs$b:
     void processDisappeared(android.support.v7.widget.RecyclerView$ViewHolder,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo) -> a
     void processAppeared(android.support.v7.widget.RecyclerView$ViewHolder,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo) -> b
     void processPersistent(android.support.v7.widget.RecyclerView$ViewHolder,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo,android.support.v7.widget.RecyclerView$ItemAnimator$ItemHolderInfo) -> c
@@ -20052,13 +20052,13 @@ android.support.v7.widget.ViewStubCompat -> android.support.v7.widget.ViewStubCo
     248:249:void setOnInflateListener(android.support.v7.widget.ViewStubCompat$OnInflateListener) -> setOnInflateListener
 android.support.v7.widget.ViewStubCompat$OnInflateListener -> android.support.v7.widget.ViewStubCompat$a:
     void onInflate(android.support.v7.widget.ViewStubCompat,android.view.View) -> a
-android.support.v7.widget.ViewUtils -> android.support.v7.widget.bu:
+android.support.v7.widget.ViewUtils -> android.support.v7.widget.bt:
     java.lang.reflect.Method sComputeFitSystemWindowsMethod -> a
     58:58:boolean isLayoutRtl(android.view.View) -> a
     66:73:void computeFitSystemWindows(android.view.View,android.graphics.Rect,android.graphics.Rect) -> a
     80:97:void makeOptionalFitsSystemWindows(android.view.View) -> b
     42:53:void <clinit>() -> <clinit>
-android.support.v7.widget.WithHint -> android.support.v7.widget.bv:
+android.support.v7.widget.WithHint -> android.support.v7.widget.bu:
     java.lang.CharSequence getHint() -> a
 androidx.browser.browseractions.BrowserActionsFallbackMenuView -> androidx.browser.browseractions.BrowserActionsFallbackMenuView:
     int mBrowserActionsMenuMinPaddingPx -> a
@@ -23008,20 +23008,20 @@ com.drspaceboo.transtracks.R$styleable -> com.drspaceboo.transtracks.a$a:
     int ViewStubCompat_android_id -> ViewStubCompat_android_id
     int ViewStubCompat_android_layout -> ViewStubCompat_android_layout
     int ViewStubCompat_android_inflatedId -> ViewStubCompat_android_inflatedId
-    6107:19668:void <clinit>() -> <clinit>
+    6546:20788:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.TransTracksApp -> com.drspaceboo.transtracks.TransTracksApp:
     com.drspaceboo.transtracks.domain.DomainManager domainManager -> b
     com.drspaceboo.transtracks.TransTracksApp instance -> c
     com.drspaceboo.transtracks.TransTracksApp$Companion Companion -> a
     13:13:com.drspaceboo.transtracks.domain.DomainManager getDomainManager() -> a
-    16:32:void onCreate() -> onCreate
+    16:37:void onCreate() -> onCreate
     12:13:void <init>() -> <init>
     void <clinit>() -> <clinit>
     12:12:com.drspaceboo.transtracks.TransTracksApp access$getInstance$cp() -> b
 com.drspaceboo.transtracks.TransTracksApp$Companion -> com.drspaceboo.transtracks.TransTracksApp$a:
-    35:35:com.drspaceboo.transtracks.TransTracksApp getInstance() -> a
-    34:34:void <init>() -> <init>
-    34:34:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    40:40:com.drspaceboo.transtracks.TransTracksApp getInstance() -> a
+    39:39:void <init>() -> <init>
+    39:39:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.background.CameraHandler -> com.drspaceboo.transtracks.a.a:
     java.io.File currentFile -> b
     com.jakewharton.rxrelay2.BehaviorRelay cameraPermissionRelay -> c
@@ -23516,45 +23516,45 @@ com.drspaceboo.transtracks.domain.HomeAction$ReloadDay -> com.drspaceboo.transtr
 com.drspaceboo.transtracks.domain.HomeDomain -> com.drspaceboo.transtracks.b.i:
     com.jakewharton.rxrelay2.PublishRelay actions -> a
     io.reactivex.Observable results -> b
-    37:37:com.jakewharton.rxrelay2.PublishRelay getActions() -> a
-    38:38:io.reactivex.Observable getResults() -> b
-    36:44:void <init>() -> <init>
+    35:35:com.jakewharton.rxrelay2.PublishRelay getActions() -> a
+    36:36:io.reactivex.Observable getResults() -> b
+    34:42:void <init>() -> <init>
 com.drspaceboo.transtracks.domain.HomeDomainKt -> com.drspaceboo.transtracks.b.j:
-    48:187:io.reactivex.ObservableTransformer homeActionsToResults() -> a
+    46:174:io.reactivex.ObservableTransformer homeActionsToResults() -> a
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$1 -> com.drspaceboo.transtracks.b.j$a:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$1 INSTANCE -> a
     java.lang.Object invoke(java.lang.Object) -> a
-    48:51:org.threeten.bp.LocalDate invoke(com.drspaceboo.transtracks.domain.HomeResult) -> a
+    46:49:org.threeten.bp.LocalDate invoke(com.drspaceboo.transtracks.domain.HomeResult) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$2 -> com.drspaceboo.transtracks.b.j$b:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$2 INSTANCE -> a
     java.lang.Object invoke(java.lang.Object) -> a
-    54:209:com.drspaceboo.transtracks.domain.HomeResult$Loaded invoke(org.threeten.bp.LocalDate) -> a
+    52:76:com.drspaceboo.transtracks.domain.HomeResult$Loaded invoke(org.threeten.bp.LocalDate) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$3 -> com.drspaceboo.transtracks.b.j$c:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$3 INSTANCE -> a
     java.lang.Object invoke(java.lang.Object) -> a
-    94:135:org.threeten.bp.LocalDate invoke(org.threeten.bp.LocalDate) -> a
+    81:122:org.threeten.bp.LocalDate invoke(org.threeten.bp.LocalDate) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$4 -> com.drspaceboo.transtracks.b.j$d:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$4 INSTANCE -> a
     java.lang.Object invoke(java.lang.Object) -> a
-    141:182:org.threeten.bp.LocalDate invoke(org.threeten.bp.LocalDate) -> a
+    128:169:org.threeten.bp.LocalDate invoke(org.threeten.bp.LocalDate) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$5 -> com.drspaceboo.transtracks.b.j$e:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$5 INSTANCE -> a
     io.reactivex.ObservableSource apply(io.reactivex.Observable) -> a
-    188:198:io.reactivex.Observable apply(io.reactivex.Observable) -> b
+    175:185:io.reactivex.Observable apply(io.reactivex.Observable) -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$5$1 -> com.drspaceboo.transtracks.b.j$e$1:
     com.drspaceboo.transtracks.domain.HomeDomainKt$homeActionsToResults$5$1 INSTANCE -> a
     java.lang.Object apply(java.lang.Object,java.lang.Object) -> a
-    189:196:com.drspaceboo.transtracks.domain.HomeResult apply(com.drspaceboo.transtracks.domain.HomeResult,com.drspaceboo.transtracks.domain.HomeAction) -> a
+    176:183:com.drspaceboo.transtracks.domain.HomeResult apply(com.drspaceboo.transtracks.domain.HomeResult,com.drspaceboo.transtracks.domain.HomeAction) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.HomeResult -> com.drspaceboo.transtracks.b.k:
@@ -23567,19 +23567,15 @@ com.drspaceboo.transtracks.domain.HomeResult$Loaded -> com.drspaceboo.transtrack
     org.threeten.bp.LocalDate startDate -> d
     org.threeten.bp.LocalDate currentDate -> e
     boolean hasMilestones -> f
-    java.util.List facePhotos -> g
-    java.util.List bodyPhotos -> h
-    boolean showAds -> i
+    boolean showAds -> g
     25:25:java.lang.String getDayString() -> a
     26:26:boolean getShowPreviousRecord() -> b
     27:27:boolean getShowNextRecord() -> c
     28:28:org.threeten.bp.LocalDate getStartDate() -> d
     29:29:org.threeten.bp.LocalDate getCurrentDate() -> e
     30:30:boolean getHasMilestones() -> f
-    31:31:java.util.List getFacePhotos() -> g
-    32:32:java.util.List getBodyPhotos() -> h
-    33:33:boolean getShowAds() -> i
-    25:33:void <init>(java.lang.String,boolean,boolean,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,boolean,java.util.List,java.util.List,boolean) -> <init>
+    31:31:boolean getShowAds() -> g
+    25:31:void <init>(java.lang.String,boolean,boolean,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,boolean,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
@@ -23756,61 +23752,73 @@ com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView -> com.drspa
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
     kotlin.properties.ReadOnlyProperty toolbarTitle$delegate -> i
-    kotlin.properties.ReadOnlyProperty title$delegate -> j
-    kotlin.properties.ReadOnlyProperty date$delegate -> k
-    kotlin.properties.ReadOnlyProperty descriptionLabel$delegate -> l
-    kotlin.properties.ReadOnlyProperty description$delegate -> m
-    kotlin.properties.ReadOnlyProperty save$delegate -> n
-    kotlin.Lazy events$delegate -> o
-    long day -> p
+    kotlin.properties.ReadOnlyProperty titleLabel$delegate -> j
+    kotlin.properties.ReadOnlyProperty title$delegate -> k
+    kotlin.properties.ReadOnlyProperty dateLabel$delegate -> l
+    kotlin.properties.ReadOnlyProperty date$delegate -> m
+    kotlin.properties.ReadOnlyProperty descriptionLabel$delegate -> n
+    kotlin.properties.ReadOnlyProperty description$delegate -> o
+    kotlin.properties.ReadOnlyProperty save$delegate -> p
+    kotlin.Lazy events$delegate -> q
+    long day -> r
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
     android.widget.TextView getToolbarTitle() -> getToolbarTitle
+    android.view.View getTitleLabel() -> getTitleLabel
     android.widget.EditText getTitle() -> getTitle
+    android.view.View getDateLabel() -> getDateLabel
     android.widget.Button getDate() -> getDate
     android.view.View getDescriptionLabel() -> getDescriptionLabel
     android.widget.EditText getDescription() -> getDescription
     android.widget.Button getSave() -> getSave
     io.reactivex.Observable getEvents() -> getEvents
-    70:77:void onAttachedToWindow() -> onAttachedToWindow
-    80:98:void display(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState) -> a
-    38:49:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    38:38:android.widget.EditText access$getDescription$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> a
-    38:38:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> b
-    38:38:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> c
-    38:38:long access$getDay$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> d
-    38:38:android.widget.EditText access$getTitle$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> e
+    72:87:void onAttachedToWindow() -> onAttachedToWindow
+    90:108:void display(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState) -> a
+    38:51:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    38:38:android.widget.EditText access$getTitle$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> a
+    38:38:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> b
+    38:38:android.widget.EditText access$getDescription$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> c
+    38:38:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> d
+    38:38:long access$getDay$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> e
     38:38:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> f
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
     38:38:java.lang.Object invoke() -> a
-    50:104:io.reactivex.Observable invoke() -> b
+    52:114:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$1 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$1:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$1 INSTANCE -> a
     38:38:java.lang.Object apply(java.lang.Object) -> a
-    50:50:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back apply(kotlin.Unit) -> a
+    52:52:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$2 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$2:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$2 INSTANCE -> a
     38:38:java.lang.Object apply(java.lang.Object) -> a
-    52:54:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete apply(android.view.MenuItem) -> a
+    54:56:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Delete apply(android.view.MenuItem) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$3 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$3:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 this$0 -> a
     38:38:java.lang.Object apply(java.lang.Object) -> a
-    58:59:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$ChangeDate apply(kotlin.Unit) -> a
+    60:61:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$ChangeDate apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2$4 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$a$4:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2 this$0 -> a
     38:38:java.lang.Object apply(java.lang.Object) -> a
-    62:63:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save apply(kotlin.Unit) -> a
+    64:65:com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent$Save apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$b:
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
-    74:76:void onClick(android.view.View) -> onClick
+    77:79:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
+com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$c:
+    com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
+    81:81:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
+com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedToWindow$3 -> com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$d:
+    com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
+    84:86:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController -> com.drspaceboo.transtracks.ui.assignphoto.a:
     io.reactivex.disposables.Disposable resultsDisposable -> c
@@ -23918,92 +23926,105 @@ com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoRes
     185:203:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState apply(com.drspaceboo.transtracks.domain.AssignPhotoResult) -> a
     void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoResultsToUiState$1) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent -> com.drspaceboo.transtracks.ui.assignphoto.c:
-    17:17:void <init>() -> <init>
-    17:17:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    18:18:void <init>() -> <init>
+    18:18:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back -> com.drspaceboo.transtracks.ui.assignphoto.c$a:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back INSTANCE -> a
-    18:18:void <init>() -> <init>
-    18:18:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.assignphoto.c$b:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate INSTANCE -> a
     19:19:void <init>() -> <init>
     19:19:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.assignphoto.c$c:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType INSTANCE -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.assignphoto.c$b:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate INSTANCE -> a
     20:20:void <init>() -> <init>
     20:20:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save -> com.drspaceboo.transtracks.ui.assignphoto.c$d:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save INSTANCE -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.assignphoto.c$c:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType INSTANCE -> a
     21:21:void <init>() -> <init>
     21:21:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save -> com.drspaceboo.transtracks.ui.assignphoto.c$d:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save INSTANCE -> a
+    22:22:void <init>() -> <init>
+    22:22:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState -> com.drspaceboo.transtracks.ui.assignphoto.d:
-    24:24:void <init>() -> <init>
-    24:24:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    25:25:void <init>() -> <init>
+    25:25:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loaded -> com.drspaceboo.transtracks.ui.assignphoto.d$a:
     android.net.Uri photoUri -> a
     java.lang.String date -> b
     java.lang.String type -> c
-    26:26:android.net.Uri getPhotoUri() -> a
-    26:26:java.lang.String getDate() -> b
-    26:26:java.lang.String getType() -> c
-    26:26:void <init>(android.net.Uri,java.lang.String,java.lang.String) -> <init>
+    27:27:android.net.Uri getPhotoUri() -> a
+    27:27:java.lang.String getDate() -> b
+    27:27:java.lang.String getType() -> c
+    27:27:void <init>(android.net.Uri,java.lang.String,java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading -> com.drspaceboo.transtracks.ui.assignphoto.d$b:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading INSTANCE -> a
-    25:25:void <init>() -> <init>
-    25:25:void <clinit>() -> <clinit>
+    26:26:void <init>() -> <init>
+    26:26:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
     kotlin.properties.ReadOnlyProperty image$delegate -> i
-    kotlin.properties.ReadOnlyProperty date$delegate -> j
-    kotlin.properties.ReadOnlyProperty type$delegate -> k
-    kotlin.properties.ReadOnlyProperty save$delegate -> l
-    kotlin.Lazy events$delegate -> m
+    kotlin.properties.ReadOnlyProperty dateLabel$delegate -> j
+    kotlin.properties.ReadOnlyProperty date$delegate -> k
+    kotlin.properties.ReadOnlyProperty typeLabel$delegate -> l
+    kotlin.properties.ReadOnlyProperty type$delegate -> m
+    kotlin.properties.ReadOnlyProperty save$delegate -> n
+    kotlin.Lazy events$delegate -> o
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
     android.widget.ImageView getImage() -> getImage
+    android.view.View getDateLabel() -> getDateLabel
     android.widget.Button getDate() -> getDate
+    android.view.View getTypeLabel() -> getTypeLabel
     android.widget.Button getType() -> getType
     android.widget.Button getSave() -> getSave
     io.reactivex.Observable getEvents() -> getEvents
-    46:58:void display(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState) -> a
-    29:38:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    29:29:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> a
-    29:29:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> b
-    29:29:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> c
-    29:29:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> d
+    49:53:void onAttachedToWindow() -> onAttachedToWindow
+    56:68:void display(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState) -> a
+    30:41:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    30:30:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> a
+    30:30:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> b
+    30:30:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> c
+    30:30:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> d
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
-    29:29:java.lang.Object invoke() -> a
-    39:64:io.reactivex.Observable invoke() -> b
+    30:30:java.lang.Object invoke() -> a
+    42:74:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$1:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    39:39:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    42:42:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$2:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$2 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    40:40:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    43:43:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$3 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$3:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$3 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    41:41:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    44:44:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$4 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$4:
     com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$4 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    42:42:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    45:45:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$b:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
+    51:51:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$c:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
+    52:52:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoController -> com.drspaceboo.transtracks.ui.editphoto.a:
     io.reactivex.disposables.Disposable resultsDisposable -> c
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
@@ -24120,92 +24141,105 @@ com.drspaceboo.transtracks.ui.editphoto.EditPhotoControllerKt$editPhotoResultsTo
     181:200:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState apply(com.drspaceboo.transtracks.domain.EditPhotoResult) -> a
     void <init>(com.drspaceboo.transtracks.ui.editphoto.EditPhotoControllerKt$editPhotoResultsToUiState$1) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent -> com.drspaceboo.transtracks.ui.editphoto.c:
-    17:17:void <init>() -> <init>
-    17:17:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    18:18:void <init>() -> <init>
+    18:18:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Back -> com.drspaceboo.transtracks.ui.editphoto.c$a:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Back INSTANCE -> a
-    18:18:void <init>() -> <init>
-    18:18:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.editphoto.c$b:
-    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate INSTANCE -> a
     19:19:void <init>() -> <init>
     19:19:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.editphoto.c$c:
-    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType INSTANCE -> a
+com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.editphoto.c$b:
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate INSTANCE -> a
     20:20:void <init>() -> <init>
     20:20:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update -> com.drspaceboo.transtracks.ui.editphoto.c$d:
-    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update INSTANCE -> a
+com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.editphoto.c$c:
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType INSTANCE -> a
     21:21:void <init>() -> <init>
     21:21:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update -> com.drspaceboo.transtracks.ui.editphoto.c$d:
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update INSTANCE -> a
+    22:22:void <init>() -> <init>
+    22:22:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState -> com.drspaceboo.transtracks.ui.editphoto.d:
-    24:24:void <init>() -> <init>
-    24:24:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    25:25:void <init>() -> <init>
+    25:25:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState$Loaded -> com.drspaceboo.transtracks.ui.editphoto.d$a:
     java.lang.String photoPath -> a
     java.lang.String date -> b
     java.lang.String type -> c
-    26:26:java.lang.String getPhotoPath() -> a
-    26:26:java.lang.String getDate() -> b
-    26:26:java.lang.String getType() -> c
-    26:26:void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+    27:27:java.lang.String getPhotoPath() -> a
+    27:27:java.lang.String getDate() -> b
+    27:27:java.lang.String getType() -> c
+    27:27:void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState$Loading -> com.drspaceboo.transtracks.ui.editphoto.d$b:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState$Loading INSTANCE -> a
-    25:25:void <init>() -> <init>
-    25:25:void <clinit>() -> <clinit>
+    26:26:void <init>() -> <init>
+    26:26:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
     kotlin.properties.ReadOnlyProperty image$delegate -> i
-    kotlin.properties.ReadOnlyProperty date$delegate -> j
-    kotlin.properties.ReadOnlyProperty type$delegate -> k
-    kotlin.properties.ReadOnlyProperty save$delegate -> l
-    kotlin.Lazy events$delegate -> m
+    kotlin.properties.ReadOnlyProperty dateLabel$delegate -> j
+    kotlin.properties.ReadOnlyProperty date$delegate -> k
+    kotlin.properties.ReadOnlyProperty typeLabel$delegate -> l
+    kotlin.properties.ReadOnlyProperty type$delegate -> m
+    kotlin.properties.ReadOnlyProperty save$delegate -> n
+    kotlin.Lazy events$delegate -> o
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
     android.widget.ImageView getImage() -> getImage
+    android.view.View getDateLabel() -> getDateLabel
     android.widget.Button getDate() -> getDate
+    android.view.View getTypeLabel() -> getTypeLabel
     android.widget.Button getType() -> getType
     android.widget.Button getSave() -> getSave
     io.reactivex.Observable getEvents() -> getEvents
-    46:58:void display(com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState) -> a
-    29:38:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    29:29:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> a
-    29:29:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> b
-    29:29:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> c
-    29:29:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> d
+    49:53:void onAttachedToWindow() -> onAttachedToWindow
+    56:68:void display(com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiState) -> a
+    30:41:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    30:30:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> a
+    30:30:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> b
+    30:30:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> c
+    30:30:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> d
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$a:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoView this$0 -> a
-    29:29:java.lang.Object invoke() -> a
-    39:64:io.reactivex.Observable invoke() -> b
+    30:30:java.lang.Object invoke() -> a
+    42:74:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$a$1:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$1 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    39:39:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Back apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    42:42:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$2 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$a$2:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$2 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    40:40:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    43:43:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$3 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$a$3:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$3 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    41:41:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    44:44:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$4 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$a$4:
     com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$events$2$4 INSTANCE -> a
-    29:29:java.lang.Object apply(java.lang.Object) -> a
-    42:42:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update apply(kotlin.Unit) -> a
+    30:30:java.lang.Object apply(java.lang.Object) -> a
+    45:45:com.drspaceboo.transtracks.ui.editphoto.EditPhotoUiEvent$Update apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$b:
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoView this$0 -> a
+    51:51:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.editphoto.EditPhotoView$c:
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoView this$0 -> a
+    52:52:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.editphoto.EditPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter -> com.drspaceboo.transtracks.ui.gallery.a:
     io.realm.Realm realm -> b
     io.realm.RealmResults result -> c
@@ -24577,7 +24611,7 @@ com.drspaceboo.transtracks.ui.home.HomeController -> com.drspaceboo.transtracks.
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
     com.drspaceboo.transtracks.ui.home.HomeController$Companion Companion -> b
     45:45:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    49:220:void onAttach(android.view.View) -> b
+    49:219:void onAttach(android.view.View) -> b
     183:184:void onDetach(android.view.View) -> c
     187:190:void onDestroy() -> j
     40:42:void <init>() -> <init>
@@ -24654,101 +24688,154 @@ com.drspaceboo.transtracks.ui.home.HomeControllerKt -> com.drspaceboo.transtrack
 com.drspaceboo.transtracks.ui.home.HomeControllerKt$homeResultsToStates$1 -> com.drspaceboo.transtracks.ui.home.b$a:
     com.drspaceboo.transtracks.ui.home.HomeControllerKt$homeResultsToStates$1 INSTANCE -> a
     io.reactivex.ObservableSource apply(io.reactivex.Observable) -> a
-    198:208:io.reactivex.Observable apply(io.reactivex.Observable) -> b
+    198:207:io.reactivex.Observable apply(io.reactivex.Observable) -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.home.HomeControllerKt$homeResultsToStates$1$1 -> com.drspaceboo.transtracks.ui.home.b$a$1:
     com.drspaceboo.transtracks.ui.home.HomeControllerKt$homeResultsToStates$1$1 INSTANCE -> a
     java.lang.Object apply(java.lang.Object) -> a
-    199:206:com.drspaceboo.transtracks.ui.home.HomeUiState apply(com.drspaceboo.transtracks.domain.HomeResult) -> a
+    199:205:com.drspaceboo.transtracks.ui.home.HomeUiState apply(com.drspaceboo.transtracks.domain.HomeResult) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeUiEvent -> com.drspaceboo.transtracks.ui.home.c:
-    29:29:void <init>() -> <init>
-    29:29:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto -> com.drspaceboo.transtracks.ui.home.c$a:
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter -> com.drspaceboo.transtracks.ui.home.c:
+    io.realm.Realm realm -> b
+    io.realm.RealmResults result -> c
+    java.lang.ref.WeakReference eventRelayRef -> d
+    org.threeten.bp.LocalDate currentDate -> e
+    int type -> f
+    com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$Companion Companion -> a
+    35:39:void onBindViewHolder(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$BaseViewHolder,int) -> a
+    22:22:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> a
+    42:47:com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$BaseViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> c
+    22:22:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
+    51:51:int getItemCount() -> a
+    53:56:int getItemViewType(int) -> a
+    22:32:void <init>(org.threeten.bp.LocalDate,int,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$$special$$inlined$apply$lambda$1 -> com.drspaceboo.transtracks.ui.home.c$a:
+    com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter this$0 -> a
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter) -> <init>
+    22:22:void onChange(java.lang.Object) -> a
+    29:29:void onChange(io.realm.RealmResults) -> a
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder -> com.drspaceboo.transtracks.ui.home.c$b:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> q
+    kotlin.properties.ReadOnlyProperty add$delegate -> r
+    java.lang.ref.WeakReference eventRelayRef -> s
+    org.threeten.bp.LocalDate currentDate -> t
+    int type -> u
+    void <clinit>() -> <clinit>
+    android.support.v7.widget.AppCompatImageButton getAdd() -> A
+    76:78:void bind(org.threeten.bp.LocalDate,int) -> a
+    60:70:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    60:60:java.lang.ref.WeakReference access$getEventRelayRef$p(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder) -> a
+    60:60:org.threeten.bp.LocalDate access$getCurrentDate$p(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder) -> b
+    60:60:int access$getType$p(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder) -> c
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder$1 -> com.drspaceboo.transtracks.ui.home.c$b$1:
+    com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder this$0 -> a
+    71:72:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$AddViewHolder) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$BaseViewHolder -> com.drspaceboo.transtracks.ui.home.c$c:
+    58:58:void <init>(android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$Companion -> com.drspaceboo.transtracks.ui.home.c$d:
+    105:105:void <init>() -> <init>
+    105:105:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder -> com.drspaceboo.transtracks.ui.home.c$e:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> q
+    kotlin.properties.ReadOnlyProperty image$delegate -> r
+    java.lang.ref.WeakReference eventRelayRef -> s
+    java.lang.String currentPhotoId -> t
+    void <clinit>() -> <clinit>
+    android.widget.ImageView getImage() -> A
+    95:102:void bind(com.drspaceboo.transtracks.data.Photo) -> a
+    81:89:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    81:81:java.lang.ref.WeakReference access$getEventRelayRef$p(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder) -> a
+    81:81:java.lang.String access$getCurrentPhotoId$p(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder) -> b
+com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder$1 -> com.drspaceboo.transtracks.ui.home.c$e$1:
+    com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder this$0 -> a
+    90:91:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeGalleryAdapter$PhotoViewHolder) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeUiEvent -> com.drspaceboo.transtracks.ui.home.d:
+    35:35:void <init>() -> <init>
+    35:35:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto -> com.drspaceboo.transtracks.ui.home.d$a:
     org.threeten.bp.LocalDate currentDate -> a
     int type -> b
-    38:38:org.threeten.bp.LocalDate getCurrentDate() -> a
-    38:38:int getType() -> b
-    38:38:void <init>(org.threeten.bp.LocalDate,int) -> <init>
+    44:44:org.threeten.bp.LocalDate getCurrentDate() -> a
+    44:44:int getType() -> b
+    44:44:void <init>(org.threeten.bp.LocalDate,int) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery -> com.drspaceboo.transtracks.ui.home.c$b:
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery -> com.drspaceboo.transtracks.ui.home.d$b:
     long day -> a
-    36:36:long getDay() -> a
-    36:36:void <init>(long) -> <init>
+    42:42:long getDay() -> a
+    42:42:void <init>(long) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$FaceGallery -> com.drspaceboo.transtracks.ui.home.c$c:
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$FaceGallery -> com.drspaceboo.transtracks.ui.home.d$c:
     long day -> a
-    35:35:long getDay() -> a
-    35:35:void <init>(long) -> <init>
+    41:41:long getDay() -> a
+    41:41:void <init>(long) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick -> com.drspaceboo.transtracks.ui.home.c$d:
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick -> com.drspaceboo.transtracks.ui.home.d$d:
     java.lang.String photoId -> a
-    37:37:java.lang.String getPhotoId() -> a
-    37:37:void <init>(java.lang.String) -> <init>
+    43:43:java.lang.String getPhotoId() -> a
+    43:43:void <init>(java.lang.String) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$Milestones -> com.drspaceboo.transtracks.ui.home.c$e:
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$Milestones -> com.drspaceboo.transtracks.ui.home.d$e:
     long day -> a
-    34:34:long getDay() -> a
-    34:34:void <init>(long) -> <init>
+    40:40:long getDay() -> a
+    40:40:void <init>(long) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord -> com.drspaceboo.transtracks.ui.home.c$f:
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord -> com.drspaceboo.transtracks.ui.home.d$f:
     com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord INSTANCE -> a
-    33:33:void <init>() -> <init>
-    33:33:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord -> com.drspaceboo.transtracks.ui.home.c$g:
+    39:39:void <init>() -> <init>
+    39:39:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord -> com.drspaceboo.transtracks.ui.home.d$g:
     com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord INSTANCE -> a
-    32:32:void <init>() -> <init>
-    32:32:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$SelectPhoto -> com.drspaceboo.transtracks.ui.home.c$h:
+    38:38:void <init>() -> <init>
+    38:38:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$SelectPhoto -> com.drspaceboo.transtracks.ui.home.d$h:
     com.drspaceboo.transtracks.ui.home.HomeUiEvent$SelectPhoto INSTANCE -> a
-    30:30:void <init>() -> <init>
-    30:30:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings -> com.drspaceboo.transtracks.ui.home.c$i:
+    36:36:void <init>() -> <init>
+    36:36:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings -> com.drspaceboo.transtracks.ui.home.d$i:
     com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings INSTANCE -> a
-    31:31:void <init>() -> <init>
-    31:31:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeUiState -> com.drspaceboo.transtracks.ui.home.d:
-    41:41:void <init>() -> <init>
-    41:41:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeUiState$Loaded -> com.drspaceboo.transtracks.ui.home.d$a:
+    37:37:void <init>() -> <init>
+    37:37:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.home.HomeUiState -> com.drspaceboo.transtracks.ui.home.e:
+    47:47:void <init>() -> <init>
+    47:47:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeUiState$Loaded -> com.drspaceboo.transtracks.ui.home.e$a:
     java.lang.String dayString -> a
     boolean showPreviousRecord -> b
     boolean showNextRecord -> c
     org.threeten.bp.LocalDate startDate -> d
     org.threeten.bp.LocalDate currentDate -> e
     boolean hasMilestones -> f
-    java.util.List facePhotos -> g
-    java.util.List bodyPhotos -> h
-    boolean showAds -> i
-    43:43:java.lang.String getDayString() -> a
-    44:44:boolean getShowPreviousRecord() -> b
-    45:45:boolean getShowNextRecord() -> c
-    46:46:org.threeten.bp.LocalDate getStartDate() -> d
-    47:47:org.threeten.bp.LocalDate getCurrentDate() -> e
-    48:48:boolean getHasMilestones() -> f
-    49:49:java.util.List getFacePhotos() -> g
-    50:50:java.util.List getBodyPhotos() -> h
-    51:51:boolean getShowAds() -> i
-    43:51:void <init>(java.lang.String,boolean,boolean,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,boolean,java.util.List,java.util.List,boolean) -> <init>
+    boolean showAds -> g
+    49:49:java.lang.String getDayString() -> a
+    50:50:boolean getShowPreviousRecord() -> b
+    51:51:boolean getShowNextRecord() -> c
+    52:52:org.threeten.bp.LocalDate getStartDate() -> d
+    53:53:org.threeten.bp.LocalDate getCurrentDate() -> e
+    54:54:boolean getHasMilestones() -> f
+    55:55:boolean getShowAds() -> g
+    49:55:void <init>(java.lang.String,boolean,boolean,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,boolean,boolean) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.home.HomeUiState$Loading -> com.drspaceboo.transtracks.ui.home.d$b:
+com.drspaceboo.transtracks.ui.home.HomeUiState$Loading -> com.drspaceboo.transtracks.ui.home.e$b:
     com.drspaceboo.transtracks.ui.home.HomeUiState$Loading INSTANCE -> a
-    42:42:void <init>() -> <init>
-    42:42:void <clinit>() -> <clinit>
+    48:48:void <init>() -> <init>
+    48:48:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.home.HomeView -> com.drspaceboo.transtracks.ui.home.HomeView:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     kotlin.properties.ReadOnlyProperty takePhoto$delegate -> h
@@ -24760,23 +24847,20 @@ com.drspaceboo.transtracks.ui.home.HomeView -> com.drspaceboo.transtracks.ui.hom
     kotlin.properties.ReadOnlyProperty currentDate$delegate -> n
     kotlin.properties.ReadOnlyProperty milestones$delegate -> o
     kotlin.properties.ReadOnlyProperty faceGallery$delegate -> p
-    kotlin.properties.ReadOnlyProperty faceFirstImage$delegate -> q
-    kotlin.properties.ReadOnlyProperty faceSecondImage$delegate -> r
-    kotlin.properties.ReadOnlyProperty faceThirdImage$delegate -> s
-    kotlin.properties.ReadOnlyProperty faceAddImage$delegate -> t
-    kotlin.properties.ReadOnlyProperty faceExtraImages$delegate -> u
-    kotlin.properties.ReadOnlyProperty bodyGallery$delegate -> v
-    kotlin.properties.ReadOnlyProperty bodyFirstImage$delegate -> w
-    kotlin.properties.ReadOnlyProperty bodySecondImage$delegate -> x
-    kotlin.properties.ReadOnlyProperty bodyThirdImage$delegate -> y
-    kotlin.properties.ReadOnlyProperty bodyAddImage$delegate -> z
-    kotlin.properties.ReadOnlyProperty bodyExtraImages$delegate -> A
-    kotlin.properties.ReadOnlyProperty adViewLayout$delegate -> B
-    kotlin.properties.ReadOnlyProperty adView$delegate -> C
-    kotlin.Lazy events$delegate -> D
-    java.lang.String[] facePhotoIds -> E
-    java.lang.String[] bodyPhotoIds -> F
-    org.threeten.bp.LocalDate date -> G
+    kotlin.properties.ReadOnlyProperty faceRecyclerView$delegate -> q
+    kotlin.properties.ReadOnlyProperty bodyGallery$delegate -> r
+    kotlin.properties.ReadOnlyProperty bodyRecyclerView$delegate -> s
+    kotlin.properties.ReadOnlyProperty adViewLayout$delegate -> t
+    kotlin.properties.ReadOnlyProperty adView$delegate -> u
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> v
+    kotlin.Lazy events$delegate -> w
+    java.lang.String[] facePhotoIds -> x
+    java.lang.String[] bodyPhotoIds -> y
+    org.threeten.bp.LocalDate date -> z
+    boolean hasPrevious -> A
+    boolean hasNext -> B
+    com.drspaceboo.transtracks.ui.home.HomeView$swipeListener$1 swipeListener -> C
+    android.view.GestureDetector gestureDetector -> D
     void <clinit>() -> <clinit>
     android.widget.ImageButton getTakePhoto() -> getTakePhoto
     android.widget.ImageButton getSettings() -> getSettings
@@ -24787,172 +24871,87 @@ com.drspaceboo.transtracks.ui.home.HomeView -> com.drspaceboo.transtracks.ui.hom
     android.widget.TextView getCurrentDate() -> getCurrentDate
     android.widget.ImageButton getMilestones() -> getMilestones
     android.widget.Button getFaceGallery() -> getFaceGallery
-    android.widget.ImageView getFaceFirstImage() -> getFaceFirstImage
-    android.widget.ImageView getFaceSecondImage() -> getFaceSecondImage
-    android.widget.ImageView getFaceThirdImage() -> getFaceThirdImage
-    android.widget.ImageView getFaceAddImage() -> getFaceAddImage
-    android.widget.TextView getFaceExtraImages() -> getFaceExtraImages
+    android.support.v7.widget.RecyclerView getFaceRecyclerView() -> getFaceRecyclerView
     android.widget.Button getBodyGallery() -> getBodyGallery
-    android.widget.ImageView getBodyFirstImage() -> getBodyFirstImage
-    android.widget.ImageView getBodySecondImage() -> getBodySecondImage
-    android.widget.ImageView getBodyThirdImage() -> getBodyThirdImage
-    android.widget.ImageView getBodyAddImage() -> getBodyAddImage
-    android.widget.TextView getBodyExtraImages() -> getBodyExtraImages
+    android.support.v7.widget.RecyclerView getBodyRecyclerView() -> getBodyRecyclerView
     android.view.ViewGroup getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    122:129:void onAttachedToWindow() -> onAttachedToWindow
-    132:267:void display(com.drspaceboo.transtracks.ui.home.HomeUiState) -> a
-    54:279:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    54:54:android.view.ViewGroup access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.home.HomeView) -> a
-    54:54:android.widget.ImageView access$getBodyThirdImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> b
-    54:54:android.widget.TextView access$getBodyExtraImages$p(com.drspaceboo.transtracks.ui.home.HomeView) -> c
-    54:54:android.widget.ImageView access$getBodyAddImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> d
-    54:54:android.widget.ImageView access$getFaceThirdImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> e
-    54:54:android.widget.TextView access$getFaceExtraImages$p(com.drspaceboo.transtracks.ui.home.HomeView) -> f
-    54:54:android.widget.ImageView access$getFaceAddImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> g
-    54:54:android.widget.ImageButton access$getTakePhoto$p(com.drspaceboo.transtracks.ui.home.HomeView) -> h
-    54:54:android.widget.ImageButton access$getSettings$p(com.drspaceboo.transtracks.ui.home.HomeView) -> i
-    54:54:android.widget.ImageButton access$getPreviousRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> j
-    54:54:android.widget.ImageButton access$getNextRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> k
-    54:54:android.widget.ImageButton access$getMilestones$p(com.drspaceboo.transtracks.ui.home.HomeView) -> l
-    54:54:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.ui.home.HomeView) -> m
-    54:54:android.widget.Button access$getFaceGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> n
-    54:54:android.widget.ImageView access$getFaceFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> o
-    54:54:java.lang.String[] access$getFacePhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> p
-    54:54:android.widget.ImageView access$getFaceSecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> q
-    54:54:android.widget.Button access$getBodyGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> r
-    54:54:android.widget.ImageView access$getBodyFirstImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> s
-    54:54:java.lang.String[] access$getBodyPhotoIds$p(com.drspaceboo.transtracks.ui.home.HomeView) -> t
-    54:54:android.widget.ImageView access$getBodySecondImage$p(com.drspaceboo.transtracks.ui.home.HomeView) -> u
-com.drspaceboo.transtracks.ui.home.HomeView$display$1 -> com.drspaceboo.transtracks.ui.home.HomeView$a:
+    120:143:void onAttachedToWindow() -> onAttachedToWindow
+    146:185:void display(com.drspaceboo.transtracks.ui.home.HomeUiState) -> a
+    58:197:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    58:58:android.view.GestureDetector access$getGestureDetector$p(com.drspaceboo.transtracks.ui.home.HomeView) -> a
+    58:58:android.view.ViewGroup access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.home.HomeView) -> b
+    58:58:android.widget.Button access$getFaceGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> c
+    58:58:android.support.v7.widget.RecyclerView access$getBodyRecyclerView$p(com.drspaceboo.transtracks.ui.home.HomeView) -> d
+    58:58:android.support.v7.widget.RecyclerView access$getFaceRecyclerView$p(com.drspaceboo.transtracks.ui.home.HomeView) -> e
+    58:58:android.widget.ImageButton access$getTakePhoto$p(com.drspaceboo.transtracks.ui.home.HomeView) -> f
+    58:58:android.widget.ImageButton access$getSettings$p(com.drspaceboo.transtracks.ui.home.HomeView) -> g
+    58:58:android.widget.ImageButton access$getPreviousRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> h
+    58:58:android.widget.ImageButton access$getNextRecord$p(com.drspaceboo.transtracks.ui.home.HomeView) -> i
+    58:58:android.widget.ImageButton access$getMilestones$p(com.drspaceboo.transtracks.ui.home.HomeView) -> j
+    58:58:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.ui.home.HomeView) -> k
+    58:58:android.widget.Button access$getBodyGallery$p(com.drspaceboo.transtracks.ui.home.HomeView) -> l
+    58:58:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.home.HomeView) -> m
+    58:58:boolean access$getHasPrevious$p(com.drspaceboo.transtracks.ui.home.HomeView) -> n
+    58:58:boolean access$getHasNext$p(com.drspaceboo.transtracks.ui.home.HomeView) -> o
+com.drspaceboo.transtracks.ui.home.HomeView$events$2 -> com.drspaceboo.transtracks.ui.home.HomeView$a:
     com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
-    54:54:java.lang.Object invoke() -> a
-    133:137:void invoke() -> b
+    58:58:java.lang.Object invoke() -> a
+    83:194:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$display$2 -> com.drspaceboo.transtracks.ui.home.HomeView$b:
-    com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
-    54:54:java.lang.Object invoke() -> a
-    140:144:void invoke() -> b
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c:
-    com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
-    54:54:java.lang.Object invoke() -> a
-    86:284:io.reactivex.Observable invoke() -> b
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$1 -> com.drspaceboo.transtracks.ui.home.HomeView$c$1:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$1 -> com.drspaceboo.transtracks.ui.home.HomeView$a$1:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$1 INSTANCE -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    87:87:com.drspaceboo.transtracks.ui.home.HomeUiEvent$SelectPhoto apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    84:84:com.drspaceboo.transtracks.ui.home.HomeUiEvent$SelectPhoto apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$10 -> com.drspaceboo.transtracks.ui.home.HomeView$c$2:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    97:97:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$11 -> com.drspaceboo.transtracks.ui.home.HomeView$c$3:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    99:99:boolean test(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$12 -> com.drspaceboo.transtracks.ui.home.HomeView$c$4:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    100:100:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$13 -> com.drspaceboo.transtracks.ui.home.HomeView$c$5:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    102:102:com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$14 -> com.drspaceboo.transtracks.ui.home.HomeView$c$6:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    103:103:com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$15 -> com.drspaceboo.transtracks.ui.home.HomeView$c$7:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    104:104:boolean test(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$16 -> com.drspaceboo.transtracks.ui.home.HomeView$c$8:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    105:105:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$17 -> com.drspaceboo.transtracks.ui.home.HomeView$c$9:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    107:107:boolean test(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$18 -> com.drspaceboo.transtracks.ui.home.HomeView$c$10:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    108:108:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$19 -> com.drspaceboo.transtracks.ui.home.HomeView$c$11:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    110:110:boolean test(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c$12:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 -> com.drspaceboo.transtracks.ui.home.HomeView$a$2:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$2 INSTANCE -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    88:88:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    85:85:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Settings apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$20 -> com.drspaceboo.transtracks.ui.home.HomeView$c$13:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    111:111:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$21 -> com.drspaceboo.transtracks.ui.home.HomeView$c$14:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    113:113:com.drspaceboo.transtracks.ui.home.HomeUiEvent$AddPhoto apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 -> com.drspaceboo.transtracks.ui.home.HomeView$c$15:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 -> com.drspaceboo.transtracks.ui.home.HomeView$a$3:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$3 INSTANCE -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    89:89:com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    86:86:com.drspaceboo.transtracks.ui.home.HomeUiEvent$PreviousRecord apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 -> com.drspaceboo.transtracks.ui.home.HomeView$c$16:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 -> com.drspaceboo.transtracks.ui.home.HomeView$a$4:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2$4 INSTANCE -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    90:90:com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    87:87:com.drspaceboo.transtracks.ui.home.HomeUiEvent$NextRecord apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$5 -> com.drspaceboo.transtracks.ui.home.HomeView$c$17:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$5 -> com.drspaceboo.transtracks.ui.home.HomeView$a$5:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    91:91:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Milestones apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    88:88:com.drspaceboo.transtracks.ui.home.HomeUiEvent$Milestones apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$6 -> com.drspaceboo.transtracks.ui.home.HomeView$c$18:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$6 -> com.drspaceboo.transtracks.ui.home.HomeView$a$6:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    92:92:com.drspaceboo.transtracks.ui.home.HomeUiEvent$FaceGallery apply(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    89:89:com.drspaceboo.transtracks.ui.home.HomeUiEvent$FaceGallery apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$7 -> com.drspaceboo.transtracks.ui.home.HomeView$c$19:
+com.drspaceboo.transtracks.ui.home.HomeView$events$2$7 -> com.drspaceboo.transtracks.ui.home.HomeView$a$7:
     com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    93:93:boolean test(kotlin.Unit) -> a
+    58:58:java.lang.Object apply(java.lang.Object) -> a
+    90:90:com.drspaceboo.transtracks.ui.home.HomeUiEvent$BodyGallery apply(kotlin.Unit) -> a
     void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$8 -> com.drspaceboo.transtracks.ui.home.HomeView$c$20:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:java.lang.Object apply(java.lang.Object) -> a
-    94:94:com.drspaceboo.transtracks.ui.home.HomeUiEvent$ImageClick apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$events$2$9 -> com.drspaceboo.transtracks.ui.home.HomeView$c$21:
-    com.drspaceboo.transtracks.ui.home.HomeView$events$2 this$0 -> a
-    54:54:boolean test(java.lang.Object) -> a
-    96:96:boolean test(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.ui.home.HomeView$events$2) -> <init>
-com.drspaceboo.transtracks.ui.home.HomeView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.home.HomeView$d:
+com.drspaceboo.transtracks.ui.home.HomeView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.home.HomeView$b:
     com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
-    126:127:void onAdFailedToLoad(int) -> a
-    124:124:void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
+    122:123:boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.home.HomeView$c:
+    com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
+    133:141:void onAdFailedToLoad(int) -> a
+    131:131:void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
+com.drspaceboo.transtracks.ui.home.HomeView$swipeListener$1 -> com.drspaceboo.transtracks.ui.home.HomeView$d:
+    com.drspaceboo.transtracks.ui.home.HomeView this$0 -> a
+    103:107:boolean swipeLeft() -> a
+    111:114:boolean swipeRight() -> b
+    101:101:void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.lock.LockController -> com.drspaceboo.transtracks.ui.lock.a:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> c
     com.drspaceboo.transtracks.ui.lock.LockController$Companion Companion -> b
@@ -25552,23 +25551,31 @@ com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded -> com.drspaceboo.
 com.drspaceboo.transtracks.ui.settings.SettingsView -> com.drspaceboo.transtracks.ui.settings.SettingsView:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
     kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
-    kotlin.properties.ReadOnlyProperty startDate$delegate -> i
-    kotlin.properties.ReadOnlyProperty theme$delegate -> j
-    kotlin.properties.ReadOnlyProperty lock$delegate -> k
-    kotlin.properties.ReadOnlyProperty lockDelayLabel$delegate -> l
-    kotlin.properties.ReadOnlyProperty lockDelay$delegate -> m
-    kotlin.properties.ReadOnlyProperty appVersion$delegate -> n
-    kotlin.properties.ReadOnlyProperty privacyPolicy$delegate -> o
-    kotlin.properties.ReadOnlyProperty copyright$delegate -> p
-    kotlin.properties.ReadOnlyProperty adViewLayout$delegate -> q
-    kotlin.properties.ReadOnlyProperty adView$delegate -> r
-    kotlin.Lazy events$delegate -> s
-    org.threeten.bp.LocalDate currentStartDate -> t
+    kotlin.properties.ReadOnlyProperty startLabel$delegate -> i
+    kotlin.properties.ReadOnlyProperty startDate$delegate -> j
+    kotlin.properties.ReadOnlyProperty themeLabel$delegate -> k
+    kotlin.properties.ReadOnlyProperty theme$delegate -> l
+    kotlin.properties.ReadOnlyProperty lockLabel$delegate -> m
+    kotlin.properties.ReadOnlyProperty lock$delegate -> n
+    kotlin.properties.ReadOnlyProperty lockDescription$delegate -> o
+    kotlin.properties.ReadOnlyProperty lockDelayLabel$delegate -> p
+    kotlin.properties.ReadOnlyProperty lockDelay$delegate -> q
+    kotlin.properties.ReadOnlyProperty appVersion$delegate -> r
+    kotlin.properties.ReadOnlyProperty privacyPolicy$delegate -> s
+    kotlin.properties.ReadOnlyProperty copyright$delegate -> t
+    kotlin.properties.ReadOnlyProperty adViewLayout$delegate -> u
+    kotlin.properties.ReadOnlyProperty adView$delegate -> v
+    kotlin.Lazy events$delegate -> w
+    org.threeten.bp.LocalDate currentStartDate -> x
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
+    android.view.View getStartLabel() -> getStartLabel
     android.widget.Button getStartDate() -> getStartDate
+    android.view.View getThemeLabel() -> getThemeLabel
     android.widget.Button getTheme() -> getTheme
+    android.view.View getLockLabel() -> getLockLabel
     android.widget.Button getLock() -> getLock
+    android.view.View getLockDescription() -> getLockDescription
     android.view.View getLockDelayLabel() -> getLockDelayLabel
     android.widget.Button getLockDelay() -> getLockDelay
     android.widget.TextView getAppVersion() -> getAppVersion
@@ -25577,61 +25584,81 @@ com.drspaceboo.transtracks.ui.settings.SettingsView -> com.drspaceboo.transtrack
     android.view.View getAdViewLayout() -> getAdViewLayout
     com.google.android.gms.ads.AdView getAdView() -> getAdView
     io.reactivex.Observable getEvents() -> getEvents
-    65:72:void onAttachedToWindow() -> onAttachedToWindow
-    75:100:void display(com.drspaceboo.transtracks.ui.settings.SettingsUiState) -> a
-    37:53:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    37:37:android.view.View access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> a
-    37:37:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> b
-    37:37:android.widget.Button access$getStartDate$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> c
-    37:37:android.widget.Button access$getTheme$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> d
-    37:37:android.widget.Button access$getLock$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> e
-    37:37:android.widget.Button access$getLockDelay$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> f
+    70:83:void onAttachedToWindow() -> onAttachedToWindow
+    86:111:void display(com.drspaceboo.transtracks.ui.settings.SettingsUiState) -> a
+    37:58:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    37:37:android.widget.Button access$getStartDate$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> a
+    37:37:android.widget.Button access$getTheme$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> b
+    37:37:android.widget.Button access$getLock$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> c
+    37:37:android.widget.Button access$getLockDelay$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> d
+    37:37:android.view.View access$getAdViewLayout$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> e
+    37:37:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> f
     37:37:android.widget.Button access$getPrivacyPolicy$p(com.drspaceboo.transtracks.ui.settings.SettingsView) -> g
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a:
     com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
     37:37:java.lang.Object invoke() -> a
-    54:108:io.reactivex.Observable invoke() -> b
+    59:119:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$1 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$1:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$1 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    54:54:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back apply(kotlin.Unit) -> a
+    59:59:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$2 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$2:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$2 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    55:55:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate apply(kotlin.Unit) -> a
+    60:60:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$3 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$3:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$3 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    56:56:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme apply(kotlin.Unit) -> a
+    61:61:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$4 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$4:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$4 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    57:57:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode apply(kotlin.Unit) -> a
+    62:62:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$5 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$5:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$5 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    58:58:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay apply(kotlin.Unit) -> a
+    63:63:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$6 -> com.drspaceboo.transtracks.ui.settings.SettingsView$a$6:
     com.drspaceboo.transtracks.ui.settings.SettingsView$events$2$6 INSTANCE -> a
     37:37:java.lang.Object apply(java.lang.Object) -> a
-    59:59:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy apply(kotlin.Unit) -> a
+    64:64:com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.settings.SettingsView$b:
     com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
-    69:70:void onAdFailedToLoad(int) -> a
-    67:67:void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+    72:72:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.settings.SettingsView$c:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    73:73:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$3 -> com.drspaceboo.transtracks.ui.settings.SettingsView$d:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    74:74:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$4 -> com.drspaceboo.transtracks.ui.settings.SettingsView$e:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    75:75:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$5 -> com.drspaceboo.transtracks.ui.settings.SettingsView$f:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    76:76:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
+com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$6 -> com.drspaceboo.transtracks.ui.settings.SettingsView$g:
+    com.drspaceboo.transtracks.ui.settings.SettingsView this$0 -> a
+    80:81:void onAdFailedToLoad(int) -> a
+    78:78:void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController -> com.drspaceboo.transtracks.ui.singlephoto.a:
     java.lang.String photoId -> c
     io.reactivex.disposables.CompositeDisposable viewDisposables -> d
@@ -25789,9 +25816,6 @@ com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter$NotifyingDataSetO
     121:124:void onChanged() -> onChanged
     127:131:void onInvalidated() -> onInvalidated
     119:119:void <init>(com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter) -> <init>
-com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout -> com.drspaceboo.transtracks.ui.widget.SquareChildrenLinearLayout:
-    11:40:void onMeasure(int,int) -> onMeasure
-    8:9:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
 com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout -> com.drspaceboo.transtracks.ui.widget.SquareConstraintLayout:
     int orientation -> g
     19:19:int getOrientation() -> getOrientation
@@ -25810,6 +25834,18 @@ com.drspaceboo.transtracks.ui.widget.SquareImageView -> com.drspaceboo.transtrac
     9:9:void <init>(android.content.Context) -> <init>
     11:12:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
     15:16:void <init>(android.content.Context,android.util.AttributeSet,int) -> <init>
+com.drspaceboo.transtracks.ui.widget.SwipeGestureListener -> com.drspaceboo.transtracks.ui.widget.c:
+    com.drspaceboo.transtracks.ui.widget.SwipeGestureListener$Companion Companion -> b
+    9:40:boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float) -> onFling
+    47:47:boolean swipeDown() -> c
+    51:51:boolean swipeLeft() -> a
+    55:55:boolean swipeRight() -> b
+    59:59:boolean swipeUp() -> d
+    6:6:void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.widget.SwipeGestureListener$Companion -> com.drspaceboo.transtracks.ui.widget.c$a:
+    62:62:void <init>() -> <init>
+    62:62:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.util.AdViewsKt -> com.drspaceboo.transtracks.c.a:
     6:8:void loadAd(com.google.android.gms.ads.AdView) -> a
 com.drspaceboo.transtracks.util.AnalyticsUtil -> com.drspaceboo.transtracks.c.b:
@@ -26036,9 +26072,11 @@ com.f2prateek.rx.preferences2.LongAdapter -> com.a.a.a.e:
 com.f2prateek.rx.preferences2.Preconditions -> com.a.a.a.f:
     5:8:void checkNotNull(java.lang.Object,java.lang.String) -> a
 com.f2prateek.rx.preferences2.Preference -> com.a.a.a.g:
-    java.lang.Object get() -> a
+    java.lang.Object defaultValue() -> a
+    java.lang.Object get() -> b
     void set(java.lang.Object) -> a
-    io.reactivex.Observable asObservable() -> b
+    boolean isSet() -> c
+    io.reactivex.Observable asObservable() -> d
 com.f2prateek.rx.preferences2.Preference$Converter -> com.a.a.a.g$a:
     java.lang.Object deserialize(java.lang.String) -> b
     java.lang.String serialize(java.lang.Object) -> a
@@ -26049,9 +26087,11 @@ com.f2prateek.rx.preferences2.RealPreference -> com.a.a.a.h:
     com.f2prateek.rx.preferences2.RealPreference$Adapter adapter -> d
     io.reactivex.Observable values -> e
     35:52:void <init>(android.content.SharedPreferences,java.lang.String,java.lang.Object,com.f2prateek.rx.preferences2.RealPreference$Adapter,io.reactivex.Observable) -> <init>
-    63:66:java.lang.Object get() -> a
+    59:59:java.lang.Object defaultValue() -> a
+    63:66:java.lang.Object get() -> b
     70:74:void set(java.lang.Object) -> a
-    85:85:io.reactivex.Observable asObservable() -> b
+    77:77:boolean isSet() -> c
+    85:85:io.reactivex.Observable asObservable() -> d
 com.f2prateek.rx.preferences2.RealPreference$1 -> com.a.a.a.h$1:
     com.f2prateek.rx.preferences2.RealPreference this$0 -> a
     47:47:void <init>(com.f2prateek.rx.preferences2.RealPreference) -> <init>
