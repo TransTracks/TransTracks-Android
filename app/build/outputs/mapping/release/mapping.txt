@@ -20156,8 +20156,8 @@ androidx.versionedparcelable.VersionedParcelParcel -> androidx.versionedparcelab
     231:231:android.os.Parcelable readParcelable() -> g
 androidx.versionedparcelable.VersionedParcelable -> androidx.versionedparcelable.c:
 com.bluelinelabs.conductor.ActivityHostedRouter -> com.bluelinelabs.conductor.a:
-    com.bluelinelabs.conductor.internal.LifecycleHandler lifecycleHandler -> e
-    com.bluelinelabs.conductor.internal.TransactionIndexer transactionIndexer -> f
+    com.bluelinelabs.conductor.internal.LifecycleHandler lifecycleHandler -> f
+    com.bluelinelabs.conductor.internal.TransactionIndexer transactionIndexer -> g
     18:21:void <init>() -> <init>
     24:38:void setHost(com.bluelinelabs.conductor.internal.LifecycleHandler,android.view.ViewGroup) -> a
     42:45:void saveInstanceState(android.os.Bundle) -> a
@@ -20181,13 +20181,12 @@ com.bluelinelabs.conductor.Backstack -> com.bluelinelabs.conductor.b:
     41:41:java.util.Iterator reverseIterator() -> c
     60:62:com.bluelinelabs.conductor.RouterTransaction pop() -> d
     67:67:com.bluelinelabs.conductor.RouterTransaction peek() -> e
-    71:72:void remove(com.bluelinelabs.conductor.RouterTransaction) -> a
-    75:76:void push(com.bluelinelabs.conductor.RouterTransaction) -> b
-    80:84:java.util.List popAll() -> f
-    88:106:void setBackstack(java.util.List) -> a
-    109:109:boolean contains(com.bluelinelabs.conductor.RouterTransaction) -> c
-    113:119:void saveInstanceState(android.os.Bundle) -> a
-    122:129:void restoreInstanceState(android.os.Bundle) -> b
+    71:72:void push(com.bluelinelabs.conductor.RouterTransaction) -> a
+    76:80:java.util.List popAll() -> f
+    84:88:void setBackstack(java.util.List) -> a
+    91:96:boolean contains(com.bluelinelabs.conductor.Controller) -> a
+    100:106:void saveInstanceState(android.os.Bundle) -> a
+    109:116:void restoreInstanceState(android.os.Bundle) -> b
 com.bluelinelabs.conductor.ChangeHandlerFrameLayout -> com.bluelinelabs.conductor.ChangeHandlerFrameLayout:
     int inProgressTransactionCount -> a
     25:26:void <init>(android.content.Context) -> <init>
@@ -20200,164 +20199,160 @@ com.bluelinelabs.conductor.ChangeHandlerFrameLayout -> com.bluelinelabs.conducto
 com.bluelinelabs.conductor.Conductor -> com.bluelinelabs.conductor.c:
     34:41:com.bluelinelabs.conductor.Router attachRouter(android.app.Activity,android.view.ViewGroup,android.os.Bundle) -> a
 com.bluelinelabs.conductor.Controller -> com.bluelinelabs.conductor.d:
-    android.os.Bundle args -> b
+    android.os.Bundle args -> i
     android.os.Bundle viewState -> a
-    android.os.Bundle savedInstanceState -> c
-    boolean isBeingDestroyed -> d
-    boolean destroyed -> e
-    boolean attached -> f
-    boolean hasOptionsMenu -> g
-    boolean optionsMenuHidden -> h
-    boolean viewIsAttached -> i
-    boolean viewWasDetached -> j
-    com.bluelinelabs.conductor.Router router -> k
-    android.view.View view -> l
-    com.bluelinelabs.conductor.Controller parentController -> m
-    java.lang.String instanceId -> n
-    java.lang.String targetInstanceId -> o
-    boolean needsAttach -> p
-    boolean attachedToUnownedParent -> q
-    boolean hasSavedViewState -> r
-    boolean isDetachFrozen -> s
-    com.bluelinelabs.conductor.ControllerChangeHandler overriddenPushHandler -> t
-    com.bluelinelabs.conductor.ControllerChangeHandler overriddenPopHandler -> u
-    com.bluelinelabs.conductor.Controller$RetainViewMode retainViewMode -> v
-    com.bluelinelabs.conductor.internal.ViewAttachHandler viewAttachHandler -> w
-    java.util.List childRouters -> x
-    java.util.List lifecycleListeners -> y
-    java.util.ArrayList requestedPermissions -> z
-    java.util.ArrayList onRouterSetListeners -> A
-    java.lang.ref.WeakReference destroyedView -> B
-    boolean isPerformingExitTransition -> C
-    boolean isContextAvailable -> D
-    95:124:com.bluelinelabs.conductor.Controller newInstance(android.os.Bundle) -> a
-    131:132:void <init>() -> <init>
-    83:143:void <init>(android.os.Bundle) -> <init>
+    android.os.Bundle savedInstanceState -> j
+    boolean isBeingDestroyed -> b
+    boolean destroyed -> k
+    boolean attached -> l
+    boolean hasOptionsMenu -> m
+    boolean optionsMenuHidden -> n
+    boolean viewIsAttached -> c
+    boolean viewWasDetached -> d
+    com.bluelinelabs.conductor.Router router -> e
+    android.view.View view -> f
+    com.bluelinelabs.conductor.Controller parentController -> o
+    java.lang.String instanceId -> g
+    java.lang.String targetInstanceId -> p
+    boolean needsAttach -> q
+    boolean attachedToUnownedParent -> r
+    boolean awaitingParentAttach -> s
+    boolean hasSavedViewState -> t
+    boolean isDetachFrozen -> h
+    com.bluelinelabs.conductor.ControllerChangeHandler overriddenPushHandler -> u
+    com.bluelinelabs.conductor.ControllerChangeHandler overriddenPopHandler -> v
+    com.bluelinelabs.conductor.Controller$RetainViewMode retainViewMode -> w
+    com.bluelinelabs.conductor.internal.ViewAttachHandler viewAttachHandler -> x
+    java.util.List childRouters -> y
+    java.util.List lifecycleListeners -> z
+    java.util.ArrayList requestedPermissions -> A
+    java.util.ArrayList onRouterSetListeners -> B
+    java.lang.ref.WeakReference destroyedView -> C
+    boolean isPerformingExitTransition -> D
+    boolean isContextAvailable -> E
+    96:125:com.bluelinelabs.conductor.Controller newInstance(android.os.Bundle) -> a
+    132:133:void <init>() -> <init>
+    84:144:void <init>(android.os.Bundle) -> <init>
     android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    162:162:com.bluelinelabs.conductor.Router getRouter() -> a
-    170:170:android.os.Bundle getArgs() -> b
-    256:256:boolean isDestroyed() -> c
-    270:270:boolean isAttached() -> d
-    279:279:android.view.View getView() -> e
-    288:288:android.app.Activity getActivity() -> f
-    326:326:java.lang.String getInstanceId() -> g
-    337:347:com.bluelinelabs.conductor.Controller findController(java.lang.String) -> a
-    355:359:java.util.List getChildRouters() -> h
-    397:397:void onDestroyView(android.view.View) -> a
-    405:405:void onChangeStarted(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> a
-    413:413:void onChangeEnded(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
-    420:420:void onContextAvailable(android.content.Context) -> a
-    426:426:void onContextUnavailable() -> i
-    433:433:void onAttach(android.view.View) -> b
-    440:440:void onDetach(android.view.View) -> c
-    445:445:void onDestroy() -> j
-    450:450:void onActivityStarted(android.app.Activity) -> a
-    455:455:void onActivityResumed(android.app.Activity) -> b
-    460:460:void onActivityPaused(android.app.Activity) -> c
-    465:465:void onActivityStopped(android.app.Activity) -> d
-    475:475:void onSaveViewState(android.view.View,android.os.Bundle) -> a
-    484:484:void onRestoreViewState(android.view.View,android.os.Bundle) -> b
-    491:491:void onSaveInstanceState(android.os.Bundle) -> b
-    499:499:void onRestoreInstanceState(android.os.Bundle) -> c
-    505:508:void startActivity(android.content.Intent) -> a
-    556:556:void onActivityResult(int,int,android.content.Intent) -> a
-    579:579:boolean shouldShowRequestPermissionRationale(java.lang.String) -> b
-    589:589:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
-    597:618:boolean handleBack() -> k
-    627:630:void addLifecycleListener(com.bluelinelabs.conductor.Controller$LifecycleListener) -> a
-    666:666:com.bluelinelabs.conductor.ControllerChangeHandler getOverriddenPushHandler() -> l
-    683:683:com.bluelinelabs.conductor.ControllerChangeHandler getOverriddenPopHandler() -> m
-    734:734:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
-    742:742:void onPrepareOptionsMenu(android.view.Menu) -> a
-    751:751:boolean onOptionsItemSelected(android.view.MenuItem) -> a
-    755:756:void setNeedsAttach(boolean) -> a
-    759:764:void prepareForHostDetach() -> n
-    767:767:boolean getNeedsAttach() -> o
-    771:771:boolean didRequestPermission(java.lang.String) -> c
-    775:777:void requestPermissionsResult(int,java.lang.String[],int[]) -> b
-    780:792:void setRouter(com.bluelinelabs.conductor.Router) -> a
-    795:815:void onContextAvailable() -> p
-    818:823:void executeWithRouter(com.bluelinelabs.conductor.internal.RouterRequiringFunc) -> a
-    826:831:void activityStarted(android.app.Activity) -> e
-    834:842:void activityResumed(android.app.Activity) -> f
-    845:846:void activityPaused(android.app.Activity) -> g
-    849:853:void activityStopped(android.app.Activity) -> h
-    856:876:void activityDestroyed(android.app.Activity) -> i
-    879:904:void attach(android.view.View) -> d
-    907:937:void detach(android.view.View,boolean,boolean) -> a
-    940:974:void removeViewReference() -> s
-    977:1030:android.view.View inflate(android.view.ViewGroup) -> a
-    1034:1044:void restoreChildControllerHosts() -> t
-    1047:1079:void performDestroy() -> u
-    1082:1083:void destroy() -> q
-    1086:1101:void destroy(boolean) -> c
-    1104:1120:void saveViewState(android.view.View) -> e
-    1123:1136:void restoreViewState(android.view.View) -> f
-    1139:1178:android.os.Bundle saveInstanceState() -> r
-    1182:1207:void restoreInstanceState(android.os.Bundle) -> d
-    1210:1220:void performOnRestoreInstanceState() -> v
-    1223:1236:void changeStarted(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> c
-    1239:1260:void changeEnded(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> d
-    1263:1274:void setDetachFrozen(boolean) -> b
-    1277:1280:void createOptionsMenu(android.view.Menu,android.view.MenuInflater) -> b
-    1283:1286:void prepareOptionsMenu(android.view.Menu) -> b
-    1289:1289:boolean optionsItemSelected(android.view.MenuItem) -> b
-    1293:1294:void setParentController(com.bluelinelabs.conductor.Controller) -> a
-    1297:1301:void ensureRequiredConstructor() -> w
-    1305:1310:java.lang.reflect.Constructor getDefaultConstructor(java.lang.reflect.Constructor[]) -> a
-    1315:1320:java.lang.reflect.Constructor getBundleConstructor(java.lang.reflect.Constructor[]) -> b
-    44:44:com.bluelinelabs.conductor.Router access$000(com.bluelinelabs.conductor.Controller) -> b
-    44:44:boolean access$202(com.bluelinelabs.conductor.Controller,boolean) -> a
-    44:44:boolean access$302(com.bluelinelabs.conductor.Controller,boolean) -> b
-    44:44:android.view.View access$400(com.bluelinelabs.conductor.Controller) -> c
-    44:44:void access$500(com.bluelinelabs.conductor.Controller,android.view.View) -> a
-    44:44:boolean access$600(com.bluelinelabs.conductor.Controller) -> d
+    163:163:com.bluelinelabs.conductor.Router getRouter() -> a
+    171:171:android.os.Bundle getArgs() -> b
+    257:257:boolean isDestroyed() -> c
+    271:271:boolean isAttached() -> d
+    280:280:android.view.View getView() -> e
+    289:289:android.app.Activity getActivity() -> f
+    318:318:com.bluelinelabs.conductor.Controller getParentController() -> g
+    327:327:java.lang.String getInstanceId() -> h
+    338:348:com.bluelinelabs.conductor.Controller findController(java.lang.String) -> a
+    356:358:java.util.List getChildRouters() -> i
+    396:396:void onDestroyView(android.view.View) -> a
+    404:404:void onChangeStarted(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> a
+    412:412:void onChangeEnded(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
+    419:419:void onContextAvailable(android.content.Context) -> a
+    425:425:void onContextUnavailable() -> j
+    432:432:void onAttach(android.view.View) -> b
+    439:439:void onDetach(android.view.View) -> c
+    444:444:void onDestroy() -> k
+    449:449:void onActivityStarted(android.app.Activity) -> a
+    454:454:void onActivityResumed(android.app.Activity) -> b
+    459:459:void onActivityPaused(android.app.Activity) -> c
+    464:464:void onActivityStopped(android.app.Activity) -> d
+    474:474:void onSaveViewState(android.view.View,android.os.Bundle) -> a
+    483:483:void onRestoreViewState(android.view.View,android.os.Bundle) -> b
+    490:490:void onSaveInstanceState(android.os.Bundle) -> b
+    498:498:void onRestoreInstanceState(android.os.Bundle) -> c
+    504:507:void startActivity(android.content.Intent) -> a
+    555:555:void onActivityResult(int,int,android.content.Intent) -> a
+    578:578:boolean shouldShowRequestPermissionRationale(java.lang.String) -> b
+    588:588:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
+    596:617:boolean handleBack() -> l
+    626:629:void addLifecycleListener(com.bluelinelabs.conductor.Controller$LifecycleListener) -> a
+    665:665:com.bluelinelabs.conductor.ControllerChangeHandler getOverriddenPushHandler() -> m
+    682:682:com.bluelinelabs.conductor.ControllerChangeHandler getOverriddenPopHandler() -> n
+    733:733:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
+    741:741:void onPrepareOptionsMenu(android.view.Menu) -> a
+    750:750:boolean onOptionsItemSelected(android.view.MenuItem) -> a
+    754:755:void setNeedsAttach(boolean) -> a
+    758:763:void prepareForHostDetach() -> o
+    766:766:boolean getNeedsAttach() -> p
+    770:770:boolean didRequestPermission(java.lang.String) -> c
+    774:776:void requestPermissionsResult(int,java.lang.String[],int[]) -> b
+    779:791:void setRouter(com.bluelinelabs.conductor.Router) -> a
+    794:814:void onContextAvailable() -> q
+    817:822:void executeWithRouter(com.bluelinelabs.conductor.internal.RouterRequiringFunc) -> a
+    825:830:void activityStarted(android.app.Activity) -> e
+    833:841:void activityResumed(android.app.Activity) -> f
+    844:845:void activityPaused(android.app.Activity) -> g
+    848:859:void activityStopped(android.app.Activity) -> h
+    862:882:void activityDestroyed(android.app.Activity) -> i
+    885:925:void attach(android.view.View) -> d
+    928:961:void detach(android.view.View,boolean,boolean) -> a
+    964:998:void removeViewReference() -> t
+    1001:1054:android.view.View inflate(android.view.ViewGroup) -> a
+    1058:1068:void restoreChildControllerHosts() -> u
+    1071:1103:void performDestroy() -> v
+    1106:1107:void destroy() -> r
+    1110:1125:void destroy(boolean) -> c
+    1128:1144:void saveViewState(android.view.View) -> e
+    1147:1160:void restoreViewState(android.view.View) -> f
+    1163:1202:android.os.Bundle saveInstanceState() -> s
+    1206:1231:void restoreInstanceState(android.os.Bundle) -> d
+    1234:1244:void performOnRestoreInstanceState() -> w
+    1247:1260:void changeStarted(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> c
+    1263:1284:void changeEnded(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> d
+    1287:1298:void setDetachFrozen(boolean) -> b
+    1301:1304:void createOptionsMenu(android.view.Menu,android.view.MenuInflater) -> b
+    1307:1310:void prepareOptionsMenu(android.view.Menu) -> b
+    1313:1313:boolean optionsItemSelected(android.view.MenuItem) -> b
+    1317:1318:void setParentController(com.bluelinelabs.conductor.Controller) -> a
+    1321:1325:void ensureRequiredConstructor() -> x
+    1329:1334:java.lang.reflect.Constructor getDefaultConstructor(java.lang.reflect.Constructor[]) -> a
+    1339:1344:java.lang.reflect.Constructor getBundleConstructor(java.lang.reflect.Constructor[]) -> b
 com.bluelinelabs.conductor.Controller$1 -> com.bluelinelabs.conductor.d$1:
     android.content.Intent val$intent -> a
     com.bluelinelabs.conductor.Controller this$0 -> b
-    505:505:void <init>(com.bluelinelabs.conductor.Controller,android.content.Intent) -> <init>
-    506:506:void execute() -> a
+    504:504:void <init>(com.bluelinelabs.conductor.Controller,android.content.Intent) -> <init>
+    505:505:void execute() -> a
 com.bluelinelabs.conductor.Controller$6 -> com.bluelinelabs.conductor.d$2:
     com.bluelinelabs.conductor.Controller this$0 -> a
-    603:603:void <init>(com.bluelinelabs.conductor.Controller) -> <init>
-    606:606:int compare(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction) -> a
-    603:603:int compare(java.lang.Object,java.lang.Object) -> compare
+    602:602:void <init>(com.bluelinelabs.conductor.Controller) -> <init>
+    605:605:int compare(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction) -> a
+    602:602:int compare(java.lang.Object,java.lang.Object) -> compare
 com.bluelinelabs.conductor.Controller$7 -> com.bluelinelabs.conductor.d$3:
     com.bluelinelabs.conductor.Controller this$0 -> a
-    1000:1000:void <init>(com.bluelinelabs.conductor.Controller) -> <init>
-    1003:1006:void onAttached() -> a
-    1010:1016:void onDetached(boolean) -> a
-    1020:1023:void onViewDetachAfterStop() -> b
+    1024:1024:void <init>(com.bluelinelabs.conductor.Controller) -> <init>
+    1027:1030:void onAttached() -> a
+    1034:1040:void onDetached(boolean) -> a
+    1044:1047:void onViewDetachAfterStop() -> b
 com.bluelinelabs.conductor.Controller$LifecycleListener -> com.bluelinelabs.conductor.d$a:
-    1332:1332:void <init>() -> <init>
-    1334:1334:void onChangeStart(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> a
-    1335:1335:void onChangeEnd(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
-    1337:1337:void preCreateView(com.bluelinelabs.conductor.Controller) -> a
-    1338:1338:void postCreateView(com.bluelinelabs.conductor.Controller,android.view.View) -> a
-    1340:1340:void preAttach(com.bluelinelabs.conductor.Controller,android.view.View) -> b
-    1341:1341:void postAttach(com.bluelinelabs.conductor.Controller,android.view.View) -> c
-    1343:1343:void preDetach(com.bluelinelabs.conductor.Controller,android.view.View) -> d
-    1344:1344:void postDetach(com.bluelinelabs.conductor.Controller,android.view.View) -> e
-    1346:1346:void preDestroyView(com.bluelinelabs.conductor.Controller,android.view.View) -> f
-    1347:1347:void postDestroyView(com.bluelinelabs.conductor.Controller) -> b
-    1349:1349:void preDestroy(com.bluelinelabs.conductor.Controller) -> c
-    1350:1350:void postDestroy(com.bluelinelabs.conductor.Controller) -> d
-    1352:1352:void preContextAvailable(com.bluelinelabs.conductor.Controller) -> e
-    1353:1353:void postContextAvailable(com.bluelinelabs.conductor.Controller,android.content.Context) -> a
-    1355:1355:void preContextUnavailable(com.bluelinelabs.conductor.Controller,android.content.Context) -> b
-    1356:1356:void postContextUnavailable(com.bluelinelabs.conductor.Controller) -> f
-    1358:1358:void onSaveInstanceState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> a
-    1359:1359:void onRestoreInstanceState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> b
-    1361:1361:void onSaveViewState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> c
-    1362:1362:void onRestoreViewState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> d
+    1356:1356:void <init>() -> <init>
+    1358:1358:void onChangeStart(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> a
+    1359:1359:void onChangeEnd(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
+    1361:1361:void preCreateView(com.bluelinelabs.conductor.Controller) -> a
+    1362:1362:void postCreateView(com.bluelinelabs.conductor.Controller,android.view.View) -> a
+    1364:1364:void preAttach(com.bluelinelabs.conductor.Controller,android.view.View) -> b
+    1365:1365:void postAttach(com.bluelinelabs.conductor.Controller,android.view.View) -> c
+    1367:1367:void preDetach(com.bluelinelabs.conductor.Controller,android.view.View) -> d
+    1368:1368:void postDetach(com.bluelinelabs.conductor.Controller,android.view.View) -> e
+    1370:1370:void preDestroyView(com.bluelinelabs.conductor.Controller,android.view.View) -> f
+    1371:1371:void postDestroyView(com.bluelinelabs.conductor.Controller) -> b
+    1373:1373:void preDestroy(com.bluelinelabs.conductor.Controller) -> c
+    1374:1374:void postDestroy(com.bluelinelabs.conductor.Controller) -> d
+    1376:1376:void preContextAvailable(com.bluelinelabs.conductor.Controller) -> e
+    1377:1377:void postContextAvailable(com.bluelinelabs.conductor.Controller,android.content.Context) -> a
+    1379:1379:void preContextUnavailable(com.bluelinelabs.conductor.Controller,android.content.Context) -> b
+    1380:1380:void postContextUnavailable(com.bluelinelabs.conductor.Controller) -> f
+    1382:1382:void onSaveInstanceState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> a
+    1383:1383:void onRestoreInstanceState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> b
+    1385:1385:void onSaveViewState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> c
+    1386:1386:void onRestoreViewState(com.bluelinelabs.conductor.Controller,android.os.Bundle) -> d
 com.bluelinelabs.conductor.Controller$RetainViewMode -> com.bluelinelabs.conductor.d$b:
     com.bluelinelabs.conductor.Controller$RetainViewMode RELEASE_DETACH -> a
     com.bluelinelabs.conductor.Controller$RetainViewMode RETAIN_DETACH -> b
     com.bluelinelabs.conductor.Controller$RetainViewMode[] $VALUES -> c
-    1324:1324:com.bluelinelabs.conductor.Controller$RetainViewMode[] values() -> values
-    1324:1324:com.bluelinelabs.conductor.Controller$RetainViewMode valueOf(java.lang.String) -> valueOf
-    1324:1324:void <init>(java.lang.String,int) -> <init>
-    1324:1328:void <clinit>() -> <clinit>
+    1348:1348:com.bluelinelabs.conductor.Controller$RetainViewMode[] values() -> values
+    1348:1348:com.bluelinelabs.conductor.Controller$RetainViewMode valueOf(java.lang.String) -> valueOf
+    1348:1348:void <init>(java.lang.String,int) -> <init>
+    1348:1352:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.ControllerChangeHandler -> com.bluelinelabs.conductor.e:
     java.util.Map inProgressChangeHandlers -> a
     boolean forceRemoveViewOnPush -> b
@@ -20371,7 +20366,7 @@ com.bluelinelabs.conductor.ControllerChangeHandler -> com.bluelinelabs.conductor
     84:84:com.bluelinelabs.conductor.ControllerChangeHandler copy() -> b
     94:94:boolean isReusable() -> c
     99:106:android.os.Bundle toBundle() -> d
-    111:115:void ensureDefaultConstructor() -> g
+    111:115:void ensureDefaultConstructor() -> f
     119:126:com.bluelinelabs.conductor.ControllerChangeHandler fromBundle(android.os.Bundle) -> c
     131:137:boolean completeHandlerImmediately(java.lang.String) -> a
     141:151:void abortOrComplete(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
@@ -20379,8 +20374,6 @@ com.bluelinelabs.conductor.ControllerChangeHandler -> com.bluelinelabs.conductor
     158:233:void executeChange(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.Controller,boolean,android.view.ViewGroup,com.bluelinelabs.conductor.ControllerChangeHandler,java.util.List) -> a
     236:236:boolean removesFromViewOnPush() -> e
     240:241:void setForceRemoveViewOnPush(boolean) -> a
-    22:22:java.util.Map access$000() -> f
-    22:22:boolean access$100(com.bluelinelabs.conductor.ControllerChangeHandler) -> a
     27:27:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.ControllerChangeHandler$1 -> com.bluelinelabs.conductor.e$1:
     com.bluelinelabs.conductor.Controller val$from -> a
@@ -20424,93 +20417,95 @@ com.bluelinelabs.conductor.ControllerChangeType -> com.bluelinelabs.conductor.f:
     22:25:void <init>(java.lang.String,int,boolean,boolean) -> <init>
     6:17:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.ControllerHostedRouter -> com.bluelinelabs.conductor.g:
-    java.lang.String KEY_HOST_ID -> e
-    java.lang.String KEY_TAG -> f
-    com.bluelinelabs.conductor.Controller hostController -> g
-    int hostId -> h
-    java.lang.String tag -> i
-    boolean isDetachFrozen -> j
-    21:30:void <init>() -> <init>
-    38:54:void setHost(com.bluelinelabs.conductor.Controller,android.view.ViewGroup) -> a
-    57:76:void removeHost() -> h
-    79:83:void setDetachFrozen(boolean) -> a
-    87:89:void destroy(boolean) -> b
-    93:97:void pushToBackstack(com.bluelinelabs.conductor.RouterTransaction) -> a
-    101:107:void setBackstack(java.util.List,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    111:111:android.app.Activity getActivity() -> a
-    116:119:void onActivityDestroyed(android.app.Activity) -> a
-    130:133:void invalidateOptionsMenu() -> b
-    137:140:void startActivity(android.content.Intent) -> a
-    172:175:void unregisterForActivityResults(java.lang.String) -> a
-    186:186:boolean hasHost() -> c
-    191:195:void saveInstanceState(android.os.Bundle) -> a
-    199:203:void restoreInstanceState(android.os.Bundle) -> b
-    207:209:void setControllerRouter(com.bluelinelabs.conductor.Controller) -> a
-    212:212:int getHostId() -> i
-    222:225:java.util.List getSiblingRouters() -> d
-    230:233:com.bluelinelabs.conductor.Router getRootRouter() -> e
-    239:239:com.bluelinelabs.conductor.internal.TransactionIndexer getTransactionIndexer() -> f
+    java.lang.String KEY_HOST_ID -> f
+    java.lang.String KEY_TAG -> g
+    com.bluelinelabs.conductor.Controller hostController -> h
+    int hostId -> i
+    java.lang.String tag -> j
+    boolean isDetachFrozen -> k
+    22:31:void <init>() -> <init>
+    39:55:void setHost(com.bluelinelabs.conductor.Controller,android.view.ViewGroup) -> a
+    58:77:void removeHost() -> h
+    80:84:void setDetachFrozen(boolean) -> a
+    88:90:void destroy(boolean) -> b
+    94:98:void pushToBackstack(com.bluelinelabs.conductor.RouterTransaction) -> a
+    102:108:void setBackstack(java.util.List,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    112:112:android.app.Activity getActivity() -> a
+    117:120:void onActivityDestroyed(android.app.Activity) -> a
+    131:134:void invalidateOptionsMenu() -> b
+    138:141:void startActivity(android.content.Intent) -> a
+    173:176:void unregisterForActivityResults(java.lang.String) -> a
+    187:187:boolean hasHost() -> c
+    192:196:void saveInstanceState(android.os.Bundle) -> a
+    200:204:void restoreInstanceState(android.os.Bundle) -> b
+    208:210:void setControllerRouter(com.bluelinelabs.conductor.Controller) -> a
+    213:213:int getHostId() -> i
+    223:226:java.util.List getSiblingRouters() -> d
+    231:234:com.bluelinelabs.conductor.Router getRootRouter() -> e
+    240:251:com.bluelinelabs.conductor.internal.TransactionIndexer getTransactionIndexer() -> f
 com.bluelinelabs.conductor.Router -> com.bluelinelabs.conductor.h:
     com.bluelinelabs.conductor.Backstack backstack -> a
-    java.util.List changeListeners -> e
-    java.util.List pendingControllerChanges -> f
+    java.util.List changeListeners -> f
+    java.util.List pendingControllerChanges -> g
     java.util.List destroyingControllers -> b
-    boolean popsLastView -> g
+    boolean popsLastView -> h
     boolean containerFullyAttached -> c
-    android.view.ViewGroup container -> d
-    34:45:void <init>() -> <init>
+    boolean isActivityStopped -> d
+    android.view.ViewGroup container -> e
+    34:46:void <init>() -> <init>
     android.app.Activity getActivity() -> a
-    76:80:void onRequestPermissionsResult(java.lang.String,int,java.lang.String[],int[]) -> a
-    90:101:boolean handleBack() -> j
-    112:118:boolean popCurrentController() -> k
-    129:163:boolean popController(com.bluelinelabs.conductor.Controller) -> b
-    175:180:void pushController(com.bluelinelabs.conductor.RouterTransaction) -> b
-    191:216:void replaceTopController(com.bluelinelabs.conductor.RouterTransaction) -> c
-    219:239:void destroy(boolean) -> b
-    242:242:int getContainerId() -> l
-    296:298:boolean popToTag(java.lang.String) -> b
-    311:319:boolean popToTag(java.lang.String,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    330:334:void setRoot(com.bluelinelabs.conductor.RouterTransaction) -> d
-    344:350:com.bluelinelabs.conductor.Controller getControllerWithInstanceId(java.lang.String) -> c
-    361:366:com.bluelinelabs.conductor.Controller getControllerWithTag(java.lang.String) -> d
-    374:374:int getBackstackSize() -> m
-    382:387:java.util.List getBackstack() -> n
-    400:458:void setBackstack(java.util.List,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    464:464:boolean hasRootController() -> o
-    474:477:void addChangeListener(com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeListener) -> a
-    486:487:void removeChangeListener(com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeListener) -> b
-    494:504:void rebindIfNeeded() -> p
-    507:511:void onActivityResult(java.lang.String,int,int,android.content.Intent) -> a
-    514:521:void onActivityStarted(android.app.Activity) -> b
-    524:531:void onActivityResumed(android.app.Activity) -> c
-    534:541:void onActivityPaused(android.app.Activity) -> d
-    544:551:void onActivityStopped(android.app.Activity) -> e
-    554:575:void onActivityDestroyed(android.app.Activity) -> a
-    578:584:void prepareForHostDetach() -> q
-    587:594:void saveInstanceState(android.os.Bundle) -> a
-    597:606:void restoreInstanceState(android.os.Bundle) -> b
-    609:616:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
-    619:626:void onPrepareOptionsMenu(android.view.Menu) -> a
-    629:640:boolean onOptionsItemSelected(android.view.MenuItem) -> a
-    644:664:void popToTransaction(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    667:673:void watchContainerAttach() -> r
-    676:681:void prepareForContainerRemoval() -> s
-    684:687:void onContextAvailable() -> g
-    691:698:java.util.List getControllers() -> t
-    703:708:java.lang.Boolean handleRequestedPermission(java.lang.String) -> e
-    712:727:void performControllerChange(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction,boolean) -> a
-    730:749:void performControllerChange(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction,boolean,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    752:776:void performControllerChange(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.Controller,boolean,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
-    781:785:void performPendingControllerChanges() -> u
-    788:789:void pushToBackstack(com.bluelinelabs.conductor.RouterTransaction) -> a
-    792:802:void trackDestroyingController(com.bluelinelabs.conductor.RouterTransaction) -> e
-    805:808:void trackDestroyingControllers(java.util.List) -> a
-    811:832:void removeAllExceptVisibleAndUnowned() -> h
-    837:848:void ensureOrderedTransactionIndices(java.util.List) -> b
-    851:860:void addRouterViewsToList(com.bluelinelabs.conductor.Router,java.util.List) -> a
-    863:875:java.util.List getVisibleTransactions(java.util.Iterator) -> a
-    879:889:boolean backstacksAreEqual(java.util.List,java.util.List) -> a
-    893:895:void setControllerRouter(com.bluelinelabs.conductor.Controller) -> a
+    77:81:void onRequestPermissionsResult(java.lang.String,int,java.lang.String[],int[]) -> a
+    91:102:boolean handleBack() -> j
+    113:119:boolean popCurrentController() -> k
+    130:166:boolean popController(com.bluelinelabs.conductor.Controller) -> b
+    178:183:void pushController(com.bluelinelabs.conductor.RouterTransaction) -> b
+    194:219:void replaceTopController(com.bluelinelabs.conductor.RouterTransaction) -> c
+    222:242:void destroy(boolean) -> b
+    245:245:int getContainerId() -> l
+    299:301:boolean popToTag(java.lang.String) -> b
+    314:322:boolean popToTag(java.lang.String,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    333:337:void setRoot(com.bluelinelabs.conductor.RouterTransaction) -> d
+    347:353:com.bluelinelabs.conductor.Controller getControllerWithInstanceId(java.lang.String) -> c
+    364:369:com.bluelinelabs.conductor.Controller getControllerWithTag(java.lang.String) -> d
+    377:377:int getBackstackSize() -> m
+    385:390:java.util.List getBackstack() -> n
+    403:495:void setBackstack(java.util.List,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    501:501:boolean hasRootController() -> o
+    511:514:void addChangeListener(com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeListener) -> a
+    523:524:void removeChangeListener(com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeListener) -> b
+    531:541:void rebindIfNeeded() -> p
+    544:548:void onActivityResult(java.lang.String,int,int,android.content.Intent) -> a
+    551:560:void onActivityStarted(android.app.Activity) -> b
+    563:570:void onActivityResumed(android.app.Activity) -> c
+    573:580:void onActivityPaused(android.app.Activity) -> d
+    583:592:void onActivityStopped(android.app.Activity) -> e
+    595:616:void onActivityDestroyed(android.app.Activity) -> a
+    619:625:void prepareForHostDetach() -> q
+    628:633:void saveInstanceState(android.os.Bundle) -> a
+    636:645:void restoreInstanceState(android.os.Bundle) -> b
+    648:655:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> a
+    658:665:void onPrepareOptionsMenu(android.view.Menu) -> a
+    668:679:boolean onOptionsItemSelected(android.view.MenuItem) -> a
+    683:703:void popToTransaction(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    706:712:void watchContainerAttach() -> r
+    715:720:void prepareForContainerRemoval() -> s
+    723:726:void onContextAvailable() -> g
+    730:737:java.util.List getControllers() -> t
+    742:747:java.lang.Boolean handleRequestedPermission(java.lang.String) -> e
+    751:766:void performControllerChange(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction,boolean) -> a
+    769:788:void performControllerChange(com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction,boolean,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    791:815:void performControllerChange(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.Controller,boolean,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
+    820:824:void performPendingControllerChanges() -> u
+    827:831:void pushToBackstack(com.bluelinelabs.conductor.RouterTransaction) -> a
+    834:844:void trackDestroyingController(com.bluelinelabs.conductor.RouterTransaction) -> e
+    847:850:void trackDestroyingControllers(java.util.List) -> a
+    853:874:void removeAllExceptVisibleAndUnowned() -> h
+    879:890:void ensureOrderedTransactionIndices(java.util.List) -> b
+    893:901:void ensureNoDuplicateControllers(java.util.List) -> c
+    904:913:void addRouterViewsToList(com.bluelinelabs.conductor.Router,java.util.List) -> a
+    916:928:java.util.List getVisibleTransactions(java.util.Iterator) -> a
+    932:942:boolean backstacksAreEqual(java.util.List,java.util.List) -> a
+    946:948:void setControllerRouter(com.bluelinelabs.conductor.Controller) -> a
     void invalidateOptionsMenu() -> b
     void startActivity(android.content.Intent) -> a
     void unregisterForActivityResults(java.lang.String) -> a
@@ -20518,24 +20513,23 @@ com.bluelinelabs.conductor.Router -> com.bluelinelabs.conductor.h:
     java.util.List getSiblingRouters() -> d
     com.bluelinelabs.conductor.Router getRootRouter() -> e
     com.bluelinelabs.conductor.internal.TransactionIndexer getTransactionIndexer() -> f
-    34:34:void access$000(com.bluelinelabs.conductor.Router,com.bluelinelabs.conductor.RouterTransaction,com.bluelinelabs.conductor.RouterTransaction,boolean,com.bluelinelabs.conductor.ControllerChangeHandler) -> a
 com.bluelinelabs.conductor.Router$1 -> com.bluelinelabs.conductor.h$1:
     java.util.List val$poppedControllers -> a
     com.bluelinelabs.conductor.Router this$0 -> b
-    225:225:void <init>(com.bluelinelabs.conductor.Router,java.util.List) -> <init>
-    228:234:void onChangeEnd(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
+    228:228:void <init>(com.bluelinelabs.conductor.Router,java.util.List) -> <init>
+    231:237:void onChangeEnd(com.bluelinelabs.conductor.Controller,com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.ControllerChangeType) -> b
 com.bluelinelabs.conductor.Router$2 -> com.bluelinelabs.conductor.h$2:
     com.bluelinelabs.conductor.Router this$0 -> a
-    667:667:void <init>(com.bluelinelabs.conductor.Router) -> <init>
-    670:671:void run() -> run
+    706:706:void <init>(com.bluelinelabs.conductor.Router) -> <init>
+    709:710:void run() -> run
 com.bluelinelabs.conductor.Router$3 -> com.bluelinelabs.conductor.h$3:
     com.bluelinelabs.conductor.Router this$0 -> a
-    767:767:void <init>(com.bluelinelabs.conductor.Router) -> <init>
-    770:771:void run() -> run
+    806:806:void <init>(com.bluelinelabs.conductor.Router) -> <init>
+    809:810:void run() -> run
 com.bluelinelabs.conductor.Router$4 -> com.bluelinelabs.conductor.h$4:
     com.bluelinelabs.conductor.Router this$0 -> a
-    795:795:void <init>(com.bluelinelabs.conductor.Router) -> <init>
-    798:799:void postDestroy(com.bluelinelabs.conductor.Controller) -> d
+    837:837:void <init>(com.bluelinelabs.conductor.Router) -> <init>
+    840:841:void postDestroy(com.bluelinelabs.conductor.Controller) -> d
 com.bluelinelabs.conductor.RouterTransaction -> com.bluelinelabs.conductor.i:
     int INVALID_INDEX -> c
     com.bluelinelabs.conductor.Controller controller -> a
@@ -20555,45 +20549,40 @@ com.bluelinelabs.conductor.RouterTransaction -> com.bluelinelabs.conductor.i:
     84:88:com.bluelinelabs.conductor.RouterTransaction pushChangeHandler(com.bluelinelabs.conductor.ControllerChangeHandler) -> a
     94:98:com.bluelinelabs.conductor.ControllerChangeHandler popChangeHandler() -> e
     103:107:com.bluelinelabs.conductor.RouterTransaction popChangeHandler(com.bluelinelabs.conductor.ControllerChangeHandler) -> b
-    112:118:void ensureValidIndex(com.bluelinelabs.conductor.internal.TransactionIndexer) -> a
-    125:140:android.os.Bundle saveInstanceState() -> f
+    112:115:void ensureValidIndex(com.bluelinelabs.conductor.internal.TransactionIndexer) -> a
+    122:137:android.os.Bundle saveInstanceState() -> f
     14:14:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler -> com.bluelinelabs.conductor.a.a:
-    long animationDuration -> a
-    boolean removesFromViewOnPush -> b
-    boolean canceled -> c
-    boolean needsImmediateCompletion -> d
-    boolean completed -> e
+    long animationDuration -> g
+    boolean removesFromViewOnPush -> c
+    boolean canceled -> d
+    boolean needsImmediateCompletion -> e
+    boolean completed -> h
     android.animation.Animator animator -> f
-    com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler$OnAnimationReadyOrAbortedListener onAnimationReadyOrAbortedListener -> g
+    com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler$OnAnimationReadyOrAbortedListener onAnimationReadyOrAbortedListener -> i
     37:38:void <init>() -> <init>
     50:53:void <init>(long,boolean) -> <init>
     57:60:void saveToBundle(android.os.Bundle) -> a
     64:67:void restoreFromBundle(android.os.Bundle) -> b
     71:79:void onAbortPush(com.bluelinelabs.conductor.ControllerChangeHandler,com.bluelinelabs.conductor.Controller) -> a
     83:91:void completeImmediately() -> a
-    94:94:long getAnimationDuration() -> g
+    94:94:long getAnimationDuration() -> f
     99:99:boolean removesFromViewOnPush() -> e
     android.animation.Animator getAnimator(android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean) -> a
     void resetFromView(android.view.View) -> a
     121:141:void performChange(android.view.ViewGroup,android.view.View,android.view.View,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> a
     144:158:void complete(com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener,android.animation.Animator$AnimatorListener) -> a
-    161:209:void performAnimation(android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> a
-    19:19:boolean access$000(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler) -> a
-    19:19:boolean access$100(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler) -> b
-    19:19:void access$200(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener,android.animation.Animator$AnimatorListener) -> a
-    19:19:boolean access$300(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler) -> c
-    19:19:android.animation.Animator access$400(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler) -> d
-    19:19:void access$500(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> a
+    161:213:void performAnimation(android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> a
 com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler$1 -> com.bluelinelabs.conductor.a.a$1:
     android.view.View val$from -> a
-    boolean val$isPush -> b
+    android.view.View val$to -> b
     android.view.ViewGroup val$container -> c
     com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener val$changeListener -> d
-    com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler this$0 -> e
-    182:182:void <init>(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,android.view.View,boolean,android.view.ViewGroup,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> <init>
-    185:190:void onAnimationCancel(android.animation.Animator) -> onAnimationCancel
-    194:205:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
+    boolean val$isPush -> e
+    com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler this$0 -> f
+    182:182:void <init>(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,android.view.View,android.view.View,android.view.ViewGroup,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener,boolean) -> <init>
+    185:194:void onAnimationCancel(android.animation.Animator) -> onAnimationCancel
+    198:209:void onAnimationEnd(android.animation.Animator) -> onAnimationEnd
 com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler$OnAnimationReadyOrAbortedListener -> com.bluelinelabs.conductor.a.a$a:
     android.view.ViewGroup container -> a
     android.view.View from -> b
@@ -20603,9 +20592,9 @@ com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler$OnAnimationReadyO
     com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener changeListener -> f
     boolean hasRun -> h
     com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler this$0 -> g
-    220:227:void <init>(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> <init>
-    231:233:boolean onPreDraw() -> onPreDraw
-    237:249:void onReadyOrAborted() -> a
+    224:231:void <init>(com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler,android.view.ViewGroup,android.view.View,android.view.View,boolean,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> <init>
+    235:237:boolean onPreDraw() -> onPreDraw
+    241:253:void onReadyOrAborted() -> a
 com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler -> com.bluelinelabs.conductor.a.b:
     18:18:void <init>() -> <init>
     29:30:void <init>(long,boolean) -> <init>
@@ -20613,10 +20602,10 @@ com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler -> com.blueline
     59:60:void resetFromView(android.view.View) -> a
     64:64:com.bluelinelabs.conductor.ControllerChangeHandler copy() -> b
 com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler -> com.bluelinelabs.conductor.a.c:
-    boolean removesFromViewOnPush -> a
-    boolean canceled -> b
-    android.view.ViewGroup container -> c
-    com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener changeListener -> d
+    boolean removesFromViewOnPush -> c
+    boolean canceled -> d
+    android.view.ViewGroup container -> e
+    com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener changeListener -> f
     28:29:void <init>() -> <init>
     31:33:void <init>(boolean) -> <init>
     37:39:void saveToBundle(android.os.Bundle) -> a
@@ -20643,61 +20632,61 @@ com.bluelinelabs.conductor.internal.LifecycleHandler -> com.bluelinelabs.conduct
     boolean hasRegisteredCallbacks -> b
     boolean destroyed -> c
     boolean attached -> d
-    java.util.Map activeLifecycleHandlers -> e
-    android.util.SparseArray permissionRequestMap -> f
-    android.util.SparseArray activityRequestMap -> g
-    java.util.ArrayList pendingPermissionRequests -> h
-    java.util.Map routerMap -> i
-    45:54:void <init>() -> <init>
-    58:65:com.bluelinelabs.conductor.internal.LifecycleHandler findInActivity(android.app.Activity) -> b
-    70:76:com.bluelinelabs.conductor.internal.LifecycleHandler install(android.app.Activity) -> a
-    81:97:com.bluelinelabs.conductor.Router getRouter(android.view.ViewGroup,android.os.Bundle) -> a
-    102:102:java.util.List getRouters() -> a
-    107:107:android.app.Activity getLifecycleActivity() -> b
-    111:111:int getRouterHashKey(android.view.ViewGroup) -> a
-    115:126:void registerActivityListener(android.app.Activity) -> c
-    130:142:void onCreate(android.os.Bundle) -> onCreate
-    146:151:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
-    155:163:void onDestroy() -> onDestroy
-    168:171:void onAttach(android.app.Activity) -> onAttach
-    175:178:void onAttach(android.content.Context) -> onAttach
-    182:186:void onDetach() -> onDetach
-    189:201:void setAttached() -> c
-    204:213:void destroyRouters() -> d
-    217:225:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
-    229:237:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> onRequestPermissionsResult
-    241:247:boolean shouldShowRequestPermissionRationale(java.lang.String) -> shouldShowRequestPermissionRationale
-    252:257:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> onCreateOptionsMenu
-    261:266:void onPrepareOptionsMenu(android.view.Menu) -> onPrepareOptionsMenu
-    270:276:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
-    284:289:void unregisterForActivityResults(java.lang.String) -> a
-    311:317:void requestPermissions(java.lang.String,java.lang.String[],int) -> a
-    321:328:void onActivityCreated(android.app.Activity,android.os.Bundle) -> onActivityCreated
-    332:337:void onActivityStarted(android.app.Activity) -> onActivityStarted
-    341:346:void onActivityResumed(android.app.Activity) -> onActivityResumed
-    350:355:void onActivityPaused(android.app.Activity) -> onActivityPaused
-    359:364:void onActivityStopped(android.app.Activity) -> onActivityStopped
-    368:375:void onActivitySaveInstanceState(android.app.Activity,android.os.Bundle) -> onActivitySaveInstanceState
-    379:380:void onActivityDestroyed(android.app.Activity) -> onActivityDestroyed
-    44:44:void <clinit>() -> <clinit>
-com.bluelinelabs.conductor.internal.LifecycleHandler$1 -> com.bluelinelabs.conductor.b.b$1:
+    boolean hasPreparedForHostDetach -> e
+    java.util.Map activeLifecycleHandlers -> f
+    android.util.SparseArray permissionRequestMap -> g
+    android.util.SparseArray activityRequestMap -> h
+    java.util.ArrayList pendingPermissionRequests -> i
+    java.util.Map routerMap -> j
+    46:55:void <init>() -> <init>
+    59:66:com.bluelinelabs.conductor.internal.LifecycleHandler findInActivity(android.app.Activity) -> b
+    71:77:com.bluelinelabs.conductor.internal.LifecycleHandler install(android.app.Activity) -> a
+    82:98:com.bluelinelabs.conductor.Router getRouter(android.view.ViewGroup,android.os.Bundle) -> a
+    103:103:java.util.List getRouters() -> a
+    108:108:android.app.Activity getLifecycleActivity() -> b
+    112:112:int getRouterHashKey(android.view.ViewGroup) -> a
+    116:127:void registerActivityListener(android.app.Activity) -> c
+    131:143:void onCreate(android.os.Bundle) -> onCreate
+    147:152:void onSaveInstanceState(android.os.Bundle) -> onSaveInstanceState
+    156:164:void onDestroy() -> onDestroy
+    169:172:void onAttach(android.app.Activity) -> onAttach
+    176:179:void onAttach(android.content.Context) -> onAttach
+    183:187:void onDetach() -> onDetach
+    190:202:void setAttached() -> c
+    205:214:void destroyRouters() -> d
+    218:226:void onActivityResult(int,int,android.content.Intent) -> onActivityResult
+    230:238:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> onRequestPermissionsResult
+    242:248:boolean shouldShowRequestPermissionRationale(java.lang.String) -> shouldShowRequestPermissionRationale
+    253:258:void onCreateOptionsMenu(android.view.Menu,android.view.MenuInflater) -> onCreateOptionsMenu
+    262:267:void onPrepareOptionsMenu(android.view.Menu) -> onPrepareOptionsMenu
+    271:277:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    285:290:void unregisterForActivityResults(java.lang.String) -> a
+    312:318:void requestPermissions(java.lang.String,java.lang.String[],int) -> a
+    322:329:void onActivityCreated(android.app.Activity,android.os.Bundle) -> onActivityCreated
+    333:340:void onActivityStarted(android.app.Activity) -> onActivityStarted
+    344:349:void onActivityResumed(android.app.Activity) -> onActivityResumed
+    353:358:void onActivityPaused(android.app.Activity) -> onActivityPaused
+    362:369:void onActivityStopped(android.app.Activity) -> onActivityStopped
+    373:382:void onActivitySaveInstanceState(android.app.Activity,android.os.Bundle) -> onActivitySaveInstanceState
+    386:387:void onActivityDestroyed(android.app.Activity) -> onActivityDestroyed
+    390:397:void prepareForHostDetachIfNeeded() -> e
+    45:45:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest -> com.bluelinelabs.conductor.b.b$a:
     java.lang.String instanceId -> a
     java.lang.String[] permissions -> b
     int requestCode -> c
     android.os.Parcelable$Creator CREATOR -> CREATOR
-    387:391:void <init>(java.lang.String,java.lang.String[],int) -> <init>
-    393:397:void <init>(android.os.Parcel) -> <init>
-    401:401:int describeContents() -> describeContents
-    406:409:void writeToParcel(android.os.Parcel,int) -> writeToParcel
-    382:382:void <init>(android.os.Parcel,com.bluelinelabs.conductor.internal.LifecycleHandler$1) -> <init>
-    411:411:void <clinit>() -> <clinit>
+    404:408:void <init>(java.lang.String,java.lang.String[],int) -> <init>
+    410:414:void <init>(android.os.Parcel) -> <init>
+    418:418:int describeContents() -> describeContents
+    423:426:void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    428:428:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest$1 -> com.bluelinelabs.conductor.b.b$a$1:
-    411:411:void <init>() -> <init>
-    414:414:com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest createFromParcel(android.os.Parcel) -> a
-    419:419:com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest[] newArray(int) -> a
-    411:411:java.lang.Object[] newArray(int) -> newArray
-    411:411:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+    428:428:void <init>() -> <init>
+    431:431:com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest createFromParcel(android.os.Parcel) -> a
+    436:436:com.bluelinelabs.conductor.internal.LifecycleHandler$PendingPermissionRequest[] newArray(int) -> a
+    428:428:java.lang.Object[] newArray(int) -> newArray
+    428:428:java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
 com.bluelinelabs.conductor.internal.NoOpControllerChangeHandler -> com.bluelinelabs.conductor.b.c:
     10:10:void <init>() -> <init>
     14:15:void performChange(android.view.ViewGroup,android.view.View,android.view.View,boolean,com.bluelinelabs.conductor.ControllerChangeHandler$ControllerChangeCompletedListener) -> a
@@ -20713,7 +20702,6 @@ com.bluelinelabs.conductor.internal.StringSparseArrayParceler -> com.bluelinelab
     28:28:android.util.SparseArray getStringSparseArray() -> a
     33:33:int describeContents() -> describeContents
     38:48:void writeToParcel(android.os.Parcel,int) -> writeToParcel
-    8:8:void <init>(android.os.Parcel,com.bluelinelabs.conductor.internal.StringSparseArrayParceler$1) -> <init>
     50:50:void <clinit>() -> <clinit>
 com.bluelinelabs.conductor.internal.StringSparseArrayParceler$1 -> com.bluelinelabs.conductor.b.e$1:
     50:50:void <init>() -> <init>
@@ -20732,12 +20720,12 @@ com.bluelinelabs.conductor.internal.TransactionIndexer -> com.bluelinelabs.condu
     17:18:void saveInstanceState(android.os.Bundle) -> a
     21:22:void restoreInstanceState(android.os.Bundle) -> b
 com.bluelinelabs.conductor.internal.ViewAttachHandler -> com.bluelinelabs.conductor.b.h:
-    boolean rootAttached -> a
-    boolean childrenAttached -> b
-    boolean activityStopped -> c
-    com.bluelinelabs.conductor.internal.ViewAttachHandler$ReportedState reportedState -> d
-    com.bluelinelabs.conductor.internal.ViewAttachHandler$ViewAttachListener attachListener -> e
-    android.view.View$OnAttachStateChangeListener childOnAttachStateChangeListener -> f
+    boolean rootAttached -> c
+    boolean childrenAttached -> a
+    boolean activityStopped -> d
+    com.bluelinelabs.conductor.internal.ViewAttachHandler$ReportedState reportedState -> e
+    com.bluelinelabs.conductor.internal.ViewAttachHandler$ViewAttachListener attachListener -> f
+    android.view.View$OnAttachStateChangeListener childOnAttachStateChangeListener -> b
     25:34:void <init>(com.bluelinelabs.conductor.internal.ViewAttachHandler$ViewAttachListener) -> <init>
     38:51:void onViewAttachedToWindow(android.view.View) -> onViewAttachedToWindow
     55:60:void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
@@ -20749,9 +20737,6 @@ com.bluelinelabs.conductor.internal.ViewAttachHandler -> com.bluelinelabs.conduc
     92:105:void reportDetached(boolean) -> a
     108:136:void listenForDeepestChildAttach(android.view.View,com.bluelinelabs.conductor.internal.ViewAttachHandler$ChildAttachListener) -> a
     139:147:android.view.View findDeepestChild(android.view.ViewGroup) -> a
-    7:7:boolean access$002(com.bluelinelabs.conductor.internal.ViewAttachHandler,boolean) -> a
-    7:7:void access$100(com.bluelinelabs.conductor.internal.ViewAttachHandler) -> a
-    7:7:android.view.View$OnAttachStateChangeListener access$202(com.bluelinelabs.conductor.internal.ViewAttachHandler,android.view.View$OnAttachStateChangeListener) -> a
 com.bluelinelabs.conductor.internal.ViewAttachHandler$1 -> com.bluelinelabs.conductor.b.h$1:
     com.bluelinelabs.conductor.internal.ViewAttachHandler this$0 -> a
     43:43:void <init>(com.bluelinelabs.conductor.internal.ViewAttachHandler) -> <init>
@@ -23008,7 +22993,7 @@ com.drspaceboo.transtracks.R$styleable -> com.drspaceboo.transtracks.a$a:
     int ViewStubCompat_android_id -> ViewStubCompat_android_id
     int ViewStubCompat_android_layout -> ViewStubCompat_android_layout
     int ViewStubCompat_android_inflatedId -> ViewStubCompat_android_inflatedId
-    6546:20788:void <clinit>() -> <clinit>
+    6100:19661:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.TransTracksApp -> com.drspaceboo.transtracks.TransTracksApp:
     com.drspaceboo.transtracks.domain.DomainManager domainManager -> b
     com.drspaceboo.transtracks.TransTracksApp instance -> c
@@ -23618,11 +23603,11 @@ com.drspaceboo.transtracks.ui.MainActivity$onAttachedToWindow$3 -> com.drspacebo
     91:97:void accept(java.lang.Integer) -> a
     void <init>(com.drspaceboo.transtracks.ui.MainActivity) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController -> com.drspaceboo.transtracks.ui.addeditmilestone.a:
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> c
-    android.support.v7.app.AlertDialog confirmDeleteDialog -> d
-    long initialDay -> e
-    java.lang.String milestoneId -> f
-    com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController$Companion Companion -> b
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> j
+    android.support.v7.app.AlertDialog confirmDeleteDialog -> k
+    long initialDay -> l
+    java.lang.String milestoneId -> m
+    com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController$Companion Companion -> i
     41:41:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     45:203:void onAttach(android.view.View) -> b
     191:192:void onDetach(android.view.View) -> c
@@ -23821,10 +23806,10 @@ com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedTo
     84:86:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
 com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController -> com.drspaceboo.transtracks.ui.assignphoto.a:
-    io.reactivex.disposables.Disposable resultsDisposable -> c
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> d
-    android.support.v7.app.AlertDialog savingDialog -> e
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$Companion Companion -> b
+    io.reactivex.disposables.Disposable resultsDisposable -> j
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> k
+    android.support.v7.app.AlertDialog savingDialog -> l
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$Companion Companion -> i
     51:51:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     55:213:void onAttach(android.view.View) -> b
     168:169:void onDestroyView(android.view.View) -> a
@@ -24026,10 +24011,10 @@ com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$2 -
     52:52:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoController -> com.drspaceboo.transtracks.ui.editphoto.a:
-    io.reactivex.disposables.Disposable resultsDisposable -> c
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> d
-    android.support.v7.app.AlertDialog savingDialog -> e
-    com.drspaceboo.transtracks.ui.editphoto.EditPhotoController$Companion Companion -> b
+    io.reactivex.disposables.Disposable resultsDisposable -> j
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> k
+    android.support.v7.app.AlertDialog savingDialog -> l
+    com.drspaceboo.transtracks.ui.editphoto.EditPhotoController$Companion Companion -> i
     44:44:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     48:211:void onAttach(android.view.View) -> b
     167:168:void onDestroyView(android.view.View) -> a
@@ -24261,11 +24246,11 @@ com.drspaceboo.transtracks.ui.gallery.GalleryAdapter -> com.drspaceboo.transtrac
     79:79:int getItemCount() -> a
     81:85:int getItemViewType(int) -> a
     87:91:int getSpanSize(int) -> c
-    94:290:int getPositionOfDay(long) -> a
-    104:299:void generateItems(boolean) -> b
+    94:291:int getPositionOfDay(long) -> a
+    104:300:void generateItems(boolean) -> b
     103:103:void generateItems$default(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter,boolean,int,java.lang.Object) -> a
-    174:174:java.util.ArrayList getSelectedIds() -> e
-    177:181:void updateSelectedIds(java.util.ArrayList) -> a
+    175:175:java.util.ArrayList getSelectedIds() -> e
+    178:182:void updateSelectedIds(java.util.ArrayList) -> a
     25:60:void <init>(int,com.jakewharton.rxrelay2.PublishRelay,boolean,java.util.ArrayList,kotlin.jvm.functions.Function1,kotlin.jvm.functions.Function1) -> <init>
     void <clinit>() -> <clinit>
     25:25:java.util.ArrayList access$getSelectedIds$p(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> a
@@ -24281,19 +24266,19 @@ com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$$special$$inlined$apply$lam
     25:25:void onChange(java.lang.Object) -> a
     35:42:void onChange(io.realm.RealmResults) -> a
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$BaseViewHolder -> com.drspaceboo.transtracks.ui.gallery.a$b:
-    200:200:void <init>(android.view.View) -> <init>
+    201:201:void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$Companion -> com.drspaceboo.transtracks.ui.gallery.a$c:
-    282:282:void <init>() -> <init>
-    282:282:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    283:283:void <init>() -> <init>
+    283:283:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$GalleryAdapterItem -> com.drspaceboo.transtracks.ui.gallery.a$d:
     com.drspaceboo.transtracks.data.Photo photo -> a
     java.lang.Long epochDay -> b
     boolean selected -> c
-    184:184:com.drspaceboo.transtracks.data.Photo getPhoto() -> a
-    185:185:java.lang.Long getEpochDay() -> b
-    186:186:boolean getSelected() -> c
-    189:191:void <init>(com.drspaceboo.transtracks.data.Photo,boolean) -> <init>
-    195:196:void <init>(long) -> <init>
+    185:185:com.drspaceboo.transtracks.data.Photo getPhoto() -> a
+    186:186:java.lang.Long getEpochDay() -> b
+    187:187:boolean getSelected() -> c
+    190:192:void <init>(com.drspaceboo.transtracks.data.Photo,boolean) -> <init>
+    196:197:void <init>(long) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder -> com.drspaceboo.transtracks.ui.gallery.a$e:
     kotlin.reflect.KProperty[] $$delegatedProperties -> q
     kotlin.properties.ReadOnlyProperty image$delegate -> r
@@ -24303,40 +24288,40 @@ com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder -> com.drsp
     void <clinit>() -> <clinit>
     android.widget.ImageView getImage() -> A
     android.widget.ImageView getSelection() -> B
-    257:279:void bind(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$GalleryAdapterItem,boolean) -> a
-    210:242:void <init>(android.view.View,com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> <init>
-    210:210:java.lang.ref.WeakReference access$getAdapterRef$p(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder) -> a
-    210:210:java.lang.String access$getCurrentPhotoId$p(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder) -> b
+    258:280:void bind(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$GalleryAdapterItem,boolean) -> a
+    211:243:void <init>(android.view.View,com.drspaceboo.transtracks.ui.gallery.GalleryAdapter) -> <init>
+    211:211:java.lang.ref.WeakReference access$getAdapterRef$p(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder) -> a
+    211:211:java.lang.String access$getCurrentPhotoId$p(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder) -> b
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder$1 -> com.drspaceboo.transtracks.ui.gallery.a$e$1:
     com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder this$0 -> a
-    220:240:void onClick(android.view.View) -> onClick
+    221:241:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder$2 -> com.drspaceboo.transtracks.ui.gallery.a$e$2:
     com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder this$0 -> a
     android.view.View $itemView -> b
-    243:252:boolean onLongClick(android.view.View) -> onLongClick
+    244:253:boolean onLongClick(android.view.View) -> onLongClick
     void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$PhotoViewHolder,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$TitleViewHolder -> com.drspaceboo.transtracks.ui.gallery.a$f:
     kotlin.reflect.KProperty[] $$delegatedProperties -> q
     kotlin.properties.ReadOnlyProperty title$delegate -> r
     void <clinit>() -> <clinit>
     android.widget.TextView getTitle() -> A
-    206:207:void bind(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$GalleryAdapterItem) -> a
-    202:203:void <init>(android.view.View) -> <init>
+    207:208:void bind(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$GalleryAdapterItem) -> a
+    203:204:void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryAdapter$generateItems$results$1 -> com.drspaceboo.transtracks.ui.gallery.a$g:
     com.drspaceboo.transtracks.ui.gallery.GalleryAdapter this$0 -> a
     java.util.ArrayList $newItems -> b
-    134:145:boolean areItemsTheSame(int,int) -> a
-    148:148:int getOldListSize() -> a
-    150:150:int getNewListSize() -> b
-    153:166:boolean areContentsTheSame(int,int) -> b
+    134:146:boolean areItemsTheSame(int,int) -> a
+    149:149:int getOldListSize() -> a
+    151:151:int getNewListSize() -> b
+    154:167:boolean areContentsTheSame(int,int) -> b
     132:132:void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryAdapter,java.util.ArrayList) -> <init>
 com.drspaceboo.transtracks.ui.gallery.GalleryController -> com.drspaceboo.transtracks.ui.gallery.b:
-    boolean isFaceGallery -> c
-    long initialDay -> d
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> e
-    android.support.v7.app.AlertDialog confirmDeleteDialog -> f
-    com.drspaceboo.transtracks.ui.gallery.GalleryController$Companion Companion -> b
+    boolean isFaceGallery -> j
+    long initialDay -> k
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> l
+    android.support.v7.app.AlertDialog confirmDeleteDialog -> m
+    com.drspaceboo.transtracks.ui.gallery.GalleryController$Companion Companion -> i
     48:48:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     52:227:void onAttach(android.view.View) -> b
     208:209:void onDetach(android.view.View) -> c
@@ -24607,13 +24592,13 @@ com.drspaceboo.transtracks.ui.gallery.GalleryView$onAttachedToWindow$1 -> com.dr
     111:112:void onAdFailedToLoad(int) -> a
     109:109:void <init>(com.drspaceboo.transtracks.ui.gallery.GalleryView) -> <init>
 com.drspaceboo.transtracks.ui.home.HomeController -> com.drspaceboo.transtracks.ui.home.a:
-    io.reactivex.disposables.Disposable resultDisposable -> c
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> d
-    com.drspaceboo.transtracks.ui.home.HomeController$Companion Companion -> b
+    io.reactivex.disposables.Disposable resultDisposable -> j
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> k
+    com.drspaceboo.transtracks.ui.home.HomeController$Companion Companion -> i
     45:45:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     49:219:void onAttach(android.view.View) -> b
     183:184:void onDetach(android.view.View) -> c
-    187:190:void onDestroy() -> j
+    187:190:void onDestroy() -> k
     40:42:void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.home.HomeController$Companion -> com.drspaceboo.transtracks.ui.home.a$a:
@@ -24953,12 +24938,12 @@ com.drspaceboo.transtracks.ui.home.HomeView$swipeListener$1 -> com.drspaceboo.tr
     111:114:boolean swipeRight() -> b
     101:101:void <init>(com.drspaceboo.transtracks.ui.home.HomeView) -> <init>
 com.drspaceboo.transtracks.ui.lock.LockController -> com.drspaceboo.transtracks.ui.lock.a:
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> c
-    com.drspaceboo.transtracks.ui.lock.LockController$Companion Companion -> b
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> j
+    com.drspaceboo.transtracks.ui.lock.LockController$Companion Companion -> i
     25:30:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     34:71:void onAttach(android.view.View) -> b
     58:59:void onDetach(android.view.View) -> c
-    63:63:boolean handleBack() -> k
+    63:63:boolean handleBack() -> l
     21:22:void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.lock.LockController$Companion -> com.drspaceboo.transtracks.ui.lock.a$a:
@@ -25093,8 +25078,8 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter$generateItems$results
     122:137:boolean areContentsTheSame(int,int) -> b
     100:100:void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesAdapter,java.util.ArrayList) -> <init>
 com.drspaceboo.transtracks.ui.milestones.MilestonesController -> com.drspaceboo.transtracks.ui.milestones.b:
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> c
-    com.drspaceboo.transtracks.ui.milestones.MilestonesController$Companion Companion -> b
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> j
+    com.drspaceboo.transtracks.ui.milestones.MilestonesController$Companion Companion -> i
     26:26:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     30:67:void onAttach(android.view.View) -> b
     55:56:void onDetach(android.view.View) -> c
@@ -25272,16 +25257,16 @@ com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$TakePhotoHolder$1 -
     68:68:void onClick(android.view.View) -> onClick
     void <init>(com.jakewharton.rxrelay2.PublishRelay) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController -> com.drspaceboo.transtracks.ui.selectphoto.b:
-    java.lang.Long epochDay -> c
-    int type -> d
-    io.reactivex.disposables.Disposable photoTakenDisposable -> e
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> f
-    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$Companion Companion -> b
+    java.lang.Long epochDay -> j
+    int type -> k
+    io.reactivex.disposables.Disposable photoTakenDisposable -> l
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> m
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$Companion Companion -> i
     55:55:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     59:151:void onAttach(android.view.View) -> b
     123:124:void onDetach(android.view.View) -> c
-    127:130:void onDestroy() -> j
-    133:137:void showCameraPermissionDisabledSnackBar(android.view.View) -> d
+    127:130:void onDestroy() -> k
+    133:137:void showCameraPermissionDisabledSnackBar(android.view.View) -> e
     34:52:void <init>(android.os.Bundle) -> <init>
     35:42:void <init>(java.lang.Long,int,java.lang.String) -> <init>
     35:36:void <init>(java.lang.Long,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
@@ -25382,7 +25367,7 @@ com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$1 -> com.drsp
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsController -> com.drspaceboo.transtracks.ui.settings.a:
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> b
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> i
     47:47:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     51:328:void onAttach(android.view.View) -> b
     312:313:void onDetach(android.view.View) -> c
@@ -25660,10 +25645,10 @@ com.drspaceboo.transtracks.ui.settings.SettingsView$onAttachedToWindow$6 -> com.
     80:81:void onAdFailedToLoad(int) -> a
     78:78:void <init>(com.drspaceboo.transtracks.ui.settings.SettingsView) -> <init>
 com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController -> com.drspaceboo.transtracks.ui.singlephoto.a:
-    java.lang.String photoId -> c
-    io.reactivex.disposables.CompositeDisposable viewDisposables -> d
-    android.support.v7.app.AlertDialog confirmDeleteDialog -> e
-    com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$Companion Companion -> b
+    java.lang.String photoId -> j
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> k
+    android.support.v7.app.AlertDialog confirmDeleteDialog -> l
+    com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController$Companion Companion -> i
     43:43:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
     47:168:void onAttach(android.view.View) -> b
     157:158:void onDetach(android.view.View) -> c
