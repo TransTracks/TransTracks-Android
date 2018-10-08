@@ -46,12 +46,12 @@ dependencies {
 
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation 'com.google.android.gms:play-services-ads:16.0.0'
     //Custom tabs & Support V4 are only required here to replace the old version in the play-services-ads module
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:support-v4:$support_version"
 
-    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
 
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
