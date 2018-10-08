@@ -290,7 +290,7 @@ class SettingsController : Controller() {
                     val delay = PrefUtil.lockDelay.get()
 
                     AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_theme)
+                            .setTitle(R.string.select_lock_delay)
                             .setSingleChoiceItems(arrayOf(view.getString(R.string.instant),
                                                           view.getString(R.string.one_minute),
                                                           view.getString(R.string.two_minutes),

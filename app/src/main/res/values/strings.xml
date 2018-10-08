@@ -79,6 +79,7 @@
     <string name="enabled_normal">Enabled (Normal)</string>
     <string name="enabled_trains">Enabled (Train Tracks)</string>
 
+    <string name="select_lock_delay">Select Lock Delay</string>
     <string name="instant">Instant</string>
     <string name="one_minute">One minute</string>
     <string name="two_minutes">Two minutes</string>
