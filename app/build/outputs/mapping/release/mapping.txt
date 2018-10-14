@@ -22997,7 +22997,7 @@ com.drspaceboo.transtracks.R$styleable -> com.drspaceboo.transtracks.a$a:
     int ViewStubCompat_android_id -> ViewStubCompat_android_id
     int ViewStubCompat_android_layout -> ViewStubCompat_android_layout
     int ViewStubCompat_android_inflatedId -> ViewStubCompat_android_inflatedId
-    6554:20796:void <clinit>() -> <clinit>
+    6566:20808:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.TransTracksApp -> com.drspaceboo.transtracks.TransTracksApp:
     com.drspaceboo.transtracks.domain.DomainManager domainManager -> b
     com.drspaceboo.transtracks.TransTracksApp instance -> c
@@ -23582,29 +23582,29 @@ com.drspaceboo.transtracks.ui.MainActivity -> com.drspaceboo.transtracks.ui.Main
     io.reactivex.disposables.CompositeDisposable viewDisposables -> n
     void <clinit>() -> <clinit>
     android.view.ViewGroup getContainer() -> k
-    38:70:void onCreate(android.os.Bundle) -> onCreate
-    73:121:void onAttachedToWindow() -> onAttachedToWindow
-    124:129:void onBackPressed() -> onBackPressed
-    132:141:void onStart() -> onStart
-    144:147:void onStop() -> onStop
-    150:157:void showLockControllerIfNotAlreadyShowing() -> l
-    160:162:void onDetachedFromWindow() -> onDetachedFromWindow
-    31:35:void <init>() -> <init>
+    40:74:void onCreate(android.os.Bundle) -> onCreate
+    77:127:void onAttachedToWindow() -> onAttachedToWindow
+    130:135:void onBackPressed() -> onBackPressed
+    138:147:void onStart() -> onStart
+    150:153:void onStop() -> onStop
+    156:163:void showLockControllerIfNotAlreadyShowing() -> l
+    166:168:void onDetachedFromWindow() -> onDetachedFromWindow
+    33:37:void <init>() -> <init>
 com.drspaceboo.transtracks.ui.MainActivity$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.MainActivity$a:
     com.drspaceboo.transtracks.ui.MainActivity$onAttachedToWindow$1 INSTANCE -> a
-    31:31:java.lang.Object apply(java.lang.Object) -> a
-    77:80:int apply(java.lang.Integer) -> a
+    33:33:java.lang.Object apply(java.lang.Object) -> a
+    81:86:int apply(java.lang.Integer) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.MainActivity$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.MainActivity$b:
     com.drspaceboo.transtracks.ui.MainActivity this$0 -> a
-    31:31:void accept(java.lang.Object) -> a
-    84:89:void accept(java.lang.Integer) -> a
+    33:33:void accept(java.lang.Object) -> a
+    90:95:void accept(java.lang.Integer) -> a
     void <init>(com.drspaceboo.transtracks.ui.MainActivity) -> <init>
 com.drspaceboo.transtracks.ui.MainActivity$onAttachedToWindow$3 -> com.drspaceboo.transtracks.ui.MainActivity$c:
     com.drspaceboo.transtracks.ui.MainActivity this$0 -> a
-    31:31:void accept(java.lang.Object) -> a
-    93:120:void accept(java.lang.Integer) -> a
+    33:33:void accept(java.lang.Object) -> a
+    99:126:void accept(java.lang.Integer) -> a
     void <init>(com.drspaceboo.transtracks.ui.MainActivity) -> <init>
 com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController -> com.drspaceboo.transtracks.ui.addeditmilestone.a:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> j
@@ -25372,127 +25372,127 @@ com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$1 -> com.drsp
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsController -> com.drspaceboo.transtracks.ui.settings.a:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> i
-    49:49:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    53:352:void onAttach(android.view.View) -> b
-    324:325:void onDetach(android.view.View) -> c
-    328:337:void showAppNameChangeSnackbar(android.view.View,int) -> a
-    45:46:void <init>() -> <init>
-    45:45:void access$showAppNameChangeSnackbar(com.drspaceboo.transtracks.ui.settings.SettingsController,android.view.View,int) -> a
+    52:52:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    56:364:void onAttach(android.view.View) -> b
+    336:337:void onDetach(android.view.View) -> c
+    340:349:void showAppNameChangeSnackbar(android.view.View,int) -> a
+    48:49:void <init>() -> <init>
+    48:48:void access$showAppNameChangeSnackbar(com.drspaceboo.transtracks.ui.settings.SettingsController,android.view.View,int) -> a
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$$inlined$combineLatest$1 -> com.drspaceboo.transtracks.ui.settings.a$a:
     void <init>() -> <init>
     88:99:java.lang.Object apply(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) -> a
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$2 -> com.drspaceboo.transtracks.ui.settings.a$b:
     android.view.View $view -> a
-    45:45:java.lang.Object apply(java.lang.Object) -> a
-    66:92:com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded apply(com.drspaceboo.transtracks.util.Quadruple) -> a
+    48:48:java.lang.Object apply(java.lang.Object) -> a
+    69:102:com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded apply(com.drspaceboo.transtracks.util.Quadruple) -> a
     void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$3 -> com.drspaceboo.transtracks.ui.settings.a$c:
     android.view.View $view -> a
-    45:45:void accept(java.lang.Object) -> a
-    94:94:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded) -> a
+    48:48:void accept(java.lang.Object) -> a
+    104:104:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiState$Loaded) -> a
     void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$4 -> com.drspaceboo.transtracks.ui.settings.a$d:
     com.drspaceboo.transtracks.ui.settings.SettingsController this$0 -> a
-    45:45:void accept(java.lang.Object) -> a
-    98:98:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back) -> a
+    48:48:void accept(java.lang.Object) -> a
+    108:108:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$Back) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$5 -> com.drspaceboo.transtracks.ui.settings.a$e:
     android.view.View $view -> a
-    45:45:void accept(java.lang.Object) -> a
-    103:111:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate) -> a
+    48:48:void accept(java.lang.Object) -> a
+    113:121:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeStartDate) -> a
     void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$5$1 -> com.drspaceboo.transtracks.ui.settings.a$e$1:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$5$1 INSTANCE -> a
-    108:109:void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
+    118:119:void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$6 -> com.drspaceboo.transtracks.ui.settings.a$f:
     com.drspaceboo.transtracks.ui.settings.SettingsController this$0 -> a
     android.view.View $view -> b
-    45:45:void accept(java.lang.Object) -> a
-    116:131:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme) -> a
+    48:48:void accept(java.lang.Object) -> a
+    126:143:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeTheme) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$6$1 -> com.drspaceboo.transtracks.ui.settings.a$f$1:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$6 this$0 -> a
     java.lang.Integer $theme -> b
-    123:128:void onClick(android.content.DialogInterface,int) -> onClick
+    135:140:void onClick(android.content.DialogInterface,int) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$6,java.lang.Integer) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7 -> com.drspaceboo.transtracks.ui.settings.a$g:
     com.drspaceboo.transtracks.ui.settings.SettingsController this$0 -> a
     android.view.View $view -> b
-    45:45:void accept(java.lang.Object) -> a
-    136:287:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode) -> a
+    48:48:void accept(java.lang.Object) -> a
+    148:299:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockMode) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1 -> com.drspaceboo.transtracks.ui.settings.a$g$1:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7 this$0 -> a
-    45:45:java.lang.Object invoke() -> a
-    137:188:void invoke() -> b
+    48:48:java.lang.Object invoke() -> a
+    149:200:void invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1$1 -> com.drspaceboo.transtracks.ui.settings.a$g$1$1:
     android.support.v7.app.AlertDialog $passwordDialog -> a
-    153:155:void afterTextChanged(android.text.Editable) -> afterTextChanged
-    159:159:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    163:163:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    151:151:void <init>(android.support.v7.app.AlertDialog) -> <init>
+    165:167:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    171:171:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    175:175:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    163:163:void <init>(android.support.v7.app.AlertDialog) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1$2 -> com.drspaceboo.transtracks.ui.settings.a$g$1$2:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1 this$0 -> a
     android.support.v7.app.AlertDialog $passwordDialog -> b
     android.widget.EditText $password -> c
-    166:183:void onShow(android.content.DialogInterface) -> onShow
+    178:195:void onShow(android.content.DialogInterface) -> onShow
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1,android.support.v7.app.AlertDialog,android.widget.EditText) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1$2$1 -> com.drspaceboo.transtracks.ui.settings.a$g$1$2$1:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1$2 this$0 -> a
     android.content.DialogInterface $dialog -> b
-    170:182:void onClick(android.view.View) -> onClick
+    182:194:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1$2,android.content.DialogInterface) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2 -> com.drspaceboo.transtracks.ui.settings.a$g$2:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7 this$0 -> a
-    45:45:java.lang.Object invoke(java.lang.Object) -> a
-    191:247:void invoke(int) -> a
+    48:48:java.lang.Object invoke(java.lang.Object) -> a
+    203:259:void invoke(int) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2$1 -> com.drspaceboo.transtracks.ui.settings.a$g$2$1:
     android.support.v7.app.AlertDialog $passwordDialog -> a
-    207:208:void afterTextChanged(android.text.Editable) -> afterTextChanged
-    210:210:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
-    212:212:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
-    205:205:void <init>(android.support.v7.app.AlertDialog) -> <init>
+    219:220:void afterTextChanged(android.text.Editable) -> afterTextChanged
+    222:222:void beforeTextChanged(java.lang.CharSequence,int,int,int) -> beforeTextChanged
+    224:224:void onTextChanged(java.lang.CharSequence,int,int,int) -> onTextChanged
+    217:217:void <init>(android.support.v7.app.AlertDialog) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2$2 -> com.drspaceboo.transtracks.ui.settings.a$g$2$2:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2 this$0 -> a
     android.support.v7.app.AlertDialog $passwordDialog -> b
     android.widget.EditText $password -> c
     android.widget.EditText $confirm -> d
     int $newLockType -> e
-    216:243:void onShow(android.content.DialogInterface) -> onShow
+    228:255:void onShow(android.content.DialogInterface) -> onShow
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2,android.support.v7.app.AlertDialog,android.widget.EditText,android.widget.EditText,int) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2$2$1 -> com.drspaceboo.transtracks.ui.settings.a$g$2$2$1:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2$2 this$0 -> a
     android.content.DialogInterface $dialog -> b
-    219:242:void onClick(android.view.View) -> onClick
+    231:254:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2$2,android.content.DialogInterface) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$3 -> com.drspaceboo.transtracks.ui.settings.a$g$3:
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7 this$0 -> a
     java.lang.Integer $lockMode -> b
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1 $showRemovePasswordDialog$1 -> c
     com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2 $showSetPasswordDialog$2 -> d
-    257:284:void onClick(android.content.DialogInterface,int) -> onClick
+    269:296:void onClick(android.content.DialogInterface,int) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7,java.lang.Integer,com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$1,com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$7$2) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$8 -> com.drspaceboo.transtracks.ui.settings.a$h:
     android.view.View $view -> a
-    45:45:void accept(java.lang.Object) -> a
-    292:309:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay) -> a
+    48:48:void accept(java.lang.Object) -> a
+    304:321:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$ChangeLockDelay) -> a
     void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$8$1 -> com.drspaceboo.transtracks.ui.settings.a$h$1:
     java.lang.Integer $delay -> a
-    302:306:void onClick(android.content.DialogInterface,int) -> onClick
+    314:318:void onClick(android.content.DialogInterface,int) -> onClick
     void <init>(java.lang.Integer) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$onAttach$9 -> com.drspaceboo.transtracks.ui.settings.a$i:
     com.drspaceboo.transtracks.ui.settings.SettingsController this$0 -> a
-    45:45:void accept(java.lang.Object) -> a
-    313:320:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy) -> a
+    48:48:void accept(java.lang.Object) -> a
+    325:332:void accept(com.drspaceboo.transtracks.ui.settings.SettingsUiEvent$PrivacyPolicy) -> a
     void <init>(com.drspaceboo.transtracks.ui.settings.SettingsController) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController$showAppNameChangeSnackbar$1 -> com.drspaceboo.transtracks.ui.settings.a$j:
     android.view.View $view -> a
-    332:335:void onClick(android.view.View) -> onClick
+    344:347:void onClick(android.view.View) -> onClick
     void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsUiEvent -> com.drspaceboo.transtracks.ui.settings.b:
     23:23:void <init>() -> <init>
@@ -25955,17 +25955,17 @@ com.drspaceboo.transtracks.util.PrefUtil -> com.drspaceboo.transtracks.c.o:
     com.f2prateek.rx.preferences2.Preference theme -> i
     com.f2prateek.rx.preferences2.Preference userLastSeen -> j
     com.drspaceboo.transtracks.util.PrefUtil INSTANCE -> a
-    50:50:com.f2prateek.rx.preferences2.Preference getLockCode() -> a
-    52:52:com.f2prateek.rx.preferences2.Preference getLockDelay() -> b
-    55:63:long getLockDelayMilli() -> c
-    66:66:com.f2prateek.rx.preferences2.Preference getLockType() -> d
-    68:68:com.f2prateek.rx.preferences2.Preference getShowAds() -> e
-    70:70:com.f2prateek.rx.preferences2.Preference getShowWelcome() -> f
-    72:72:com.f2prateek.rx.preferences2.Preference getStartDate() -> g
-    75:75:com.f2prateek.rx.preferences2.Preference getTheme() -> h
-    77:77:com.f2prateek.rx.preferences2.Preference getUserLastSeen() -> i
+    52:52:com.f2prateek.rx.preferences2.Preference getLockCode() -> a
+    54:54:com.f2prateek.rx.preferences2.Preference getLockDelay() -> b
+    57:65:long getLockDelayMilli() -> c
+    68:68:com.f2prateek.rx.preferences2.Preference getLockType() -> d
+    70:70:com.f2prateek.rx.preferences2.Preference getShowAds() -> e
+    72:72:com.f2prateek.rx.preferences2.Preference getShowWelcome() -> f
+    74:74:com.f2prateek.rx.preferences2.Preference getStartDate() -> g
+    77:77:com.f2prateek.rx.preferences2.Preference getTheme() -> h
+    79:79:com.f2prateek.rx.preferences2.Preference getUserLastSeen() -> i
     11:11:void <init>() -> <init>
-    11:77:void <clinit>() -> <clinit>
+    11:79:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.Quadruple -> com.drspaceboo.transtracks.c.p:
     java.lang.Object first -> a
     java.lang.Object second -> b
