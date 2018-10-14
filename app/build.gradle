@@ -20,6 +20,7 @@ android {
     buildTypes {
         buildTypes.each {
             it.buildConfigField 'String', 'ADS_APP_ID', '"' + getSecretString('ADS_APP_ID') + '"'
+            it.resValue 'string', 'ADS_APP_ID', getSecretString('ADS_APP_ID')
             it.resValue 'string', 'ADS_GALLERY_AD_ID', getSecretString('ADS_GALLERY_AD_ID')
             it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
             it.resValue 'string', 'ADS_MILESTONES_AD_ID', getSecretString('ADS_MILESTONES_AD_ID')
@@ -46,7 +47,7 @@ dependencies {
 
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
-    implementation 'com.google.android.gms:play-services-ads:16.0.0'
+    implementation 'com.google.android.gms:play-services-ads:17.0.0'
     //Custom tabs & Support V4 are only required here to replace the old version in the play-services-ads module
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:support-v4:$support_version"

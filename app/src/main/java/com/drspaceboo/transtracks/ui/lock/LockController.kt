@@ -70,6 +70,7 @@ class LockController : Controller() {
 
     //Block back presses
     override fun handleBack(): Boolean {
+        activity?.finish()
         return true
     }
 

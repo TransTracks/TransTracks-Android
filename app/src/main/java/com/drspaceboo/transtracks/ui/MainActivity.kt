@@ -10,6 +10,8 @@
 
 package com.drspaceboo.transtracks.ui
 
+import android.content.ComponentName
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.TypedValue
@@ -104,6 +106,27 @@ class MainActivity : AppCompatActivity() {
                         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                                         WindowManager.LayoutParams.FLAG_SECURE)
                     }
+
+                    val defaultLauncherState: Int
+                    val trainLauncherState: Int
+
+                    if (lockType != PrefUtil.LOCK_TRAINS) {
+                        defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                        trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    } else {
+                        defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                        trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                    }
+
+                    packageManager.setComponentEnabledSetting(
+                            ComponentName("com.drspaceboo.transtracks",
+                                          "com.drspaceboo.transtracks.MainActivityDefault"),
+                            defaultLauncherState, PackageManager.DONT_KILL_APP)
+
+                    packageManager.setComponentEnabledSetting(
+                            ComponentName("com.drspaceboo.transtracks",
+                                          "com.drspaceboo.transtracks.MainActivityTrain"),
+                            trainLauncherState, PackageManager.DONT_KILL_APP)
                 }
     }
 

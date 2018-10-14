@@ -16,6 +16,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.support.annotation.NonNull
+import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
@@ -242,6 +244,10 @@ class SettingsController : Controller() {
                                 PrefUtil.lockCode.set(EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT))
                                 PrefUtil.lockType.set(newLockType)
 
+                                if (newLockType == LOCK_TRAINS) {
+                                    showAppNameChangeSnackbar(view, R.string.train_tracks_title)
+                                }
+
                                 dialog.dismiss()
                             }
                         }
@@ -270,6 +276,12 @@ class SettingsController : Controller() {
                                         hasCode -> {
                                             //Changing to another type with the code on, just update type
                                             PrefUtil.lockType.set(newLockType)
+
+                                            if (newLockType == LOCK_TRAINS) {
+                                                showAppNameChangeSnackbar(view, R.string.train_tracks_title)
+                                            } else {
+                                                showAppNameChangeSnackbar(view, R.string.app_name)
+                                            }
                                         }
 
                                         else -> {
@@ -320,5 +332,17 @@ class SettingsController : Controller() {
 
     override fun onDetach(view: View) {
         viewDisposables.clear()
+    }
+
+    private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
+        val snackbar = Snackbar.make(view, view.getString(R.string.changing_app_name,
+                                                          view.getString(newAppName)),
+                                     Snackbar.LENGTH_LONG)
+        snackbar.setAction(R.string.more_info) {
+            AlertDialog.Builder(view.context).setMessage(R.string.changing_app_name_more_info)
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+        }
+        snackbar.show()
     }
 }

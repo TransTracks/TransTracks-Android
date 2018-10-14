@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="108dp"
+        android:height="108dp"
+        android:viewportWidth="512"
+        android:viewportHeight="512">
+  <path
+      android:pathData="M0,0l194,0l163.67,512.33l-357.67,-0.33l0,-512z"
+      android:fillColor="#80b7e8"/>
+  <path
+      android:pathData="M233.91,291.12l-6.66,-15.3c-3.53,5.14 -6.92,7.23 -9.3,8.07a12,12 0,0 1,-3.75 0.48,7.49 7.49,0 0,1 -7.59,-5.75 18.52,18.52 0,0 1,-0.5 -4.46v-27h17L223.11,231.32h-17L206.11,210L187.53,210v21.28L160.86,231.28L160.86,210L142.28,210v21.28L130.09,231.28v15.89h12.19L142.28,277.7q0,11.78 6.67,18.16a20,20 0,0 0,7 4.46A25.73,25.73 0,0 0,165.4 302a42.78,42.78 0,0 0,6 -0.36,27.28 27.28,0 0,0 4.5,-1.08c8.76,-2.49 13.12,-7.34 14.64,-9.39a19.47,19.47 0,0 0,3.63 4.73,20 20,0 0,0 7,4.46 25.73,25.73 0,0 0,9.43 1.64,44.14 44.14,0 0,0 5.8,-0.38v0a28.08,28.08 0,0 0,9.32 -2.69l0.2,-0.08h0C232.15,295.64 233.91,291.12 233.91,291.12ZM175.47,282.82h0a31.21,31.21 0,0 1,-3.12 1.13,2.27 2.27,0 0,1 -0.25,0.06c-0.31,0.08 -0.6,0.14 -0.87,0.19a14.35,14.35 0,0 1,-2.28 0.18,7.52 7.52,0 0,1 -7.59,-5.75 19,19 0,0 1,-0.5 -4.46v-27h26.67v20.06C184.68,276.64 179.61,280.9 175.47,282.82Z"
+      android:fillColor="#fff"/>
+</vector>
