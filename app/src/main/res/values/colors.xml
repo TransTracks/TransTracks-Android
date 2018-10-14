@@ -20,6 +20,16 @@
     <color name="blueColorPrimaryDark">#7ca0c2</color>
     <color name="blueColorAccent">#E4A9CC</color>
 
+    <color name="purpleColorPrimaryLight">#be9df5</color>
+    <color name="purpleColorPrimary">#977cc2</color>
+    <color name="purpleColorPrimaryDark">#6f5b8f</color>
+    <color name="purpleColorAccent">#9ECCF6</color>
+
+    <color name="greenColorPrimaryLight">#4ecc84</color>
+    <color name="greenColorPrimary">#3A9963</color>
+    <color name="greenColorPrimaryDark">#276642</color>
+    <color name="greenColorAccent">#57acd4</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>

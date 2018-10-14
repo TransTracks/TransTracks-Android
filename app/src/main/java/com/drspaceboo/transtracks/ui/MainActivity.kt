@@ -31,7 +31,9 @@ import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
+import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
+import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
 import io.fabric.sdk.android.Fabric
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         val themeRes = when (PrefUtil.theme.get()) {
             THEME_PINK -> R.style.PinkAppTheme
             THEME_BLUE -> R.style.BlueAppTheme
+            THEME_PURPLE -> R.style.PurpleAppTheme
+            THEME_GREEN -> R.style.GreenAppTheme
             else -> throw IllegalArgumentException("Unhandled theme type")
         }
         setTheme(themeRes)
@@ -87,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                     return@map when (themeType) {
                         THEME_PINK -> R.style.PinkAppTheme
                         THEME_BLUE -> R.style.BlueAppTheme
+                        THEME_PURPLE -> R.style.PurpleAppTheme
+                        THEME_GREEN -> R.style.GreenAppTheme
                         else -> throw IllegalArgumentException("Unhandled theme type")
                     }
                 }

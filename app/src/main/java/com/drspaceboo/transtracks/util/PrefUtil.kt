@@ -49,11 +49,13 @@ object PrefUtil {
     const val LOCK_DELAY_FIFTEEN_MINUTES = 4
 
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(THEME_PINK, THEME_BLUE)
+    @IntDef(THEME_PINK, THEME_BLUE, THEME_PURPLE, THEME_GREEN)
     annotation class Theme
 
     const val THEME_PINK = 0
     const val THEME_BLUE = 1
+    const val THEME_PURPLE = 2
+    const val THEME_GREEN = 3
 
     private val rxPreferences: RxSharedPreferences =
             RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance))

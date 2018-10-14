@@ -73,6 +73,8 @@
     <string name="select_theme">Select Theme</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>
+    <string name="purple">Purple</string>
+    <string name="green">Green</string>
 
     <string name="select_lock_mode">Select Lock Mode</string>
     <string name="disabled">Disabled</string>

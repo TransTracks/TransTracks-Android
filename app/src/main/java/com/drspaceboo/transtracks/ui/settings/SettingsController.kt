@@ -43,7 +43,10 @@ import com.drspaceboo.transtracks.util.PrefUtil.LOCK_DELAY_TWO_MINUTES
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_NORMAL
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_OFF
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_TRAINS
+import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
+import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
+import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
 import com.drspaceboo.transtracks.util.Quadruple
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
@@ -73,7 +76,14 @@ class SettingsController : Controller() {
                     Quadruple(startDate, theme, lockType, lockDelay)
                 }
                 .map { (startDate, theme, lockType, lockDelay) ->
-                    val themeName = view.getString(if (theme == THEME_PINK) R.string.pink else R.string.blue)
+                    val themeName = view.getString(
+                            when (theme) {
+                                THEME_PINK -> R.string.pink
+                                THEME_BLUE -> R.string.blue
+                                THEME_PURPLE -> R.string.purple
+                                THEME_GREEN -> R.string.green
+                                else -> throw IllegalArgumentException("Unhandled theme type")
+                            })
 
                     val lockName = view.getString(
                             when (lockType) {
@@ -128,7 +138,9 @@ class SettingsController : Controller() {
                     AlertDialog.Builder(view.context)
                             .setTitle(R.string.select_theme)
                             .setSingleChoiceItems(arrayOf(view.getString(R.string.pink),
-                                                          view.getString(R.string.blue)),
+                                                          view.getString(R.string.blue),
+                                                          view.getString(R.string.purple),
+                                                          view.getString(R.string.green)),
                                                   theme) { dialog: DialogInterface, index: Int ->
                                 if (theme != index) {
                                     PrefUtil.theme.set(index)

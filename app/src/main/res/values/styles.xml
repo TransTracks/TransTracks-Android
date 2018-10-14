@@ -24,6 +24,20 @@
         <item name="colorAccent">@color/blueColorAccent</item>
     </style>
 
+    <style name="PurpleAppTheme" parent="BaseAppTheme">
+        <item name="colorPrimaryLight">@color/purpleColorPrimaryLight</item>
+        <item name="colorPrimary">@color/purpleColorPrimary</item>
+        <item name="colorPrimaryDark">@color/purpleColorPrimaryDark</item>
+        <item name="colorAccent">@color/purpleColorAccent</item>
+    </style>
+
+    <style name="GreenAppTheme" parent="BaseAppTheme">
+        <item name="colorPrimaryLight">@color/greenColorPrimaryLight</item>
+        <item name="colorPrimary">@color/greenColorPrimary</item>
+        <item name="colorPrimaryDark">@color/greenColorPrimaryDark</item>
+        <item name="colorAccent">@color/greenColorAccent</item>
+    </style>
+
     <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionModeCloseDrawable">@drawable/ic_close_black_24dp</item>
