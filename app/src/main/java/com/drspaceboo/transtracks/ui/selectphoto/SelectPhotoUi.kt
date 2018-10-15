@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxrelay2.PublishRelay
@@ -41,8 +42,24 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
     val events: Observable<SelectPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(toolbar.navigationClicks().map<SelectPhotoUiEvent> { SelectPhotoUiEvent.Back },
-                         eventRelay)
+                         eventRelay.doOnNext { event ->
+                             if (event !is SelectPhotoUiEvent.PhotoSelected) {
+                                 return@doOnNext
+                             }
+
+                             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
+
+                             if (position == RecyclerView.NO_POSITION) {
+                                 return@doOnNext
+                             }
+
+                             val uriString: String = adapter?.getUri(position)?.toString() ?: ""
+                             PrefUtil.selectPhotoFirstVisible.set(uriString)
+                         })
     }
+
+    private val gridLayoutManager = GridLayoutManager(context, 3)
+    private var adapter: SelectPhotoAdapter? = null
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -51,10 +68,24 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
             adapterDisposable.dispose()
         }
 
-        val adapter = SelectPhotoAdapter(context)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
-        adapterDisposable = adapter.itemClick.subscribe(eventRelay)
+        recyclerView.layoutManager = gridLayoutManager
+
+        if (adapter == null) {
+            adapter = SelectPhotoAdapter(context)
+
+            recyclerView.adapter = adapter
+
+            val firstVisibleUriString = PrefUtil.selectPhotoFirstVisible.get()
+            if (firstVisibleUriString.isNotBlank()) {
+                val position = adapter!!.getItemPosition(Uri.parse(firstVisibleUriString))
+
+                if (position != RecyclerView.NO_POSITION) {
+                    recyclerView.scrollToPosition(position)
+                }
+            }
+        }
+
+        adapterDisposable = adapter!!.itemClick.subscribe(eventRelay)
     }
 
     override fun onDetachedFromWindow() {

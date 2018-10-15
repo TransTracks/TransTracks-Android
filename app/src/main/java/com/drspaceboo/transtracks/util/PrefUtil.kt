@@ -23,6 +23,7 @@ object PrefUtil {
     private const val KEY_LOCK_CODE = "lockCode"
     private const val KEY_LOCK_DELAY = "lockDelay"
     private const val KEY_LOCK_TYPE = "lockType"
+    private const val KEY_SELECT_PHOTO_FIRST_VISIBLE = "selectPhotoFirstVisible"
     private const val KEY_SHOW_ADS = "showAds"
     private const val KEY_SHOW_WELCOME = "showWelcome"
     private const val KEY_START_DATE = "startDate"
@@ -77,6 +78,8 @@ object PrefUtil {
     }
 
     val lockType: Preference<Int> = rxPreferences.getInteger(KEY_LOCK_TYPE, LOCK_OFF)
+
+    val selectPhotoFirstVisible : Preference<String> = rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
 
     val showAds: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_ADS, true)
 

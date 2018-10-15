@@ -63,11 +63,38 @@ class SelectPhotoAdapter(context: Context)
     override fun onBindViewHolder(viewHolder: BaseHolder, cursor: Cursor) {
         when (viewHolder) {
             is ImageHolder -> {
-                val data = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
-                val imageUri = Uri.fromFile(File(data))
-                viewHolder.bind(imageUri)
+                viewHolder.bind(getUri(cursor)!!)
             }
         }
+    }
+
+    fun getItemPosition(uri: Uri): Int {
+        val localCursor = cursor ?: return RecyclerView.NO_POSITION
+
+        for (i in 0 until localCursor.count) {
+            if (uri.path == getUri(i)?.path) {
+                return i
+            }
+        }
+
+        return RecyclerView.NO_POSITION
+    }
+
+    fun getUri(position: Int): Uri? {
+        val localCursor = cursor ?: return null
+
+        if (!localCursor.moveToPosition(position)) {
+            throw IllegalStateException("couldn't move cursor to position $position")
+        }
+
+        return getUri(localCursor)
+    }
+
+    private fun getUri(cursor: Cursor): Uri? {
+        val data = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
+                ?: return null
+
+        return Uri.fromFile(File(data))
     }
 
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

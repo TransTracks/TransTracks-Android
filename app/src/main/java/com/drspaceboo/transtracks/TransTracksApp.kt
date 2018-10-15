@@ -44,6 +44,9 @@ class TransTracksApp : Application() {
         }
 
         FileUtil.clearTempFolder()
+
+        //Clearing these, as we don't want to maintain this state across launches
+        PrefUtil.selectPhotoFirstVisible.delete()
     }
 
     companion object {
