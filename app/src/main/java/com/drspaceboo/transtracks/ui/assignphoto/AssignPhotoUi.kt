@@ -17,24 +17,30 @@ import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
+import org.threeten.bp.LocalDate
 
 sealed class AssignPhotoUiEvent {
     object Back : AssignPhotoUiEvent()
     object ChangeDate : AssignPhotoUiEvent()
+    data class UsePhotoDate(val photoDate: LocalDate) : AssignPhotoUiEvent()
     object ChangeType : AssignPhotoUiEvent()
     object Save : AssignPhotoUiEvent()
 }
 
 sealed class AssignPhotoUiState {
     object Loading : AssignPhotoUiState()
-    data class Loaded(val photoUri: Uri, val date: String, val type: String) : AssignPhotoUiState()
+
+    data class Loaded(val photoUri: Uri, val date: String, val photoDate: LocalDate?,
+                      val type: String) : AssignPhotoUiState()
 }
 
 class AssignPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -43,17 +49,21 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
     private val dateLabel: View by bindView(R.id.assign_photo_date_label)
     private val date: Button by bindView(R.id.assign_photo_date)
+    private val photoDate: ImageButton by bindView(R.id.assign_photo_use_photo_date)
     private val typeLabel: View by bindView(R.id.assign_photo_type_label)
     private val type: Button by bindView(R.id.assign_photo_type)
 
     private val save: Button by bindView(R.id.assign_photo_save)
 
     val events: Observable<AssignPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { AssignPhotoUiEvent.Back },
-                         date.clicks().map { AssignPhotoUiEvent.ChangeDate },
-                         type.clicks().map { AssignPhotoUiEvent.ChangeType },
-                         save.clicks().map { AssignPhotoUiEvent.Save })
+        Observable.mergeArray(toolbar.navigationClicks().map { AssignPhotoUiEvent.Back },
+                              date.clicks().map { AssignPhotoUiEvent.ChangeDate },
+                              photoDate.clicks().map { AssignPhotoUiEvent.UsePhotoDate(currentPhotoDate) },
+                              type.clicks().map { AssignPhotoUiEvent.ChangeType },
+                              save.clicks().map { AssignPhotoUiEvent.Save })
     }
+
+    private var currentPhotoDate: LocalDate = LocalDate.MIN
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -72,6 +82,13 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                         .into(image)
 
                 date.text = state.date
+
+                photoDate.setVisibleOrGone(state.photoDate != null)
+
+                if (state.photoDate != null) {
+                    currentPhotoDate = state.photoDate
+                }
+
                 type.text = state.type
             }
         }

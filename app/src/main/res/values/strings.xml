@@ -106,6 +106,8 @@
     <string name="saving_photo">Saving Photo</string>
     <string name="error_saving_photo">An error occurred saving this photo</string>
 
+    <string name="user_photos_date">Use the photo\'s date</string>
+
     <!-- Single Photo -->
     <string name="photo_details">Photo Details</string>
     <string name="photo_detail_replacement" translatable="false">%1$s - %2$s</string>

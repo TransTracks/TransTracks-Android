@@ -167,6 +167,10 @@ class AssignPhotoController(args: Bundle) : Controller(args) {
                     return@map when (event) {
                         AssignPhotoUiEvent.ChangeDate -> AssignPhotoAction.ShowDateDialog
                         AssignPhotoUiEvent.ChangeType -> AssignPhotoAction.ShowTypeDialog
+
+                        is AssignPhotoUiEvent.UsePhotoDate ->
+                            AssignPhotoAction.ChangeDate(event.photoDate)
+
                         AssignPhotoUiEvent.Save -> AssignPhotoAction.Save
                         else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
                     }
@@ -195,20 +199,45 @@ fun assignPhotoResultsToUiState(context: Context) = ObservableTransformer<Assign
         return@map when (result) {
             AssignPhotoResult.Loading -> AssignPhotoUiState.Loading
 
-            is AssignPhotoResult.Display -> AssignPhotoUiState.Loaded(result.uri, result.date.toFullDateString(context),
-                                                                      Photo.getTypeName(result.type, context))
+            is AssignPhotoResult.Display -> {
+                val photoDateToUse: LocalDate? = when {
+                    result.date == result.photoDate -> null
+                    else -> result.photoDate
+                }
 
-            is AssignPhotoResult.ShowDateDialog -> AssignPhotoUiState.Loaded(result.uri,
-                                                                             result.date.toFullDateString(context),
-                                                                             Photo.getTypeName(result.type, context))
+                AssignPhotoUiState.Loaded(result.uri, result.date.toFullDateString(context),
+                                          photoDateToUse, Photo.getTypeName(result.type, context))
+            }
 
-            is AssignPhotoResult.ShowTypeDialog -> AssignPhotoUiState.Loaded(result.uri,
-                                                                             result.date.toFullDateString(context),
-                                                                             Photo.getTypeName(result.type, context))
+            is AssignPhotoResult.ShowDateDialog -> {
+                val photoDateToUse: LocalDate? = when {
+                    result.date == result.photoDate -> null
+                    else -> result.photoDate
+                }
 
-            is AssignPhotoResult.ErrorSavingImage -> AssignPhotoUiState.Loaded(result.uri,
-                                                                               result.date.toFullDateString(context),
-                                                                               Photo.getTypeName(result.type, context))
+                AssignPhotoUiState.Loaded(result.uri, result.date.toFullDateString(context),
+                                          photoDateToUse, Photo.getTypeName(result.type, context))
+            }
+
+            is AssignPhotoResult.ShowTypeDialog -> {
+                val photoDateToUse: LocalDate? = when {
+                    result.date == result.photoDate -> null
+                    else -> result.photoDate
+                }
+
+                AssignPhotoUiState.Loaded(result.uri, result.date.toFullDateString(context),
+                                          photoDateToUse, Photo.getTypeName(result.type, context))
+            }
+
+            is AssignPhotoResult.ErrorSavingImage -> {
+                val photoDateToUse: LocalDate? = when {
+                    result.date == result.photoDate -> null
+                    else -> result.photoDate
+                }
+
+                AssignPhotoUiState.Loaded(result.uri, result.date.toFullDateString(context),
+                                          photoDateToUse, Photo.getTypeName(result.type, context))
+            }
 
             else -> throw IllegalArgumentException("Unhandled result '${result.javaClass.simpleName}'")
         }

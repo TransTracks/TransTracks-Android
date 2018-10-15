@@ -44,17 +44,18 @@ sealed class AssignPhotoAction {
 
 sealed class AssignPhotoResult {
     object Loading : AssignPhotoResult()
-    data class Display(val uri: Uri, val date: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
-    data class ShowDateDialog(val uri: Uri, val date: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
-    data class ShowTypeDialog(val uri: Uri, val date: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
+    data class Display(val uri: Uri, val date: LocalDate, val photoDate: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
+    data class ShowDateDialog(val uri: Uri, val date: LocalDate, val photoDate: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
+    data class ShowTypeDialog(val uri: Uri, val date: LocalDate, val photoDate: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
     object SavingImage : AssignPhotoResult()
     object SaveSuccess : AssignPhotoResult()
-    data class ErrorSavingImage(val uri: Uri, val date: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
+    data class ErrorSavingImage(val uri: Uri, val date: LocalDate, val photoDate: LocalDate, @Photo.Type val type: Int) : AssignPhotoResult()
 }
 
 class AssignPhotoDomain {
     private var uri: Uri = Uri.parse("")
     private var date: LocalDate = LocalDate.now()
+    private var photoDate: LocalDate = LocalDate.now()
     private var type: Int = Photo.TYPE_FACE
 
     val actions: PublishRelay<AssignPhotoAction> = PublishRelay.create()
@@ -78,7 +79,6 @@ class AssignPhotoDomain {
                             .map<AssignPhotoResult> {
                                 if (action.epochDay != null) {
                                     date = LocalDate.ofEpochDay(action.epochDay)
-                                    return@map AssignPhotoResult.Display(uri, date, type)
                                 }
 
                                 val contentResolver = TransTracksApp.instance.contentResolver
@@ -98,28 +98,38 @@ class AssignPhotoDomain {
                                 }
 
                                 if (newDateTime != -1L) {
-                                    date = localDateFromEpochMilli(newDateTime)
-                                    return@map AssignPhotoResult.Display(uri, date, type)
+                                    photoDate = localDateFromEpochMilli(newDateTime)
+                                    if (action.epochDay == null) {
+                                        date = photoDate
+                                    }
+
+                                    return@map AssignPhotoResult.Display(uri, date, photoDate, type)
                                 }
 
-                                date = localDateFromEpochMilli(File(uri.path).dateCreated())
-                                return@map AssignPhotoResult.Display(uri, date, type)
+                                photoDate = localDateFromEpochMilli(File(uri.path).dateCreated())
+                                if (action.epochDay == null) {
+                                    date = photoDate
+                                }
+
+                                return@map AssignPhotoResult.Display(uri, date, photoDate, type)
                             }
                             .startWith(AssignPhotoResult.Loading)
                 }
 
-                AssignPhotoAction.ShowDateDialog -> Observable.just(AssignPhotoResult.ShowDateDialog(uri, date, type))
+                AssignPhotoAction.ShowDateDialog ->
+                    Observable.just(AssignPhotoResult.ShowDateDialog(uri, date, photoDate, type))
 
                 is AssignPhotoAction.ChangeDate -> {
                     date = action.newDate
-                    Observable.just(AssignPhotoResult.Display(uri, date, type))
+                    Observable.just(AssignPhotoResult.Display(uri, date, photoDate, type))
                 }
 
-                AssignPhotoAction.ShowTypeDialog -> Observable.just(AssignPhotoResult.ShowTypeDialog(uri, date, type))
+                AssignPhotoAction.ShowTypeDialog ->
+                    Observable.just(AssignPhotoResult.ShowTypeDialog(uri, date, photoDate, type))
 
                 is AssignPhotoAction.ChangeType -> {
                     type = action.newType
-                    Observable.just(AssignPhotoResult.Display(uri, date, type))
+                    Observable.just(AssignPhotoResult.Display(uri, date, photoDate, type))
                 }
 
                 AssignPhotoAction.Save -> Observable.just(Unit)
@@ -180,7 +190,9 @@ class AssignPhotoDomain {
                         .map<AssignPhotoResult> { success ->
                             return@map when (success) {
                                 true -> AssignPhotoResult.SaveSuccess
-                                false -> AssignPhotoResult.ErrorSavingImage(uri, date, type)
+
+                                false ->
+                                    AssignPhotoResult.ErrorSavingImage(uri, date, photoDate, type)
                             }
                         }
                         .startWith(AssignPhotoResult.SavingImage)
