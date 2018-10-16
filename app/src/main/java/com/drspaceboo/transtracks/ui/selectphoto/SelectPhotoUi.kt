@@ -20,6 +20,7 @@ import android.util.AttributeSet
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -31,6 +32,7 @@ sealed class SelectPhotoUiEvent {
     object Back : SelectPhotoUiEvent()
     object TakePhoto : SelectPhotoUiEvent()
     data class PhotoSelected(val uri: Uri) : SelectPhotoUiEvent()
+    object ViewAlbums : SelectPhotoUiEvent()
 }
 
 class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -41,13 +43,19 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
     private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
     val events: Observable<SelectPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map<SelectPhotoUiEvent> { SelectPhotoUiEvent.Back },
+        Observable.merge(toolbar.navigationClicks().map { SelectPhotoUiEvent.Back },
+                         toolbar.itemClicks().map<SelectPhotoUiEvent> { item ->
+                             return@map when (item.itemId) {
+                                 R.id.select_photo_menu_folders -> SelectPhotoUiEvent.ViewAlbums
+                                 else -> throw IllegalArgumentException("Unhandled toolbar item")
+                             }
+                         },
                          eventRelay.doOnNext { event ->
                              if (event !is SelectPhotoUiEvent.PhotoSelected) {
                                  return@doOnNext
                              }
 
-                             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
+                             val position = gridLayoutManager.findFirstVisibleItemPosition()
 
                              if (position == RecyclerView.NO_POSITION) {
                                  return@doOnNext
@@ -67,6 +75,8 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
         if (adapterDisposable.isNotDisposed()) {
             adapterDisposable.dispose()
         }
+
+        toolbar.inflateMenu(R.menu.select_photo)
 
         recyclerView.layoutManager = gridLayoutManager
 

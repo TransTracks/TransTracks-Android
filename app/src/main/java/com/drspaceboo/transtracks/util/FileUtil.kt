@@ -10,6 +10,7 @@
 
 package com.drspaceboo.transtracks.util
 
+import android.provider.MediaStore
 import com.drspaceboo.transtracks.TransTracksApp
 import org.threeten.bp.LocalDate
 import java.io.File
@@ -19,6 +20,10 @@ import java.util.Locale
 
 object FileUtil {
     private const val TEMP_FOLDER = "temp/"
+
+    fun clearTempFolder() {
+        getTempFolder().deleteRecursively()
+    }
 
     fun getNewImageFile(photoDate: LocalDate): File {
         val photoDateString = photoDate.toFileDateFormat()
@@ -30,10 +35,6 @@ object FileUtil {
         val file = File(storageDir, "photo_${photoDateString}_imported_$timeStamp.jpg")
         file.createNewFile()
         return file
-    }
-
-    fun clearTempFolder() {
-        getTempFolder().deleteRecursively()
     }
 
     private fun getTempFolder(): File {
@@ -48,5 +49,11 @@ object FileUtil {
         val file = File(getTempFolder(), "$timeStamp.jpg")
         file.createNewFile()
         return file
+    }
+
+    fun removeImageFromGallery(filePath: String) {
+        TransTracksApp.instance.contentResolver
+                .delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        "${MediaStore.Files.FileColumns.DATA} = ?", arrayOf(filePath))
     }
 }

@@ -47,6 +47,7 @@ class TransTracksApp : Application() {
 
         //Clearing these, as we don't want to maintain this state across launches
         PrefUtil.selectPhotoFirstVisible.delete()
+        PrefUtil.clearAllAlbumFirstVisiblePrefs()
     }
 
     companion object {

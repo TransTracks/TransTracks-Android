@@ -28,6 +28,7 @@ import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
 import com.drspaceboo.transtracks.ui.home.HomeController
+import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
@@ -75,6 +76,14 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
         viewDisposables += sharedEvents
                 .ofType<SelectPhotoUiEvent.Back>()
                 .subscribe { router.handleBack() }
+
+        viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.ViewAlbums>()
+                .subscribe {
+                    val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                    router.pushController(RouterTransaction.with(SelectAlbumController(epochDay,
+                                                                                       type, popTo))
+                                                  .using(HorizontalChangeHandler()))
+                }
 
         viewDisposables += Observables.combineLatest(
                 sharedEvents.ofType<SelectPhotoUiEvent.TakePhoto>(),

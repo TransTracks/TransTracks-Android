@@ -31,6 +31,10 @@ sealed class Event {
 
     object SelectPhotoControllerShown : Event()
 
+    object SelectAlbumControllerShown : Event()
+
+    object SingleAlbumControllerShown : Event()
+
     object SettingsControllerShown : Event()
 
     object SinglePhotoControllerShown : Event()
@@ -56,6 +60,8 @@ object AnalyticsUtil {
         is Event.LockControllerShown -> "LockControllerShown"
         Event.MilestonesControllerShown -> "MilestonesControllerShown"
         Event.SelectPhotoControllerShown -> "SelectPhotoControllerShown"
+        Event.SelectAlbumControllerShown -> "SelectAlbumControllerShown"
+        Event.SingleAlbumControllerShown -> "SingleAlbumControllerShown"
         Event.SettingsControllerShown -> "SettingsControllerShown"
         Event.SinglePhotoControllerShown -> "SinglePhotoControllerShown"
     }

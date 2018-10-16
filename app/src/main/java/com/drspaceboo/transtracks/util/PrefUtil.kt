@@ -10,6 +10,8 @@
 
 package com.drspaceboo.transtracks.util
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.annotation.IntDef
 import com.drspaceboo.transtracks.BuildConfig
@@ -79,18 +81,35 @@ object PrefUtil {
 
     val lockType: Preference<Int> = rxPreferences.getInteger(KEY_LOCK_TYPE, LOCK_OFF)
 
-    val selectPhotoFirstVisible : Preference<String> = rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
+    val selectPhotoFirstVisible: Preference<String> = rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
 
     val showAds: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_ADS, true)
 
     val showWelcome: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_WELCOME, true)
 
     val startDate: Preference<LocalDate> = rxPreferences.getObject(KEY_START_DATE, LocalDate.now(),
-            LocalDateConverter())
+                                                                   LocalDateConverter())
 
     val theme: Preference<Int> = rxPreferences.getInteger(KEY_THEME, THEME_PINK)
 
     val userLastSeen: Preference<Long> = rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
+
+    private fun getAlbumFirstVisiblePrefs(): SharedPreferences {
+        return TransTracksApp.instance.getSharedPreferences("albumFirstVisible",
+                                                            Context.MODE_PRIVATE)
+    }
+
+    fun clearAllAlbumFirstVisiblePrefs() {
+        getAlbumFirstVisiblePrefs().edit().clear().apply()
+    }
+
+    fun setAlbumFirstVisible(bucketId: String, uri: String?) {
+        getAlbumFirstVisiblePrefs().edit().putString(bucketId, uri).apply()
+    }
+
+    fun getAlbumFirstVisible(bucketId: String): String? {
+        return getAlbumFirstVisiblePrefs().getString(bucketId, null)
+    }
 
     const val CODE_SALT = BuildConfig.CODE_SALT
 }
