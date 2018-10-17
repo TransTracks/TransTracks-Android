@@ -19,6 +19,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
@@ -30,21 +31,24 @@ import org.threeten.bp.LocalDate
 
 sealed class AssignPhotoUiEvent {
     object Back : AssignPhotoUiEvent()
-    object ChangeDate : AssignPhotoUiEvent()
-    data class UsePhotoDate(val photoDate: LocalDate) : AssignPhotoUiEvent()
-    object ChangeType : AssignPhotoUiEvent()
-    object Save : AssignPhotoUiEvent()
+    data class ChangeDate(val index: Int) : AssignPhotoUiEvent()
+    data class UsePhotoDate(val index: Int, val photoDate: LocalDate) : AssignPhotoUiEvent()
+    data class ChangeType(val index: Int) : AssignPhotoUiEvent()
+    data class Save(val index: Int) : AssignPhotoUiEvent()
+    data class Skip(val index: Int, val count: Int) : AssignPhotoUiEvent()
 }
 
 sealed class AssignPhotoUiState {
     object Loading : AssignPhotoUiState()
 
-    data class Loaded(val photoUri: Uri, val date: String, val photoDate: LocalDate?,
-                      val type: String) : AssignPhotoUiState()
+    data class Loaded(val index: Int, val count: Int, val photoUri: Uri, val title: String,
+                      val date: String, val photoDate: LocalDate?, val type: String,
+                      val showSkip: Boolean) : AssignPhotoUiState()
 }
 
 class AssignPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.assign_photo_toolbar)
+    private val title: TextView by bindView(R.id.assign_photo_title)
     private val image: ImageView by bindView(R.id.assign_photo_image)
 
     private val dateLabel: View by bindView(R.id.assign_photo_date_label)
@@ -54,16 +58,22 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val type: Button by bindView(R.id.assign_photo_type)
 
     private val save: Button by bindView(R.id.assign_photo_save)
+    private val skip: Button by bindView(R.id.assign_photo_skip)
 
     val events: Observable<AssignPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(toolbar.navigationClicks().map { AssignPhotoUiEvent.Back },
-                              date.clicks().map { AssignPhotoUiEvent.ChangeDate },
-                              photoDate.clicks().map { AssignPhotoUiEvent.UsePhotoDate(currentPhotoDate) },
-                              type.clicks().map { AssignPhotoUiEvent.ChangeType },
-                              save.clicks().map { AssignPhotoUiEvent.Save })
+                              date.clicks().map { AssignPhotoUiEvent.ChangeDate(currentIndex) },
+                              photoDate.clicks().map {
+                                  AssignPhotoUiEvent.UsePhotoDate(currentIndex, currentPhotoDate)
+                              },
+                              type.clicks().map { AssignPhotoUiEvent.ChangeType(currentIndex) },
+                              save.clicks().map { AssignPhotoUiEvent.Save(currentIndex) },
+                              skip.clicks().map { AssignPhotoUiEvent.Skip(currentIndex, currentCount) })
     }
 
     private var currentPhotoDate: LocalDate = LocalDate.MIN
+    private var currentIndex: Int = 0
+    private var currentCount: Int = 0
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -75,6 +85,14 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     fun display(state: AssignPhotoUiState) {
         when (state) {
             is AssignPhotoUiState.Loaded -> {
+                if (state.photoDate != null) {
+                    currentPhotoDate = state.photoDate
+                }
+                currentIndex = state.index
+                currentCount = state.count
+
+                title.text = state.title
+
                 Picasso.get()
                         .load(state.photoUri)
                         .fit()
@@ -85,11 +103,9 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
                 photoDate.setVisibleOrGone(state.photoDate != null)
 
-                if (state.photoDate != null) {
-                    currentPhotoDate = state.photoDate
-                }
-
                 type.text = state.type
+
+                skip.setVisibleOrGone(state.showSkip)
             }
         }
     }

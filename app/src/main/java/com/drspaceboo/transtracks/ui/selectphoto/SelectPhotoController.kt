@@ -26,12 +26,13 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
+import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
@@ -68,8 +69,9 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
     override fun onAttach(view: View) {
         if (view !is SelectPhotoView) throw AssertionError("View must be SelectPhotoView")
-
         AnalyticsUtil.logEvent(Event.SelectPhotoControllerShown)
+
+        view.display(SelectPhotoUiState.Loaded)
 
         val sharedEvents = view.events.share()
 
@@ -84,6 +86,20 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
                                                                                        type, popTo))
                                                   .using(HorizontalChangeHandler()))
                 }
+
+        viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SelectionUpdate>()
+                .observeOn(RxSchedulers.main())
+                .subscribe { event ->
+                    val state = when {
+                        event.uris.isEmpty() -> SelectPhotoUiState.Loaded
+                        else -> SelectPhotoUiState.Selection(event.uris)
+                    }
+                    view.display(state)
+                }
+
+        viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.EndMultiSelect>()
+                .observeOn(RxSchedulers.main())
+                .subscribe { view.display(SelectPhotoUiState.Loaded) }
 
         viewDisposables += Observables.combineLatest(
                 sharedEvents.ofType<SelectPhotoUiEvent.TakePhoto>(),
@@ -121,8 +137,16 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
                 .ofType<SelectPhotoUiEvent.PhotoSelected>()
                 .subscribe { event ->
                     router.pushController(RouterTransaction.with(
-                            AssignPhotoController(event.uri, epochDay, type,
-                                                  args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
+                            AssignPhotosController(arrayListOf(event.uri), epochDay, type,
+                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
+                                                  .using(HorizontalChangeHandler()))
+                }
+
+        viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SaveMultiple>()
+                .subscribe { event ->
+                    router.pushController(RouterTransaction.with(
+                            AssignPhotosController(event.uris, epochDay, type,
+                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
                                                   .using(HorizontalChangeHandler()))
                 }
 
@@ -130,9 +154,9 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
             photoTakenDisposable = CameraHandler.photoTaken
                     .subscribe { absolutePath ->
                         router.pushController(RouterTransaction.with(
-                                AssignPhotoController(Uri.fromFile(File(absolutePath)), epochDay,
-                                                      type,
-                                                      args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
+                                AssignPhotosController(arrayListOf(Uri.fromFile(File(absolutePath))),
+                                                       epochDay, type,
+                                                       args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
                                                       .using(HorizontalChangeHandler()))
                     }
         }

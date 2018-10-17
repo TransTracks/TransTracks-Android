@@ -17,6 +17,9 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
@@ -27,12 +30,21 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotterknife.bindView
+import java.lang.ref.WeakReference
 
 sealed class SelectPhotoUiEvent {
     object Back : SelectPhotoUiEvent()
     object TakePhoto : SelectPhotoUiEvent()
     data class PhotoSelected(val uri: Uri) : SelectPhotoUiEvent()
     object ViewAlbums : SelectPhotoUiEvent()
+    data class SelectionUpdate(var uris: ArrayList<Uri>) : SelectPhotoUiEvent()
+    object EndMultiSelect : SelectPhotoUiEvent()
+    data class SaveMultiple(var uris: ArrayList<Uri>) : SelectPhotoUiEvent()
+}
+
+sealed class SelectPhotoUiState {
+    object Loaded : SelectPhotoUiState()
+    data class Selection(val selectedUris: ArrayList<Uri>) : SelectPhotoUiState()
 }
 
 class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -66,19 +78,36 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                          })
     }
 
-    private val gridLayoutManager = GridLayoutManager(context, 3)
+    private val gridLayoutManager = GridLayoutManager(context, GRID_SPAN)
     private var adapter: SelectPhotoAdapter? = null
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
+        toolbar.inflateMenu(R.menu.select_photo)
+        recyclerView.layoutManager = gridLayoutManager
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
         if (adapterDisposable.isNotDisposed()) {
             adapterDisposable.dispose()
         }
+    }
 
-        toolbar.inflateMenu(R.menu.select_photo)
+    fun display(state: SelectPhotoUiState) {
+        val shouldShowActionMode = state is SelectPhotoUiState.Selection
 
-        recyclerView.layoutManager = gridLayoutManager
+        if (shouldShowActionMode && !actionModeHandler.isActive()) {
+            toolbar.startActionMode(actionModeHandler)
+        } else if (!shouldShowActionMode && actionModeHandler.isActive()) {
+            actionModeHandler.finish()
+        }
+
+        if (shouldShowActionMode) {
+            actionModeHandler.setTitle(
+                    (state as SelectPhotoUiState.Selection).selectedUris.size.toString())
+        }
 
         if (adapter == null) {
             adapter = SelectPhotoAdapter(context)
@@ -95,13 +124,74 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
             }
         }
 
-        adapterDisposable = adapter!!.itemClick.subscribe(eventRelay)
+        adapter?.selectionMode = shouldShowActionMode
+        if (shouldShowActionMode) {
+            val selectedUris: ArrayList<Uri> = when (state) {
+                is SelectPhotoUiState.Selection -> state.selectedUris
+                else -> ArrayList()
+            }
+
+            adapter?.updateSelectedUris(selectedUris)
+        }
+
+        if (adapterDisposable.isDisposed) {
+            adapterDisposable = adapter!!.events.subscribe(eventRelay)
+        }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        if (adapterDisposable.isNotDisposed()) {
-            adapterDisposable.dispose()
+    private val actionModeHandler = object : ActionMode.Callback {
+        private var modeRef = WeakReference<ActionMode>(null)
+        private var titleText = ""
+
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            val adapter: SelectPhotoAdapter = recyclerView.adapter as SelectPhotoAdapter?
+                    ?: return false
+
+            val event: SelectPhotoUiEvent = when (item.itemId) {
+                R.id.select_photo_selection_save ->
+                    SelectPhotoUiEvent.SaveMultiple(adapter.getSelectedUris())
+
+                else -> throw IllegalArgumentException("Unhandled item")
+            }
+
+            eventRelay.accept(event)
+            finish()
+
+            return true
         }
+
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            modeRef = WeakReference(mode)
+            mode.menuInflater.inflate(R.menu.select_photo_selection, menu)
+            mode.title = titleText
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            mode.title = titleText
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode) {
+            modeRef = WeakReference<ActionMode>(null)
+            eventRelay.accept(SelectPhotoUiEvent.EndMultiSelect)
+        }
+
+        fun finish() {
+            modeRef.get()?.finish()
+        }
+
+        fun isActive(): Boolean {
+            return modeRef.get() != null
+        }
+
+        fun setTitle(newTitleText: String) {
+            titleText = newTitleText
+            modeRef.get()?.title = titleText
+        }
+    }
+
+    companion object {
+        const val GRID_SPAN = 3
     }
 }

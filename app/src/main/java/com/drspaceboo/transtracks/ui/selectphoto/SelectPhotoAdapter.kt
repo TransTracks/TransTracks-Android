@@ -21,17 +21,36 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter
+import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
 import java.io.File
+import java.lang.ref.WeakReference
 
 class SelectPhotoAdapter(context: Context)
     : CursorRecyclerViewAdapter<SelectPhotoAdapter.BaseHolder>(getGalleryCursor(context)) {
 
-    private val itemClickRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
-    val itemClick: Observable<SelectPhotoUiEvent> = itemClickRelay
+    private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
+    val events: Observable<SelectPhotoUiEvent> = eventRelay
+
+    var selectionMode: Boolean = false
+        set(value) {
+            val didChange = field != value
+            field = value
+
+            if (!field) {
+                selectedUris.clear()
+            }
+
+            if (didChange) {
+                notifyDataSetChanged()
+            }
+        }
+
+    private var selectedUris = ArrayList<Uri>()
 
     override fun getItemCount(): Int = super.getItemCount() + 1
 
@@ -45,11 +64,13 @@ class SelectPhotoAdapter(context: Context)
 
         return when (viewType) {
             R.layout.select_photo_adapter_add_image_item ->
-                TakePhotoHolder(layoutInflater.inflate(R.layout.select_photo_adapter_add_image_item, parent, false),
-                                itemClickRelay)
+                TakePhotoHolder(layoutInflater.inflate(R.layout.select_photo_adapter_add_image_item,
+                                                       parent, false),
+                                eventRelay)
 
-            else -> ImageHolder(layoutInflater.inflate(R.layout.select_photo_adapter_item, parent, false),
-                                itemClickRelay)
+            else ->
+                ImageHolder(layoutInflater.inflate(R.layout.select_photo_adapter_item, parent, false),
+                            this)
         }
     }
 
@@ -63,7 +84,8 @@ class SelectPhotoAdapter(context: Context)
     override fun onBindViewHolder(viewHolder: BaseHolder, cursor: Cursor) {
         when (viewHolder) {
             is ImageHolder -> {
-                viewHolder.bind(getUri(cursor)!!)
+                val uri = getUri(cursor)!!
+                viewHolder.bind(uri, selectionMode, selectedUris.contains(uri))
             }
         }
     }
@@ -78,6 +100,10 @@ class SelectPhotoAdapter(context: Context)
         }
 
         return RecyclerView.NO_POSITION
+    }
+
+    fun getSelectedUris(): ArrayList<Uri> {
+        return ArrayList(selectedUris)
     }
 
     fun getUri(position: Int): Uri? {
@@ -97,6 +123,11 @@ class SelectPhotoAdapter(context: Context)
         return Uri.fromFile(File(data))
     }
 
+    fun updateSelectedUris(newSelectedUris: ArrayList<Uri>) {
+        selectedUris = newSelectedUris
+        notifyDataSetChanged()
+    }
+
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     class TakePhotoHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView) {
@@ -106,23 +137,74 @@ class SelectPhotoAdapter(context: Context)
         }
     }
 
-    class ImageHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView) {
+    class ImageHolder(itemView: View, creatingAdapter: SelectPhotoAdapter?) : BaseHolder(itemView) {
         private val image: ImageView by bindView(R.id.select_photo_adapter_item_image)
+        private val selection: ImageView by bindView(R.id.select_photo_adapter_item_selection)
+
+        private val adapterRef = WeakReference(creatingAdapter)
 
         private var currentUri: Uri? = null
 
         init {
             //Avoiding subscription so we don't need to dispose it
-            itemView.setOnClickListener { if (currentUri != null) itemClickRelay.accept(SelectPhotoUiEvent.PhotoSelected(currentUri!!)) }
+            itemView.setOnClickListener {
+                val uri = currentUri ?: return@setOnClickListener
+                val adapter = adapterRef.get() ?: return@setOnClickListener
+
+                val event: SelectPhotoUiEvent = when (adapter.selectionMode) {
+                    true -> {
+                        if (adapter.selectedUris.contains(uri)) {
+                            adapter.selectedUris.remove(uri)
+                        } else {
+                            adapter.selectedUris.add(uri)
+                        }
+
+                        SelectPhotoUiEvent.SelectionUpdate(adapter.getSelectedUris())
+                    }
+
+                    false -> SelectPhotoUiEvent.PhotoSelected(uri)
+                }
+
+                adapter.eventRelay.accept(event)
+            }
+
+            itemView.setOnLongClickListener {
+                val uri = currentUri ?: return@setOnLongClickListener false
+                val adapter = adapterRef.get() ?: return@setOnLongClickListener false
+
+                if (!adapter.selectionMode) {
+                    adapter.eventRelay.accept(
+                            SelectPhotoUiEvent.SelectionUpdate(arrayListOf(uri)))
+                } else {
+                    itemView.performClick()
+                }
+
+                return@setOnLongClickListener true
+            }
         }
 
-        fun bind(uri: Uri) {
+        fun bind(uri: Uri, selectionMode: Boolean, isSelected: Boolean) {
             currentUri = uri
             Picasso.get()
                     .load(uri)
                     .fit()
                     .centerCrop()
                     .into(image)
+
+            selection.setVisibleOrGone(selectionMode)
+
+            if (selectionMode) {
+                val selectionRes = when (isSelected) {
+                    true -> R.drawable.ic_selected_primary_36dp
+                    false -> R.drawable.ic_unselected_primary_36dp
+                }
+                selection.setImageResource(selectionRes)
+
+                selection.contentDescription = when (isSelected) {
+                    true -> itemView.getString(R.string.selected)
+                    false -> itemView.getString(R.string.not_selected)
+                }
+            }
         }
     }
 

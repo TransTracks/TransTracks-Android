@@ -99,18 +99,23 @@
         <item quantity="one">%1$d Photo</item>
         <item quantity="other">%1$d Photos</item>
     </plurals>
+    <string name="save_to_app">Save to App</string>
 
     <!-- Assign Photo -->
     <string name="assign_photo">Assign Photo</string>
+    <string name="assign_photo_count">Assign Photo (%1$d/%2$d)</string>
     <string name="date_label">Date:</string>
     <string name="type_label">Type:</string>
     <string name="save_photo">Save Photo</string>
+    <string name="skip_photo">Skip Photo</string>
 
     <string name="select_type">Select Type</string>
     <string name="face">Face</string>
     <string name="body">Body</string>
 
     <string name="saving_photo">Saving Photo</string>
+    <string name="saved_photo">Successfully saved photo</string>
+    <string name="skipped_photo">Skipped photo</string>
     <string name="error_saving_photo">An error occurred saving this photo</string>
 
     <string name="user_photos_date">Use the photo\'s date</string>

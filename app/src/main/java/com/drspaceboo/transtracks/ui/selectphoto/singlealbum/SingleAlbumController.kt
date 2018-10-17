@@ -19,7 +19,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
@@ -69,7 +69,7 @@ class SingleAlbumController(args: Bundle) : Controller(args) {
                 .subscribe { event ->
                     val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
                     router.pushController(RouterTransaction.with(
-                            AssignPhotoController(event.uri, epochDay, type, popTo))
+                            AssignPhotosController(arrayListOf(event.uri), epochDay, type, popTo))
                                                   .using(HorizontalChangeHandler()))
                 }
     }
