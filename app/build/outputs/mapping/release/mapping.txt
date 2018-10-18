@@ -18022,7 +18022,8 @@ android.support.v7.widget.RecyclerView -> android.support.v7.widget.RecyclerView
     1688:1689:void setOnScrollListener(android.support.v7.widget.RecyclerView$OnScrollListener) -> setOnScrollListener
     1701:1705:void addOnScrollListener(android.support.v7.widget.RecyclerView$OnScrollListener) -> a
     1713:1716:void removeOnScrollListener(android.support.v7.widget.RecyclerView$OnScrollListener) -> b
-    1750:1755:void jumpToPositionForSmoothScroller(int) -> b
+    1736:1747:void scrollToPosition(int) -> b
+    1750:1755:void jumpToPositionForSmoothScroller(int) -> c
     1786:1788:void scrollTo(int,int) -> scrollTo
     1792:1805:void scrollBy(int,int) -> scrollBy
     1820:1845:void scrollStep(int,int,int[]) -> a
@@ -18138,20 +18139,20 @@ android.support.v7.widget.RecyclerView -> android.support.v7.widget.RecyclerView
     4600:4601:android.support.v7.widget.RecyclerView$ViewHolder findContainingViewHolder(android.view.View) -> d
     4606:4609:android.support.v7.widget.RecyclerView$ViewHolder getChildViewHolderInt(android.view.View) -> e
     4643:4644:int getChildLayoutPosition(android.view.View) -> f
-    4714:4731:android.support.v7.widget.RecyclerView$ViewHolder findViewHolderForAdapterPosition(int) -> c
+    4714:4731:android.support.v7.widget.RecyclerView$ViewHolder findViewHolderForAdapterPosition(int) -> d
     4736:4758:android.support.v7.widget.RecyclerView$ViewHolder findViewHolderForPosition(int,boolean) -> a
     4776:4791:android.support.v7.widget.RecyclerView$ViewHolder findViewHolderForItemId(long) -> a
     4820:4820:boolean drawChild(android.graphics.Canvas,android.view.View,long) -> drawChild
-    4830:4834:void offsetChildrenVertical(int) -> d
+    4830:4834:void offsetChildrenVertical(int) -> e
     4847:4847:void onChildAttachedToWindow(android.view.View) -> g
     4859:4859:void onChildDetachedFromWindow(android.view.View) -> h
-    4868:4872:void offsetChildrenHorizontal(int) -> e
+    4868:4872:void offsetChildrenHorizontal(int) -> f
     4886:4892:void getDecoratedBoundsWithMarginsInt(android.view.View,android.graphics.Rect) -> a
     4895:4916:android.graphics.Rect getItemDecorInsetsForChild(android.view.View) -> i
     4941:4941:void onScrolled(int,int) -> h
     4944:4965:void dispatchOnScrolled(int,int) -> i
-    4979:4979:void onScrollStateChanged(int) -> f
-    4984:5001:void dispatchOnScrollStateChanged(int) -> g
+    4979:4979:void onScrollStateChanged(int) -> g
+    4984:5001:void dispatchOnScrollStateChanged(int) -> h
     5017:5018:boolean hasPendingAdapterUpdates() -> v
     5258:5273:void repositionShadowingViews() -> w
     5570:5585:android.support.v7.widget.RecyclerView findNestedRecyclerView(android.view.View) -> j
@@ -18170,7 +18171,7 @@ android.support.v7.widget.RecyclerView -> android.support.v7.widget.RecyclerView
     11286:11287:void stopNestedScroll() -> stopNestedScroll
     11291:11292:void stopNestedScroll(int) -> a
     11296:11296:boolean hasNestedScrollingParent() -> hasNestedScrollingParent
-    11301:11301:boolean hasNestedScrollingParent(int) -> h
+    11301:11301:boolean hasNestedScrollingParent(int) -> i
     11307:11307:boolean dispatchNestedScroll(int,int,int,int,int[]) -> dispatchNestedScroll
     11314:11314:boolean dispatchNestedScroll(int,int,int,int,int[],int) -> a
     11320:11320:boolean dispatchNestedPreScroll(int,int,int[],int[]) -> dispatchNestedPreScroll
@@ -22997,20 +22998,20 @@ com.drspaceboo.transtracks.R$styleable -> com.drspaceboo.transtracks.a$a:
     int ViewStubCompat_android_id -> ViewStubCompat_android_id
     int ViewStubCompat_android_layout -> ViewStubCompat_android_layout
     int ViewStubCompat_android_inflatedId -> ViewStubCompat_android_inflatedId
-    6566:20808:void <clinit>() -> <clinit>
+    6606:20848:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.TransTracksApp -> com.drspaceboo.transtracks.TransTracksApp:
     com.drspaceboo.transtracks.domain.DomainManager domainManager -> b
     com.drspaceboo.transtracks.TransTracksApp instance -> c
     com.drspaceboo.transtracks.TransTracksApp$Companion Companion -> a
     13:13:com.drspaceboo.transtracks.domain.DomainManager getDomainManager() -> a
-    16:37:void onCreate() -> onCreate
+    16:41:void onCreate() -> onCreate
     12:13:void <init>() -> <init>
     void <clinit>() -> <clinit>
     12:12:com.drspaceboo.transtracks.TransTracksApp access$getInstance$cp() -> b
 com.drspaceboo.transtracks.TransTracksApp$Companion -> com.drspaceboo.transtracks.TransTracksApp$a:
-    40:40:com.drspaceboo.transtracks.TransTracksApp getInstance() -> a
-    39:39:void <init>() -> <init>
-    39:39:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    44:44:com.drspaceboo.transtracks.TransTracksApp getInstance() -> a
+    43:43:void <init>() -> <init>
+    43:43:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.background.CameraHandler -> com.drspaceboo.transtracks.a.a:
     java.io.File currentFile -> b
     com.jakewharton.rxrelay2.BehaviorRelay cameraPermissionRelay -> c
@@ -23021,32 +23022,35 @@ com.drspaceboo.transtracks.background.CameraHandler -> com.drspaceboo.transtrack
     io.reactivex.Observable photoTaken -> h
     com.drspaceboo.transtracks.background.CameraHandler$Companion Companion -> a
     java.util.HashMap _$_findViewCache -> i
-    28:36:void onActivityResult(int,int,android.content.Intent) -> a
-    39:41:void onResume() -> r
-    45:54:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
-    57:62:boolean checkPermissionGranted() -> ad
-    66:71:boolean makeRequestsIfNeeded() -> ae
-    75:80:void request() -> af
-    83:90:void takePhoto() -> ag
-    20:24:void <init>() -> <init>
-    97:104:void <clinit>() -> <clinit>
-    20:20:io.reactivex.Observable access$getCameraPermissionEnabled$cp() -> c
-    20:20:io.reactivex.Observable access$getCameraPermissionBlocked$cp() -> aa
-    20:20:io.reactivex.Observable access$getPhotoTaken$cp() -> ab
-    20:20:boolean access$makeRequestsIfNeeded(com.drspaceboo.transtracks.background.CameraHandler) -> a
-    20:20:void access$takePhoto(com.drspaceboo.transtracks.background.CameraHandler) -> b
+    36:81:void onActivityResult(int,int,android.content.Intent) -> a
+    84:86:void onResume() -> r
+    90:99:void onRequestPermissionsResult(int,java.lang.String[],int[]) -> a
+    102:107:boolean checkPermissionGranted() -> ad
+    111:116:boolean makeRequestsIfNeeded() -> ae
+    120:125:void request() -> af
+    128:131:void requestPhotoFromAnotherApp() -> ag
+    134:141:void takePhoto() -> ah
+    28:32:void <init>() -> <init>
+    149:156:void <clinit>() -> <clinit>
+    28:28:io.reactivex.Observable access$getCameraPermissionEnabled$cp() -> c
+    28:28:io.reactivex.Observable access$getCameraPermissionBlocked$cp() -> aa
+    28:28:io.reactivex.Observable access$getPhotoTaken$cp() -> ab
+    28:28:boolean access$makeRequestsIfNeeded(com.drspaceboo.transtracks.background.CameraHandler) -> a
+    28:28:void access$requestPhotoFromAnotherApp(com.drspaceboo.transtracks.background.CameraHandler) -> b
+    28:28:void access$takePhoto(com.drspaceboo.transtracks.background.CameraHandler) -> c
     void _$_clearFindViewByIdCache() -> ac
     void onDestroyView() -> g
 com.drspaceboo.transtracks.background.CameraHandler$Companion -> com.drspaceboo.transtracks.a.a$a:
-    98:98:io.reactivex.Observable getCameraPermissionEnabled() -> a
-    101:101:io.reactivex.Observable getCameraPermissionBlocked() -> b
-    104:104:io.reactivex.Observable getPhotoTaken() -> c
-    107:113:void install(android.support.v7.app.AppCompatActivity) -> a
-    115:115:boolean requestIfNeeded(android.support.v7.app.AppCompatActivity) -> b
-    117:117:void takePhoto(android.support.v7.app.AppCompatActivity) -> c
-    120:123:com.drspaceboo.transtracks.background.CameraHandler from(android.support.v7.app.AppCompatActivity) -> d
-    92:92:void <init>() -> <init>
-    92:92:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    150:150:io.reactivex.Observable getCameraPermissionEnabled() -> a
+    153:153:io.reactivex.Observable getCameraPermissionBlocked() -> b
+    156:156:io.reactivex.Observable getPhotoTaken() -> c
+    159:165:void install(android.support.v7.app.AppCompatActivity) -> a
+    167:168:boolean requestIfNeeded(android.support.v7.app.AppCompatActivity) -> b
+    170:171:void requestPhotoFromAnotherApp(android.support.v7.app.AppCompatActivity) -> c
+    173:173:void takePhoto(android.support.v7.app.AppCompatActivity) -> d
+    176:179:com.drspaceboo.transtracks.background.CameraHandler from(android.support.v7.app.AppCompatActivity) -> e
+    143:143:void <init>() -> <init>
+    143:143:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.background.StoragePermissionHandler -> com.drspaceboo.transtracks.a.b:
     com.jakewharton.rxrelay2.BehaviorRelay storagePermissionRelay -> b
     io.reactivex.Observable storagePermissionEnabled -> c
@@ -23149,166 +23153,239 @@ com.drspaceboo.transtracks.data.Photo$Companion -> com.drspaceboo.transtracks.da
     26:26:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.data.TransTracksFileProvider -> com.drspaceboo.transtracks.data.TransTracksFileProvider:
     5:5:void <init>() -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoAction -> com.drspaceboo.transtracks.b.a:
+com.drspaceboo.transtracks.domain.AssignPhotosAction -> com.drspaceboo.transtracks.b.a:
     26:26:void <init>() -> <init>
     26:26:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoAction$ChangeDate -> com.drspaceboo.transtracks.b.a$a:
-    org.threeten.bp.LocalDate newDate -> a
-    29:29:org.threeten.bp.LocalDate getNewDate() -> a
-    29:29:void <init>(org.threeten.bp.LocalDate) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosAction$ChangeDate -> com.drspaceboo.transtracks.b.a$a:
+    int index -> a
+    org.threeten.bp.LocalDate newDate -> b
+    30:30:int getIndex() -> a
+    30:30:org.threeten.bp.LocalDate getNewDate() -> b
+    30:30:void <init>(int,org.threeten.bp.LocalDate) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoAction$ChangeType -> com.drspaceboo.transtracks.b.a$b:
-    int newType -> a
-    31:31:int getNewType() -> a
+com.drspaceboo.transtracks.domain.AssignPhotosAction$ChangeType -> com.drspaceboo.transtracks.b.a$b:
+    int index -> a
+    int newType -> b
+    32:32:int getIndex() -> a
+    32:32:int getNewType() -> b
+    32:32:void <init>(int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosAction$InitialData -> com.drspaceboo.transtracks.b.a$c:
+    java.util.ArrayList uris -> a
+    java.lang.Long epochDay -> b
+    int type -> c
+    27:27:java.util.ArrayList getUris() -> a
+    27:27:java.lang.Long getEpochDay() -> b
+    27:27:int getType() -> c
+    27:27:void <init>(java.util.ArrayList,java.lang.Long,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosAction$LoadImage -> com.drspaceboo.transtracks.b.a$d:
+    int index -> a
+    28:28:int getIndex() -> a
+    28:28:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosAction$Save -> com.drspaceboo.transtracks.b.a$e:
+    int index -> a
+    33:33:int getIndex() -> a
+    33:33:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosAction$ShowDateDialog -> com.drspaceboo.transtracks.b.a$f:
+    int index -> a
+    29:29:int getIndex() -> a
+    29:29:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosAction$ShowTypeDialog -> com.drspaceboo.transtracks.b.a$g:
+    int index -> a
+    31:31:int getIndex() -> a
     31:31:void <init>(int) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoAction$InitialData -> com.drspaceboo.transtracks.b.a$c:
-    android.net.Uri uri -> a
-    java.lang.Long epochDay -> b
-    int type -> c
-    27:27:android.net.Uri getUri() -> a
-    27:27:java.lang.Long getEpochDay() -> b
-    27:27:int getType() -> c
-    27:27:void <init>(android.net.Uri,java.lang.Long,int) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoAction$Save -> com.drspaceboo.transtracks.b.a$d:
-    com.drspaceboo.transtracks.domain.AssignPhotoAction$Save INSTANCE -> a
-    32:32:void <init>() -> <init>
-    32:32:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoAction$ShowDateDialog -> com.drspaceboo.transtracks.b.a$e:
-    com.drspaceboo.transtracks.domain.AssignPhotoAction$ShowDateDialog INSTANCE -> a
-    28:28:void <init>() -> <init>
-    28:28:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoAction$ShowTypeDialog -> com.drspaceboo.transtracks.b.a$f:
-    com.drspaceboo.transtracks.domain.AssignPhotoAction$ShowTypeDialog INSTANCE -> a
-    30:30:void <init>() -> <init>
-    30:30:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoDomain -> com.drspaceboo.transtracks.b.b:
-    android.net.Uri uri -> a
-    org.threeten.bp.LocalDate date -> b
-    int type -> c
-    com.jakewharton.rxrelay2.PublishRelay actions -> d
-    io.reactivex.Observable results -> e
-    50:50:com.jakewharton.rxrelay2.PublishRelay getActions() -> a
-    51:51:io.reactivex.Observable getResults() -> b
-    60:179:io.reactivex.ObservableTransformer assignPhotoActionsToResults() -> c
-    45:57:void <init>() -> <init>
-    45:45:android.net.Uri access$getUri$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> a
-    45:45:void access$setUri$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain,android.net.Uri) -> a
-    45:45:int access$getType$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> b
-    45:45:void access$setType$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain,int) -> a
-    45:45:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> c
-    45:45:void access$setDate$p(com.drspaceboo.transtracks.domain.AssignPhotoDomain,org.threeten.bp.LocalDate) -> a
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1 -> com.drspaceboo.transtracks.b.b$a:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain this$0 -> a
-    45:45:io.reactivex.ObservableSource apply(io.reactivex.Observable) -> a
-    61:178:io.reactivex.Observable apply(io.reactivex.Observable) -> b
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1 -> com.drspaceboo.transtracks.b.b$a$1:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1 this$0 -> a
-    45:45:java.lang.Object apply(java.lang.Object) -> a
-    62:176:io.reactivex.Observable apply(com.drspaceboo.transtracks.domain.AssignPhotoAction) -> a
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$1 -> com.drspaceboo.transtracks.b.b$a$1$1:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1 this$0 -> a
-    com.drspaceboo.transtracks.domain.AssignPhotoAction $action -> b
-    45:45:java.lang.Object apply(java.lang.Object) -> a
-    69:96:com.drspaceboo.transtracks.domain.AssignPhotoResult$Display apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1,com.drspaceboo.transtracks.domain.AssignPhotoAction) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$2 -> com.drspaceboo.transtracks.b.b$a$1$2:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1 this$0 -> a
-    45:45:java.lang.Object apply(java.lang.Object) -> a
-    118:167:boolean apply(kotlin.Unit) -> a
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$2$$special$$inlined$use$lambda$1 -> com.drspaceboo.transtracks.b.b$a$1$2$a:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$2 this$0 -> a
+com.drspaceboo.transtracks.domain.AssignPhotosDomain -> com.drspaceboo.transtracks.b.b:
+    java.util.ArrayList uris -> a
+    int type -> b
+    java.lang.Long epochDay -> c
+    org.threeten.bp.LocalDate date -> d
+    org.threeten.bp.LocalDate photoDate -> e
+    com.jakewharton.rxrelay2.PublishRelay actions -> f
+    io.reactivex.Observable results -> g
+    84:84:com.jakewharton.rxrelay2.PublishRelay getActions() -> a
+    85:85:io.reactivex.Observable getResults() -> b
+    94:241:io.reactivex.ObservableTransformer assignPhotoActionsToResults() -> c
+    76:91:void <init>() -> <init>
+    76:76:java.util.ArrayList access$getUris$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> a
+    76:76:void access$setUris$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain,java.util.ArrayList) -> a
+    76:76:int access$getType$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> b
+    76:76:void access$setType$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain,int) -> a
+    76:76:java.lang.Long access$getEpochDay$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> c
+    76:76:void access$setEpochDay$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain,java.lang.Long) -> a
+    76:76:org.threeten.bp.LocalDate access$getDate$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> d
+    76:76:void access$setDate$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain,org.threeten.bp.LocalDate) -> a
+    76:76:org.threeten.bp.LocalDate access$getPhotoDate$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> e
+    76:76:void access$setPhotoDate$p(com.drspaceboo.transtracks.domain.AssignPhotosDomain,org.threeten.bp.LocalDate) -> b
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1 -> com.drspaceboo.transtracks.b.b$a:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain this$0 -> a
+    76:76:io.reactivex.ObservableSource apply(io.reactivex.Observable) -> a
+    95:240:io.reactivex.Observable apply(io.reactivex.Observable) -> b
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1 -> com.drspaceboo.transtracks.b.b$a$1:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1 this$0 -> a
+    76:76:java.lang.Object apply(java.lang.Object) -> a
+    96:238:io.reactivex.Observable apply(com.drspaceboo.transtracks.domain.AssignPhotosAction) -> a
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$1 -> com.drspaceboo.transtracks.b.b$a$1$1:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1 this$0 -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosAction $action -> b
+    76:76:java.lang.Object apply(java.lang.Object) -> a
+    109:148:com.drspaceboo.transtracks.domain.AssignPhotosResult$Display apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1,com.drspaceboo.transtracks.domain.AssignPhotosAction) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$2 -> com.drspaceboo.transtracks.b.b$a$1$2:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1 this$0 -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosAction $action -> b
+    76:76:java.lang.Object apply(java.lang.Object) -> a
+    176:226:kotlin.Pair apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1,com.drspaceboo.transtracks.domain.AssignPhotosAction) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$2$$special$$inlined$use$lambda$1 -> com.drspaceboo.transtracks.b.b$a$1$2$a:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$2 this$0 -> a
     java.io.File $imageFile$inlined -> b
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$2,java.io.File) -> <init>
-    157:164:void execute(io.realm.Realm) -> a
-com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1$3 -> com.drspaceboo.transtracks.b.b$a$1$3:
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1 this$0 -> a
-    45:45:java.lang.Object apply(java.lang.Object) -> a
-    171:173:com.drspaceboo.transtracks.domain.AssignPhotoResult apply(java.lang.Boolean) -> a
-    void <init>(com.drspaceboo.transtracks.domain.AssignPhotoDomain$assignPhotoActionsToResults$1$1) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoResult -> com.drspaceboo.transtracks.b.c:
-    35:35:void <init>() -> <init>
-    35:35:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.domain.AssignPhotoResult$Display -> com.drspaceboo.transtracks.b.c$a:
-    android.net.Uri uri -> a
-    org.threeten.bp.LocalDate date -> b
-    int type -> c
-    37:37:android.net.Uri getUri() -> a
-    37:37:org.threeten.bp.LocalDate getDate() -> b
-    37:37:int getType() -> c
-    37:37:void <init>(android.net.Uri,org.threeten.bp.LocalDate,int) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoResult$ErrorSavingImage -> com.drspaceboo.transtracks.b.c$b:
-    android.net.Uri uri -> a
-    org.threeten.bp.LocalDate date -> b
-    int type -> c
-    42:42:android.net.Uri getUri() -> a
-    42:42:org.threeten.bp.LocalDate getDate() -> b
-    42:42:int getType() -> c
-    42:42:void <init>(android.net.Uri,org.threeten.bp.LocalDate,int) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoResult$Loading -> com.drspaceboo.transtracks.b.c$c:
-    com.drspaceboo.transtracks.domain.AssignPhotoResult$Loading INSTANCE -> a
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$2,java.io.File) -> <init>
+    216:223:void execute(io.realm.Realm) -> a
+com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1$3 -> com.drspaceboo.transtracks.b.b$a$1$3:
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1 this$0 -> a
+    76:76:java.lang.Object apply(java.lang.Object) -> a
+    230:235:com.drspaceboo.transtracks.domain.AssignPhotosResult apply(kotlin.Pair) -> a
+    void <init>(com.drspaceboo.transtracks.domain.AssignPhotosDomain$assignPhotoActionsToResults$1$1) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosResult -> com.drspaceboo.transtracks.b.c:
+    com.drspaceboo.transtracks.domain.AssignPhotosResult$Companion Companion -> a
     36:36:void <init>() -> <init>
-    36:36:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoResult$SaveSuccess -> com.drspaceboo.transtracks.b.c$d:
-    com.drspaceboo.transtracks.domain.AssignPhotoResult$SaveSuccess INSTANCE -> a
-    41:41:void <init>() -> <init>
-    41:41:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoResult$SavingImage -> com.drspaceboo.transtracks.b.c$e:
-    com.drspaceboo.transtracks.domain.AssignPhotoResult$SavingImage INSTANCE -> a
-    40:40:void <init>() -> <init>
-    40:40:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowDateDialog -> com.drspaceboo.transtracks.b.c$f:
-    android.net.Uri uri -> a
-    org.threeten.bp.LocalDate date -> b
-    int type -> c
+    void <clinit>() -> <clinit>
+    36:36:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosResult$Companion -> com.drspaceboo.transtracks.b.c$a:
+    54:62:int getIndex(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> a
+    64:72:int getCount(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> b
+    53:53:void <init>() -> <init>
+    53:53:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosResult$Display -> com.drspaceboo.transtracks.b.c$b:
+    android.net.Uri uri -> b
+    org.threeten.bp.LocalDate date -> c
+    org.threeten.bp.LocalDate photoDate -> d
+    int type -> e
+    int index -> f
+    int count -> g
     38:38:android.net.Uri getUri() -> a
     38:38:org.threeten.bp.LocalDate getDate() -> b
-    38:38:int getType() -> c
-    38:38:void <init>(android.net.Uri,org.threeten.bp.LocalDate,int) -> <init>
+    38:38:org.threeten.bp.LocalDate getPhotoDate() -> c
+    39:39:int getType() -> d
+    39:39:int getIndex() -> e
+    39:39:int getCount() -> f
+    38:39:void <init>(android.net.Uri,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,int,int,int) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowTypeDialog -> com.drspaceboo.transtracks.b.c$g:
-    android.net.Uri uri -> a
-    org.threeten.bp.LocalDate date -> b
-    int type -> c
-    39:39:android.net.Uri getUri() -> a
-    39:39:org.threeten.bp.LocalDate getDate() -> b
-    39:39:int getType() -> c
-    39:39:void <init>(android.net.Uri,org.threeten.bp.LocalDate,int) -> <init>
+com.drspaceboo.transtracks.domain.AssignPhotosResult$ErrorSavingImage -> com.drspaceboo.transtracks.b.c$c:
+    android.net.Uri uri -> b
+    org.threeten.bp.LocalDate date -> c
+    org.threeten.bp.LocalDate photoDate -> d
+    int type -> e
+    int index -> f
+    int count -> g
+    50:50:android.net.Uri getUri() -> a
+    50:50:org.threeten.bp.LocalDate getDate() -> b
+    50:50:org.threeten.bp.LocalDate getPhotoDate() -> c
+    51:51:int getType() -> d
+    51:51:int getIndex() -> e
+    51:51:int getCount() -> f
+    50:51:void <init>(android.net.Uri,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,int,int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosResult$Loading -> com.drspaceboo.transtracks.b.c$d:
+    int index -> b
+    int count -> c
+    37:37:int getIndex() -> a
+    37:37:int getCount() -> b
+    37:37:void <init>(int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosResult$SaveSuccess -> com.drspaceboo.transtracks.b.c$e:
+    int index -> b
+    int count -> c
+    48:48:int getIndex() -> a
+    48:48:int getCount() -> b
+    48:48:void <init>(int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosResult$SavingImage -> com.drspaceboo.transtracks.b.c$f:
+    int index -> b
+    int count -> c
+    47:47:int getIndex() -> a
+    47:47:int getCount() -> b
+    47:47:void <init>(int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowDateDialog -> com.drspaceboo.transtracks.b.c$g:
+    android.net.Uri uri -> b
+    org.threeten.bp.LocalDate date -> c
+    org.threeten.bp.LocalDate photoDate -> d
+    int type -> e
+    int index -> f
+    int count -> g
+    41:41:android.net.Uri getUri() -> a
+    41:41:org.threeten.bp.LocalDate getDate() -> b
+    41:41:org.threeten.bp.LocalDate getPhotoDate() -> c
+    42:42:int getType() -> d
+    42:42:int getIndex() -> e
+    42:42:int getCount() -> f
+    41:42:void <init>(android.net.Uri,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,int,int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowTypeDialog -> com.drspaceboo.transtracks.b.c$h:
+    android.net.Uri uri -> b
+    org.threeten.bp.LocalDate date -> c
+    org.threeten.bp.LocalDate photoDate -> d
+    int type -> e
+    int index -> f
+    int count -> g
+    44:44:android.net.Uri getUri() -> a
+    44:44:org.threeten.bp.LocalDate getDate() -> b
+    44:44:org.threeten.bp.LocalDate getPhotoDate() -> c
+    45:45:int getType() -> d
+    45:45:int getIndex() -> e
+    45:45:int getCount() -> f
+    44:45:void <init>(android.net.Uri,org.threeten.bp.LocalDate,org.threeten.bp.LocalDate,int,int,int) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.domain.DomainManager -> com.drspaceboo.transtracks.b.d:
     kotlin.reflect.KProperty[] $$delegatedProperties -> a
-    kotlin.Lazy assignPhotoDomain$delegate -> b
+    kotlin.Lazy assignPhotosDomain$delegate -> b
     kotlin.Lazy editPhotoDomain$delegate -> c
     kotlin.Lazy homeDomain$delegate -> d
     void <clinit>() -> <clinit>
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain getAssignPhotoDomain() -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain getAssignPhotosDomain() -> a
     com.drspaceboo.transtracks.domain.EditPhotoDomain getEditPhotoDomain() -> b
     com.drspaceboo.transtracks.domain.HomeDomain getHomeDomain() -> c
     3:8:void <init>() -> <init>
-com.drspaceboo.transtracks.domain.DomainManager$assignPhotoDomain$2 -> com.drspaceboo.transtracks.b.d$a:
-    com.drspaceboo.transtracks.domain.DomainManager$assignPhotoDomain$2 INSTANCE -> a
+com.drspaceboo.transtracks.domain.DomainManager$assignPhotosDomain$2 -> com.drspaceboo.transtracks.b.d$a:
+    com.drspaceboo.transtracks.domain.DomainManager$assignPhotosDomain$2 INSTANCE -> a
     3:3:java.lang.Object invoke() -> a
-    4:4:com.drspaceboo.transtracks.domain.AssignPhotoDomain invoke() -> b
+    4:4:com.drspaceboo.transtracks.domain.AssignPhotosDomain invoke() -> b
     void <init>() -> <init>
     void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.domain.DomainManager$editPhotoDomain$2 -> com.drspaceboo.transtracks.b.d$b:
@@ -23809,211 +23886,290 @@ com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView$onAttachedTo
     com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView this$0 -> a
     84:86:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneView) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController -> com.drspaceboo.transtracks.ui.assignphoto.a:
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent -> com.drspaceboo.transtracks.ui.assignphoto.a:
+    22:22:void <init>() -> <init>
+    22:22:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back -> com.drspaceboo.transtracks.ui.assignphoto.a$a:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back INSTANCE -> a
+    23:23:void <init>() -> <init>
+    23:23:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.assignphoto.a$b:
+    int index -> a
+    24:24:int getIndex() -> a
+    24:24:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.assignphoto.a$c:
+    int index -> a
+    26:26:int getIndex() -> a
+    26:26:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save -> com.drspaceboo.transtracks.ui.assignphoto.a$d:
+    int index -> a
+    27:27:int getIndex() -> a
+    27:27:void <init>(int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Skip -> com.drspaceboo.transtracks.ui.assignphoto.a$e:
+    int index -> a
+    int count -> b
+    28:28:int getIndex() -> a
+    28:28:int getCount() -> b
+    28:28:void <init>(int,int) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$UsePhotoDate -> com.drspaceboo.transtracks.ui.assignphoto.a$f:
+    int index -> a
+    org.threeten.bp.LocalDate photoDate -> b
+    25:25:int getIndex() -> a
+    25:25:org.threeten.bp.LocalDate getPhotoDate() -> b
+    25:25:void <init>(int,org.threeten.bp.LocalDate) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState -> com.drspaceboo.transtracks.ui.assignphoto.b:
+    31:31:void <init>() -> <init>
+    31:31:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loaded -> com.drspaceboo.transtracks.ui.assignphoto.b$a:
+    int index -> a
+    int count -> b
+    android.net.Uri photoUri -> c
+    java.lang.String title -> d
+    java.lang.String date -> e
+    org.threeten.bp.LocalDate photoDate -> f
+    java.lang.String type -> g
+    boolean showSkip -> h
+    34:34:int getIndex() -> a
+    34:34:int getCount() -> b
+    34:34:android.net.Uri getPhotoUri() -> c
+    34:34:java.lang.String getTitle() -> d
+    35:35:java.lang.String getDate() -> e
+    35:35:org.threeten.bp.LocalDate getPhotoDate() -> f
+    35:35:java.lang.String getType() -> g
+    36:36:boolean getShowSkip() -> h
+    34:36:void <init>(int,int,android.net.Uri,java.lang.String,java.lang.String,org.threeten.bp.LocalDate,java.lang.String,boolean) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading -> com.drspaceboo.transtracks.ui.assignphoto.b$b:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading INSTANCE -> a
+    32:32:void <init>() -> <init>
+    32:32:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> g
+    kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
+    kotlin.properties.ReadOnlyProperty title$delegate -> i
+    kotlin.properties.ReadOnlyProperty image$delegate -> j
+    kotlin.properties.ReadOnlyProperty dateLabel$delegate -> k
+    kotlin.properties.ReadOnlyProperty date$delegate -> l
+    kotlin.properties.ReadOnlyProperty photoDate$delegate -> m
+    kotlin.properties.ReadOnlyProperty typeLabel$delegate -> n
+    kotlin.properties.ReadOnlyProperty type$delegate -> o
+    kotlin.properties.ReadOnlyProperty save$delegate -> p
+    kotlin.properties.ReadOnlyProperty skip$delegate -> q
+    kotlin.Lazy events$delegate -> r
+    org.threeten.bp.LocalDate currentPhotoDate -> s
+    int currentIndex -> t
+    int currentCount -> u
+    void <clinit>() -> <clinit>
+    android.support.v7.widget.Toolbar getToolbar() -> getToolbar
+    android.widget.TextView getTitle() -> getTitle
+    android.widget.ImageView getImage() -> getImage
+    android.view.View getDateLabel() -> getDateLabel
+    android.widget.Button getDate() -> getDate
+    android.widget.ImageButton getPhotoDate() -> getPhotoDate
+    android.view.View getTypeLabel() -> getTypeLabel
+    android.widget.Button getType() -> getType
+    android.widget.Button getSave() -> getSave
+    android.widget.Button getSkip() -> getSkip
+    io.reactivex.Observable getEvents() -> getEvents
+    69:73:void onAttachedToWindow() -> onAttachedToWindow
+    76:101:void display(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState) -> a
+    39:64:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    39:39:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> a
+    39:39:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> b
+    39:39:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> c
+    39:39:int access$getCurrentIndex$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> d
+    39:39:android.widget.ImageButton access$getPhotoDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> e
+    39:39:org.threeten.bp.LocalDate access$getCurrentPhotoDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> f
+    39:39:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> g
+    39:39:android.widget.Button access$getSkip$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> h
+    39:39:int access$getCurrentCount$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> i
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
+    39:39:java.lang.Object invoke() -> a
+    54:109:io.reactivex.Observable invoke() -> b
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$1:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 INSTANCE -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    54:54:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back apply(kotlin.Unit) -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$2:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 this$0 -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    55:55:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$3 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$3:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 this$0 -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    57:57:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$UsePhotoDate apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$4 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$4:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 this$0 -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    59:59:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$5 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$5:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 this$0 -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    60:60:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$6 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$6:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 this$0 -> a
+    39:39:java.lang.Object apply(java.lang.Object) -> a
+    61:61:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Skip apply(kotlin.Unit) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$b:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
+    71:71:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$c:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
+    72:72:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController -> com.drspaceboo.transtracks.ui.assignphoto.c:
     io.reactivex.disposables.Disposable resultsDisposable -> j
     io.reactivex.disposables.CompositeDisposable viewDisposables -> k
     android.support.v7.app.AlertDialog savingDialog -> l
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$Companion Companion -> i
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$Companion Companion -> i
     51:51:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    55:213:void onAttach(android.view.View) -> b
-    168:169:void onDestroyView(android.view.View) -> a
-    172:173:void onDetach(android.view.View) -> c
+    55:295:void onAttach(android.view.View) -> b
+    197:198:void onDestroyView(android.view.View) -> a
+    201:202:void onDetach(android.view.View) -> c
     34:46:void <init>(android.os.Bundle) -> <init>
-    35:43:void <init>(android.net.Uri,java.lang.Long,int,java.lang.String) -> <init>
+    35:43:void <init>(java.util.ArrayList,java.lang.Long,int,java.lang.String) -> <init>
     void <clinit>() -> <clinit>
-    34:34:android.support.v7.app.AlertDialog access$getSavingDialog$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController) -> a
-    34:34:void access$setSavingDialog$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController,android.support.v7.app.AlertDialog) -> a
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$Companion -> com.drspaceboo.transtracks.ui.assignphoto.a$a:
-    175:175:void <init>() -> <init>
-    175:175:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$1 -> com.drspaceboo.transtracks.ui.assignphoto.a$b:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController this$0 -> a
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain $domain -> b
+    34:34:android.support.v7.app.AlertDialog access$getSavingDialog$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController) -> a
+    34:34:void access$setSavingDialog$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,android.support.v7.app.AlertDialog) -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$Companion -> com.drspaceboo.transtracks.ui.assignphoto.c$a:
+    204:204:void <init>() -> <init>
+    204:204:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$1 -> com.drspaceboo.transtracks.ui.assignphoto.c$b:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain $domain -> b
     34:34:void accept(java.lang.Object) -> a
     64:75:void accept(io.reactivex.disposables.Disposable) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController,com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$1$1 -> com.drspaceboo.transtracks.ui.assignphoto.a$b$1:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$1 this$0 -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$1$1 -> com.drspaceboo.transtracks.ui.assignphoto.c$b$1:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$1 this$0 -> a
     66:74:void run() -> run
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$1) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$10 -> com.drspaceboo.transtracks.ui.assignphoto.a$c:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$10 INSTANCE -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$1) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$10 -> com.drspaceboo.transtracks.ui.assignphoto.c$c:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
+    android.view.View $view -> b
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain $domain -> c
+    34:34:void accept(java.lang.Object) -> a
+    164:171:void accept(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Skip) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,android.view.View,com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$11 -> com.drspaceboo.transtracks.ui.assignphoto.c$d:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$11 INSTANCE -> a
     34:34:boolean test(java.lang.Object) -> a
-    155:155:boolean test(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent) -> a
+    175:175:boolean test(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$11 -> com.drspaceboo.transtracks.ui.assignphoto.a$d:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$11 INSTANCE -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$12 -> com.drspaceboo.transtracks.ui.assignphoto.c$e:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$12 INSTANCE -> a
     34:34:java.lang.Object apply(java.lang.Object) -> a
-    157:161:com.drspaceboo.transtracks.domain.AssignPhotoAction apply(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent) -> a
+    178:190:com.drspaceboo.transtracks.domain.AssignPhotosAction apply(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$2 -> com.drspaceboo.transtracks.ui.assignphoto.a$e:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$2 INSTANCE -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$2 -> com.drspaceboo.transtracks.ui.assignphoto.c$f:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$2 INSTANCE -> a
     34:34:boolean test(java.lang.Object) -> a
-    82:83:boolean test(com.drspaceboo.transtracks.domain.AssignPhotoResult) -> a
+    82:83:boolean test(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$3 -> com.drspaceboo.transtracks.ui.assignphoto.a$f:
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$3 -> com.drspaceboo.transtracks.ui.assignphoto.c$g:
     android.view.View $view -> a
     34:34:void accept(java.lang.Object) -> a
     86:86:void accept(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState) -> a
     void <init>(android.view.View) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$4 -> com.drspaceboo.transtracks.ui.assignphoto.a$g:
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$4 -> com.drspaceboo.transtracks.ui.assignphoto.c$h:
     android.view.View $view -> a
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain $domain -> b
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain $domain -> b
     34:34:void accept(java.lang.Object) -> a
-    92:101:void accept(com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowDateDialog) -> a
-    void <init>(android.view.View,com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$4$dialog$1 -> com.drspaceboo.transtracks.ui.assignphoto.a$g$a:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$4 this$0 -> a
-    94:97:void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$4) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$5 -> com.drspaceboo.transtracks.ui.assignphoto.a$h:
+    92:102:void accept(com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowDateDialog) -> a
+    void <init>(android.view.View,com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$4$dialog$1 -> com.drspaceboo.transtracks.ui.assignphoto.c$h$a:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$4 this$0 -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowDateDialog $result -> b
+    93:95:void onDateSet(android.widget.DatePicker,int,int,int) -> onDateSet
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$4,com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowDateDialog) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$5 -> com.drspaceboo.transtracks.ui.assignphoto.c$i:
     android.view.View $view -> a
-    com.drspaceboo.transtracks.domain.AssignPhotoDomain $domain -> b
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain $domain -> b
     34:34:void accept(java.lang.Object) -> a
-    106:116:void accept(com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowTypeDialog) -> a
-    void <init>(android.view.View,com.drspaceboo.transtracks.domain.AssignPhotoDomain) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$5$1 -> com.drspaceboo.transtracks.ui.assignphoto.a$h$1:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$5 this$0 -> a
-    com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowTypeDialog $result -> b
-    110:114:void onClick(android.content.DialogInterface,int) -> onClick
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$5,com.drspaceboo.transtracks.domain.AssignPhotoResult$ShowTypeDialog) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$6 -> com.drspaceboo.transtracks.ui.assignphoto.a$i:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController this$0 -> a
+    107:118:void accept(com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowTypeDialog) -> a
+    void <init>(android.view.View,com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$5$1 -> com.drspaceboo.transtracks.ui.assignphoto.c$i$1:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$5 this$0 -> a
+    com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowTypeDialog $result -> b
+    111:116:void onClick(android.content.DialogInterface,int) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$5,com.drspaceboo.transtracks.domain.AssignPhotosResult$ShowTypeDialog) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$6 -> com.drspaceboo.transtracks.ui.assignphoto.c$j:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
     android.view.View $view -> b
     34:34:void accept(java.lang.Object) -> a
-    121:128:void accept(com.drspaceboo.transtracks.domain.AssignPhotoResult$SavingImage) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController,android.view.View) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$7 -> com.drspaceboo.transtracks.ui.assignphoto.a$j:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController this$0 -> a
+    123:130:void accept(com.drspaceboo.transtracks.domain.AssignPhotosResult$SavingImage) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$7 -> com.drspaceboo.transtracks.ui.assignphoto.c$k:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
+    android.view.View $view -> b
+    com.drspaceboo.transtracks.domain.AssignPhotosDomain $domain -> c
     34:34:void accept(java.lang.Object) -> a
-    133:137:void accept(com.drspaceboo.transtracks.domain.AssignPhotoResult$SaveSuccess) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$8 -> com.drspaceboo.transtracks.ui.assignphoto.a$k:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController this$0 -> a
+    135:145:void accept(com.drspaceboo.transtracks.domain.AssignPhotosResult$SaveSuccess) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,android.view.View,com.drspaceboo.transtracks.domain.AssignPhotosDomain) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$8 -> com.drspaceboo.transtracks.ui.assignphoto.c$l:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
     android.view.View $view -> b
     34:34:void accept(java.lang.Object) -> a
-    142:146:void accept(com.drspaceboo.transtracks.domain.AssignPhotoResult$ErrorSavingImage) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController,android.view.View) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController$onAttach$9 -> com.drspaceboo.transtracks.ui.assignphoto.a$l:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController this$0 -> a
+    150:154:void accept(com.drspaceboo.transtracks.domain.AssignPhotosResult$ErrorSavingImage) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController,android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController$onAttach$9 -> com.drspaceboo.transtracks.ui.assignphoto.c$m:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController this$0 -> a
     34:34:void accept(java.lang.Object) -> a
-    152:152:void accept(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoController) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt -> com.drspaceboo.transtracks.ui.assignphoto.b:
-    183:206:io.reactivex.ObservableTransformer assignPhotoResultsToUiState(android.content.Context) -> a
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoResultsToUiState$1 -> com.drspaceboo.transtracks.ui.assignphoto.b$a:
+    160:160:void accept(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt -> com.drspaceboo.transtracks.ui.assignphoto.d:
+    212:287:io.reactivex.ObservableTransformer assignPhotoResultsToUiState(android.content.Context) -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1 -> com.drspaceboo.transtracks.ui.assignphoto.d$a:
     android.content.Context $context -> a
     io.reactivex.ObservableSource apply(io.reactivex.Observable) -> a
-    184:205:io.reactivex.Observable apply(io.reactivex.Observable) -> b
+    213:286:io.reactivex.Observable apply(io.reactivex.Observable) -> b
     void <init>(android.content.Context) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoResultsToUiState$1$1 -> com.drspaceboo.transtracks.ui.assignphoto.b$a$1:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoResultsToUiState$1 this$0 -> a
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1 -> com.drspaceboo.transtracks.ui.assignphoto.d$a$1:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1 this$0 -> a
     java.lang.Object apply(java.lang.Object) -> a
-    185:203:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState apply(com.drspaceboo.transtracks.domain.AssignPhotoResult) -> a
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoControllerKt$assignPhotoResultsToUiState$1) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent -> com.drspaceboo.transtracks.ui.assignphoto.c:
-    18:18:void <init>() -> <init>
-    18:18:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back -> com.drspaceboo.transtracks.ui.assignphoto.c$a:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back INSTANCE -> a
-    19:19:void <init>() -> <init>
-    19:19:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate -> com.drspaceboo.transtracks.ui.assignphoto.c$b:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate INSTANCE -> a
-    20:20:void <init>() -> <init>
-    20:20:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType -> com.drspaceboo.transtracks.ui.assignphoto.c$c:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType INSTANCE -> a
-    21:21:void <init>() -> <init>
-    21:21:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save -> com.drspaceboo.transtracks.ui.assignphoto.c$d:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save INSTANCE -> a
-    22:22:void <init>() -> <init>
-    22:22:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState -> com.drspaceboo.transtracks.ui.assignphoto.d:
-    25:25:void <init>() -> <init>
-    25:25:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loaded -> com.drspaceboo.transtracks.ui.assignphoto.d$a:
-    android.net.Uri photoUri -> a
-    java.lang.String date -> b
-    java.lang.String type -> c
-    27:27:android.net.Uri getPhotoUri() -> a
-    27:27:java.lang.String getDate() -> b
-    27:27:java.lang.String getType() -> c
-    27:27:void <init>(android.net.Uri,java.lang.String,java.lang.String) -> <init>
-    java.lang.String toString() -> toString
-    int hashCode() -> hashCode
-    boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading -> com.drspaceboo.transtracks.ui.assignphoto.d$b:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState$Loading INSTANCE -> a
-    26:26:void <init>() -> <init>
-    26:26:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView:
-    kotlin.reflect.KProperty[] $$delegatedProperties -> g
-    kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
-    kotlin.properties.ReadOnlyProperty image$delegate -> i
-    kotlin.properties.ReadOnlyProperty dateLabel$delegate -> j
-    kotlin.properties.ReadOnlyProperty date$delegate -> k
-    kotlin.properties.ReadOnlyProperty typeLabel$delegate -> l
-    kotlin.properties.ReadOnlyProperty type$delegate -> m
-    kotlin.properties.ReadOnlyProperty save$delegate -> n
-    kotlin.Lazy events$delegate -> o
-    void <clinit>() -> <clinit>
-    android.support.v7.widget.Toolbar getToolbar() -> getToolbar
-    android.widget.ImageView getImage() -> getImage
-    android.view.View getDateLabel() -> getDateLabel
-    android.widget.Button getDate() -> getDate
-    android.view.View getTypeLabel() -> getTypeLabel
-    android.widget.Button getType() -> getType
-    android.widget.Button getSave() -> getSave
-    io.reactivex.Observable getEvents() -> getEvents
-    49:53:void onAttachedToWindow() -> onAttachedToWindow
-    56:68:void display(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState) -> a
-    30:41:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    30:30:android.widget.Button access$getDate$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> a
-    30:30:android.widget.Button access$getType$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> b
-    30:30:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> c
-    30:30:android.widget.Button access$getSave$p(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> d
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
-    30:30:java.lang.Object invoke() -> a
-    42:74:io.reactivex.Observable invoke() -> b
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$1:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$1 INSTANCE -> a
-    30:30:java.lang.Object apply(java.lang.Object) -> a
-    42:42:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Back apply(kotlin.Unit) -> a
+    214:284:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiState apply(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1$1 -> com.drspaceboo.transtracks.ui.assignphoto.d$a$1$1:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1 this$0 -> a
+    java.lang.Object invoke(java.lang.Object) -> a
+    215:220:java.lang.String invoke(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> a
+    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1) -> <init>
+com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1$2 -> com.drspaceboo.transtracks.ui.assignphoto.d$a$1$2:
+    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosControllerKt$assignPhotoResultsToUiState$1$1$2 INSTANCE -> a
+    java.lang.Object invoke(java.lang.Object) -> a
+    225:226:boolean invoke(com.drspaceboo.transtracks.domain.AssignPhotosResult) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$2:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$2 INSTANCE -> a
-    30:30:java.lang.Object apply(java.lang.Object) -> a
-    43:43:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeDate apply(kotlin.Unit) -> a
-    void <init>() -> <init>
-    void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$3 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$3:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$3 INSTANCE -> a
-    30:30:java.lang.Object apply(java.lang.Object) -> a
-    44:44:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$ChangeType apply(kotlin.Unit) -> a
-    void <init>() -> <init>
-    void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$4 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$a$4:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$events$2$4 INSTANCE -> a
-    30:30:java.lang.Object apply(java.lang.Object) -> a
-    45:45:com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoUiEvent$Save apply(kotlin.Unit) -> a
-    void <init>() -> <init>
-    void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$1 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$b:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
-    51:51:void onClick(android.view.View) -> onClick
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
-com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$onAttachedToWindow$2 -> com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView$c:
-    com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView this$0 -> a
-    52:52:void onClick(android.view.View) -> onClick
-    void <init>(com.drspaceboo.transtracks.ui.assignphoto.AssignPhotoView) -> <init>
 com.drspaceboo.transtracks.ui.editphoto.EditPhotoController -> com.drspaceboo.transtracks.ui.editphoto.a:
     io.reactivex.disposables.Disposable resultsDisposable -> j
     io.reactivex.disposables.CompositeDisposable viewDisposables -> k
@@ -25220,45 +25376,64 @@ com.drspaceboo.transtracks.ui.milestones.MilestonesView$onAttachedToWindow$1 -> 
     81:82:void onAdFailedToLoad(int) -> a
     79:79:void <init>(com.drspaceboo.transtracks.ui.milestones.MilestonesView) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter -> com.drspaceboo.transtracks.ui.selectphoto.a:
-    com.jakewharton.rxrelay2.PublishRelay itemClickRelay -> b
-    io.reactivex.Observable itemClick -> c
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> b
+    io.reactivex.Observable events -> c
+    boolean selectionMode -> d
+    java.util.ArrayList selectedUris -> e
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$Companion Companion -> a
-    24:24:io.reactivex.Observable getItemClick() -> d
-    26:26:int getItemCount() -> a
-    28:31:int getItemViewType(int) -> a
-    34:42:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder onCreateViewHolder(android.view.ViewGroup,int) -> c
-    20:20:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
-    47:51:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder,int) -> a
-    20:20:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> a
-    54:61:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder,android.database.Cursor) -> a
-    20:20:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,android.database.Cursor) -> a
-    20:24:void <init>(android.content.Context) -> <init>
+    27:27:io.reactivex.Observable getEvents() -> d
+    29:29:boolean getSelectionMode() -> e
+    31:41:void setSelectionMode(boolean) -> a
+    45:45:int getItemCount() -> a
+    47:50:int getItemViewType(int) -> a
+    53:63:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder onCreateViewHolder(android.view.ViewGroup,int) -> c
+    23:23:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
+    68:72:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder,int) -> a
+    23:23:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> a
+    75:81:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder,android.database.Cursor) -> a
+    23:23:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,android.database.Cursor) -> a
+    84:92:int getItemPosition(android.net.Uri) -> a
+    96:96:java.util.ArrayList getSelectedUris() -> f
+    100:106:android.net.Uri getUri(int) -> c
+    110:113:android.net.Uri getUri(android.database.Cursor) -> a
+    117:119:void updateSelectedUris(java.util.ArrayList) -> a
+    23:43:void <init>(android.content.Context) -> <init>
     void <clinit>() -> <clinit>
+    23:23:java.util.ArrayList access$getSelectedUris$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter) -> a
+    23:23:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter) -> b
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$BaseHolder -> com.drspaceboo.transtracks.ui.selectphoto.a$a:
-    63:63:void <init>(android.view.View) -> <init>
+    121:121:void <init>(android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$Companion -> com.drspaceboo.transtracks.ui.selectphoto.a$b:
-    94:96:android.database.Cursor getGalleryCursor(android.content.Context) -> a
-    92:92:void <init>() -> <init>
-    92:92:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    203:205:android.database.Cursor getGalleryCursor(android.content.Context) -> a
+    201:201:void <init>() -> <init>
+    201:201:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder -> com.drspaceboo.transtracks.ui.selectphoto.a$c:
     kotlin.reflect.KProperty[] $$delegatedProperties -> q
     kotlin.properties.ReadOnlyProperty image$delegate -> r
-    android.net.Uri currentUri -> s
+    kotlin.properties.ReadOnlyProperty selection$delegate -> s
+    java.lang.ref.WeakReference adapterRef -> t
+    android.net.Uri currentUri -> u
     void <clinit>() -> <clinit>
     android.widget.ImageView getImage() -> A
-    83:89:void bind(android.net.Uri) -> a
-    72:79:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
-    72:72:android.net.Uri access$getCurrentUri$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder) -> a
+    android.widget.ImageView getSelection() -> B
+    177:198:void bind(android.net.Uri,boolean,boolean) -> a
+    130:161:void <init>(android.view.View,com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter) -> <init>
+    130:130:android.net.Uri access$getCurrentUri$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder) -> a
+    130:130:java.lang.ref.WeakReference access$getAdapterRef$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder) -> b
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder$1 -> com.drspaceboo.transtracks.ui.selectphoto.a$c$1:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder this$0 -> a
-    com.jakewharton.rxrelay2.PublishRelay $itemClickRelay -> b
-    79:79:void onClick(android.view.View) -> onClick
-    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    141:159:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder$2 -> com.drspaceboo.transtracks.ui.selectphoto.a$c$2:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder this$0 -> a
+    android.view.View $itemView -> b
+    162:172:boolean onLongClick(android.view.View) -> onLongClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$ImageHolder,android.view.View) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$TakePhotoHolder -> com.drspaceboo.transtracks.ui.selectphoto.a$d:
-    65:68:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    123:126:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter$TakePhotoHolder$1 -> com.drspaceboo.transtracks.ui.selectphoto.a$d$1:
     com.jakewharton.rxrelay2.PublishRelay $itemClickRelay -> a
-    68:68:void onClick(android.view.View) -> onClick
+    126:126:void onClick(android.view.View) -> onClick
     void <init>(com.jakewharton.rxrelay2.PublishRelay) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController -> com.drspaceboo.transtracks.ui.selectphoto.b:
     java.lang.Long epochDay -> j
@@ -25266,110 +25441,550 @@ com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController -> com.drspacebo
     io.reactivex.disposables.Disposable photoTakenDisposable -> l
     io.reactivex.disposables.CompositeDisposable viewDisposables -> m
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$Companion Companion -> i
-    55:55:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
-    59:151:void onAttach(android.view.View) -> b
-    123:124:void onDetach(android.view.View) -> c
-    127:130:void onDestroy() -> k
-    133:137:void showCameraPermissionDisabledSnackBar(android.view.View) -> e
-    34:52:void <init>(android.os.Bundle) -> <init>
-    35:42:void <init>(java.lang.Long,int,java.lang.String) -> <init>
-    35:36:void <init>(java.lang.Long,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    57:57:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    61:194:void onAttach(android.view.View) -> b
+    161:162:void onDetach(android.view.View) -> c
+    165:168:void onDestroy() -> k
+    171:175:void showCameraPermissionDisabledSnackBar(android.view.View) -> e
+    36:54:void <init>(android.os.Bundle) -> <init>
+    37:44:void <init>(java.lang.Long,int,java.lang.String) -> <init>
+    37:38:void <init>(java.lang.Long,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
     void <clinit>() -> <clinit>
-    34:34:void access$showCameraPermissionDisabledSnackBar(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController,android.view.View) -> a
-    34:34:java.lang.Long access$getEpochDay$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> a
-    34:34:int access$getType$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> b
+    36:36:java.lang.Long access$getEpochDay$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> a
+    36:36:int access$getType$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> b
+    36:36:void access$showCameraPermissionDisabledSnackBar(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController,android.view.View) -> a
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$Companion -> com.drspaceboo.transtracks.ui.selectphoto.b$a:
-    139:139:void <init>() -> <init>
-    139:139:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    177:177:void <init>() -> <init>
+    177:177:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$$inlined$combineLatest$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$b:
     void <init>() -> <init>
     65:99:java.lang.Object apply(java.lang.Object,java.lang.Object) -> a
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$c:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
-    34:34:void accept(java.lang.Object) -> a
-    67:67:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back) -> a
+    36:36:void accept(java.lang.Object) -> a
+    70:70:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back) -> a
     void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$3 -> com.drspaceboo.transtracks.ui.selectphoto.b$d:
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$10 -> com.drspaceboo.transtracks.ui.selectphoto.b$d:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
+    36:36:void accept(java.lang.Object) -> a
+    134:138:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$PhotoSelected) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$11 -> com.drspaceboo.transtracks.ui.selectphoto.b$e:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
+    36:36:void accept(java.lang.Object) -> a
+    142:146:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$SaveMultiple) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$12 -> com.drspaceboo.transtracks.ui.selectphoto.b$f:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
+    36:36:void accept(java.lang.Object) -> a
+    151:156:void accept(java.lang.String) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$2 -> com.drspaceboo.transtracks.ui.selectphoto.b$g:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
+    36:36:void accept(java.lang.Object) -> a
+    74:78:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ViewAlbums) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$3 -> com.drspaceboo.transtracks.ui.selectphoto.b$h:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
+    36:36:void accept(java.lang.Object) -> a
+    82:83:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ExternalGalleries) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$4 -> com.drspaceboo.transtracks.ui.selectphoto.b$i:
+    android.view.View $view -> a
+    36:36:void accept(java.lang.Object) -> a
+    88:93:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$SelectionUpdate) -> a
+    void <init>(android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$5 -> com.drspaceboo.transtracks.ui.selectphoto.b$j:
+    android.view.View $view -> a
+    36:36:void accept(java.lang.Object) -> a
+    97:97:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$EndMultiSelect) -> a
+    void <init>(android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$7 -> com.drspaceboo.transtracks.ui.selectphoto.b$k:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
     android.view.View $view -> b
-    34:34:void accept(java.lang.Object) -> a
-    73:95:void accept(java.lang.Boolean) -> a
+    36:36:void accept(java.lang.Object) -> a
+    103:125:void accept(java.lang.Boolean) -> a
     void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController,android.view.View) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$3$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$d$1:
-    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$3 this$0 -> a
-    81:83:void onClick(android.content.DialogInterface,int) -> onClick
-    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$3) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$4 -> com.drspaceboo.transtracks.ui.selectphoto.b$e:
-    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$4 INSTANCE -> a
-    34:34:boolean test(java.lang.Object) -> a
-    98:98:boolean test(java.lang.Boolean) -> a
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$7$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$k$1:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$7 this$0 -> a
+    111:113:void onClick(android.content.DialogInterface,int) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$7) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$8 -> com.drspaceboo.transtracks.ui.selectphoto.b$l:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$8 INSTANCE -> a
+    36:36:boolean test(java.lang.Object) -> a
+    128:128:boolean test(java.lang.Boolean) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$5 -> com.drspaceboo.transtracks.ui.selectphoto.b$f:
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$9 -> com.drspaceboo.transtracks.ui.selectphoto.b$m:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
     android.view.View $view -> b
-    34:34:void accept(java.lang.Object) -> a
-    99:99:void accept(java.lang.Boolean) -> a
+    36:36:void accept(java.lang.Object) -> a
+    129:129:void accept(java.lang.Boolean) -> a
     void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController,android.view.View) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$6 -> com.drspaceboo.transtracks.ui.selectphoto.b$g:
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$showCameraPermissionDisabledSnackBar$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$n:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
-    34:34:void accept(java.lang.Object) -> a
-    104:108:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$PhotoSelected) -> a
-    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$onAttach$7 -> com.drspaceboo.transtracks.ui.selectphoto.b$h:
-    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
-    34:34:void accept(java.lang.Object) -> a
-    113:118:void accept(java.lang.String) -> a
-    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController$showCameraPermissionDisabledSnackBar$1 -> com.drspaceboo.transtracks.ui.selectphoto.b$i:
-    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController this$0 -> a
-    135:135:void onClick(android.view.View) -> onClick
+    173:173:void onClick(android.view.View) -> onClick
     void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent -> com.drspaceboo.transtracks.ui.selectphoto.c:
-    19:19:void <init>() -> <init>
-    19:19:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    25:25:void <init>() -> <init>
+    25:25:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back -> com.drspaceboo.transtracks.ui.selectphoto.c$a:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back INSTANCE -> a
-    20:20:void <init>() -> <init>
-    20:20:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$PhotoSelected -> com.drspaceboo.transtracks.ui.selectphoto.c$b:
+    26:26:void <init>() -> <init>
+    26:26:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$EndMultiSelect -> com.drspaceboo.transtracks.ui.selectphoto.c$b:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$EndMultiSelect INSTANCE -> a
+    32:32:void <init>() -> <init>
+    32:32:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ExternalGalleries -> com.drspaceboo.transtracks.ui.selectphoto.c$c:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ExternalGalleries INSTANCE -> a
+    30:30:void <init>() -> <init>
+    30:30:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$PhotoSelected -> com.drspaceboo.transtracks.ui.selectphoto.c$d:
     android.net.Uri uri -> a
-    22:22:android.net.Uri getUri() -> a
-    22:22:void <init>(android.net.Uri) -> <init>
+    28:28:android.net.Uri getUri() -> a
+    28:28:void <init>(android.net.Uri) -> <init>
     java.lang.String toString() -> toString
     int hashCode() -> hashCode
     boolean equals(java.lang.Object) -> equals
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$TakePhoto -> com.drspaceboo.transtracks.ui.selectphoto.c$c:
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$SaveMultiple -> com.drspaceboo.transtracks.ui.selectphoto.c$e:
+    java.util.ArrayList uris -> a
+    33:33:java.util.ArrayList getUris() -> a
+    33:33:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$SelectionUpdate -> com.drspaceboo.transtracks.ui.selectphoto.c$f:
+    java.util.ArrayList uris -> a
+    31:31:java.util.ArrayList getUris() -> a
+    31:31:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$TakePhoto -> com.drspaceboo.transtracks.ui.selectphoto.c$g:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$TakePhoto INSTANCE -> a
-    21:21:void <init>() -> <init>
-    21:21:void <clinit>() -> <clinit>
+    27:27:void <init>() -> <init>
+    27:27:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ViewAlbums -> com.drspaceboo.transtracks.ui.selectphoto.c$h:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$ViewAlbums INSTANCE -> a
+    29:29:void <init>() -> <init>
+    29:29:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiState -> com.drspaceboo.transtracks.ui.selectphoto.d:
+    36:36:void <init>() -> <init>
+    36:36:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiState$Loaded -> com.drspaceboo.transtracks.ui.selectphoto.d$a:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiState$Loaded INSTANCE -> a
+    37:37:void <init>() -> <init>
+    37:37:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiState$Selection -> com.drspaceboo.transtracks.ui.selectphoto.d$b:
+    java.util.ArrayList selectedUris -> a
+    38:38:java.util.ArrayList getSelectedUris() -> a
+    38:38:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
 com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView:
     kotlin.reflect.KProperty[] $$delegatedProperties -> g
-    kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
-    kotlin.properties.ReadOnlyProperty recyclerView$delegate -> i
-    io.reactivex.disposables.Disposable adapterDisposable -> j
-    com.jakewharton.rxrelay2.PublishRelay eventRelay -> k
-    kotlin.Lazy events$delegate -> l
+    kotlin.properties.ReadOnlyProperty toolbar$delegate -> i
+    kotlin.properties.ReadOnlyProperty recyclerView$delegate -> j
+    io.reactivex.disposables.Disposable adapterDisposable -> k
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> l
+    kotlin.Lazy events$delegate -> m
+    android.support.v7.widget.GridLayoutManager gridLayoutManager -> n
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter adapter -> o
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$actionModeHandler$1 actionModeHandler -> p
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$Companion Companion -> h
     void <clinit>() -> <clinit>
     android.support.v7.widget.Toolbar getToolbar() -> getToolbar
     android.support.v7.widget.RecyclerView getRecyclerView() -> getRecyclerView
     io.reactivex.Observable getEvents() -> getEvents
-    38:48:void onAttachedToWindow() -> onAttachedToWindow
-    51:55:void onDetachedFromWindow() -> onDetachedFromWindow
-    25:32:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
-    25:25:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> a
-    25:25:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> b
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$a:
+    77:81:void onAttachedToWindow() -> onAttachedToWindow
+    84:88:void onDetachedFromWindow() -> onDetachedFromWindow
+    91:132:void display(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiState) -> a
+    41:134:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    41:41:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> a
+    41:41:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> b
+    41:41:android.support.v7.widget.GridLayoutManager access$getGridLayoutManager$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> c
+    41:41:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoAdapter access$getAdapter$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> d
+    41:41:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> e
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$Companion -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$a:
+    186:186:void <init>() -> <init>
+    186:186:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$actionModeHandler$1 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$b:
+    java.lang.ref.WeakReference modeRef -> b
+    java.lang.String titleText -> c
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView this$0 -> a
-    25:25:java.lang.Object invoke() -> a
-    33:58:io.reactivex.Observable invoke() -> b
+    139:152:boolean onActionItemClicked(android.view.ActionMode,android.view.MenuItem) -> onActionItemClicked
+    156:159:boolean onCreateActionMode(android.view.ActionMode,android.view.Menu) -> onCreateActionMode
+    163:164:boolean onPrepareActionMode(android.view.ActionMode,android.view.Menu) -> onPrepareActionMode
+    168:170:void onDestroyActionMode(android.view.ActionMode) -> onDestroyActionMode
+    173:174:void finish() -> a
+    177:177:boolean isActive() -> b
+    181:183:void setTitle(java.lang.String) -> a
+    134:136:void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$c:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView this$0 -> a
+    41:41:java.lang.Object invoke() -> a
+    49:192:io.reactivex.Observable invoke() -> b
     void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView) -> <init>
-com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$a$1:
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$1 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$c$1:
     com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$1 INSTANCE -> a
-    25:25:java.lang.Object apply(java.lang.Object) -> a
-    33:33:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back apply(kotlin.Unit) -> a
+    41:41:java.lang.Object apply(java.lang.Object) -> a
+    49:49:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent$Back apply(kotlin.Unit) -> a
     void <init>() -> <init>
     void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$2 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$c$2:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$2 INSTANCE -> a
+    41:41:java.lang.Object apply(java.lang.Object) -> a
+    51:54:com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent apply(android.view.MenuItem) -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2$3 -> com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$c$3:
+    com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2 this$0 -> a
+    41:41:void accept(java.lang.Object) -> a
+    58:70:void accept(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoUiEvent) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoView$events$2) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> g
+    kotlin.properties.ReadOnlyProperty toolbar$delegate -> h
+    kotlin.properties.ReadOnlyProperty recyclerView$delegate -> i
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> j
+    kotlin.Lazy events$delegate -> k
+    io.reactivex.disposables.Disposable albumClickDisposable -> l
+    void <clinit>() -> <clinit>
+    android.support.v7.widget.Toolbar getToolbar() -> getToolbar
+    android.support.v7.widget.RecyclerView getRecyclerView() -> getRecyclerView
+    io.reactivex.Observable getEvents() -> getEvents
+    40:57:void display(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiState) -> a
+    60:64:void onDetachedFromWindow() -> onDetachedFromWindow
+    27:37:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    27:27:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView) -> a
+    27:27:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView) -> b
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$display$1 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$a:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$display$1 INSTANCE -> a
+    27:27:java.lang.Object apply(java.lang.Object) -> a
+    53:53:com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$SelectAlbum apply(java.lang.String) -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$events$2 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$b:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView this$0 -> a
+    27:27:java.lang.Object invoke() -> a
+    33:67:io.reactivex.Observable invoke() -> b
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$events$2$1 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$b$1:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.AlbumView$events$2$1 INSTANCE -> a
+    27:27:java.lang.Object apply(java.lang.Object) -> a
+    33:33:com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$Back apply(kotlin.Unit) -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.a:
+    com.jakewharton.rxrelay2.PublishRelay itemClickRelay -> b
+    io.reactivex.Observable itemClick -> c
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Companion Companion -> a
+    35:35:io.reactivex.Observable getItemClick() -> d
+    38:40:com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder onCreateViewHolder(android.view.ViewGroup,int) -> c
+    21:21:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
+    44:55:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder,android.database.Cursor) -> a
+    21:21:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,android.database.Cursor) -> a
+    21:35:void <init>(android.content.Context) -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Companion -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.a$a:
+    82:82:void <init>() -> <init>
+    82:82:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.a$b:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> q
+    kotlin.properties.ReadOnlyProperty image$delegate -> r
+    kotlin.properties.ReadOnlyProperty name$delegate -> s
+    kotlin.properties.ReadOnlyProperty count$delegate -> t
+    java.lang.String currentBucketId -> u
+    com.jakewharton.rxrelay2.PublishRelay itemClickRelay -> v
+    void <clinit>() -> <clinit>
+    android.widget.ImageView getImage() -> A
+    android.widget.TextView getName() -> B
+    android.widget.TextView getCount() -> C
+    70:79:void bind(java.lang.String,android.net.Uri,java.lang.String,int) -> a
+    57:66:void <init>(android.view.View,com.jakewharton.rxrelay2.PublishRelay) -> <init>
+    57:57:java.lang.String access$getCurrentBucketId$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder) -> a
+    57:57:com.jakewharton.rxrelay2.PublishRelay access$getItemClickRelay$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder) -> b
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder$1 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.a$b$1:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder this$0 -> a
+    66:66:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter$Holder) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.b:
+    java.lang.Long epochDay -> j
+    int type -> k
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> l
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController$Companion Companion -> i
+    41:41:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    45:78:void onAttach(android.view.View) -> b
+    67:68:void onDetach(android.view.View) -> c
+    21:38:void <init>(android.os.Bundle) -> <init>
+    22:30:void <init>(java.lang.Long,int,java.lang.String) -> <init>
+    void <clinit>() -> <clinit>
+    21:21:java.lang.Long access$getEpochDay$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController) -> a
+    21:21:int access$getType$p(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController) -> b
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController$Companion -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.b$a:
+    70:70:void <init>() -> <init>
+    70:70:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController$onAttach$1 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.b$b:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController this$0 -> a
+    21:21:void accept(java.lang.Object) -> a
+    54:54:void accept(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$Back) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController$onAttach$2 -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.b$c:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController this$0 -> a
+    21:21:void accept(java.lang.Object) -> a
+    59:63:void accept(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$SelectAlbum) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.c:
+    18:18:void <init>() -> <init>
+    18:18:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$Back -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.c$a:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$Back INSTANCE -> a
+    19:19:void <init>() -> <init>
+    19:19:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiEvent$SelectAlbum -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.c$b:
+    java.lang.String bucketId -> a
+    20:20:java.lang.String getBucketId() -> a
+    20:20:void <init>(java.lang.String) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiState -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.d:
+    23:23:void <init>() -> <init>
+    23:23:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiState$Loaded -> com.drspaceboo.transtracks.ui.selectphoto.selectalbum.d$a:
+    com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumUiState$Loaded INSTANCE -> a
+    24:24:void <init>() -> <init>
+    24:24:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a:
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> b
+    io.reactivex.Observable events -> c
+    boolean selectionMode -> d
+    java.util.ArrayList selectedUris -> e
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$Companion Companion -> a
+    33:33:io.reactivex.Observable getEvents() -> d
+    35:35:boolean getSelectionMode() -> e
+    37:47:void setSelectionMode(boolean) -> a
+    52:55:int getItemViewType(int) -> a
+    60:60:int getItemCount() -> a
+    63:66:int getSpanSize(int) -> c
+    69:77:int getItemPosition(android.net.Uri) -> a
+    81:81:java.util.ArrayList getSelectedUris() -> f
+    85:91:android.net.Uri getUri(int) -> d
+    95:98:android.net.Uri getUri(android.database.Cursor) -> a
+    102:113:com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$BaseHolder onCreateViewHolder(android.view.ViewGroup,int) -> c
+    29:29:android.support.v7.widget.RecyclerView$ViewHolder onCreateViewHolder(android.view.ViewGroup,int) -> a
+    119:130:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$BaseHolder,int) -> a
+    29:29:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,int) -> a
+    133:139:void onBindViewHolder(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$BaseHolder,android.database.Cursor) -> a
+    29:29:void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,android.database.Cursor) -> a
+    142:144:void updateSelectedUris(java.util.ArrayList) -> a
+    29:49:void <init>(android.content.Context,java.lang.String) -> <init>
+    void <clinit>() -> <clinit>
+    29:29:java.util.ArrayList access$getSelectedUris$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter) -> a
+    29:29:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter) -> b
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$BaseHolder -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$a:
+    146:146:void <init>(android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$Companion -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$b:
+    244:249:android.database.Cursor getSingleAlbumCursor(android.content.Context,java.lang.String) -> a
+    239:239:void <init>() -> <init>
+    239:239:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$CountHolder -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$c:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> q
+    kotlin.properties.ReadOnlyProperty text$delegate -> r
+    void <clinit>() -> <clinit>
+    android.widget.TextView getText() -> A
+    235:236:void bind(int) -> c
+    231:232:void <init>(android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$d:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> q
+    kotlin.properties.ReadOnlyProperty image$delegate -> r
+    kotlin.properties.ReadOnlyProperty selection$delegate -> s
+    java.lang.ref.WeakReference adapterRef -> t
+    android.net.Uri currentUri -> u
+    void <clinit>() -> <clinit>
+    android.widget.ImageView getImage() -> A
+    android.widget.ImageView getSelection() -> B
+    195:228:void bind(android.net.Uri,boolean,boolean) -> a
+    148:179:void <init>(android.view.View,com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter) -> <init>
+    148:148:android.net.Uri access$getCurrentUri$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder) -> a
+    148:148:java.lang.ref.WeakReference access$getAdapterRef$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder) -> b
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder$1 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$d$1:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder this$0 -> a
+    159:177:void onClick(android.view.View) -> onClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder$2 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$d$2:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder this$0 -> a
+    android.view.View $itemView -> b
+    180:190:boolean onLongClick(android.view.View) -> onLongClick
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder,android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter$ImageHolder$bind$1 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.a$d$a:
+    android.net.Uri $uri -> a
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter $adapter -> b
+    204:204:void onSuccess() -> a
+    207:211:void onError(java.lang.Exception) -> a
+    202:202:void <init>(android.net.Uri,com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b:
+    java.lang.String bucketId -> j
+    java.lang.Long epochDay -> k
+    int type -> l
+    io.reactivex.disposables.CompositeDisposable viewDisposables -> m
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$Companion Companion -> i
+    45:45:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
+    49:106:void onAttach(android.view.View) -> b
+    91:92:void onDetach(android.view.View) -> c
+    22:42:void <init>(android.os.Bundle) -> <init>
+    23:33:void <init>(java.lang.String,java.lang.Long,int,java.lang.String) -> <init>
+    23:24:void <init>(java.lang.String,java.lang.Long,int,java.lang.String,int,kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+    void <clinit>() -> <clinit>
+    22:22:java.lang.Long access$getEpochDay$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> a
+    22:22:int access$getType$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> b
+    22:22:java.lang.String access$getBucketId$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> c
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$Companion -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$a:
+    94:94:void <init>() -> <init>
+    94:94:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$onAttach$1 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$b:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController this$0 -> a
+    22:22:void accept(java.lang.Object) -> a
+    57:57:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$Back) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$onAttach$2 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$c:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController this$0 -> a
+    22:22:void accept(java.lang.Object) -> a
+    61:65:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SelectPhoto) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$onAttach$3 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$d:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController this$0 -> a
+    android.view.View $view -> b
+    22:22:void accept(java.lang.Object) -> a
+    70:75:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SelectionUpdate) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController,android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$onAttach$4 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$e:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController this$0 -> a
+    android.view.View $view -> b
+    22:22:void accept(java.lang.Object) -> a
+    79:79:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$EndMultiSelect) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController,android.view.View) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController$onAttach$5 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.b$f:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController this$0 -> a
+    22:22:void accept(java.lang.Object) -> a
+    83:87:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SaveMultiple) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumController) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c:
+    25:25:void <init>() -> <init>
+    25:25:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$Back -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c$a:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$Back INSTANCE -> a
+    26:26:void <init>() -> <init>
+    26:26:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$EndMultiSelect -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c$b:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$EndMultiSelect INSTANCE -> a
+    29:29:void <init>() -> <init>
+    29:29:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SaveMultiple -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c$c:
+    java.util.ArrayList uris -> a
+    30:30:java.util.ArrayList getUris() -> a
+    30:30:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SelectPhoto -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c$d:
+    android.net.Uri uri -> a
+    27:27:android.net.Uri getUri() -> a
+    27:27:void <init>(android.net.Uri) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$SelectionUpdate -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.c$e:
+    java.util.ArrayList uris -> a
+    28:28:java.util.ArrayList getUris() -> a
+    28:28:void <init>(java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.d:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState$Companion Companion -> a
+    33:33:void <init>() -> <init>
+    void <clinit>() -> <clinit>
+    33:33:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState$Companion -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.d$a:
+    38:41:java.lang.String getBucketId(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState) -> a
+    37:37:void <init>() -> <init>
+    37:37:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState$Loaded -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.d$b:
+    java.lang.String bucketId -> b
+    34:34:java.lang.String getBucketId() -> a
+    34:34:void <init>(java.lang.String) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState$Selection -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.d$c:
+    java.lang.String bucketId -> b
+    java.util.ArrayList selectedUris -> c
+    35:35:java.lang.String getBucketId() -> a
+    35:35:java.util.ArrayList getSelectedUris() -> b
+    35:35:void <init>(java.lang.String,java.util.ArrayList) -> <init>
+    java.lang.String toString() -> toString
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView:
+    kotlin.reflect.KProperty[] $$delegatedProperties -> g
+    kotlin.properties.ReadOnlyProperty toolbar$delegate -> i
+    kotlin.properties.ReadOnlyProperty recyclerView$delegate -> j
+    com.jakewharton.rxrelay2.PublishRelay eventRelay -> k
+    kotlin.Lazy events$delegate -> l
+    io.reactivex.disposables.Disposable photoClickDisposable -> m
+    android.support.v7.widget.GridLayoutManager gridLayoutManager -> n
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter adapter -> o
+    java.lang.String bucketId -> p
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$actionModeHandler$1 actionModeHandler -> q
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$Companion Companion -> h
+    void <clinit>() -> <clinit>
+    android.support.v7.widget.Toolbar getToolbar() -> getToolbar
+    android.support.v7.widget.RecyclerView getRecyclerView() -> getRecyclerView
+    io.reactivex.Observable getEvents() -> getEvents
+    81:85:void onAttachedToWindow() -> onAttachedToWindow
+    88:93:void onDetachedFromWindow() -> onDetachedFromWindow
+    96:138:void display(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiState) -> a
+    45:140:void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    45:45:android.support.v7.widget.Toolbar access$getToolbar$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> a
+    45:45:com.jakewharton.rxrelay2.PublishRelay access$getEventRelay$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> b
+    45:45:android.support.v7.widget.GridLayoutManager access$getGridLayoutManager$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> c
+    45:45:com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumAdapter access$getAdapter$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> d
+    45:45:java.lang.String access$getBucketId$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> e
+    45:45:android.support.v7.widget.RecyclerView access$getRecyclerView$p(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> f
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$Companion -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$a:
+    192:192:void <init>() -> <init>
+    192:192:void <init>(kotlin.jvm.internal.DefaultConstructorMarker) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$actionModeHandler$1 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$b:
+    java.lang.ref.WeakReference modeRef -> b
+    java.lang.String titleText -> c
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView this$0 -> a
+    145:158:boolean onActionItemClicked(android.view.ActionMode,android.view.MenuItem) -> onActionItemClicked
+    162:165:boolean onCreateActionMode(android.view.ActionMode,android.view.Menu) -> onCreateActionMode
+    169:170:boolean onPrepareActionMode(android.view.ActionMode,android.view.Menu) -> onPrepareActionMode
+    174:176:void onDestroyActionMode(android.view.ActionMode) -> onDestroyActionMode
+    179:180:void finish() -> a
+    183:183:boolean isActive() -> b
+    187:189:void setTitle(java.lang.String) -> a
+    140:142:void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$c:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView this$0 -> a
+    45:45:java.lang.Object invoke() -> a
+    51:197:io.reactivex.Observable invoke() -> b
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView) -> <init>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2$1 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$c$1:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2$1 INSTANCE -> a
+    45:45:java.lang.Object apply(java.lang.Object) -> a
+    51:51:com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent$Back apply(kotlin.Unit) -> a
+    void <init>() -> <init>
+    void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2$2 -> com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$c$2:
+    com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2 this$0 -> a
+    45:45:void accept(java.lang.Object) -> a
+    53:70:void accept(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumUiEvent) -> a
+    void <init>(com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumView$events$2) -> <init>
 com.drspaceboo.transtracks.ui.settings.SettingsController -> com.drspaceboo.transtracks.ui.settings.a:
     io.reactivex.disposables.CompositeDisposable viewDisposables -> i
     52:52:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup) -> a
@@ -25802,6 +26417,7 @@ com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter -> com.drspaceboo
     boolean mDataValid -> b
     int mRowIdColumn -> c
     android.database.DataSetObserver mDataSetObserver -> d
+    30:30:android.database.Cursor getCursor() -> g
     50:52:int getItemCount() -> a
     56:58:long getItemId(int) -> b
     void onBindViewHolder(android.support.v7.widget.RecyclerView$ViewHolder,android.database.Cursor) -> a
@@ -25847,11 +26463,11 @@ com.drspaceboo.transtracks.util.AdViewsKt -> com.drspaceboo.transtracks.c.a:
     6:8:void loadAd(com.google.android.gms.ads.AdView) -> a
 com.drspaceboo.transtracks.util.AnalyticsUtil -> com.drspaceboo.transtracks.c.b:
     com.drspaceboo.transtracks.util.AnalyticsUtil INSTANCE -> a
-    35:38:void logEvent(com.drspaceboo.transtracks.util.Event) -> a
-    40:51:java.lang.String getEventName(com.drspaceboo.transtracks.util.Event) -> b
-    53:74:android.os.Bundle getEventBundle(com.drspaceboo.transtracks.util.Event) -> c
-    29:29:void <init>() -> <init>
-    29:29:void <clinit>() -> <clinit>
+    39:42:void logEvent(com.drspaceboo.transtracks.util.Event) -> a
+    44:57:java.lang.String getEventName(com.drspaceboo.transtracks.util.Event) -> b
+    59:80:android.os.Bundle getEventBundle(com.drspaceboo.transtracks.util.Event) -> c
+    33:33:void <init>() -> <init>
+    33:33:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.ArraysKt -> com.drspaceboo.transtracks.c.c:
     4:9:void nullAllElements(java.lang.Object[]) -> a
 com.drspaceboo.transtracks.util.ClosablesKt -> com.drspaceboo.transtracks.c.d:
@@ -25902,18 +26518,26 @@ com.drspaceboo.transtracks.util.Event$MilestonesControllerShown -> com.drspacebo
     com.drspaceboo.transtracks.util.Event$MilestonesControllerShown INSTANCE -> a
     20:20:void <init>() -> <init>
     20:20:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.util.Event$SelectPhotoControllerShown -> com.drspaceboo.transtracks.c.h$h:
+com.drspaceboo.transtracks.util.Event$SelectAlbumControllerShown -> com.drspaceboo.transtracks.c.h$h:
+    com.drspaceboo.transtracks.util.Event$SelectAlbumControllerShown INSTANCE -> a
+    24:24:void <init>() -> <init>
+    24:24:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.util.Event$SelectPhotoControllerShown -> com.drspaceboo.transtracks.c.h$i:
     com.drspaceboo.transtracks.util.Event$SelectPhotoControllerShown INSTANCE -> a
     22:22:void <init>() -> <init>
     22:22:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.util.Event$SettingsControllerShown -> com.drspaceboo.transtracks.c.h$i:
+com.drspaceboo.transtracks.util.Event$SettingsControllerShown -> com.drspaceboo.transtracks.c.h$j:
     com.drspaceboo.transtracks.util.Event$SettingsControllerShown INSTANCE -> a
-    24:24:void <init>() -> <init>
-    24:24:void <clinit>() -> <clinit>
-com.drspaceboo.transtracks.util.Event$SinglePhotoControllerShown -> com.drspaceboo.transtracks.c.h$j:
-    com.drspaceboo.transtracks.util.Event$SinglePhotoControllerShown INSTANCE -> a
+    28:28:void <init>() -> <init>
+    28:28:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.util.Event$SingleAlbumControllerShown -> com.drspaceboo.transtracks.c.h$k:
+    com.drspaceboo.transtracks.util.Event$SingleAlbumControllerShown INSTANCE -> a
     26:26:void <init>() -> <init>
     26:26:void <clinit>() -> <clinit>
+com.drspaceboo.transtracks.util.Event$SinglePhotoControllerShown -> com.drspaceboo.transtracks.c.h$l:
+    com.drspaceboo.transtracks.util.Event$SinglePhotoControllerShown INSTANCE -> a
+    30:30:void <init>() -> <init>
+    30:30:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.ExifInterfacesKt -> com.drspaceboo.transtracks.c.i:
     java.util.regex.Pattern sNonZeroTimePattern -> a
     java.text.SimpleDateFormat sFormatter -> b
@@ -25923,12 +26547,13 @@ com.drspaceboo.transtracks.util.ExifInterfacesKt -> com.drspaceboo.transtracks.c
     60:210:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.FileUtil -> com.drspaceboo.transtracks.c.j:
     com.drspaceboo.transtracks.util.FileUtil INSTANCE -> a
-    14:22:java.io.File getNewImageFile(org.threeten.bp.LocalDate) -> a
-    26:27:void clearTempFolder() -> a
-    30:33:java.io.File getTempFolder() -> c
-    37:40:java.io.File getTempImageFile() -> b
-    10:10:void <init>() -> <init>
-    10:10:void <clinit>() -> <clinit>
+    15:16:void clearTempFolder() -> a
+    19:27:java.io.File getNewImageFile(org.threeten.bp.LocalDate) -> a
+    31:34:java.io.File getTempFolder() -> c
+    38:41:java.io.File getTempImageFile() -> b
+    45:48:void removeImageFromGallery(java.lang.String) -> a
+    11:11:void <init>() -> <init>
+    11:11:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.FilesKt -> com.drspaceboo.transtracks.c.k:
     11:18:long dateCreated(java.io.File) -> a
 com.drspaceboo.transtracks.util.LocalDatesKt -> com.drspaceboo.transtracks.c.l:
@@ -25949,23 +26574,29 @@ com.drspaceboo.transtracks.util.PrefUtil -> com.drspaceboo.transtracks.c.o:
     com.f2prateek.rx.preferences2.Preference lockCode -> c
     com.f2prateek.rx.preferences2.Preference lockDelay -> d
     com.f2prateek.rx.preferences2.Preference lockType -> e
-    com.f2prateek.rx.preferences2.Preference showAds -> f
-    com.f2prateek.rx.preferences2.Preference showWelcome -> g
-    com.f2prateek.rx.preferences2.Preference startDate -> h
-    com.f2prateek.rx.preferences2.Preference theme -> i
-    com.f2prateek.rx.preferences2.Preference userLastSeen -> j
+    com.f2prateek.rx.preferences2.Preference selectPhotoFirstVisible -> f
+    com.f2prateek.rx.preferences2.Preference showAds -> g
+    com.f2prateek.rx.preferences2.Preference showWelcome -> h
+    com.f2prateek.rx.preferences2.Preference startDate -> i
+    com.f2prateek.rx.preferences2.Preference theme -> j
+    com.f2prateek.rx.preferences2.Preference userLastSeen -> k
     com.drspaceboo.transtracks.util.PrefUtil INSTANCE -> a
-    52:52:com.f2prateek.rx.preferences2.Preference getLockCode() -> a
-    54:54:com.f2prateek.rx.preferences2.Preference getLockDelay() -> b
-    57:65:long getLockDelayMilli() -> c
-    68:68:com.f2prateek.rx.preferences2.Preference getLockType() -> d
-    70:70:com.f2prateek.rx.preferences2.Preference getShowAds() -> e
-    72:72:com.f2prateek.rx.preferences2.Preference getShowWelcome() -> f
-    74:74:com.f2prateek.rx.preferences2.Preference getStartDate() -> g
-    77:77:com.f2prateek.rx.preferences2.Preference getTheme() -> h
-    79:79:com.f2prateek.rx.preferences2.Preference getUserLastSeen() -> i
-    11:11:void <init>() -> <init>
-    11:79:void <clinit>() -> <clinit>
+    55:55:com.f2prateek.rx.preferences2.Preference getLockCode() -> a
+    57:57:com.f2prateek.rx.preferences2.Preference getLockDelay() -> b
+    60:68:long getLockDelayMilli() -> c
+    71:71:com.f2prateek.rx.preferences2.Preference getLockType() -> d
+    73:73:com.f2prateek.rx.preferences2.Preference getSelectPhotoFirstVisible() -> e
+    75:75:com.f2prateek.rx.preferences2.Preference getShowAds() -> f
+    77:77:com.f2prateek.rx.preferences2.Preference getShowWelcome() -> g
+    79:79:com.f2prateek.rx.preferences2.Preference getStartDate() -> h
+    82:82:com.f2prateek.rx.preferences2.Preference getTheme() -> i
+    84:84:com.f2prateek.rx.preferences2.Preference getUserLastSeen() -> j
+    87:88:android.content.SharedPreferences getAlbumFirstVisiblePrefs() -> l
+    92:93:void clearAllAlbumFirstVisiblePrefs() -> k
+    96:97:void setAlbumFirstVisible(java.lang.String,java.lang.String) -> a
+    100:100:java.lang.String getAlbumFirstVisible(java.lang.String) -> a
+    13:13:void <init>() -> <init>
+    13:84:void <clinit>() -> <clinit>
 com.drspaceboo.transtracks.util.Quadruple -> com.drspaceboo.transtracks.c.p:
     java.lang.Object first -> a
     java.lang.Object second -> b
@@ -26073,7 +26704,8 @@ com.f2prateek.rx.preferences2.Preference -> com.a.a.a.g:
     java.lang.Object get() -> b
     void set(java.lang.Object) -> a
     boolean isSet() -> c
-    io.reactivex.Observable asObservable() -> d
+    void delete() -> d
+    io.reactivex.Observable asObservable() -> e
 com.f2prateek.rx.preferences2.Preference$Converter -> com.a.a.a.g$a:
     java.lang.Object deserialize(java.lang.String) -> b
     java.lang.String serialize(java.lang.Object) -> a
@@ -26088,7 +26720,8 @@ com.f2prateek.rx.preferences2.RealPreference -> com.a.a.a.h:
     63:66:java.lang.Object get() -> b
     70:74:void set(java.lang.Object) -> a
     77:77:boolean isSet() -> c
-    85:85:io.reactivex.Observable asObservable() -> d
+    81:82:void delete() -> d
+    85:85:io.reactivex.Observable asObservable() -> e
 com.f2prateek.rx.preferences2.RealPreference$1 -> com.a.a.a.h$1:
     com.f2prateek.rx.preferences2.RealPreference this$0 -> a
     47:47:void <init>(com.f2prateek.rx.preferences2.RealPreference) -> <init>
@@ -54459,6 +55092,7 @@ io.reactivex.Observable -> io.b.e:
     1688:1695:io.reactivex.Observable fromArray(java.lang.Object[]) -> a
     2261:2262:io.reactivex.Observable just(java.lang.Object) -> c
     2835:2837:io.reactivex.Observable merge(io.reactivex.ObservableSource,io.reactivex.ObservableSource) -> a
+    2866:2869:io.reactivex.Observable merge(io.reactivex.ObservableSource,io.reactivex.ObservableSource,io.reactivex.ObservableSource) -> a
     2902:2906:io.reactivex.Observable merge(io.reactivex.ObservableSource,io.reactivex.ObservableSource,io.reactivex.ObservableSource,io.reactivex.ObservableSource) -> a
     2931:2931:io.reactivex.Observable mergeArray(io.reactivex.ObservableSource[]) -> b
     3809:3813:io.reactivex.Observable wrap(io.reactivex.ObservableSource) -> a
@@ -54467,8 +55101,10 @@ io.reactivex.Observable -> io.b.e:
     6018:6018:io.reactivex.Observable compose(io.reactivex.ObservableTransformer) -> a
     6854:6854:io.reactivex.Observable distinctUntilChanged() -> f
     6878:6879:io.reactivex.Observable distinctUntilChanged(io.reactivex.functions.Function) -> a
+    7040:7044:io.reactivex.Observable doOnEach(io.reactivex.functions.Consumer,io.reactivex.functions.Consumer,io.reactivex.functions.Action,io.reactivex.functions.Action) -> a
     7147:7149:io.reactivex.Observable doOnLifecycle(io.reactivex.functions.Consumer,io.reactivex.functions.Action) -> a
-    7192:7192:io.reactivex.Observable doOnSubscribe(io.reactivex.functions.Consumer) -> a
+    7169:7169:io.reactivex.Observable doOnNext(io.reactivex.functions.Consumer) -> a
+    7192:7192:io.reactivex.Observable doOnSubscribe(io.reactivex.functions.Consumer) -> b
     7326:7327:io.reactivex.Observable filter(io.reactivex.functions.Predicate) -> a
     7474:7474:io.reactivex.Observable flatMap(io.reactivex.functions.Function,boolean,int) -> a
     7510:7521:io.reactivex.Observable flatMap(io.reactivex.functions.Function,boolean,int,int) -> a
@@ -54485,7 +55121,7 @@ io.reactivex.Observable -> io.b.e:
     10230:10230:io.reactivex.Observable share() -> i
     10726:10727:io.reactivex.Observable startWith(java.lang.Object) -> d
     10774:10774:io.reactivex.disposables.Disposable subscribe() -> j
-    10799:10799:io.reactivex.disposables.Disposable subscribe(io.reactivex.functions.Consumer) -> b
+    10799:10799:io.reactivex.disposables.Disposable subscribe(io.reactivex.functions.Consumer) -> c
     10889:10898:io.reactivex.disposables.Disposable subscribe(io.reactivex.functions.Consumer,io.reactivex.functions.Consumer,io.reactivex.functions.Action,io.reactivex.functions.Consumer) -> a
     10904:10923:void subscribe(io.reactivex.Observer) -> b
     void subscribeActual(io.reactivex.Observer) -> a
@@ -55032,35 +55668,57 @@ io.reactivex.internal.operators.observable.ObservableDistinctUntilChanged$Distin
     58:86:void onNext(java.lang.Object) -> a_
     90:90:int requestFusion(int) -> a
     97:113:java.lang.Object poll() -> x_
-io.reactivex.internal.operators.observable.ObservableDoOnLifecycle -> io.b.e.e.a.g:
+io.reactivex.internal.operators.observable.ObservableDoOnEach -> io.b.e.e.a.g:
+    io.reactivex.functions.Consumer onNext -> b
+    io.reactivex.functions.Consumer onError -> c
+    io.reactivex.functions.Action onComplete -> d
+    io.reactivex.functions.Action onAfterTerminate -> e
+    33:38:void <init>(io.reactivex.ObservableSource,io.reactivex.functions.Consumer,io.reactivex.functions.Consumer,io.reactivex.functions.Action,io.reactivex.functions.Action) -> <init>
+    42:43:void subscribeActual(io.reactivex.Observer) -> a
+io.reactivex.internal.operators.observable.ObservableDoOnEach$DoOnEachObserver -> io.b.e.e.a.g$a:
+    io.reactivex.Observer actual -> a
+    io.reactivex.functions.Consumer onNext -> b
+    io.reactivex.functions.Consumer onError -> c
+    io.reactivex.functions.Action onComplete -> d
+    io.reactivex.functions.Action onAfterTerminate -> e
+    io.reactivex.disposables.Disposable s -> f
+    boolean done -> g
+    61:67:void <init>(io.reactivex.Observer,io.reactivex.functions.Consumer,io.reactivex.functions.Consumer,io.reactivex.functions.Action,io.reactivex.functions.Action) -> <init>
+    71:75:void onSubscribe(io.reactivex.disposables.Disposable) -> a
+    80:81:void dispose() -> a
+    85:85:boolean isDisposed() -> b
+    91:104:void onNext(java.lang.Object) -> a_
+    108:127:void onError(java.lang.Throwable) -> a
+    131:151:void onComplete() -> c
+io.reactivex.internal.operators.observable.ObservableDoOnLifecycle -> io.b.e.e.a.h:
     io.reactivex.functions.Consumer onSubscribe -> b
     io.reactivex.functions.Action onDispose -> c
     26:29:void <init>(io.reactivex.Observable,io.reactivex.functions.Consumer,io.reactivex.functions.Action) -> <init>
     33:34:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableEmpty -> io.b.e.e.a.h:
+io.reactivex.internal.operators.observable.ObservableEmpty -> io.b.e.e.a.i:
     io.reactivex.Observable INSTANCE -> a
     23:24:void <init>() -> <init>
     28:29:void subscribeActual(io.reactivex.Observer) -> a
     33:33:java.lang.Object call() -> call
     21:21:void <clinit>() -> <clinit>
-io.reactivex.internal.operators.observable.ObservableFilter -> io.b.e.e.a.i:
+io.reactivex.internal.operators.observable.ObservableFilter -> io.b.e.e.a.j:
     io.reactivex.functions.Predicate predicate -> b
     24:26:void <init>(io.reactivex.ObservableSource,io.reactivex.functions.Predicate) -> <init>
     30:31:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableFilter$FilterObserver -> io.b.e.e.a.i$a:
+io.reactivex.internal.operators.observable.ObservableFilter$FilterObserver -> io.b.e.e.a.j$a:
     io.reactivex.functions.Predicate filter -> f
     37:39:void <init>(io.reactivex.Observer,io.reactivex.functions.Predicate) -> <init>
     43:57:void onNext(java.lang.Object) -> a_
     61:61:int requestFusion(int) -> a
     68:72:java.lang.Object poll() -> x_
-io.reactivex.internal.operators.observable.ObservableFlatMap -> io.b.e.e.a.j:
+io.reactivex.internal.operators.observable.ObservableFlatMap -> io.b.e.e.a.k:
     io.reactivex.functions.Function mapper -> b
     boolean delayErrors -> c
     int maxConcurrency -> d
     int bufferSize -> e
     41:46:void <init>(io.reactivex.ObservableSource,io.reactivex.functions.Function,boolean,int,int) -> <init>
     51:56:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableFlatMap$InnerObserver -> io.b.e.e.a.j$a:
+io.reactivex.internal.operators.observable.ObservableFlatMap$InnerObserver -> io.b.e.e.a.k$a:
     long id -> a
     io.reactivex.internal.operators.observable.ObservableFlatMap$MergeObserver parent -> b
     boolean done -> c
@@ -55072,7 +55730,7 @@ io.reactivex.internal.operators.observable.ObservableFlatMap$InnerObserver -> io
     566:575:void onError(java.lang.Throwable) -> a
     578:580:void onComplete() -> c
     583:584:void dispose() -> a
-io.reactivex.internal.operators.observable.ObservableFlatMap$MergeObserver -> io.b.e.e.a.j$b:
+io.reactivex.internal.operators.observable.ObservableFlatMap$MergeObserver -> io.b.e.e.a.k$b:
     io.reactivex.Observer actual -> a
     io.reactivex.functions.Function mapper -> b
     boolean delayErrors -> c
@@ -55108,11 +55766,11 @@ io.reactivex.internal.operators.observable.ObservableFlatMap$MergeObserver -> io
     487:499:boolean checkTerminate() -> f
     503:514:boolean disposeAll() -> g
     78:80:void <clinit>() -> <clinit>
-io.reactivex.internal.operators.observable.ObservableFromArray -> io.b.e.e.a.k:
+io.reactivex.internal.operators.observable.ObservableFromArray -> io.b.e.e.a.l:
     java.lang.Object[] array -> a
     23:25:void <init>(java.lang.Object[]) -> <init>
     28:37:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableFromArray$FromArrayDisposable -> io.b.e.e.a.k$a:
+io.reactivex.internal.operators.observable.ObservableFromArray$FromArrayDisposable -> io.b.e.e.a.l$a:
     io.reactivex.Observer actual -> a
     java.lang.Object[] array -> b
     int index -> c
@@ -55126,29 +55784,29 @@ io.reactivex.internal.operators.observable.ObservableFromArray$FromArrayDisposab
     89:90:void dispose() -> a
     94:94:boolean isDisposed() -> b
     98:112:void run() -> f
-io.reactivex.internal.operators.observable.ObservableFromUnsafeSource -> io.b.e.e.a.l:
+io.reactivex.internal.operators.observable.ObservableFromUnsafeSource -> io.b.e.e.a.m:
     io.reactivex.ObservableSource source -> a
     21:23:void <init>(io.reactivex.ObservableSource) -> <init>
     27:28:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableJust -> io.b.e.e.a.m:
+io.reactivex.internal.operators.observable.ObservableJust -> io.b.e.e.a.n:
     java.lang.Object value -> a
     27:29:void <init>(java.lang.Object) -> <init>
     33:36:void subscribeActual(io.reactivex.Observer) -> a
     40:40:java.lang.Object call() -> call
-io.reactivex.internal.operators.observable.ObservableMap -> io.b.e.e.a.n:
+io.reactivex.internal.operators.observable.ObservableMap -> io.b.e.e.a.o:
     io.reactivex.functions.Function function -> b
     27:29:void <init>(io.reactivex.ObservableSource,io.reactivex.functions.Function) -> <init>
     33:34:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableMap$MapObserver -> io.b.e.e.a.n$a:
+io.reactivex.internal.operators.observable.ObservableMap$MapObserver -> io.b.e.e.a.o$a:
     io.reactivex.functions.Function mapper -> f
     41:43:void <init>(io.reactivex.Observer,io.reactivex.functions.Function) -> <init>
     47:65:void onNext(java.lang.Object) -> a_
     69:69:int requestFusion(int) -> a
     75:76:java.lang.Object poll() -> x_
-io.reactivex.internal.operators.observable.ObservableMaterialize -> io.b.e.e.a.o:
+io.reactivex.internal.operators.observable.ObservableMaterialize -> io.b.e.e.a.p:
     24:25:void <init>(io.reactivex.ObservableSource) -> <init>
     29:30:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableMaterialize$MaterializeObserver -> io.b.e.e.a.o$a:
+io.reactivex.internal.operators.observable.ObservableMaterialize$MaterializeObserver -> io.b.e.e.a.p$a:
     io.reactivex.Observer actual -> a
     io.reactivex.disposables.Disposable s -> b
     37:39:void <init>(io.reactivex.Observer) -> <init>
@@ -55158,13 +55816,13 @@ io.reactivex.internal.operators.observable.ObservableMaterialize$MaterializeObse
     62:63:void onNext(java.lang.Object) -> a_
     67:70:void onError(java.lang.Throwable) -> a
     74:78:void onComplete() -> c
-io.reactivex.internal.operators.observable.ObservableObserveOn -> io.b.e.e.a.p:
+io.reactivex.internal.operators.observable.ObservableObserveOn -> io.b.e.e.a.q:
     io.reactivex.Scheduler scheduler -> b
     boolean delayError -> c
     int bufferSize -> d
     32:36:void <init>(io.reactivex.ObservableSource,io.reactivex.Scheduler,boolean,int) -> <init>
     40:47:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableObserveOn$ObserveOnObserver -> io.b.e.e.a.p$a:
+io.reactivex.internal.operators.observable.ObservableObserveOn$ObserveOnObserver -> io.b.e.e.a.q$a:
     io.reactivex.Observer actual -> a
     io.reactivex.Scheduler$Worker worker -> b
     boolean delayError -> c
@@ -55192,21 +55850,21 @@ io.reactivex.internal.operators.observable.ObservableObserveOn$ObserveOnObserver
     302:302:java.lang.Object poll() -> x_
     307:308:void clear() -> e
     312:312:boolean isEmpty() -> d
-io.reactivex.internal.operators.observable.ObservablePublish -> io.b.e.e.a.q:
+io.reactivex.internal.operators.observable.ObservablePublish -> io.b.e.e.a.r:
     io.reactivex.ObservableSource source -> a
     java.util.concurrent.atomic.AtomicReference current -> b
     io.reactivex.ObservableSource onSubscribe -> c
     49:51:io.reactivex.observables.ConnectableObservable create(io.reactivex.ObservableSource) -> b
     55:59:void <init>(io.reactivex.ObservableSource,io.reactivex.ObservableSource,java.util.concurrent.atomic.AtomicReference) -> <init>
     68:69:void subscribeActual(io.reactivex.Observer) -> a
-    78:118:void connect(io.reactivex.functions.Consumer) -> c
-io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable -> io.b.e.e.a.q$a:
+    78:118:void connect(io.reactivex.functions.Consumer) -> d
+io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable -> io.b.e.e.a.r$a:
     io.reactivex.Observer child -> a
     294:296:void <init>(io.reactivex.Observer) -> <init>
     300:300:boolean isDisposed() -> b
     306:310:void dispose() -> a
     313:316:void setParent(io.reactivex.internal.operators.observable.ObservablePublish$PublishObserver) -> a
-io.reactivex.internal.operators.observable.ObservablePublish$PublishObserver -> io.b.e.e.a.q$b:
+io.reactivex.internal.operators.observable.ObservablePublish$PublishObserver -> io.b.e.e.a.r$b:
     java.util.concurrent.atomic.AtomicReference current -> a
     io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable[] EMPTY -> b
     io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable[] TERMINATED -> c
@@ -55223,11 +55881,11 @@ io.reactivex.internal.operators.observable.ObservablePublish$PublishObserver -> 
     209:227:boolean add(io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable) -> a
     239:278:void remove(io.reactivex.internal.operators.observable.ObservablePublish$InnerDisposable) -> b
     127:129:void <clinit>() -> <clinit>
-io.reactivex.internal.operators.observable.ObservablePublish$PublishSource -> io.b.e.e.a.q$c:
+io.reactivex.internal.operators.observable.ObservablePublish$PublishSource -> io.b.e.e.a.r$c:
     java.util.concurrent.atomic.AtomicReference curr -> a
     322:324:void <init>(java.util.concurrent.atomic.AtomicReference) -> <init>
     329:383:void subscribe(io.reactivex.Observer) -> b
-io.reactivex.internal.operators.observable.ObservableRefCount -> io.b.e.e.a.r:
+io.reactivex.internal.operators.observable.ObservableRefCount -> io.b.e.e.a.s:
     io.reactivex.observables.ConnectableObservable source -> b
     io.reactivex.disposables.CompositeDisposable baseDisposable -> c
     java.util.concurrent.atomic.AtomicInteger subscriptionCount -> d
@@ -55237,7 +55895,7 @@ io.reactivex.internal.operators.observable.ObservableRefCount -> io.b.e.e.a.r:
     92:92:io.reactivex.functions.Consumer onSubscribe(io.reactivex.Observer,java.util.concurrent.atomic.AtomicBoolean) -> a
     97:103:void doSubscribe(io.reactivex.Observer,io.reactivex.disposables.CompositeDisposable) -> a
     106:106:io.reactivex.disposables.Disposable disconnect(io.reactivex.disposables.CompositeDisposable) -> a
-io.reactivex.internal.operators.observable.ObservableRefCount$ConnectionObserver -> io.b.e.e.a.r$a:
+io.reactivex.internal.operators.observable.ObservableRefCount$ConnectionObserver -> io.b.e.e.a.s$a:
     io.reactivex.Observer subscriber -> a
     io.reactivex.disposables.CompositeDisposable currentBase -> b
     io.reactivex.disposables.Disposable resource -> c
@@ -55250,19 +55908,19 @@ io.reactivex.internal.operators.observable.ObservableRefCount$ConnectionObserver
     150:152:void dispose() -> a
     156:156:boolean isDisposed() -> b
     162:176:void cleanup() -> d
-io.reactivex.internal.operators.observable.ObservableRefCount$DisposeConsumer -> io.b.e.e.a.r$b:
+io.reactivex.internal.operators.observable.ObservableRefCount$DisposeConsumer -> io.b.e.e.a.s$b:
     io.reactivex.Observer observer -> b
     java.util.concurrent.atomic.AtomicBoolean writeLocked -> c
     io.reactivex.internal.operators.observable.ObservableRefCount this$0 -> a
     183:186:void <init>(io.reactivex.internal.operators.observable.ObservableRefCount,io.reactivex.Observer,java.util.concurrent.atomic.AtomicBoolean) -> <init>
     191:199:void accept(io.reactivex.disposables.Disposable) -> a
     179:179:void accept(java.lang.Object) -> a
-io.reactivex.internal.operators.observable.ObservableRefCount$DisposeTask -> io.b.e.e.a.r$c:
+io.reactivex.internal.operators.observable.ObservableRefCount$DisposeTask -> io.b.e.e.a.s$c:
     io.reactivex.disposables.CompositeDisposable current -> b
     io.reactivex.internal.operators.observable.ObservableRefCount this$0 -> a
     205:207:void <init>(io.reactivex.internal.operators.observable.ObservableRefCount,io.reactivex.disposables.CompositeDisposable) -> <init>
     211:228:void run() -> run
-io.reactivex.internal.operators.observable.ObservableReplay -> io.b.e.e.a.s:
+io.reactivex.internal.operators.observable.ObservableReplay -> io.b.e.e.a.t:
     io.reactivex.ObservableSource source -> a
     java.util.concurrent.atomic.AtomicReference current -> b
     io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier bufferFactory -> c
@@ -55275,9 +55933,9 @@ io.reactivex.internal.operators.observable.ObservableReplay -> io.b.e.e.a.s:
     164:165:void dispose() -> a
     169:170:boolean isDisposed() -> b
     175:176:void subscribeActual(io.reactivex.Observer) -> a
-    185:231:void connect(io.reactivex.functions.Consumer) -> c
+    185:231:void connect(io.reactivex.functions.Consumer) -> d
     49:49:void <clinit>() -> <clinit>
-io.reactivex.internal.operators.observable.ObservableReplay$BoundedReplayBuffer -> io.b.e.e.a.s$a:
+io.reactivex.internal.operators.observable.ObservableReplay$BoundedReplayBuffer -> io.b.e.e.a.t$a:
     io.reactivex.internal.operators.observable.ObservableReplay$Node tail -> a
     int size -> b
     596:600:void <init>() -> <init>
@@ -55293,9 +55951,9 @@ io.reactivex.internal.operators.observable.ObservableReplay$BoundedReplayBuffer 
     void truncate() -> c
     737:737:void truncateFinal() -> d
     763:763:io.reactivex.internal.operators.observable.ObservableReplay$Node getHead() -> e
-io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier -> io.b.e.e.a.s$b:
+io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier -> io.b.e.e.a.t$b:
     io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer call() -> a
-io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable -> io.b.e.e.a.s$c:
+io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable -> io.b.e.e.a.t$c:
     io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver parent -> a
     io.reactivex.Observer child -> b
     java.lang.Object index -> c
@@ -55304,19 +55962,19 @@ io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable -> i
     450:450:boolean isDisposed() -> b
     455:460:void dispose() -> a
     467:467:java.lang.Object index() -> c
-io.reactivex.internal.operators.observable.ObservableReplay$Node -> io.b.e.e.a.s$d:
+io.reactivex.internal.operators.observable.ObservableReplay$Node -> io.b.e.e.a.t$d:
     java.lang.Object value -> a
     578:580:void <init>(java.lang.Object) -> <init>
-io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer -> io.b.e.e.a.s$e:
+io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer -> io.b.e.e.a.t$e:
     void next(java.lang.Object) -> a
     void error(java.lang.Throwable) -> a
     void complete() -> b
     void replay(io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable) -> a
-io.reactivex.internal.operators.observable.ObservableReplay$ReplayBufferSupplier -> io.b.e.e.a.s$f:
+io.reactivex.internal.operators.observable.ObservableReplay$ReplayBufferSupplier -> io.b.e.e.a.t$f:
     int bufferSize -> a
     930:932:void <init>(int) -> <init>
     936:936:io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer call() -> a
-io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver -> io.b.e.e.a.s$g:
+io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver -> io.b.e.e.a.t$g:
     io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer buffer -> a
     boolean done -> b
     io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable[] EMPTY -> c
@@ -55335,29 +55993,29 @@ io.reactivex.internal.operators.observable.ObservableReplay$ReplayObserver -> io
     402:406:void replay() -> d
     413:417:void replayFinal() -> e
     244:246:void <clinit>() -> <clinit>
-io.reactivex.internal.operators.observable.ObservableReplay$ReplaySource -> io.b.e.e.a.s$h:
+io.reactivex.internal.operators.observable.ObservableReplay$ReplaySource -> io.b.e.e.a.t$h:
     java.util.concurrent.atomic.AtomicReference curr -> a
     io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier bufferFactory -> b
     963:966:void <init>(java.util.concurrent.atomic.AtomicReference,io.reactivex.internal.operators.observable.ObservableReplay$BufferSupplier) -> <init>
     974:1013:void subscribe(io.reactivex.Observer) -> b
-io.reactivex.internal.operators.observable.ObservableReplay$SizeBoundReplayBuffer -> io.b.e.e.a.s$i:
+io.reactivex.internal.operators.observable.ObservableReplay$SizeBoundReplayBuffer -> io.b.e.e.a.t$i:
     int limit -> c
     777:779:void <init>(int) -> <init>
     784:787:void truncate() -> c
-io.reactivex.internal.operators.observable.ObservableReplay$UnBoundedFactory -> io.b.e.e.a.s$j:
+io.reactivex.internal.operators.observable.ObservableReplay$UnBoundedFactory -> io.b.e.e.a.t$j:
     907:907:void <init>() -> <init>
     910:910:io.reactivex.internal.operators.observable.ObservableReplay$ReplayBuffer call() -> a
-io.reactivex.internal.operators.observable.ObservableReplay$UnboundedReplayBuffer -> io.b.e.e.a.s$k:
+io.reactivex.internal.operators.observable.ObservableReplay$UnboundedReplayBuffer -> io.b.e.e.a.t$k:
     int size -> a
     512:513:void <init>(int) -> <init>
     516:518:void next(java.lang.Object) -> a
     522:524:void error(java.lang.Throwable) -> a
     528:530:void complete() -> b
     534:568:void replay(io.reactivex.internal.operators.observable.ObservableReplay$InnerDisposable) -> a
-io.reactivex.internal.operators.observable.ObservableScalarXMap -> io.b.e.e.a.t:
+io.reactivex.internal.operators.observable.ObservableScalarXMap -> io.b.e.e.a.u:
     51:101:boolean tryScalarXMapSubscribe(io.reactivex.ObservableSource,io.reactivex.Observer,io.reactivex.functions.Function) -> a
     116:116:io.reactivex.Observable scalarXMap(java.lang.Object,io.reactivex.functions.Function) -> a
-io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarDisposable -> io.b.e.e.a.t$a:
+io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarDisposable -> io.b.e.e.a.u$a:
     io.reactivex.Observer observer -> a
     java.lang.Object value -> b
     191:194:void <init>(io.reactivex.Observer,java.lang.Object) -> <init>
@@ -55369,17 +56027,17 @@ io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarDisposable
     233:233:boolean isDisposed() -> b
     238:242:int requestFusion(int) -> a
     247:254:void run() -> run
-io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarXMapObservable -> io.b.e.e.a.t$b:
+io.reactivex.internal.operators.observable.ObservableScalarXMap$ScalarXMapObservable -> io.b.e.e.a.u$b:
     java.lang.Object value -> a
     io.reactivex.functions.Function mapper -> b
     132:135:void <init>(java.lang.Object,io.reactivex.functions.Function) -> <init>
     142:168:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableScanSeed -> io.b.e.e.a.u:
+io.reactivex.internal.operators.observable.ObservableScanSeed -> io.b.e.e.a.v:
     io.reactivex.functions.BiFunction accumulator -> b
     java.util.concurrent.Callable seedSupplier -> c
     30:33:void <init>(io.reactivex.ObservableSource,java.util.concurrent.Callable,io.reactivex.functions.BiFunction) -> <init>
     40:48:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableScanSeed$ScanSeedObserver -> io.b.e.e.a.u$a:
+io.reactivex.internal.operators.observable.ObservableScanSeed$ScanSeedObserver -> io.b.e.e.a.v$a:
     io.reactivex.Observer actual -> a
     io.reactivex.functions.BiFunction accumulator -> b
     java.lang.Object value -> c
@@ -55392,11 +56050,11 @@ io.reactivex.internal.operators.observable.ObservableScanSeed$ScanSeedObserver -
     90:110:void onNext(java.lang.Object) -> a_
     114:120:void onError(java.lang.Throwable) -> a
     124:129:void onComplete() -> c
-io.reactivex.internal.operators.observable.ObservableSubscribeOn -> io.b.e.e.a.v:
+io.reactivex.internal.operators.observable.ObservableSubscribeOn -> io.b.e.e.a.w:
     io.reactivex.Scheduler scheduler -> b
     26:28:void <init>(io.reactivex.ObservableSource,io.reactivex.Scheduler) -> <init>
     32:37:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeOnObserver -> io.b.e.e.a.v$a:
+io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeOnObserver -> io.b.e.e.a.w$a:
     io.reactivex.Observer actual -> a
     java.util.concurrent.atomic.AtomicReference s -> b
     46:49:void <init>(io.reactivex.Observer) -> <init>
@@ -55407,18 +56065,18 @@ io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeOnObse
     73:75:void dispose() -> a
     79:79:boolean isDisposed() -> b
     83:84:void setDisposable(io.reactivex.disposables.Disposable) -> b
-io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeTask -> io.b.e.e.a.v$b:
+io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeTask -> io.b.e.e.a.w$b:
     io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeOnObserver parent -> b
     io.reactivex.internal.operators.observable.ObservableSubscribeOn this$0 -> a
     90:92:void <init>(io.reactivex.internal.operators.observable.ObservableSubscribeOn,io.reactivex.internal.operators.observable.ObservableSubscribeOn$SubscribeOnObserver) -> <init>
     96:97:void run() -> run
-io.reactivex.internal.operators.observable.ObservableSwitchMap -> io.b.e.e.a.w:
+io.reactivex.internal.operators.observable.ObservableSwitchMap -> io.b.e.e.a.x:
     io.reactivex.functions.Function mapper -> b
     int bufferSize -> c
     boolean delayErrors -> d
     37:41:void <init>(io.reactivex.ObservableSource,io.reactivex.functions.Function,int,boolean) -> <init>
     46:51:void subscribeActual(io.reactivex.Observer) -> a
-io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapInnerObserver -> io.b.e.e.a.w$a:
+io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapInnerObserver -> io.b.e.e.a.x$a:
     io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapObserver parent -> a
     long index -> b
     io.reactivex.internal.queue.SpscLinkedArrayQueue queue -> c
@@ -55429,7 +56087,7 @@ io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapInnerObs
     334:335:void onError(java.lang.Throwable) -> a
     339:343:void onComplete() -> c
     346:347:void cancel() -> a
-io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapObserver -> io.b.e.e.a.w$b:
+io.reactivex.internal.operators.observable.ObservableSwitchMap$SwitchMapObserver -> io.b.e.e.a.x$b:
     io.reactivex.Observer actual -> a
     io.reactivex.functions.Function mapper -> b
     int bufferSize -> c
@@ -55782,7 +56440,7 @@ io.reactivex.internal.util.Pow2 -> io.b.e.h.i:
     34:34:int roundToPowerOfTwo(int) -> a
 io.reactivex.observables.ConnectableObservable -> io.b.f.a:
     39:39:void <init>() -> <init>
-    void connect(io.reactivex.functions.Consumer) -> c
+    void connect(io.reactivex.functions.Consumer) -> d
     76:76:io.reactivex.Observable refCount() -> k
 io.reactivex.observers.DisposableObserver -> io.b.g.a:
     java.util.concurrent.atomic.AtomicReference s -> d
@@ -58157,6 +58815,10 @@ kotlin.jvm.internal.ReflectionFactory -> a.d.b.p:
     36:36:java.lang.String renderLambdaToString(kotlin.jvm.internal.Lambda) -> a
     41:42:java.lang.String renderLambdaToString(kotlin.jvm.internal.FunctionBase) -> a
     62:62:kotlin.reflect.KProperty1 property1(kotlin.jvm.internal.PropertyReference1) -> a
+kotlin.jvm.internal.StringCompanionObject -> a.d.b.q:
+    kotlin.jvm.internal.StringCompanionObject INSTANCE -> a
+    54:54:void <init>() -> <init>
+    54:54:void <clinit>() -> <clinit>
 kotlin.properties.ReadOnlyProperty -> a.e.a:
     java.lang.Object getValue(java.lang.Object,kotlin.reflect.KProperty) -> a
 kotlin.ranges.IntProgression -> a.f.a:
