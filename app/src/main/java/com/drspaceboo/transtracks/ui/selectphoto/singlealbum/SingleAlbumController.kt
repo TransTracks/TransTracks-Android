@@ -23,6 +23,7 @@ import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
+import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
@@ -70,6 +71,28 @@ class SingleAlbumController(args: Bundle) : Controller(args) {
                     val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
                     router.pushController(RouterTransaction.with(
                             AssignPhotosController(arrayListOf(event.uri), epochDay, type, popTo))
+                                                  .using(HorizontalChangeHandler()))
+                }
+
+        viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.SelectionUpdate>()
+                .observeOn(RxSchedulers.main())
+                .subscribe { event ->
+                    val state = when {
+                        event.uris.isEmpty() -> SingleAlbumUiState.Loaded(bucketId)
+                        else -> SingleAlbumUiState.Selection(bucketId, event.uris)
+                    }
+                    view.display(state)
+                }
+
+        viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.EndMultiSelect>()
+                .observeOn(RxSchedulers.main())
+                .subscribe { view.display(SingleAlbumUiState.Loaded(bucketId)) }
+
+        viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.SaveMultiple>()
+                .subscribe { event ->
+                    router.pushController(RouterTransaction.with(
+                            AssignPhotosController(event.uris, epochDay, type,
+                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
                                                   .using(HorizontalChangeHandler()))
                 }
     }

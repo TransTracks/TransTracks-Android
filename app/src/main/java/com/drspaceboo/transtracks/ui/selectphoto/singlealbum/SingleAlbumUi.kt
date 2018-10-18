@@ -17,6 +17,9 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.util.PrefUtil
@@ -27,14 +30,26 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import kotterknife.bindView
+import java.lang.ref.WeakReference
 
 sealed class SingleAlbumUiEvent {
     object Back : SingleAlbumUiEvent()
     data class SelectPhoto(val uri: Uri) : SingleAlbumUiEvent()
+    data class SelectionUpdate(var uris: ArrayList<Uri>) : SingleAlbumUiEvent()
+    object EndMultiSelect : SingleAlbumUiEvent()
+    data class SaveMultiple(var uris: ArrayList<Uri>) : SingleAlbumUiEvent()
 }
 
 sealed class SingleAlbumUiState {
     data class Loaded(val bucketId: String) : SingleAlbumUiState()
+    data class Selection(val bucketId: String, val selectedUris: ArrayList<Uri>) : SingleAlbumUiState()
+
+    companion object {
+        fun getBucketId(state: SingleAlbumUiState): String = when (state) {
+            is SingleAlbumUiState.Loaded -> state.bucketId
+            is SingleAlbumUiState.Selection -> state.bucketId
+        }
+    }
 }
 
 class SingleAlbumView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -88,33 +103,99 @@ class SingleAlbumView(context: Context, attributeSet: AttributeSet) : Constraint
     }
 
     fun display(state: SingleAlbumUiState) {
-        when (state) {
-            is SingleAlbumUiState.Loaded -> {
-                bucketId = state.bucketId
+        bucketId = SingleAlbumUiState.getBucketId(state)
 
-                if (adapter == null) {
-                    adapter = SingleAlbumAdapter(context, state.bucketId)
-                    recyclerView.adapter = adapter
+        val shouldShowActionMode = state is SingleAlbumUiState.Selection
 
-                    val firstVisibleUriString = PrefUtil.getAlbumFirstVisible(bucketId)
-                    if (firstVisibleUriString != null) {
-                        val position = adapter!!.getItemPosition(Uri.parse(firstVisibleUriString))
+        if (shouldShowActionMode && !actionModeHandler.isActive()) {
+            toolbar.startActionMode(actionModeHandler)
+        } else if (!shouldShowActionMode && actionModeHandler.isActive()) {
+            actionModeHandler.finish()
+        }
 
-                        if (position != RecyclerView.NO_POSITION) {
-                            recyclerView.scrollToPosition(position)
-                        }
-                    }
-                }
+        if (shouldShowActionMode) {
+            actionModeHandler.setTitle(
+                    (state as SingleAlbumUiState.Selection).selectedUris.size.toString())
+        }
 
-                if (photoClickDisposable.isDisposed) {
-                    photoClickDisposable = adapter!!.itemClick
-                            .map<SingleAlbumUiEvent> { index ->
-                                val uri = adapter!!.getUri(index)!!
-                                return@map SingleAlbumUiEvent.SelectPhoto(uri)
-                            }
-                            .subscribe(eventRelay)
+        if (adapter == null) {
+            adapter = SingleAlbumAdapter(context, bucketId)
+            recyclerView.adapter = adapter
+
+            val firstVisibleUriString = PrefUtil.getAlbumFirstVisible(bucketId)
+            if (firstVisibleUriString != null) {
+                val position = adapter!!.getItemPosition(Uri.parse(firstVisibleUriString))
+
+                if (position != RecyclerView.NO_POSITION) {
+                    recyclerView.scrollToPosition(position)
                 }
             }
+        }
+
+        adapter?.selectionMode = shouldShowActionMode
+        if (shouldShowActionMode) {
+            val selectedUris: ArrayList<Uri> = when (state) {
+                is SingleAlbumUiState.Selection -> state.selectedUris
+                else -> ArrayList()
+            }
+
+            adapter?.updateSelectedUris(selectedUris)
+        }
+
+        if (photoClickDisposable.isDisposed) {
+            photoClickDisposable = adapter!!.events.subscribe(eventRelay)
+        }
+    }
+
+    private val actionModeHandler = object : ActionMode.Callback {
+        private var modeRef = WeakReference<ActionMode>(null)
+        private var titleText = ""
+
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            val adapter: SingleAlbumAdapter = recyclerView.adapter as SingleAlbumAdapter?
+                    ?: return false
+
+            val event: SingleAlbumUiEvent = when (item.itemId) {
+                R.id.select_photo_selection_save ->
+                    SingleAlbumUiEvent.SaveMultiple(adapter.getSelectedUris())
+
+                else -> throw IllegalArgumentException("Unhandled item")
+            }
+
+            eventRelay.accept(event)
+            finish()
+
+            return true
+        }
+
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            modeRef = WeakReference(mode)
+            mode.menuInflater.inflate(R.menu.select_photo_selection, menu)
+            mode.title = titleText
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            mode.title = titleText
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode) {
+            modeRef = WeakReference<ActionMode>(null)
+            eventRelay.accept(SingleAlbumUiEvent.EndMultiSelect)
+        }
+
+        fun finish() {
+            modeRef.get()?.finish()
+        }
+
+        fun isActive(): Boolean {
+            return modeRef.get() != null
+        }
+
+        fun setTitle(newTitleText: String) {
+            titleText = newTitleText
+            modeRef.get()?.title = titleText
         }
     }
 

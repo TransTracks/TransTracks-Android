@@ -18,12 +18,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter
 import com.drspaceboo.transtracks.ui.widget.SquareImageView
 import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -31,11 +34,29 @@ import io.reactivex.Observable
 import kotterknife.bindView
 import java.io.File
 import java.io.FileNotFoundException
+import java.lang.ref.WeakReference
 
 class SingleAlbumAdapter(context: Context, bucketId: String)
-    : CursorRecyclerViewAdapter<SingleAlbumAdapter.BaseHolder>(getSingleAlbumCursor(context, bucketId)), AdapterSpanSizeLookup.Interface {
-    private val itemClickRelay: PublishRelay<Int> = PublishRelay.create<Int>()
-    val itemClick: Observable<Int> = itemClickRelay
+    : CursorRecyclerViewAdapter<SingleAlbumAdapter.BaseHolder>(getSingleAlbumCursor(context, bucketId)),
+      AdapterSpanSizeLookup.Interface {
+    private val eventRelay: PublishRelay<SingleAlbumUiEvent> = PublishRelay.create()
+    val events: Observable<SingleAlbumUiEvent> = eventRelay
+
+    var selectionMode: Boolean = false
+        set(value) {
+            val didChange = field != value
+            field = value
+
+            if (!field) {
+                selectedUris.clear()
+            }
+
+            if (didChange) {
+                notifyDataSetChanged()
+            }
+        }
+
+    private var selectedUris = ArrayList<Uri>()
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -64,6 +85,10 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
         }
 
         return RecyclerView.NO_POSITION
+    }
+
+    fun getSelectedUris(): ArrayList<Uri> {
+        return ArrayList(selectedUris)
     }
 
     fun getUri(position: Int): Uri? {
@@ -95,7 +120,7 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
                 ImageHolder(LayoutInflater.from(parent.context)
                                     .inflate(R.layout.single_album_adapter_image_item,
                                              parent, false),
-                            itemClickRelay)
+                            this)
             }
         }
     }
@@ -117,25 +142,69 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
     override fun onBindViewHolder(viewHolder: BaseHolder, cursor: Cursor) {
         when (viewHolder) {
             is ImageHolder -> {
-                viewHolder.bind(getUri(cursor)!!, cursor.position, this)
+                val uri = getUri(cursor)!!
+                viewHolder.bind(uri, selectionMode, selectedUris.contains(uri))
             }
         }
     }
 
+    fun updateSelectedUris(newSelectedUris: ArrayList<Uri>) {
+        selectedUris = newSelectedUris
+        notifyDataSetChanged()
+    }
+
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    class ImageHolder(itemView: View, private val itemClickRelay: PublishRelay<Int>) : BaseHolder(itemView) {
-        private val image: SquareImageView by bindView(R.id.single_album_image_item_image)
+    class ImageHolder(itemView: View, creatingAdapter: SingleAlbumAdapter?) : BaseHolder(itemView) {
+        private val image: ImageView by bindView(R.id.single_album_image_item_image)
+        private val selection: ImageView by bindView(R.id.single_album_image_item_selection)
 
-        private var currentIndex: Int? = null
+        private val adapterRef = WeakReference(creatingAdapter)
+
+        private var currentUri: Uri? = null
 
         init {
             //Avoiding subscription so we don't need to dispose it
-            itemView.setOnClickListener { if (currentIndex != null) itemClickRelay.accept(currentIndex) }
+            itemView.setOnClickListener {
+                val uri = currentUri ?: return@setOnClickListener
+                val adapter = adapterRef.get() ?: return@setOnClickListener
+
+                val event: SingleAlbumUiEvent = when (adapter.selectionMode) {
+                    true -> {
+                        if (adapter.selectedUris.contains(uri)) {
+                            adapter.selectedUris.remove(uri)
+                        } else {
+                            adapter.selectedUris.add(uri)
+                        }
+
+                        SingleAlbumUiEvent.SelectionUpdate(adapter.getSelectedUris())
+                    }
+
+                    false -> SingleAlbumUiEvent.SelectPhoto(uri)
+                }
+
+                adapter.eventRelay.accept(event)
+            }
+
+            itemView.setOnLongClickListener {
+                val uri = currentUri ?: return@setOnLongClickListener false
+                val adapter = adapterRef.get() ?: return@setOnLongClickListener false
+
+                if (!adapter.selectionMode) {
+                    adapter.eventRelay.accept(
+                            SingleAlbumUiEvent.SelectionUpdate(arrayListOf(uri)))
+                } else {
+                    itemView.performClick()
+                }
+
+                return@setOnLongClickListener true
+            }
         }
 
-        fun bind(uri: Uri, index: Int, adapter: SingleAlbumAdapter) {
-            currentIndex = index
+        fun bind(uri: Uri, selectionMode: Boolean, isSelected: Boolean) {
+            currentUri = uri
+            val adapter = adapterRef.get() ?: return
+
             Picasso.get()
                     .load(uri)
                     .fit()
@@ -151,6 +220,21 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
                             }
                         }
                     })
+
+            selection.setVisibleOrGone(selectionMode)
+
+            if (selectionMode) {
+                val selectionRes = when (isSelected) {
+                    true -> R.drawable.ic_selected_primary_36dp
+                    false -> R.drawable.ic_unselected_primary_36dp
+                }
+                selection.setImageResource(selectionRes)
+
+                selection.contentDescription = when (isSelected) {
+                    true -> itemView.getString(R.string.selected)
+                    false -> itemView.getString(R.string.not_selected)
+                }
+            }
         }
     }
 
