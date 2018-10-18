@@ -14,7 +14,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.MediaStore
+import android.support.media.ExifInterface
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -22,10 +25,15 @@ import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import com.drspaceboo.transtracks.data.TransTracksFileProvider
 import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.copyFrom
+import com.drspaceboo.transtracks.util.quietlyClose
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+
 
 class CameraHandler : Fragment() {
     private var currentFile: File? = null
@@ -36,11 +44,48 @@ class CameraHandler : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == Activity.RESULT_OK && currentFile != null) {
+        if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == Activity.RESULT_OK
+                && currentFile != null) {
 
             val imageFile = currentFile!!
             if (imageFile.exists() && imageFile.length() > 0) {
                 photoTakenRelay.accept(imageFile.absolutePath)
+            }
+        } else if (requestCode == REQUEST_CODE_PHOTO_FROM_ANOTHER_APP
+                && resultCode == Activity.RESULT_OK && data != null) {
+            try {
+                val imageUri = data.data!!
+
+                val inputStream = activity!!.contentResolver.openInputStream(imageUri)
+                val selectedImage: Bitmap
+                try {
+                    selectedImage = BitmapFactory.decodeStream(inputStream)
+                } finally {
+                    inputStream?.quietlyClose()
+                }
+
+                val imageFile = FileUtil.getTempImageFile()
+                val outStream = FileOutputStream(imageFile)
+                try {
+                    selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
+                } finally {
+                    outStream.quietlyClose()
+                }
+
+                var exifInputStream: InputStream? = null
+                try {
+                    exifInputStream = activity!!.contentResolver.openInputStream(imageUri)
+                    val inExif = ExifInterface(exifInputStream!!)
+                    ExifInterface(imageFile.absolutePath).copyFrom(inExif)
+                } finally {
+                    exifInputStream?.quietlyClose()
+                }
+
+                if (imageFile.exists() && imageFile.length() > 0) {
+                    photoTakenRelay.accept(imageFile.absolutePath)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -89,6 +134,12 @@ class CameraHandler : Fragment() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_CAMERA_PERMISSION)
     }
 
+    private fun requestPhotoFromAnotherApp() {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(photoPickerIntent, REQUEST_CODE_PHOTO_FROM_ANOTHER_APP)
+    }
+
     private fun takePhoto() {
         val localContext = context!!
         currentFile = FileUtil.getTempImageFile()
@@ -103,6 +154,7 @@ class CameraHandler : Fragment() {
         private const val TAG: String = "CameraHandler"
         private const val REQUEST_CODE_CAMERA_PERMISSION = 578
         private const val REQUEST_CODE_TAKE_PHOTO = 579
+        private const val REQUEST_CODE_PHOTO_FROM_ANOTHER_APP = 580
 
         private val cameraPermissionRelay = BehaviorRelay.createDefault(false)
         val cameraPermissionEnabled: Observable<Boolean> = cameraPermissionRelay.distinctUntilChanged()
@@ -122,7 +174,11 @@ class CameraHandler : Fragment() {
             }
         }
 
-        fun requestIfNeeded(activity: AppCompatActivity): Boolean = from(activity).makeRequestsIfNeeded()
+        fun requestIfNeeded(activity: AppCompatActivity): Boolean = from(activity)
+                .makeRequestsIfNeeded()
+
+        fun requestPhotoFromAnotherApp(activity: AppCompatActivity) = from(activity)
+                .requestPhotoFromAnotherApp()
 
         fun takePhoto(activity: AppCompatActivity) = from(activity).takePhoto()
 

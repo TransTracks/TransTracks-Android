@@ -87,6 +87,11 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
                                                   .using(HorizontalChangeHandler()))
                 }
 
+        viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.ExternalGalleries>()
+                .subscribe {
+                    CameraHandler.requestPhotoFromAnotherApp(activity as AppCompatActivity)
+                }
+
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SelectionUpdate>()
                 .observeOn(RxSchedulers.main())
                 .subscribe { event ->

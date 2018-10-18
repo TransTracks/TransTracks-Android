@@ -37,6 +37,7 @@ sealed class SelectPhotoUiEvent {
     object TakePhoto : SelectPhotoUiEvent()
     data class PhotoSelected(val uri: Uri) : SelectPhotoUiEvent()
     object ViewAlbums : SelectPhotoUiEvent()
+    object ExternalGalleries : SelectPhotoUiEvent()
     data class SelectionUpdate(var uris: ArrayList<Uri>) : SelectPhotoUiEvent()
     object EndMultiSelect : SelectPhotoUiEvent()
     data class SaveMultiple(var uris: ArrayList<Uri>) : SelectPhotoUiEvent()
@@ -59,6 +60,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                          toolbar.itemClicks().map<SelectPhotoUiEvent> { item ->
                              return@map when (item.itemId) {
                                  R.id.select_photo_menu_folders -> SelectPhotoUiEvent.ViewAlbums
+                                 R.id.select_photo_menu_external -> SelectPhotoUiEvent.ExternalGalleries
                                  else -> throw IllegalArgumentException("Unhandled toolbar item")
                              }
                          },

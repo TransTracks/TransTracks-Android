@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_folder_open_white_24px"
         android:title="@string/view_albums"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/select_photo_menu_external"
+        android:icon="@drawable/ic_launch_white_24px"
+        android:title="@string/external_galleries"
+        app:showAsAction="ifRoom" />
 </menu>

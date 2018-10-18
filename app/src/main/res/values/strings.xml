@@ -94,6 +94,7 @@
     <string name="select_photo">Select Photo</string>
     <string name="view_albums">View Albums</string>
     <string name="select_album">Select Album</string>
+    <string name="external_galleries">External Galleries</string>
 
     <plurals name="photos">
         <item quantity="one">%1$d Photo</item>
