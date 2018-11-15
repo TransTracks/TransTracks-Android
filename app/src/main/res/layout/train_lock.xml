@@ -44,8 +44,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/transparent_white_90"
         app:layout_constraintBottom_toBottomOf="@+id/lock_space"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,8 +57,8 @@
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/train_tracks_message"
@@ -73,8 +73,9 @@
         android:id="@+id/lock_code_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/enter_train_reporting_number"
         android:textColorHint="@color/blueColorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/lock_go"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +86,6 @@
             android:id="@+id/lock_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/enter_train_reporting_number"
             android:imeOptions="actionSearch"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
