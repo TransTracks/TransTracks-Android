@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@id/home_day_title"
         app:layout_constraintVertical_bias="0.75" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/home_day_title"
         android:layout_width="0dp"
         android:layout_height="64dp"
@@ -118,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@id/home_start_date"
         tools:text="Current: 14/05/2018" />
 
-    <android.support.constraint.Barrier
+    <androidx.constraintlayout.widget.Barrier
         android:id="@+id/home_dates_end_barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_divider_two" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_face_images"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -198,7 +198,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_face_images" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_body_images"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

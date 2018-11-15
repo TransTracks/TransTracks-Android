@@ -11,11 +11,11 @@
 package com.drspaceboo.transtracks.ui.selectphoto.selectalbum
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks

@@ -13,12 +13,11 @@ package com.drspaceboo.transtracks.ui.addeditmilestone
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Milestone
@@ -27,6 +26,7 @@ import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
 import org.threeten.bp.LocalDate

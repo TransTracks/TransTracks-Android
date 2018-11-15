@@ -10,6 +10,6 @@
 
 package com.drspaceboo.transtracks.data
 
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 
 class TransTracksFileProvider : FileProvider()

@@ -14,16 +14,15 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter
-import com.drspaceboo.transtracks.ui.widget.SquareImageView
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.setVisibleOrGone

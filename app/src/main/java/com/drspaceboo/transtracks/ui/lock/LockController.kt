@@ -10,12 +10,11 @@
 
 package com.drspaceboo.transtracks.ui.lock
 
-import android.support.annotation.LayoutRes
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
@@ -26,6 +25,7 @@ import com.drspaceboo.transtracks.util.PrefUtil.LOCK_NORMAL
 import com.drspaceboo.transtracks.util.hideKeyboard
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 
 class LockController : Controller() {

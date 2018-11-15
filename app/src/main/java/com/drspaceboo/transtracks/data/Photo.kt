@@ -11,7 +11,7 @@
 package com.drspaceboo.transtracks.data
 
 import android.content.Context
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import com.drspaceboo.transtracks.R
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

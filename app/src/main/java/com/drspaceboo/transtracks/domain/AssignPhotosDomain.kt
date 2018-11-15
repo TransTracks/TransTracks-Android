@@ -13,7 +13,7 @@ package com.drspaceboo.transtracks.domain
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.support.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.FileUtil

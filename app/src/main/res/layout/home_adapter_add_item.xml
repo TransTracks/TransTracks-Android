@@ -19,7 +19,7 @@
     android:padding="6dp"
     app:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/home_adapter_add_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

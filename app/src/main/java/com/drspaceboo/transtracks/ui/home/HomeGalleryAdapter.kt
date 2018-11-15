@@ -10,12 +10,12 @@
 
 package com.drspaceboo.transtracks.ui.home
 
-import android.support.v7.widget.AppCompatImageButton
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.jakewharton.rxrelay2.PublishRelay

@@ -12,14 +12,14 @@ package com.drspaceboo.transtracks.ui.assignphoto
 
 import android.content.Context
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks

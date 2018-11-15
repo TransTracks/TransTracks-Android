@@ -11,12 +11,12 @@
 package com.drspaceboo.transtracks.ui.editphoto
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks

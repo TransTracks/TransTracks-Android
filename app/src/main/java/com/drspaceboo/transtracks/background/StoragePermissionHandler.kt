@@ -12,15 +12,15 @@ package com.drspaceboo.transtracks.background
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.Utils
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -130,8 +130,7 @@ class StoragePermissionHandler : Fragment() {
         }
 
         fun showStoragePermissionDisabledSnackBar(view: View, activity: AppCompatActivity) {
-            Snackbar.make(view, R.string.storage_permission_disabled,
-                          Snackbar.LENGTH_LONG)
+            Snackbar.make(view, R.string.storage_permission_disabled, Snackbar.LENGTH_LONG)
                     .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity) }
                     .show()
         }

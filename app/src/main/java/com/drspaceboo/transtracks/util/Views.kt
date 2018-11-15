@@ -13,12 +13,12 @@ package com.drspaceboo.transtracks.util
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.annotation.ColorRes
-import android.support.annotation.NonNull
-import android.support.annotation.StringRes
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.NonNull
+import androidx.annotation.StringRes
 
 @ColorInt
 fun View.getColor(@ColorRes colorRes: Int): Int = when {

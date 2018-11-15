@@ -11,9 +11,9 @@
 package com.drspaceboo.transtracks.util
 
 import android.os.Build
-import android.support.media.ExifInterface
-import android.support.media.ExifInterface.TAG_DATETIME
-import android.support.media.ExifInterface.TAG_SUBSEC_TIME
+import androidx.exifinterface.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface.TAG_DATETIME
+import androidx.exifinterface.media.ExifInterface.TAG_SUBSEC_TIME
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale

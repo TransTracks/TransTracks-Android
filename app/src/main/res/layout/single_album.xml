@@ -15,7 +15,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/single_album_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,9 +34,9 @@
             android:text="@string/select_photo"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/white_text_selector" />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/single_album_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

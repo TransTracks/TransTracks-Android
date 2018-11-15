@@ -11,12 +11,12 @@
 package com.drspaceboo.transtracks.ui.settings
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd

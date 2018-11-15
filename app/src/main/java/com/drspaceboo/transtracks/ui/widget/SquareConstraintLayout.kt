@@ -11,8 +11,8 @@
 package com.drspaceboo.transtracks.ui.widget
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 
 class SquareConstraintLayout : ConstraintLayout {
