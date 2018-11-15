@@ -27,6 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/PinkAppTheme">
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout"
