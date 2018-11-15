@@ -18,8 +18,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
-import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.editorActions
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.editorActions
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindOptionalView

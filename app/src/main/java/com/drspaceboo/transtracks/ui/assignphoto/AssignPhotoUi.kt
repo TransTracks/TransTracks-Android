@@ -22,8 +22,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.setVisibleOrGone
-import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.appcompat.navigationClicks
+import com.jakewharton.rxbinding3.view.clicks
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView

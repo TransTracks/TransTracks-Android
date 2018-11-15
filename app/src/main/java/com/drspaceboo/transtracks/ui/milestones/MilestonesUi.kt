@@ -28,9 +28,9 @@ import com.drspaceboo.transtracks.util.setVisible
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
-import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
-import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.appcompat.itemClicks
+import com.jakewharton.rxbinding3.appcompat.navigationClicks
+import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import kotterknife.bindView

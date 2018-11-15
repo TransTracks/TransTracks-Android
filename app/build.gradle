@@ -55,10 +55,10 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.1.0-alpha01'
 
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rx_binding_version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rx_binding_version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rx_binding_version"
+    implementation "com.jakewharton.rxbinding3:rxbinding:$rx_binding_version"
+    implementation "com.jakewharton.rxbinding3:rxbinding-recyclerview:$rx_binding_version"
+    implementation "com.jakewharton.rxbinding3:rxbinding-material:$rx_binding_version"
+    implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$rx_binding_version"
 
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
@@ -71,8 +71,8 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
