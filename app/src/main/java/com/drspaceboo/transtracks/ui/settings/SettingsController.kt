@@ -347,6 +347,11 @@ class SettingsController : Controller() {
     }
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
+        //Don't try to show the Snackbar if the Controller isn't currently attached or is being destroyed
+        if(!isAttached || isDestroyed || isBeingDestroyed){
+            return
+        }
+
         val snackbar = Snackbar.make(view, view.getString(R.string.changing_app_name,
                                                           view.getString(newAppName)),
                                      Snackbar.LENGTH_LONG)
