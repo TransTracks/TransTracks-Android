@@ -21,4 +21,4 @@
     android:padding="16dp"
     android:scaleType="fitCenter"
     android:src="@drawable/ic_add_circle_white_48dp"
-    app:orientation="horizontal" />
+    app:ttOrientation="horizontal" />

@@ -12,16 +12,16 @@
 <resources>
     <attr name="colorPrimaryLight" format="reference" />
 
-    <attr name="orientation" format="enum">
+    <attr name="ttOrientation" format="enum">
         <enum name="vertical" value="0" />
         <enum name="horizontal" value="1" />
     </attr>
 
     <declare-styleable name="SquareConstraintLayout">
-        <attr name="orientation" />
+        <attr name="ttOrientation" />
     </declare-styleable>
 
     <declare-styleable name="SquareImageView">
-        <attr name="orientation" />
+        <attr name="ttOrientation" />
     </declare-styleable>
 </resources>

@@ -35,7 +35,7 @@ class SquareImageView : AppCompatImageView {
                 0, 0)
 
         try {
-            orientation = a.getInteger(R.styleable.SquareImageView_orientation, 0)
+            orientation = a.getInteger(R.styleable.SquareImageView_ttOrientation, 0)
         } finally {
             a.recycle()
         }

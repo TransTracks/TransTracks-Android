@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:scaleType="centerCrop"
-        app:orientation="horizontal" />
+        app:ttOrientation="horizontal" />
 
     <TextView
         android:id="@+id/select_album_adapter_item_name"

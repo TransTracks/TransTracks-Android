@@ -18,4 +18,4 @@
     android:layout_marginEnd="4dp"
     android:background="@drawable/rounded_image_background"
     android:padding="6dp"
-    app:orientation="vertical" />
+    app:ttOrientation="vertical" />

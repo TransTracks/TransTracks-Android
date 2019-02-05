@@ -35,7 +35,7 @@ class SquareConstraintLayout : ConstraintLayout {
                 0, 0)
 
         try {
-            orientation = a.getInteger(R.styleable.SquareConstraintLayout_orientation, 0)
+            orientation = a.getInteger(R.styleable.SquareConstraintLayout_ttOrientation, 0)
         } finally {
             a.recycle()
         }
