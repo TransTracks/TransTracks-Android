@@ -21,7 +21,7 @@ import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
-import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
@@ -61,9 +61,9 @@ class MainActivity : AppCompatActivity() {
 
         if (BuildConfig.DEBUG) {
             AnalyticsUtil.disable()
-        } else {
-            Fabric.with(this, Crashlytics())
         }
+
+        Fabric.with(this, CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
 
         StoragePermissionHandler.install(this)
         CameraHandler.install(this)
