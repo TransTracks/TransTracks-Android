@@ -12,8 +12,8 @@ android {
         applicationId "com.drspaceboo.transtracks"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 10
-        versionName "1.0.9"
+        versionCode 11
+        versionName "1.0.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,7 +42,7 @@ dependencies {
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
