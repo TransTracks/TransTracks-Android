@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         val themeRes = when (PrefUtil.theme.get()) {
             THEME_PINK -> R.style.PinkAppTheme
             THEME_BLUE -> R.style.BlueAppTheme
@@ -56,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         }
         setTheme(themeRes)
 
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (BuildConfig.DEBUG) {

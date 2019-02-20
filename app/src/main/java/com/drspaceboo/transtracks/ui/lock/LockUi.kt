@@ -53,7 +53,7 @@ class LockView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (background != null) {
+        if (background != null && !isInEditMode) {
             Picasso.get()
                     .load(R.drawable.train_track_background)
                     .placeholder(R.color.black)

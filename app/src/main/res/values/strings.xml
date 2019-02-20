@@ -9,7 +9,7 @@
   -->
 
 <resources>
-    <string name="app_name">Trans Tracks</string>
+    <string name="app_name">TransTracks</string>
 
     <!-- Welcome -->
     <string name="welcome">Welcome</string>

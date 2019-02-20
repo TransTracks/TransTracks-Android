@@ -60,12 +60,17 @@ object PrefUtil {
     const val THEME_PURPLE = 2
     const val THEME_GREEN = 3
 
-    private val rxPreferences: RxSharedPreferences =
-            RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance))
+    private val rxPreferences: RxSharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+        RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance))
+    }
 
-    val lockCode: Preference<String> = rxPreferences.getString(KEY_LOCK_CODE, "")
+    val lockCode: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getString(KEY_LOCK_CODE, "")
+    }
 
-    val lockDelay: Preference<Int> = rxPreferences.getInteger(KEY_LOCK_DELAY, LOCK_DELAY_INSTANT)
+    val lockDelay: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getInteger(KEY_LOCK_DELAY, LOCK_DELAY_INSTANT)
+    }
 
     fun getLockDelayMilli(): Long {
         val delayMinutes = when (lockDelay.get()) {
@@ -79,20 +84,33 @@ object PrefUtil {
         return 1000L * 60L * delayMinutes
     }
 
-    val lockType: Preference<Int> = rxPreferences.getInteger(KEY_LOCK_TYPE, LOCK_OFF)
+    val lockType: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getInteger(KEY_LOCK_TYPE, LOCK_OFF)
+    }
 
-    val selectPhotoFirstVisible: Preference<String> = rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
+    val selectPhotoFirstVisible: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
+    }
 
-    val showAds: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_ADS, true)
+    val showAds: Preference<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getBoolean(KEY_SHOW_ADS, true)
+    }
 
-    val showWelcome: Preference<Boolean> = rxPreferences.getBoolean(KEY_SHOW_WELCOME, true)
+    val showWelcome: Preference<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getBoolean(KEY_SHOW_WELCOME, true)
+    }
 
-    val startDate: Preference<LocalDate> = rxPreferences.getObject(KEY_START_DATE, LocalDate.now(),
-                                                                   LocalDateConverter())
+    val startDate: Preference<LocalDate> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getObject(KEY_START_DATE, LocalDate.now(), LocalDateConverter())
+    }
 
-    val theme: Preference<Int> = rxPreferences.getInteger(KEY_THEME, THEME_PINK)
+    val theme: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getInteger(KEY_THEME, THEME_PINK)
+    }
 
-    val userLastSeen: Preference<Long> = rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
+    val userLastSeen: Preference<Long> by lazy(LazyThreadSafetyMode.NONE) {
+        rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
+    }
 
     private fun getAlbumFirstVisiblePrefs(): SharedPreferences {
         return TransTracksApp.instance.getSharedPreferences("albumFirstVisible",
