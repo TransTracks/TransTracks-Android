@@ -14,5 +14,5 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
 fun AdView.loadAd() = loadAd(AdRequest.Builder()
-                                     .addTestDevice("26119ECDDD2EC01B4DC74F4A94AF8FEA")
+                                     .addTestDevice("7AC8224DC21153F6AF9BEF2076D0DBE1")
                                      .build())
