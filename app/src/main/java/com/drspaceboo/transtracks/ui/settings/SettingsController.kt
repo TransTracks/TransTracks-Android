@@ -58,6 +58,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -96,17 +97,7 @@ class SettingsController : Controller() {
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.SignIn>()
-            .subscribe {
-                val providers = arrayListOf(
-                    AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build(),
-                    AuthUI.IdpConfig.TwitterBuilder().build()
-                )
-
-                startActivityForResult(
-                    AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(),
-                    REQUEST_FIREBASE_SIGN_IN
-                )
-            }
+            .subscribe { showAuth() }
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.SignOut>()
@@ -142,6 +133,10 @@ class SettingsController : Controller() {
                     Toast.makeText(view.context, R.string.unableToResetPassword, Toast.LENGTH_LONG).show()
                 }
             }
+
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.ChangeName>()
+            .subscribe { showChangeNameDialog(view) }
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.ChangeStartDate>()
@@ -389,6 +384,68 @@ class SettingsController : Controller() {
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun showChangeNameDialog(view: View) {
+        val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+        val name = currentUser.displayName ?: return
+
+        val builder = AlertDialog.Builder(view.context).setTitle(R.string.update_account_name)
+
+        @SuppressLint("InflateParams") // Unable to provide root
+        val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.update_name_dialog, null)
+        val nameEditText: EditText = dialogView.findViewById(R.id.set_account_name)
+
+        val nameDialog = builder.setView(dialogView)
+            .setPositiveButton(R.string.update, null)
+            .setNegativeButton(R.string.cancel, null)
+            .create()
+
+        nameEditText.setText(name)
+        nameEditText.addTextChangedListener(object : SimpleTextWatcher() {
+            override fun afterTextChanged(s: Editable) {
+                nameDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
+            }
+        })
+
+        nameDialog.setOnShowListener { dialog ->
+            val positiveButton = nameDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveButton.isEnabled = false
+            positiveButton.setOnClickListener {
+                val nameText = nameEditText.text.toString()
+
+                if (nameText.isEmpty()) {
+                    Toast.makeText(view.context, R.string.name_cannot_be_empty, Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
+
+                val profileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(nameText).build()
+                currentUser.updateProfile(profileChangeRequest)
+                    .addOnCompleteListener { result ->
+                        if (!result.isSuccessful) {
+                            Toast.makeText(view.context, R.string.unableToUpdateName, Toast.LENGTH_LONG).show()
+                        }
+
+                        TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                    }
+
+                dialog.dismiss()
+            }
+        }
+        nameDialog.show()
+    }
+
+    private fun showAuth() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.TwitterBuilder().build()
+        )
+
+        startActivityForResult(
+            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(),
+            REQUEST_FIREBASE_SIGN_IN
+        )
     }
 
     companion object {
