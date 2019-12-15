@@ -57,6 +57,7 @@ import com.drspaceboo.transtracks.util.plusAssign
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -123,6 +124,23 @@ class SettingsController : Controller() {
 
                         domain.actions.accept(SettingsUpdated)
                     }
+            }
+
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.ChangePassword>()
+            .subscribe {
+                val email = FirebaseAuth.getInstance().currentUser?.email
+                if (email != null) {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener { result ->
+                        if (result.isSuccessful) {
+                            Toast.makeText(view.context, R.string.passwordResetSuccess, Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(view.context, R.string.passwordResetFailed, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(view.context, R.string.unableToResetPassword, Toast.LENGTH_LONG).show()
+                }
             }
 
         viewDisposables += sharedEvents
