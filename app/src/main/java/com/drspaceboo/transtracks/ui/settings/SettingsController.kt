@@ -162,143 +162,7 @@ class SettingsController : Controller() {
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.ChangeLockMode>()
-                .subscribe { _ ->
-                    fun showRemovePasswordDialog() {
-                        val builder = AlertDialog.Builder(view.context)
-                                .setTitle(R.string.enter_password_to_disable_lock)
-
-                        @SuppressLint("InflateParams") // Unable to provide root
-                        val dialogView = LayoutInflater.from(builder.context)
-                                .inflate(R.layout.enter_password_dialog, null)
-                        val password: EditText = dialogView.findViewById(R.id.set_password_code)
-
-                        val passwordDialog = builder.setView(dialogView)
-                                .setPositiveButton(R.string.disable, null)
-                                .setNegativeButton(R.string.cancel, null)
-                                .create()
-
-
-                        password.addTextChangedListener(object : SimpleTextWatcher() {
-                            override fun afterTextChanged(s: Editable) {
-                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
-                            }
-                        })
-                        passwordDialog.setOnShowListener { dialog ->
-                            val positiveButton = passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                            positiveButton.isEnabled = false
-
-                            positiveButton.setOnClickListener {
-                                if (PrefUtil.lockCode.get()
-                                        != EncryptionUtil.encryptAndEncode(password.text.toString(),
-                                                                           PrefUtil.CODE_SALT)) {
-                                    Toast.makeText(view.context, R.string.incorrect_password,
-                                                   Toast.LENGTH_LONG)
-                                            .show()
-                                    return@setOnClickListener
-                                }
-
-                                PrefUtil.lockCode.set("")
-                                PrefUtil.lockType.set(LOCK_OFF)
-                                dialog.dismiss()
-                            }
-                        }
-
-                        passwordDialog.show()
-
-                        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    }
-
-                    fun showSetPasswordDialog(newLockType: Int) {
-                        val builder = AlertDialog.Builder(view.context).setTitle(R.string.set_password)
-
-                        @SuppressLint("InflateParams") // Unable to provide root
-                        val dialogView = LayoutInflater.from(builder.context)
-                                .inflate(R.layout.set_password_dialog, null)
-                        val password: EditText = dialogView.findViewById(R.id.set_password_code)
-                        val confirm: EditText = dialogView.findViewById(R.id.confirm_password_code)
-
-                        val passwordDialog = builder.setView(dialogView)
-                                .setPositiveButton(R.string.set_password, null)
-                                .setNegativeButton(R.string.cancel, null)
-                                .create()
-
-                        password.addTextChangedListener(object : SimpleTextWatcher() {
-                            override fun afterTextChanged(s: Editable) {
-                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
-                            }
-                        })
-
-                        passwordDialog.setOnShowListener { dialog ->
-                            val positiveButton = passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                            positiveButton.isEnabled = false
-                            positiveButton.setOnClickListener {
-                                val passwordText = password.text.toString()
-                                val confirmText = confirm.text.toString()
-
-                                if (passwordText.isEmpty()) {
-                                    Toast.makeText(view.context, R.string.password_cannot_be_empty,
-                                                   Toast.LENGTH_LONG)
-                                            .show()
-                                    return@setOnClickListener
-                                } else if (passwordText != confirmText) {
-                                    Toast.makeText(view.context, R.string.password_and_confirm,
-                                                   Toast.LENGTH_LONG)
-                                            .show()
-                                    return@setOnClickListener
-                                }
-
-                                PrefUtil.lockCode.set(EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT))
-                                PrefUtil.lockType.set(newLockType)
-
-                                if (newLockType == LOCK_TRAINS) {
-                                    showAppNameChangeSnackbar(view, R.string.train_tracks_title)
-                                }
-
-                                dialog.dismiss()
-                            }
-                        }
-                        passwordDialog.show()
-                    }
-
-                    val lockMode = PrefUtil.lockType.get()
-
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_lock_mode)
-                            .setSingleChoiceItems(arrayOf(view.getString(R.string.disabled),
-                                                          view.getString(R.string.enabled_normal),
-                                                          view.getString(R.string.enabled_trains)),
-                                                  lockMode) { dialog: DialogInterface, newLockType: Int ->
-                                if (lockMode != newLockType) {
-                                    val hasCode = PrefUtil.lockCode.get().isNotEmpty()
-
-                                    when {
-                                        newLockType == LOCK_OFF -> {
-                                            //Turn off lock, and remove the code
-                                            showRemovePasswordDialog()
-                                        }
-
-                                        hasCode -> {
-                                            //Changing to another type with the code on, just update type
-                                            PrefUtil.lockType.set(newLockType)
-
-                                            if (newLockType == LOCK_TRAINS) {
-                                                showAppNameChangeSnackbar(view, R.string.train_tracks_title)
-                                            } else {
-                                                showAppNameChangeSnackbar(view, R.string.app_name)
-                                            }
-                                        }
-
-                                        else -> {
-                                            //Changing to a type with a code, let's ask for the code
-                                            showSetPasswordDialog(newLockType)
-                                        }
-                                    }
-                                }
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
-                }
+                .subscribe { _ -> showChangeLockModeDialog(view) }
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.ChangeLockDelay>()
@@ -373,6 +237,140 @@ class SettingsController : Controller() {
                     .show()
         }
         snackbar.show()
+    }
+
+    private fun showChangeLockModeDialog(view: View) {
+        fun showRemovePasswordDialog() {
+            val builder = AlertDialog.Builder(view.context).setTitle(R.string.enter_password_to_disable_lock)
+
+            @SuppressLint("InflateParams") // Unable to provide root
+            val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.enter_password_dialog, null)
+            val password: EditText = dialogView.findViewById(R.id.set_password_code)
+
+            val passwordDialog = builder.setView(dialogView)
+                .setPositiveButton(R.string.disable, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+
+
+            password.addTextChangedListener(object : SimpleTextWatcher() {
+                override fun afterTextChanged(s: Editable) {
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
+                }
+            })
+            passwordDialog.setOnShowListener { dialog ->
+                val positiveButton = passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                positiveButton.isEnabled = false
+
+                positiveButton.setOnClickListener {
+                    if (PrefUtil.lockCode.get()
+                        != EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
+                    ) {
+                        Toast.makeText(view.context, R.string.incorrect_password, Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    }
+
+                    PrefUtil.lockCode.set("")
+                    PrefUtil.lockType.set(LOCK_OFF)
+                    dialog.dismiss()
+                }
+            }
+
+            passwordDialog.show()
+
+            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        }
+
+        fun showSetPasswordDialog(newLockType: Int) {
+            val builder = AlertDialog.Builder(view.context).setTitle(R.string.set_password)
+
+            @SuppressLint("InflateParams") // Unable to provide root
+            val dialogView = LayoutInflater.from(builder.context)
+                .inflate(R.layout.set_password_dialog, null)
+            val password: EditText = dialogView.findViewById(R.id.set_password_code)
+            val confirm: EditText = dialogView.findViewById(R.id.confirm_password_code)
+
+            val passwordDialog = builder.setView(dialogView)
+                .setPositiveButton(R.string.set_password, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+
+            password.addTextChangedListener(object : SimpleTextWatcher() {
+                override fun afterTextChanged(s: Editable) {
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
+                }
+            })
+
+            passwordDialog.setOnShowListener { dialog ->
+                val positiveButton = passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                positiveButton.isEnabled = false
+                positiveButton.setOnClickListener {
+                    val passwordText = password.text.toString()
+                    val confirmText = confirm.text.toString()
+
+                    if (passwordText.isEmpty()) {
+                        Toast.makeText(view.context, R.string.password_cannot_be_empty, Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    } else if (passwordText != confirmText) {
+                        Toast.makeText(view.context, R.string.password_and_confirm, Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    }
+
+                    PrefUtil.lockCode.set(EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT))
+                    PrefUtil.lockType.set(newLockType)
+
+                    if (newLockType == LOCK_TRAINS) {
+                        showAppNameChangeSnackbar(view, R.string.train_tracks_title)
+                    }
+
+                    dialog.dismiss()
+                }
+            }
+            passwordDialog.show()
+        }
+
+        val lockMode = PrefUtil.lockType.get()
+
+        AlertDialog.Builder(view.context)
+            .setTitle(R.string.select_lock_mode)
+            .setSingleChoiceItems(
+                arrayOf(
+                    view.getString(R.string.disabled),
+                    view.getString(R.string.enabled_normal),
+                    view.getString(R.string.enabled_trains)
+                ),
+                lockMode
+            ) { dialog: DialogInterface, newLockType: Int ->
+                if (lockMode != newLockType) {
+                    val hasCode = PrefUtil.lockCode.get().isNotEmpty()
+
+                    when {
+                        newLockType == LOCK_OFF -> {
+                            //Turn off lock, and remove the code
+                            showRemovePasswordDialog()
+                        }
+
+                        hasCode -> {
+                            //Changing to another type with the code on, just update type
+                            PrefUtil.lockType.set(newLockType)
+
+                            if (newLockType == LOCK_TRAINS) {
+                                showAppNameChangeSnackbar(view, R.string.train_tracks_title)
+                            } else {
+                                showAppNameChangeSnackbar(view, R.string.app_name)
+                            }
+                        }
+
+                        else -> {
+                            //Changing to a type with a code, let's ask for the code
+                            showSetPasswordDialog(newLockType)
+                        }
+                    }
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     companion object {
