@@ -50,232 +50,370 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/settings_start_label"
                 style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
-                android:text="@string/start_date_label"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/settings_start_date"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="end|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="@id/settings_start_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/settings_start_label"
-                app:layout_constraintTop_toTopOf="@id/settings_start_label"
-                tools:text="15/08/2017" />
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacer_grid"
+                android:paddingTop="@dimen/spacer_grid"
+                android:paddingRight="@dimen/spacer_grid"
+                android:paddingBottom="@dimen/spacer_grid_half"
+                android:text="@string/transtracks_account"
+                android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/settings_theme_label"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
-                android:text="@string/theme_label"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_start_label" />
-
-            <Button
-                android:id="@+id/settings_theme"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="end|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="@id/settings_theme_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/settings_theme_label"
-                app:layout_constraintTop_toTopOf="@id/settings_theme_label"
-                tools:text="Blue" />
-
-            <TextView
-                android:id="@+id/settings_lock_label"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:text="@string/lock_label"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_theme_label" />
-
-            <Button
-                android:id="@+id/settings_lock"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="end|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="@id/settings_lock_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/settings_lock_label"
-                app:layout_constraintTop_toTopOf="@id/settings_lock_label"
-                tools:text="Disabled" />
-
-            <TextView
-                android:id="@+id/settings_lock_description"
+                android:id="@+id/settings_account_description"
                 style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid"
+                android:text="@string/transtracks_account_description"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/settings_account_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="@string/lock_description"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_lock_label" />
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
 
-            <TextView
-                android:id="@+id/settings_lock_delay_label"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
-                android:text="@string/lock_delay_label"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_lock_description" />
+                <TextView
+                    android:id="@+id/settings_account_name_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_name_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
 
-            <Button
-                android:id="@+id/settings_lock_delay"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
+                <Button
+                    android:id="@+id/settings_account_name"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="User Name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settings_account_email_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:gravity="end|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="@id/settings_lock_delay_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/settings_lock_delay_label"
-                app:layout_constraintTop_toTopOf="@id/settings_lock_delay_label"
-                tools:text="Instant" />
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
+
+                <TextView
+                    android:id="@+id/settings_account_email_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_email_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <Button
+                    android:id="@+id/settings_account_email"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="User Email" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacer_grid_half"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/settings_account_sign_in"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_in"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/settings_account_change_password"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/change_password"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Space
+                    android:id="@+id/settings_account_logged_in_button_space"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5" />
+
+                <Button
+                    android:id="@+id/settings_account_sign_out"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_out"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/settings_divider_one"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/fading_line"
-                app:layout_constraintBottom_toTopOf="@id/home_start_date"
+                app:layout_constraintBottom_toTopOf="@id/settings_start_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settings_lock_delay_label" />
 
-            <TextView
-                android:id="@+id/settings_app_version_label"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
-                android:text="@string/app_version_label"
-                android:textColor="@color/transparent_white_90_text_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/settings_divider_one" />
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
 
-            <TextView
-                android:id="@+id/settings_app_version"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/settings_start_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_date_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <Button
+                    android:id="@+id/settings_start_date"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:paddingTop="@dimen/spacer_grid_half"
+                    android:paddingBottom="@dimen/spacer_grid_half"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="15/08/2017" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end|center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="@id/settings_app_version_label"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
+
+                <TextView
+                    android:id="@+id/settings_theme_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <Button
+                    android:id="@+id/settings_theme"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:paddingTop="@dimen/spacer_grid_half"
+                    android:paddingBottom="@dimen/spacer_grid_half"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="Blue" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
+
+                <TextView
+                    android:id="@+id/settings_lock_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/lock_label"
+                    android:textColor="@color/transparent_white_90_text_selector"
+                    app:layout_constraintBottom_toBottomOf="@id/settings_lock"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/settings_lock" />
+
+                <Button
+                    android:id="@+id/settings_lock"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:gravity="end|center_vertical"
+                    android:paddingTop="@dimen/spacer_grid_half"
+                    android:paddingBottom="@dimen/spacer_grid_half"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/settings_lock_label"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Disabled" />
+
+                <TextView
+                    android:id="@+id/settings_lock_description"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lock_description"
+                    android:textColor="@color/transparent_white_90_text_selector"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settings_lock_label" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingEnd="@dimen/spacer_grid">
+
+                <TextView
+                    android:id="@+id/settings_lock_delay_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/lock_delay_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <Button
+                    android:id="@+id/settings_lock_delay"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:gravity="end|center_vertical"
+                    android:paddingTop="@dimen/spacer_grid_half"
+                    android:paddingBottom="@dimen/spacer_grid_half"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="Instant" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/fading_line"
+                app:layout_constraintBottom_toTopOf="@id/settings_start_date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/settings_app_version_label"
-                app:layout_constraintTop_toTopOf="@id/settings_app_version_label"
-                tools:text="1.0.0 (8)" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_lock_delay_label" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingTop="@dimen/spacer_grid_half"
+                android:paddingEnd="@dimen/spacer_grid"
+                android:paddingBottom="@dimen/spacer_grid_half">
+
+                <TextView
+                    android:id="@+id/settings_app_version_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_version_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <TextView
+                    android:id="@+id/settings_app_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacer_grid_half"
+                    android:layout_weight="1"
+                    android:gravity="end|center_vertical"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white_text_selector"
+                    tools:text="1.0.0 (8)" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/settings_privacy_policy"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingTop="@dimen/spacer_grid_half"
+                android:paddingEnd="@dimen/spacer_grid"
+                android:paddingBottom="@dimen/spacer_grid_half"
                 android:text="@string/privacy_policy"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_text_selector"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settings_app_version_label" />
+                android:textColor="@color/white_text_selector" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/settings_copyright"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingTop="@dimen/spacer_grid_half"
+                android:paddingEnd="@dimen/spacer_grid"
+                android:paddingBottom="@dimen/spacer_grid_half"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/white_text_selector"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settings_privacy_policy"
-                app:layout_constraintVertical_bias="1"
                 tools:text="@string/copyright" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
     <FrameLayout

@@ -11,12 +11,13 @@
 package com.drspaceboo.transtracks.ui.settings
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +30,14 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.domain.SettingsAction.SettingsUpdated
+import com.drspaceboo.transtracks.domain.SettingsDomain
+import com.drspaceboo.transtracks.domain.SettingsResult
+import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.PrefUtil
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_DELAY_FIFTEEN_MINUTES
 import com.drspaceboo.transtracks.util.PrefUtil.LOCK_DELAY_FIVE_MINUTES
@@ -46,16 +51,21 @@ import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
-import com.drspaceboo.transtracks.util.Quadruple
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import org.threeten.bp.LocalDate
 import java.util.Calendar
 
 class SettingsController : Controller() {
+    private var resultsDisposable: Disposable = Disposables.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
@@ -67,55 +77,53 @@ class SettingsController : Controller() {
 
         AnalyticsUtil.logEvent(Event.SettingsControllerShown)
 
+        val domain: SettingsDomain = TransTracksApp.instance.domainManager.settingsDomain
+
+        if (resultsDisposable.isDisposed) {
+            resultsDisposable = domain.results.subscribe()
+        }
+
+        viewDisposables += domain.results
+            .compose(settingsResultsToStates(view.context))
+            .subscribe { state -> view.display(state) }
+
         val sharedEvents = view.events.share()
-
-        viewDisposables += Observables
-                .combineLatest(PrefUtil.startDate.asObservable(), PrefUtil.theme.asObservable(),
-                               PrefUtil.lockType.asObservable(), PrefUtil.lockDelay.asObservable())
-                { startDate, theme, lockType, lockDelay ->
-                    Quadruple(startDate, theme, lockType, lockDelay)
-                }
-                .map { (startDate, theme, lockType, lockDelay) ->
-                    val themeName = view.getString(
-                            when (theme) {
-                                THEME_PINK -> R.string.pink
-                                THEME_BLUE -> R.string.blue
-                                THEME_PURPLE -> R.string.purple
-                                THEME_GREEN -> R.string.green
-                                else -> throw IllegalArgumentException("Unhandled theme type")
-                            })
-
-                    val lockName = view.getString(
-                            when (lockType) {
-                                LOCK_OFF -> R.string.disabled
-                                LOCK_NORMAL -> R.string.enabled_normal
-                                LOCK_TRAINS -> R.string.enabled_trains
-                                else -> throw IllegalArgumentException("Unhandled lock type")
-                            })
-
-                    val lockDelayName = view.getString(
-                            when (lockDelay) {
-                                LOCK_DELAY_INSTANT -> R.string.instant
-                                LOCK_DELAY_ONE_MINUTE -> R.string.one_minute
-                                LOCK_DELAY_TWO_MINUTES -> R.string.two_minutes
-                                LOCK_DELAY_FIVE_MINUTES -> R.string.five_minutes
-                                LOCK_DELAY_FIFTEEN_MINUTES -> R.string.fifteen_minutes
-                                else -> throw IllegalArgumentException("Unhandled lock delay")
-                            })
-
-                    return@map SettingsUiState.Loaded(
-                            startDate, themeName, lockName, enableLockDelay = lockType != LOCK_OFF,
-                            lockDelay = lockDelayName,
-                            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                            copyright = view.getString(R.string.copyright,
-                                                       Calendar.getInstance().get(Calendar.YEAR).toString()),
-                            showAds = PrefUtil.showAds.get())
-                }
-                .subscribe { state -> view.display(state) }
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.Back>()
                 .subscribe { router.handleBack() }
+
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.SignIn>()
+            .subscribe {
+                val providers = arrayListOf(
+                    AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build(),
+                    AuthUI.IdpConfig.TwitterBuilder().build()
+                )
+
+                startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(),
+                    REQUEST_FIREBASE_SIGN_IN
+                )
+            }
+
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.SignOut>()
+            .subscribe {
+                val context = activity ?: return@subscribe
+
+                AuthUI.getInstance()
+                    .signOut(context)
+                    .addOnCompleteListener { result ->
+                        if (result.isSuccessful) {
+                            //TODO disableFirebaseSync()
+                        } else {
+                            Toast.makeText(activity, R.string.sign_out_error, Toast.LENGTH_LONG).show()
+                        }
+
+                        domain.actions.accept(SettingsUpdated)
+                    }
+            }
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.ChangeStartDate>()
@@ -170,18 +178,9 @@ class SettingsController : Controller() {
                                 .create()
 
 
-                        password.addTextChangedListener(object : TextWatcher {
-                            override fun afterTextChanged(s: Editable?) {
-                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                                        .isEnabled = !s.isNullOrBlank()
-                            }
-
-                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,
-                                                           after: Int) {
-                            }
-
-                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int,
-                                                       count: Int) {
+                        password.addTextChangedListener(object : SimpleTextWatcher() {
+                            override fun afterTextChanged(s: Editable) {
+                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
                             }
                         })
                         passwordDialog.setOnShowListener { dialog ->
@@ -199,7 +198,7 @@ class SettingsController : Controller() {
                                 }
 
                                 PrefUtil.lockCode.set("")
-                                PrefUtil.lockType.set(PrefUtil.LOCK_OFF)
+                                PrefUtil.lockType.set(LOCK_OFF)
                                 dialog.dismiss()
                             }
                         }
@@ -210,8 +209,7 @@ class SettingsController : Controller() {
                     }
 
                     fun showSetPasswordDialog(newLockType: Int) {
-                        val builder = AlertDialog.Builder(view.context)
-                                .setTitle(R.string.set_password)
+                        val builder = AlertDialog.Builder(view.context).setTitle(R.string.set_password)
 
                         @SuppressLint("InflateParams") // Unable to provide root
                         val dialogView = LayoutInflater.from(builder.context)
@@ -224,14 +222,10 @@ class SettingsController : Controller() {
                                 .setNegativeButton(R.string.cancel, null)
                                 .create()
 
-                        password.addTextChangedListener(object : TextWatcher {
-                            override fun afterTextChanged(s: Editable?) {
-                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isNullOrBlank()
+                        password.addTextChangedListener(object : SimpleTextWatcher() {
+                            override fun afterTextChanged(s: Editable) {
+                                passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isBlank()
                             }
-
-                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                         })
 
                         passwordDialog.setOnShowListener { dialog ->
@@ -264,8 +258,6 @@ class SettingsController : Controller() {
                             }
                         }
                         passwordDialog.show()
-
-
                     }
 
                     val lockMode = PrefUtil.lockType.get()
@@ -280,7 +272,7 @@ class SettingsController : Controller() {
                                     val hasCode = PrefUtil.lockCode.get().isNotEmpty()
 
                                     when {
-                                        newLockType == PrefUtil.LOCK_OFF -> {
+                                        newLockType == LOCK_OFF -> {
                                             //Turn off lock, and remove the code
                                             showRemovePasswordDialog()
                                         }
@@ -342,8 +334,28 @@ class SettingsController : Controller() {
                 }
     }
 
-    override fun onDetach(view: View) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_FIREBASE_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
+
+            if (resultCode == Activity.RESULT_OK) {
+                //TODO attemptFirebaseAutoSetup
+            } else {
+                response?.error?.let { Toast.makeText(applicationContext, R.string.sign_in_error, Toast.LENGTH_SHORT) }
+            }
+
+            TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+        }
+    }
+
+    override fun onDestroyView(view: View) {
         viewDisposables.clear()
+    }
+
+    override fun onDetach(view: View) {
+        resultsDisposable.dispose()
     }
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
@@ -361,5 +373,57 @@ class SettingsController : Controller() {
                     .show()
         }
         snackbar.show()
+    }
+
+    companion object {
+        private const val REQUEST_FIREBASE_SIGN_IN = 6524
+    }
+}
+
+fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsResult, SettingsUiState> { results ->
+    results.map { result ->
+        return@map when (result) {
+            is SettingsResult.Content -> {
+                val themeName = context.getString(
+                    when (result.theme) {
+                        THEME_PINK -> R.string.pink
+                        THEME_BLUE -> R.string.blue
+                        THEME_PURPLE -> R.string.purple
+                        THEME_GREEN -> R.string.green
+                        else -> throw IllegalArgumentException("Unhandled theme type")
+                    }
+                )
+
+                val lockName = context.getString(
+                    when (result.lockType) {
+                        LOCK_OFF -> R.string.disabled
+                        LOCK_NORMAL -> R.string.enabled_normal
+                        LOCK_TRAINS -> R.string.enabled_trains
+                        else -> throw IllegalArgumentException("Unhandled lock type")
+                    }
+                )
+
+                val lockDelayName = context.getString(
+                    when (result.lockDelay) {
+                        LOCK_DELAY_INSTANT -> R.string.instant
+                        LOCK_DELAY_ONE_MINUTE -> R.string.one_minute
+                        LOCK_DELAY_TWO_MINUTES -> R.string.two_minutes
+                        LOCK_DELAY_FIVE_MINUTES -> R.string.five_minutes
+                        LOCK_DELAY_FIFTEEN_MINUTES -> R.string.fifteen_minutes
+                        else -> throw IllegalArgumentException("Unhandled lock delay")
+                    }
+                )
+
+                SettingsUiState.Loaded(
+                    result.userDetails, result.startDate, themeName, lockName,
+                    enableLockDelay = result.lockType != LOCK_OFF, lockDelay = lockDelayName,
+                    appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                    copyright = context.getString(
+                        R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()
+                    ),
+                    showAds = PrefUtil.showAds.get()
+                )
+            }
+        }
     }
 }

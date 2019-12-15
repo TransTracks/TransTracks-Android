@@ -12,26 +12,27 @@ package com.drspaceboo.transtracks.ui.settings
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.settings.view.*
 import org.threeten.bp.LocalDate
 
 sealed class SettingsUiEvent {
     object Back : SettingsUiEvent()
+    object ChangeName : SettingsUiEvent()
+    object ChangeEmail : SettingsUiEvent()
+    object SignIn : SettingsUiEvent()
+    object ChangePassword : SettingsUiEvent()
+    object SignOut : SettingsUiEvent()
     object ChangeStartDate : SettingsUiEvent()
     object ChangeTheme : SettingsUiEvent()
     object ChangeLockMode : SettingsUiEvent()
@@ -39,39 +40,31 @@ sealed class SettingsUiEvent {
     object PrivacyPolicy : SettingsUiEvent()
 }
 
+data class SettingsUIUserDetails(val name: String?, val email: String?, val hasPasswordProvider: Boolean)
+
 sealed class SettingsUiState {
-    data class Loaded(val startDate: LocalDate, val theme: String, val lockMode: String,
-                      val enableLockDelay: Boolean, val lockDelay: String, val appVersion: String, val copyright: String, val showAds: Boolean) : SettingsUiState()
+    data class Loaded(
+        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String, val lockMode: String,
+        val enableLockDelay: Boolean, val lockDelay: String, val appVersion: String, val copyright: String,
+        val showAds: Boolean
+    ) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
-    private val toolbar: Toolbar by bindView(R.id.settings_toolbar)
-
-    private val startLabel: View by bindView(R.id.settings_start_label)
-    private val startDate: Button by bindView(R.id.settings_start_date)
-    private val themeLabel: View by bindView(R.id.settings_theme_label)
-    private val theme: Button by bindView(R.id.settings_theme)
-    private val lockLabel: View by bindView(R.id.settings_lock_label)
-    private val lock: Button by bindView(R.id.settings_lock)
-    private val lockDescription: View by bindView(R.id.settings_lock_description)
-    private val lockDelayLabel: View by bindView(R.id.settings_lock_delay_label)
-    private val lockDelay: Button by bindView(R.id.settings_lock_delay)
-
-    private val appVersion: TextView by bindView(R.id.settings_app_version)
-    private val privacyPolicy: Button by bindView(R.id.settings_privacy_policy)
-
-    private val copyright: TextView by bindView(R.id.settings_copyright)
-
-    private val adViewLayout: View by bindView(R.id.settings_ad_layout)
-    private val adView: AdView by bindView(R.id.settings_ad_view)
-
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.mergeArray(toolbar.navigationClicks().map { SettingsUiEvent.Back },
-                              startDate.clicks().map { SettingsUiEvent.ChangeStartDate },
-                              theme.clicks().map { SettingsUiEvent.ChangeTheme },
-                              lock.clicks().map { SettingsUiEvent.ChangeLockMode },
-                              lockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
-                              privacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy })
+        Observable.mergeArray(
+            settings_toolbar.navigationClicks().map { SettingsUiEvent.Back },
+            settings_account_name.clicks().map { SettingsUiEvent.ChangeName },
+            settings_account_email.clicks().map { SettingsUiEvent.ChangeEmail },
+            settings_account_sign_in.clicks().map { SettingsUiEvent.SignIn },
+            settings_account_change_password.clicks().map { SettingsUiEvent.ChangePassword },
+            settings_account_sign_out.clicks().map { SettingsUiEvent.SignOut },
+            settings_start_date.clicks().map { SettingsUiEvent.ChangeStartDate },
+            settings_theme.clicks().map { SettingsUiEvent.ChangeTheme },
+            settings_lock.clicks().map { SettingsUiEvent.ChangeLockMode },
+            settings_lock_delay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+            settings_privacy_policy.clicks().map { SettingsUiEvent.PrivacyPolicy }
+        )
     }
 
     private var currentStartDate: LocalDate? = null
@@ -79,15 +72,17 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        startLabel.setOnClickListener { startDate.performClick() }
-        themeLabel.setOnClickListener { theme.performClick() }
-        lockLabel.setOnClickListener { lock.performClick() }
-        lockDescription.setOnClickListener { lock.performClick() }
-        lockDelayLabel.setOnClickListener { lockDelay.performClick() }
+        settings_account_name_label.setOnClickListener { settings_account_name.performClick() }
+        settings_account_email_label.setOnClickListener { settings_account_email.performClick() }
+        settings_start_label.setOnClickListener { settings_start_date.performClick() }
+        settings_theme_label.setOnClickListener { settings_theme.performClick() }
+        settings_lock_label.setOnClickListener { settings_lock.performClick() }
+        settings_lock_description.setOnClickListener { settings_lock.performClick() }
+        settings_lock_delay_label.setOnClickListener { settings_lock_delay.performClick() }
 
-        adView.adListener = object : AdListener() {
+        settings_ad_view.adListener = object : AdListener() {
             override fun onAdFailedToLoad(code: Int) {
-                adViewLayout.gone()
+                settings_ad_layout.gone()
             }
         }
     }
@@ -95,28 +90,62 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     fun display(state: SettingsUiState) {
         when (state) {
             is SettingsUiState.Loaded -> {
+                if (state.userDetails != null) {
+                    displayUserDetails(state.userDetails)
+                } else {
+                    settings_account_description.visible()
+                    settings_account_name_layout.gone()
+                    settings_account_email_layout.gone()
+                    settings_account_sign_in.visible()
+                    settings_account_change_password.gone()
+                    settings_account_logged_in_button_space.gone()
+                    settings_account_sign_out.gone()
+                }
+
                 currentStartDate = state.startDate
 
-                startDate.text = state.startDate.toFullDateString(startDate.context)
-                theme.text = state.theme
-                lock.text = state.lockMode
+                settings_start_date.text = state.startDate.toFullDateString(settings_start_date.context)
+                settings_theme.text = state.theme
+                settings_lock.text = state.lockMode
 
-                lockDelayLabel.isEnabled = state.enableLockDelay
-                lockDelay.isEnabled = state.enableLockDelay
+                settings_lock_delay_label.isEnabled = state.enableLockDelay
+                settings_lock_delay.isEnabled = state.enableLockDelay
 
-                lockDelay.text = state.lockDelay
+                settings_lock_delay.text = state.lockDelay
 
-                appVersion.text = state.appVersion
+                settings_app_version.text = state.appVersion
 
-                copyright.text = state.copyright
+                settings_copyright.text = state.copyright
 
                 if (state.showAds) {
-                    adViewLayout.visible()
-                    adView.loadAd()
+                    settings_ad_layout.visible()
+                    settings_ad_view.loadAd()
                 } else {
-                    adViewLayout.gone()
+                    settings_ad_layout.gone()
                 }
             }
         }
+    }
+
+    private fun displayUserDetails(user: SettingsUIUserDetails) {
+        settings_account_description.gone()
+        settings_account_name_layout.visible()
+        settings_account_email_layout.visible()
+        settings_account_sign_in.gone()
+        settings_account_logged_in_button_space.visible()
+        settings_account_logged_in_button_space.visible()
+        settings_account_sign_out.visible()
+
+        if (user.email != null) {
+            settings_account_change_password.visible()
+
+            val buttonRes = if (user.hasPasswordProvider) R.string.change_password else R.string.set_password
+            settings_account_change_password.setText(buttonRes)
+        } else {
+            settings_account_change_password.gone()
+        }
+
+        settings_account_name.text = user.name ?: getString(R.string.unknown)
+        settings_account_email.text = user.email ?: getString(R.string.unknown)
     }
 }

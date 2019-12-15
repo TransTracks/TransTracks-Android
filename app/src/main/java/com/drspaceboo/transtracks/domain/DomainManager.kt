@@ -16,4 +16,6 @@ class DomainManager {
     val editPhotoDomain: EditPhotoDomain by lazy(LazyThreadSafetyMode.NONE) { EditPhotoDomain() }
 
     val homeDomain: HomeDomain by lazy(LazyThreadSafetyMode.NONE) { HomeDomain() }
+
+    val settingsDomain: SettingsDomain by lazy(LazyThreadSafetyMode.NONE) { SettingsDomain() }
 }

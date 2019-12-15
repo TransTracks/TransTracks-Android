@@ -17,6 +17,7 @@ import com.drspaceboo.transtracks.util.PrefUtil
 import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
+import com.twitter.sdk.android.core.Twitter
 import io.realm.Realm
 
 class TransTracksApp : Application() {
@@ -37,6 +38,7 @@ class TransTracksApp : Application() {
 
         AndroidThreeTen.init(this)
         Realm.init(this)
+        Twitter.initialize(this)
 
         if (!PrefUtil.startDate.isSet) {
             //Make sure that the startDate
