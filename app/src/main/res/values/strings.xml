@@ -13,6 +13,7 @@
 
     <!-- Common -->
     <string name="cancel">Cancel</string>
+    <string name="later">Later</string>
     <string name="unknown">Unknown</string>
     <string name="update">Update</string>
 
@@ -81,9 +82,17 @@
 
     <string name="update_account_name">Update Account Name</string>
     <string name="enter_account_name">Enter account name</string>
+
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+
     <string name="update_email_address">Update Email Address</string>
     <string name="enter_email_address">Enter email address</string>
-    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="email_must_be_valid">Email must be valid</string>
+    <string name="email_in_use">This email is already in use by another account</string>
+    <string name="updating_email">Updating email address</string>
+
+    <string name="session_expired">Session Expired</string>
+    <string name="session_expired_message">Your session has expired, please log back in</string>
 
     <string name="start_date_label">Start Date:</string>
     <string name="theme_label">Theme:</string>

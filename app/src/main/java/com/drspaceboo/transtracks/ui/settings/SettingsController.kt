@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.StringRes
@@ -51,14 +52,22 @@ import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
+import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.simpleIsEmail
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.UserProfileChangeRequest
+import io.reactivex.Completable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -110,7 +119,7 @@ class SettingsController : Controller() {
                         if (result.isSuccessful) {
                             //TODO disableFirebaseSync()
                         } else {
-                            Toast.makeText(activity, R.string.sign_out_error, Toast.LENGTH_LONG).show()
+                            Snackbar.make(view, R.string.sign_out_error, Snackbar.LENGTH_LONG).show()
                         }
 
                         domain.actions.accept(SettingsUpdated)
@@ -137,6 +146,10 @@ class SettingsController : Controller() {
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeName>()
             .subscribe { showChangeNameDialog(view) }
+
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.ChangeEmail>()
+            .subscribe { showChangeEmailDialog(view) }
 
         viewDisposables += sharedEvents
                 .ofType<SettingsUiEvent.ChangeStartDate>()
@@ -237,17 +250,21 @@ class SettingsController : Controller() {
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
         //Don't try to show the Snackbar if the Controller isn't currently attached or is being destroyed
-        if(!isAttached || isDestroyed || isBeingDestroyed){
+        if (!isAttached || isDestroyed || isBeingDestroyed) {
             return
         }
 
-        val snackbar = Snackbar.make(view, view.getString(R.string.changing_app_name,
-                                                          view.getString(newAppName)),
-                                     Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(
+            view, view.getString(
+                R.string.changing_app_name,
+                view.getString(newAppName)
+            ),
+            Snackbar.LENGTH_LONG
+        )
         snackbar.setAction(R.string.more_info) {
             AlertDialog.Builder(view.context).setMessage(R.string.changing_app_name_more_info)
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
+                .setPositiveButton(R.string.ok, null)
+                .show()
         }
         snackbar.show()
     }
@@ -419,21 +436,102 @@ class SettingsController : Controller() {
                     return@setOnClickListener
                 }
 
-
                 val profileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(nameText).build()
-                currentUser.updateProfile(profileChangeRequest)
-                    .addOnCompleteListener { result ->
-                        if (!result.isSuccessful) {
-                            Toast.makeText(view.context, R.string.unableToUpdateName, Toast.LENGTH_LONG).show()
-                        }
+                try {
+                    currentUser.updateProfile(profileChangeRequest)
+                        .addOnCompleteListener { result ->
+                            if (!result.isSuccessful) {
+                                Toast.makeText(view.context, R.string.unableToUpdateName, Toast.LENGTH_LONG).show()
+                            }
 
-                        TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
-                    }
+                            TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                        }
+                } catch (e: FirebaseAuthInvalidUserException) {
+                    e.printStackTrace()
+                    showReauth(view)
+                }
 
                 dialog.dismiss()
             }
         }
         nameDialog.show()
+    }
+
+    private fun showChangeEmailDialog(view: View) {
+        val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+        val email = currentUser.email ?: return
+
+        val builder = AlertDialog.Builder(view.context).setTitle(R.string.update_email_address)
+
+        @SuppressLint("InflateParams") // Unable to provide root
+        val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.update_email_dialog, null)
+        val emailEditText: EditText = dialogView.findViewById(R.id.set_email_address)
+
+        val emailDialog = builder.setView(dialogView)
+            .setPositiveButton(R.string.update, null)
+            .setNegativeButton(R.string.cancel, null)
+            .create()
+
+        emailEditText.setText(email)
+        emailEditText.addTextChangedListener(object : SimpleTextWatcher() {
+            override fun afterTextChanged(s: Editable) {
+                emailDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = s.toString().simpleIsEmail()
+            }
+        })
+
+        emailDialog.setOnShowListener { dialog ->
+            val positiveButton = emailDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveButton.isEnabled = false
+            positiveButton.setOnClickListener {
+                val emailText = emailEditText.text.toString()
+
+                if (emailText.isEmpty()) {
+                    Toast.makeText(view.context, R.string.email_must_be_valid, Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
+                val progressDialog = AlertDialog.Builder(view.context)
+                    .setTitle(R.string.updating_email)
+                    .setView(ProgressBar(view.context))
+                    .setCancelable(false)
+                    .create()
+                progressDialog.show()
+
+                Completable
+                    .fromAction {
+                        try {
+                            currentUser.updateEmail(emailText).addOnCompleteListener { result ->
+                                result.exception?.let { handleEmailChangeException(it, view) }
+
+                                TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                progressDialog.dismiss()
+                            }
+                        } catch (e: FirebaseAuthException) {
+                            handleEmailChangeException(e, view)
+                            progressDialog.dismiss()
+                        }
+                    }
+                    .subscribeOn(RxSchedulers.io())
+                    .observeOn(RxSchedulers.main())
+                    .subscribe()
+
+                dialog.dismiss()
+            }
+        }
+        emailDialog.show()
+    }
+
+    private fun handleEmailChangeException(e: Exception, view: View) {
+        e.printStackTrace()
+
+        @StringRes var messageRes: Int = R.string.unableToUpdateEmail
+        when (e) {
+            is FirebaseAuthInvalidCredentialsException -> messageRes = R.string.email_must_be_valid
+            is FirebaseAuthUserCollisionException -> messageRes = R.string.email_in_use
+            is FirebaseAuthInvalidUserException,
+            is FirebaseAuthRecentLoginRequiredException -> showReauth(view)
+        }
+        Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showAuth() {
@@ -446,6 +544,18 @@ class SettingsController : Controller() {
             AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(),
             REQUEST_FIREBASE_SIGN_IN
         )
+    }
+
+    private fun showReauth(view: View) {
+        AlertDialog.Builder(view.context)
+            .setTitle(R.string.session_expired)
+            .setMessage(R.string.session_expired_message)
+            .setNegativeButton(R.string.later, null)
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                showAuth()
+                dialog.dismiss()
+            }
+            .show()
     }
 
     companion object {
