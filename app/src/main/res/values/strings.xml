@@ -82,8 +82,8 @@
 
     <string name="update_account_name">Update Account Name</string>
     <string name="enter_account_name">Enter account name</string>
-
     <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="updating_name">Updating account name</string>
 
     <string name="update_email_address">Update Email Address</string>
     <string name="enter_email_address">Enter email address</string>

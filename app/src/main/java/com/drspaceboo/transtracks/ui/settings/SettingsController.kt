@@ -436,20 +436,40 @@ class SettingsController : Controller() {
                     return@setOnClickListener
                 }
 
-                val profileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(nameText).build()
-                try {
-                    currentUser.updateProfile(profileChangeRequest)
-                        .addOnCompleteListener { result ->
-                            if (!result.isSuccessful) {
-                                Toast.makeText(view.context, R.string.unableToUpdateName, Toast.LENGTH_LONG).show()
-                            }
+                val progressDialog = ProgressDialog.make(R.string.updating_name, view.context)
+                progressDialog.show()
 
-                            TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                Completable
+                    .fromAction {
+                        val profileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(nameText).build()
+                        try {
+                            currentUser.updateProfile(profileChangeRequest)
+                                .addOnCompleteListener { result ->
+                                    result.exception?.let { exception ->
+                                        if (exception is FirebaseAuthInvalidUserException) {
+                                            showReauth(view)
+                                        }
+                                    }
+
+                                    if (!result.isSuccessful) {
+                                        Snackbar.make(view, R.string.unableToUpdateName, Snackbar.LENGTH_LONG)
+                                            .show()
+                                    }
+
+                                    TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                    progressDialog.dismiss()
+                                }
+                        } catch (e: FirebaseAuthInvalidUserException) {
+                            e.printStackTrace()
+                            showReauth(view)
+                            progressDialog.dismiss()
                         }
-                } catch (e: FirebaseAuthInvalidUserException) {
-                    e.printStackTrace()
-                    showReauth(view)
-                }
+                    }
+                    .subscribeOn(RxSchedulers.io())
+                    .observeOn(RxSchedulers.main())
+                    .subscribe()
+
+
 
                 dialog.dismiss()
             }
