@@ -18,7 +18,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
@@ -29,6 +28,7 @@ import com.drspaceboo.transtracks.domain.EditPhotoDomain
 import com.drspaceboo.transtracks.domain.EditPhotoResult
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
+import com.drspaceboo.transtracks.util.ProgressDialog
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
@@ -125,16 +125,13 @@ class EditPhotoController(args: Bundle) : Controller(args) {
                 }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.UpdatingImage>()
-                .subscribe {
-                    savingDialog?.dismiss()
+            .ofType<EditPhotoResult.UpdatingImage>()
+            .subscribe {
+                savingDialog?.dismiss()
 
-                    savingDialog = AlertDialog.Builder(view.context)
-                            .setTitle(R.string.updating_photo)
-                            .setView(ProgressBar(view.context))
-                            .create()
-                    savingDialog!!.show()
-                }
+                savingDialog = ProgressDialog.make(R.string.updating_photo, view.context)
+                savingDialog!!.show()
+            }
 
         viewDisposables += domain.results
                 .ofType<EditPhotoResult.UpdateSuccess>()

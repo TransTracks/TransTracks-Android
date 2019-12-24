@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.StringRes
@@ -52,6 +51,7 @@ import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
 import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
+import com.drspaceboo.transtracks.util.ProgressDialog
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
@@ -490,11 +490,7 @@ class SettingsController : Controller() {
                     return@setOnClickListener
                 }
 
-                val progressDialog = AlertDialog.Builder(view.context)
-                    .setTitle(R.string.updating_email)
-                    .setView(ProgressBar(view.context))
-                    .setCancelable(false)
-                    .create()
+                val progressDialog = ProgressDialog.make(R.string.updating_email, view.context)
                 progressDialog.show()
 
                 Completable
