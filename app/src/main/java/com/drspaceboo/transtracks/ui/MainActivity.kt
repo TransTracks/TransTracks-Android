@@ -29,11 +29,11 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
-import com.drspaceboo.transtracks.util.PrefUtil
-import com.drspaceboo.transtracks.util.PrefUtil.THEME_BLUE
-import com.drspaceboo.transtracks.util.PrefUtil.THEME_GREEN
-import com.drspaceboo.transtracks.util.PrefUtil.THEME_PINK
-import com.drspaceboo.transtracks.util.PrefUtil.THEME_PURPLE
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_BLUE
+import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_GREEN
+import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PINK
+import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PURPLE
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
 import io.fabric.sdk.android.Fabric

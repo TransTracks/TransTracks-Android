@@ -20,8 +20,8 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.PrefUtil
-import com.drspaceboo.transtracks.util.PrefUtil.LOCK_NORMAL
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_NORMAL
 import com.drspaceboo.transtracks.util.hideKeyboard
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign

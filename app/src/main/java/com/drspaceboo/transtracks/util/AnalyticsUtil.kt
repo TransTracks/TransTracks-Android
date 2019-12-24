@@ -12,6 +12,7 @@ package com.drspaceboo.transtracks.util
 
 import android.os.Bundle
 import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.google.firebase.analytics.FirebaseAnalytics
 
 sealed class Event {

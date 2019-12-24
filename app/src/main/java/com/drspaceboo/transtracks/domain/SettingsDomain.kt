@@ -12,7 +12,7 @@ package com.drspaceboo.transtracks.domain
 
 import com.drspaceboo.transtracks.domain.SettingsAction.SettingsUpdated
 import com.drspaceboo.transtracks.ui.settings.SettingsUIUserDetails
-import com.drspaceboo.transtracks.util.PrefUtil
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.hasPasswordProvider
 import com.google.firebase.auth.FirebaseAuth

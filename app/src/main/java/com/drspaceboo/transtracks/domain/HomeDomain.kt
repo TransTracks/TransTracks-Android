@@ -12,7 +12,7 @@ package com.drspaceboo.transtracks.domain
 
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.util.PrefUtil
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
 import com.jakewharton.rxrelay2.PublishRelay

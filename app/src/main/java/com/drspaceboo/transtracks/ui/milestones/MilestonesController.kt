@@ -20,7 +20,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.PrefUtil
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import io.reactivex.disposables.CompositeDisposable

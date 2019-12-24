@@ -8,7 +8,7 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.drspaceboo.transtracks.util
+package com.drspaceboo.transtracks.util.settings
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -41,8 +41,10 @@ object PrefUtil {
     const val LOCK_TRAINS = 2
 
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(LOCK_DELAY_INSTANT, LOCK_DELAY_ONE_MINUTE, LOCK_DELAY_TWO_MINUTES,
-            LOCK_DELAY_FIVE_MINUTES, LOCK_DELAY_FIFTEEN_MINUTES)
+    @IntDef(
+        LOCK_DELAY_INSTANT, LOCK_DELAY_ONE_MINUTE, LOCK_DELAY_TWO_MINUTES, LOCK_DELAY_FIVE_MINUTES,
+        LOCK_DELAY_FIFTEEN_MINUTES
+    )
     annotation class LockDelay
 
     const val LOCK_DELAY_INSTANT = 0
@@ -112,10 +114,8 @@ object PrefUtil {
         rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
     }
 
-    private fun getAlbumFirstVisiblePrefs(): SharedPreferences {
-        return TransTracksApp.instance.getSharedPreferences("albumFirstVisible",
-                                                            Context.MODE_PRIVATE)
-    }
+    private fun getAlbumFirstVisiblePrefs(): SharedPreferences =
+        TransTracksApp.instance.getSharedPreferences("albumFirstVisible", Context.MODE_PRIVATE)
 
     fun clearAllAlbumFirstVisiblePrefs() {
         getAlbumFirstVisiblePrefs().edit().clear().apply()
@@ -125,9 +125,7 @@ object PrefUtil {
         getAlbumFirstVisiblePrefs().edit().putString(bucketId, uri).apply()
     }
 
-    fun getAlbumFirstVisible(bucketId: String): String? {
-        return getAlbumFirstVisiblePrefs().getString(bucketId, null)
-    }
+    fun getAlbumFirstVisible(bucketId: String): String? = getAlbumFirstVisiblePrefs().getString(bucketId, null)
 
     const val CODE_SALT = BuildConfig.CODE_SALT
 }
