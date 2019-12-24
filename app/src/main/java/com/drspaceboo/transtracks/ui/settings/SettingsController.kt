@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -133,13 +132,13 @@ class SettingsController : Controller() {
                 if (email != null) {
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener { result ->
                         if (result.isSuccessful) {
-                            Toast.makeText(view.context, R.string.passwordResetSuccess, Toast.LENGTH_LONG).show()
+                            Snackbar.make(view, R.string.passwordResetSuccess, Snackbar.LENGTH_LONG).show()
                         } else {
-                            Toast.makeText(view.context, R.string.passwordResetFailed, Toast.LENGTH_LONG).show()
+                            Snackbar.make(view, R.string.passwordResetFailed, Snackbar.LENGTH_LONG).show()
                         }
                     }
                 } else {
-                    Toast.makeText(view.context, R.string.unableToResetPassword, Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, R.string.unableToResetPassword, Snackbar.LENGTH_LONG).show()
                 }
             }
 
@@ -233,7 +232,9 @@ class SettingsController : Controller() {
             if (resultCode == Activity.RESULT_OK) {
                 //TODO attemptFirebaseAutoSetup
             } else {
-                response?.error?.let { Toast.makeText(applicationContext, R.string.sign_in_error, Toast.LENGTH_SHORT) }
+                view?.let { view ->
+                    response?.error?.let { Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT) }
+                }
             }
 
             TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
@@ -296,7 +297,7 @@ class SettingsController : Controller() {
                     if (PrefUtil.lockCode.get()
                         != EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
                     ) {
-                        Toast.makeText(view.context, R.string.incorrect_password, Toast.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.incorrect_password, Snackbar.LENGTH_LONG).show()
                         return@setOnClickListener
                     }
 
@@ -339,10 +340,10 @@ class SettingsController : Controller() {
                     val confirmText = confirm.text.toString()
 
                     if (passwordText.isEmpty()) {
-                        Toast.makeText(view.context, R.string.password_cannot_be_empty, Toast.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.password_cannot_be_empty, Snackbar.LENGTH_LONG).show()
                         return@setOnClickListener
                     } else if (passwordText != confirmText) {
-                        Toast.makeText(view.context, R.string.password_and_confirm, Toast.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.password_and_confirm, Snackbar.LENGTH_LONG).show()
                         return@setOnClickListener
                     }
 
@@ -432,7 +433,7 @@ class SettingsController : Controller() {
                 val nameText = nameEditText.text.toString()
 
                 if (nameText.isEmpty()) {
-                    Toast.makeText(view.context, R.string.name_cannot_be_empty, Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, R.string.name_cannot_be_empty, Snackbar.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
 
@@ -506,7 +507,7 @@ class SettingsController : Controller() {
                 val emailText = emailEditText.text.toString()
 
                 if (emailText.isEmpty()) {
-                    Toast.makeText(view.context, R.string.email_must_be_valid, Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, R.string.email_must_be_valid, Snackbar.LENGTH_LONG).show()
                     return@setOnClickListener
                 }
 
