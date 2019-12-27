@@ -12,7 +12,7 @@ package com.drspaceboo.transtracks.util
 
 import android.os.Bundle
 import com.drspaceboo.transtracks.TransTracksApp
-import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.LockType
 import com.google.firebase.analytics.FirebaseAnalytics
 
 sealed class Event {
@@ -26,7 +26,7 @@ sealed class Event {
 
     object HomeControllerShown : Event()
 
-    data class LockControllerShown(@PrefUtil.LockType val type: Int) : Event()
+    data class LockControllerShown(val type: LockType) : Event()
 
     object MilestonesControllerShown : Event()
 
@@ -78,12 +78,10 @@ object AnalyticsUtil {
 
         is Event.LockControllerShown -> Bundle().apply {
             val type = when (event.type) {
-                PrefUtil.LOCK_OFF -> "Off"
-                PrefUtil.LOCK_NORMAL -> "Normal"
-                PrefUtil.LOCK_TRAINS -> "Trains"
-                else -> throw IllegalArgumentException("Unhandled Lock Type")
+                LockType.off -> "Off"
+                LockType.normal -> "Normal"
+                LockType.trains -> "Trains"
             }
-
             putString(TYPE, type)
         }
 

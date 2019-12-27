@@ -12,9 +12,13 @@ package com.drspaceboo.transtracks.domain
 
 import com.drspaceboo.transtracks.domain.SettingsAction.SettingsUpdated
 import com.drspaceboo.transtracks.ui.settings.SettingsUIUserDetails
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.hasPasswordProvider
+import com.drspaceboo.transtracks.util.settings.LockDelay
+import com.drspaceboo.transtracks.util.settings.LockType
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.SettingsManager
+import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -27,18 +31,14 @@ sealed class SettingsAction {
 
 sealed class SettingsResult {
     data class Content(
-        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: Int, val lockType: Int,
-        val lockDelay: Int
+        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: Theme, val lockType: LockType,
+        val lockDelay: LockDelay
     ) : SettingsResult()
 }
 
 class SettingsDomain {
-    private val settingsUpdatedActions: Observable<SettingsUpdated> = Observable
-        .mergeArray(
-            PrefUtil.startDate.asObservable(), PrefUtil.theme.asObservable(), PrefUtil.lockType.asObservable(),
-            PrefUtil.lockDelay.asObservable()
-        )
-        .map { SettingsUpdated }
+    private val settingsUpdatedActions: Observable<SettingsUpdated> =
+        SettingsManager.userSettingsUpdated.map { SettingsUpdated }
 
     val actions: PublishRelay<SettingsAction> = PublishRelay.create()
     private val mergedActions: Observable<SettingsAction> = Observable.merge(actions, settingsUpdatedActions)
@@ -55,11 +55,13 @@ class SettingsDomain {
             actions.map { action ->
                 return@map when (action) {
                     SettingsUpdated -> {
-                        val userDetails = FirebaseAuth.getInstance().currentUser?.let { SettingsUIUserDetails(it.displayName, it.email, it.hasPasswordProvider()) }
+                        val userDetails = FirebaseAuth.getInstance().currentUser?.let {
+                            SettingsUIUserDetails(it.displayName, it.email, it.hasPasswordProvider())
+                        }
 
                         SettingsResult.Content(
-                            userDetails, PrefUtil.startDate.get(), PrefUtil.theme.get(), PrefUtil.lockType.get(),
-                            PrefUtil.lockDelay.get()
+                            userDetails, PrefUtil.startDate.get(), SettingsManager.getTheme(),
+                            SettingsManager.getLockType(), SettingsManager.getLockDelay()
                         )
                     }
                 }

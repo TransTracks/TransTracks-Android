@@ -13,81 +13,77 @@ package com.drspaceboo.transtracks.util.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import androidx.annotation.IntDef
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
 import com.f2prateek.rx.preferences2.LocalDateConverter
 import com.f2prateek.rx.preferences2.Preference
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import org.threeten.bp.LocalDate
 
 object PrefUtil {
+    //region Constants
+    const val CODE_SALT = BuildConfig.CODE_SALT
+    //endregion
+
+    //region Default Prefs
+    fun getDefaultPrefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance)
+
+    fun getBoolean(key: Key, default: Boolean): Boolean = getDefaultPrefs().getBoolean(key.name, default)
+
+    fun setBoolean(key: Key, value: Boolean) = getDefaultPrefs().edit().putBoolean(key.name, value).apply()
+
+    inline fun <reified T : Enum<T>> getEnum(key: Key, default: T): T = getString(key, default.name)?.let {
+        return@let try {
+            enumValueOf<T>(it)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+            default
+        }
+    } ?: default
+
+    fun <T : Enum<T>> setEnum(key: Key, value: T) = setString(key, value.name)
+
+    fun getInt(key: Key, default: Int?): Int? = getDefaultPrefs().let { prefs ->
+        if (prefs.contains(key.name)) prefs.getInt(key.name, -1) else default
+    }
+
+    fun setInt(key: Key, value: Int) = getDefaultPrefs().edit().putInt(key.name, value).apply()
+
+    fun getString(key: Key, default: String?): String? = getDefaultPrefs().getString(key.name, default)
+
+    fun setString(key: Key, value: String) = getDefaultPrefs().edit().putString(key.name, value).apply()
+    //endregion
+
+    //region AlbumFirstVisible
+    private fun getAlbumFirstVisiblePrefs(): SharedPreferences =
+        TransTracksApp.instance.getSharedPreferences("albumFirstVisible", Context.MODE_PRIVATE)
+
+    fun clearAllAlbumFirstVisiblePrefs() {
+        getAlbumFirstVisiblePrefs().edit().clear().apply()
+    }
+
+    fun setAlbumFirstVisible(bucketId: String, uri: String?) {
+        getAlbumFirstVisiblePrefs().edit().putString(bucketId, uri).apply()
+    }
+
+    fun getAlbumFirstVisible(bucketId: String): String? = getAlbumFirstVisiblePrefs().getString(bucketId, null)
+    //endregion
+
+
     private const val KEY_LOCK_CODE = "lockCode"
-    private const val KEY_LOCK_DELAY = "lockDelay"
-    private const val KEY_LOCK_TYPE = "lockType"
     private const val KEY_SELECT_PHOTO_FIRST_VISIBLE = "selectPhotoFirstVisible"
     private const val KEY_SHOW_ADS = "showAds"
     private const val KEY_SHOW_WELCOME = "showWelcome"
     private const val KEY_START_DATE = "startDate"
-    private const val KEY_THEME = "theme"
     private const val KEY_USER_LAST_SEEN = "userLastSeen"
 
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(LOCK_OFF, LOCK_NORMAL, LOCK_TRAINS)
-    annotation class LockType
-
-    const val LOCK_OFF = 0
-    const val LOCK_NORMAL = 1
-    const val LOCK_TRAINS = 2
-
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(
-        LOCK_DELAY_INSTANT, LOCK_DELAY_ONE_MINUTE, LOCK_DELAY_TWO_MINUTES, LOCK_DELAY_FIVE_MINUTES,
-        LOCK_DELAY_FIFTEEN_MINUTES
-    )
-    annotation class LockDelay
-
-    const val LOCK_DELAY_INSTANT = 0
-    const val LOCK_DELAY_ONE_MINUTE = 1
-    const val LOCK_DELAY_TWO_MINUTES = 2
-    const val LOCK_DELAY_FIVE_MINUTES = 3
-    const val LOCK_DELAY_FIFTEEN_MINUTES = 4
-
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    @IntDef(THEME_PINK, THEME_BLUE, THEME_PURPLE, THEME_GREEN)
-    annotation class Theme
-
-    const val THEME_PINK = 0
-    const val THEME_BLUE = 1
-    const val THEME_PURPLE = 2
-    const val THEME_GREEN = 3
-
     private val rxPreferences: RxSharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
-        RxSharedPreferences.create(PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance))
+        RxSharedPreferences.create(getDefaultPrefs())
     }
 
     val lockCode: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
         rxPreferences.getString(KEY_LOCK_CODE, "")
-    }
-
-    val lockDelay: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getInteger(KEY_LOCK_DELAY, LOCK_DELAY_INSTANT)
-    }
-
-    fun getLockDelayMilli(): Long {
-        val delayMinutes = when (lockDelay.get()) {
-            LOCK_DELAY_ONE_MINUTE -> 1L
-            LOCK_DELAY_TWO_MINUTES -> 2L
-            LOCK_DELAY_FIVE_MINUTES -> 5L
-            LOCK_DELAY_FIFTEEN_MINUTES -> 15L
-            else -> 0L
-        }
-
-        return 1000L * 60L * delayMinutes
-    }
-
-    val lockType: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getInteger(KEY_LOCK_TYPE, LOCK_OFF)
     }
 
     val selectPhotoFirstVisible: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
@@ -106,26 +102,7 @@ object PrefUtil {
         rxPreferences.getObject(KEY_START_DATE, LocalDate.now(), LocalDateConverter())
     }
 
-    val theme: Preference<Int> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getInteger(KEY_THEME, THEME_PINK)
-    }
-
     val userLastSeen: Preference<Long> by lazy(LazyThreadSafetyMode.NONE) {
         rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
     }
-
-    private fun getAlbumFirstVisiblePrefs(): SharedPreferences =
-        TransTracksApp.instance.getSharedPreferences("albumFirstVisible", Context.MODE_PRIVATE)
-
-    fun clearAllAlbumFirstVisiblePrefs() {
-        getAlbumFirstVisiblePrefs().edit().clear().apply()
-    }
-
-    fun setAlbumFirstVisible(bucketId: String, uri: String?) {
-        getAlbumFirstVisiblePrefs().edit().putString(bucketId, uri).apply()
-    }
-
-    fun getAlbumFirstVisible(bucketId: String): String? = getAlbumFirstVisiblePrefs().getString(bucketId, null)
-
-    const val CODE_SALT = BuildConfig.CODE_SALT
 }

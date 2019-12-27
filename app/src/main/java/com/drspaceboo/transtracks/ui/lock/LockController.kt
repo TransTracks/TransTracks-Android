@@ -20,11 +20,12 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.settings.PrefUtil
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_NORMAL
 import com.drspaceboo.transtracks.util.hideKeyboard
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.settings.LockType
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 
@@ -32,8 +33,8 @@ class LockController : Controller() {
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        @LayoutRes val layoutRes: Int = when (PrefUtil.lockType.get()) {
-            LOCK_NORMAL -> R.layout.normal_lock
+        @LayoutRes val layoutRes: Int = when (SettingsManager.getLockType()) {
+            LockType.normal -> R.layout.normal_lock
             else -> R.layout.train_lock
         }
 
@@ -43,25 +44,23 @@ class LockController : Controller() {
     override fun onAttach(view: View) {
         if (view !is LockView) throw AssertionError("View must be LockView")
 
-        AnalyticsUtil.logEvent(Event.LockControllerShown(PrefUtil.lockType.get()))
+        AnalyticsUtil.logEvent(Event.LockControllerShown(SettingsManager.getLockType()))
 
         viewDisposables += view.events
-                .ofType<LockUiEvent.Unlock>()
-                .subscribe { event ->
-                    if (PrefUtil.lockCode.get()
-                            == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
-                        view.hideKeyboard()
-                        router.popCurrentController()
-                    } else {
-                        @StringRes
-                        val messageRes: Int = when (PrefUtil.lockType.get()) {
-                            LOCK_NORMAL -> R.string.incorrect_password
-                            else -> R.string.train_incorrect
-                        }
-
-                        Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
+            .ofType<LockUiEvent.Unlock>()
+            .subscribe { event ->
+                if (PrefUtil.lockCode.get() == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
+                    view.hideKeyboard()
+                    router.popCurrentController()
+                } else {
+                    @StringRes val messageRes: Int = when (SettingsManager.getLockType()) {
+                        LockType.normal -> R.string.incorrect_password
+                        else -> R.string.train_incorrect
                     }
+
+                    Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
                 }
+            }
     }
 
     override fun onDetach(view: View) {

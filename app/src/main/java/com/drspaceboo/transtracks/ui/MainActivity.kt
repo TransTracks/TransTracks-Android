@@ -29,12 +29,10 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
-import com.drspaceboo.transtracks.util.settings.PrefUtil
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_BLUE
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_GREEN
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PINK
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PURPLE
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.settings.LockType
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import io.fabric.sdk.android.Fabric
 import io.reactivex.disposables.CompositeDisposable
@@ -49,15 +47,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val themeRes = when (PrefUtil.theme.get()) {
-            THEME_PINK -> R.style.PinkAppTheme
-            THEME_BLUE -> R.style.BlueAppTheme
-            THEME_PURPLE -> R.style.PurpleAppTheme
-            THEME_GREEN -> R.style.GreenAppTheme
-            else -> throw IllegalArgumentException("Unhandled theme type")
-        }
-        setTheme(themeRes)
-
+        setTheme(SettingsManager.getTheme().styleRes())
         setContentView(R.layout.activity_main)
 
         if (BuildConfig.DEBUG) {
@@ -71,15 +61,16 @@ class MainActivity : AppCompatActivity() {
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {
-            if (PrefUtil.lockType.get() == PrefUtil.LOCK_OFF) {
+            if (SettingsManager.getLockType() == LockType.off) {
                 router!!.setRoot(RouterTransaction.with(HomeController()).tag(HomeController.TAG))
             } else {
-                router!!.setBackstack(listOf(RouterTransaction.with(HomeController())
-                                                     .tag(HomeController.TAG),
-                                             RouterTransaction.with(LockController())
-                                                     .tag(LockController.TAG)
-                                                     .using(VerticalChangeHandler())),
-                                      null)
+                router!!.setBackstack(
+                    listOf(
+                        RouterTransaction.with(HomeController()).tag(HomeController.TAG),
+                        RouterTransaction.with(LockController()).tag(LockController.TAG).using(VerticalChangeHandler())
+                    ),
+                    null
+                )
             }
         }
     }
@@ -87,54 +78,49 @@ class MainActivity : AppCompatActivity() {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        viewDisposables += PrefUtil.theme.asObservable()
-                .map { themeType ->
-                    return@map when (themeType) {
-                        THEME_PINK -> R.style.PinkAppTheme
-                        THEME_BLUE -> R.style.BlueAppTheme
-                        THEME_PURPLE -> R.style.PurpleAppTheme
-                        THEME_GREEN -> R.style.GreenAppTheme
-                        else -> throw IllegalArgumentException("Unhandled theme type")
-                    }
+        viewDisposables += SettingsManager.themeUpdated
+            .map { it.styleRes() }
+            .subscribe { themeRes ->
+                setTheme(themeRes)
+                val value = TypedValue()
+                if (theme.resolveAttribute(R.attr.colorPrimaryDark, value, true)) {
+                    window.statusBarColor = value.data
                 }
-                .subscribe { themeRes ->
-                    setTheme(themeRes)
-                    val value = TypedValue()
-                    if (theme.resolveAttribute(R.attr.colorPrimaryDark, value, true)) {
-                        window.statusBarColor = value.data
-                    }
+            }
+
+        viewDisposables += SettingsManager.lockTypeUpdated
+            .subscribe { lockType ->
+                if (lockType == LockType.off) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                } else {
+                    window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
                 }
 
-        viewDisposables += PrefUtil.lockType.asObservable()
-                .subscribe { lockType ->
-                    if (lockType == PrefUtil.LOCK_OFF) {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-                    } else {
-                        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                                        WindowManager.LayoutParams.FLAG_SECURE)
-                    }
+                val defaultLauncherState: Int
+                val trainLauncherState: Int
 
-                    val defaultLauncherState: Int
-                    val trainLauncherState: Int
-
-                    if (lockType != PrefUtil.LOCK_TRAINS) {
-                        defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                        trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                    } else {
-                        defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                        trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                    }
-
-                    packageManager.setComponentEnabledSetting(
-                            ComponentName("com.drspaceboo.transtracks",
-                                          "com.drspaceboo.transtracks.MainActivityDefault"),
-                            defaultLauncherState, PackageManager.DONT_KILL_APP)
-
-                    packageManager.setComponentEnabledSetting(
-                            ComponentName("com.drspaceboo.transtracks",
-                                          "com.drspaceboo.transtracks.MainActivityTrain"),
-                            trainLauncherState, PackageManager.DONT_KILL_APP)
+                if (lockType != LockType.trains) {
+                    defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                    trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                } else {
+                    defaultLauncherState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    trainLauncherState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
                 }
+
+                packageManager.setComponentEnabledSetting(
+                    ComponentName(
+                        "com.drspaceboo.transtracks", "com.drspaceboo.transtracks.MainActivityDefault"
+                    ),
+                    defaultLauncherState, PackageManager.DONT_KILL_APP
+                )
+
+                packageManager.setComponentEnabledSetting(
+                    ComponentName(
+                        "com.drspaceboo.transtracks", "com.drspaceboo.transtracks.MainActivityTrain"
+                    ),
+                    trainLauncherState, PackageManager.DONT_KILL_APP
+                )
+            }
     }
 
     override fun onBackPressed() {
@@ -149,10 +135,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         //Minimum 1000ms to step issues with rotation
-        val timeToLock = PrefUtil.userLastSeen.get() + PrefUtil.getLockDelayMilli() + 1000L
-
-        if (PrefUtil.lockType.get() != PrefUtil.LOCK_OFF
-                && timeToLock <= System.currentTimeMillis()) {
+        val timeToLock = PrefUtil.userLastSeen.get() + SettingsManager.getLockDelay().getMilli() + 1000L
+        if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
             showLockControllerIfNotAlreadyShowing()
         }
     }
@@ -167,9 +151,11 @@ class MainActivity : AppCompatActivity() {
         val lockController = router?.getControllerWithTag(LockController.TAG)
 
         if (lockController == null) {
-            router?.pushController(RouterTransaction.with(LockController())
-                                           .tag(LockController.TAG)
-                                           .popChangeHandler(VerticalChangeHandler()))
+            router?.pushController(
+                RouterTransaction.with(LockController())
+                    .tag(LockController.TAG)
+                    .popChangeHandler(VerticalChangeHandler())
+            )
         }
     }
 

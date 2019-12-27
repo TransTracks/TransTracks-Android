@@ -37,24 +37,16 @@ import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.settings.PrefUtil
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_DELAY_FIFTEEN_MINUTES
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_DELAY_FIVE_MINUTES
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_DELAY_INSTANT
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_DELAY_ONE_MINUTE
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_DELAY_TWO_MINUTES
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_NORMAL
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_OFF
-import com.drspaceboo.transtracks.util.settings.PrefUtil.LOCK_TRAINS
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_BLUE
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_GREEN
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PINK
-import com.drspaceboo.transtracks.util.settings.PrefUtil.THEME_PURPLE
 import com.drspaceboo.transtracks.util.ProgressDialog
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.settings.LockDelay
+import com.drspaceboo.transtracks.util.settings.LockType
+import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.settings.SettingsManager
+import com.drspaceboo.transtracks.util.settings.Theme
 import com.drspaceboo.transtracks.util.simpleIsEmail
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -100,8 +92,8 @@ class SettingsController : Controller() {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents
-                .ofType<SettingsUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .ofType<SettingsUiEvent.Back>()
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.SignIn>()
@@ -151,76 +143,86 @@ class SettingsController : Controller() {
             .subscribe { showChangeEmailDialog(view) }
 
         viewDisposables += sharedEvents
-                .ofType<SettingsUiEvent.ChangeStartDate>()
-                .subscribe {
-                    val startDate = PrefUtil.startDate.get()
+            .ofType<SettingsUiEvent.ChangeStartDate>()
+            .subscribe {
+                val startDate = PrefUtil.startDate.get()
 
-                    //Note: The DatePickerDialog uses 0 based months
-                    DatePickerDialog(view.context,
-                                     { _, year, month, dayOfMonth ->
-                                         PrefUtil.startDate.set(LocalDate.of(year, month + 1, dayOfMonth))
-                                     },
-                                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth).show()
-                }
-
-        viewDisposables += sharedEvents
-                .ofType<SettingsUiEvent.ChangeTheme>()
-                .subscribe {
-                    val theme = PrefUtil.theme.get()
-
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_theme)
-                            .setSingleChoiceItems(arrayOf(view.getString(R.string.pink),
-                                                          view.getString(R.string.blue),
-                                                          view.getString(R.string.purple),
-                                                          view.getString(R.string.green)),
-                                                  theme) { dialog: DialogInterface, index: Int ->
-                                if (theme != index) {
-                                    PrefUtil.theme.set(index)
-                                    router.replaceTopController(RouterTransaction.with(SettingsController()))
-                                }
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
-                }
+                //Note: The DatePickerDialog uses 0 based months
+                DatePickerDialog(
+                    view.context,
+                    { _, year, month, dayOfMonth ->
+                        PrefUtil.startDate.set(LocalDate.of(year, month + 1, dayOfMonth))
+                    },
+                    startDate.year, startDate.monthValue - 1, startDate.dayOfMonth
+                ).show()
+            }
 
         viewDisposables += sharedEvents
-                .ofType<SettingsUiEvent.ChangeLockMode>()
-                .subscribe { _ -> showChangeLockModeDialog(view) }
+            .ofType<SettingsUiEvent.ChangeTheme>()
+            .subscribe {
+                val theme = SettingsManager.getTheme()
+
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.select_theme)
+                    .setSingleChoiceItems(
+                        arrayOf(
+                            view.getString(R.string.pink),
+                            view.getString(R.string.blue),
+                            view.getString(R.string.purple),
+                            view.getString(R.string.green)
+                        ),
+                        theme.ordinal
+                    ) { dialog: DialogInterface, index: Int ->
+                        if (theme.ordinal != index) {
+                            SettingsManager.setTheme(Theme.values()[index])
+                            router.replaceTopController(RouterTransaction.with(SettingsController()))
+                        }
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
 
         viewDisposables += sharedEvents
-                .ofType<SettingsUiEvent.ChangeLockDelay>()
-                .subscribe {
-                    val delay = PrefUtil.lockDelay.get()
+            .ofType<SettingsUiEvent.ChangeLockMode>()
+            .subscribe { _ -> showChangeLockModeDialog(view) }
 
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_lock_delay)
-                            .setSingleChoiceItems(arrayOf(view.getString(R.string.instant),
-                                                          view.getString(R.string.one_minute),
-                                                          view.getString(R.string.two_minutes),
-                                                          view.getString(R.string.five_minutes),
-                                                          view.getString(R.string.fifteen_minutes)),
-                                                  delay) { dialog: DialogInterface, index: Int ->
-                                if (delay != index) {
-                                    PrefUtil.lockDelay.set(index)
-                                }
-                                dialog.dismiss()
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
-                }
+        viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.ChangeLockDelay>()
+            .subscribe {
+                val delay = SettingsManager.getLockDelay()
+
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.select_lock_delay)
+                    .setSingleChoiceItems(
+                        arrayOf(
+                            view.getString(R.string.instant),
+                            view.getString(R.string.one_minute),
+                            view.getString(R.string.two_minutes),
+                            view.getString(R.string.five_minutes),
+                            view.getString(R.string.fifteen_minutes)
+                        ),
+                        delay.ordinal
+                    ) { dialog: DialogInterface, index: Int ->
+                        if (delay.ordinal != index) {
+                            SettingsManager.setLockDelay(LockDelay.values()[index])
+                        }
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.PrivacyPolicy>()
-                .subscribe {
-                    val activity = activity ?: return@subscribe
+            .subscribe {
+                val activity = activity ?: return@subscribe
 
-                    val webpage = Uri.parse("http://www.drspaceboo.com/privacy-policy/")
-                    val intent = Intent(Intent.ACTION_VIEW, webpage)
-                    if (intent.resolveActivity(activity.packageManager) != null) {
-                        startActivity(intent)
-                    }
+                val webpage = Uri.parse("http://www.drspaceboo.com/privacy-policy/")
+                val intent = Intent(Intent.ACTION_VIEW, webpage)
+                if (intent.resolveActivity(activity.packageManager) != null) {
+                    startActivity(intent)
                 }
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -302,7 +304,7 @@ class SettingsController : Controller() {
                     }
 
                     PrefUtil.lockCode.set("")
-                    PrefUtil.lockType.set(LOCK_OFF)
+                    SettingsManager.setLockType(LockType.off)
                     dialog.dismiss()
                 }
             }
@@ -312,7 +314,7 @@ class SettingsController : Controller() {
             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
         }
 
-        fun showSetPasswordDialog(newLockType: Int) {
+        fun showSetPasswordDialog(newLockType: LockType) {
             val builder = AlertDialog.Builder(view.context).setTitle(R.string.set_password)
 
             @SuppressLint("InflateParams") // Unable to provide root
@@ -348,9 +350,9 @@ class SettingsController : Controller() {
                     }
 
                     PrefUtil.lockCode.set(EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT))
-                    PrefUtil.lockType.set(newLockType)
+                    SettingsManager.setLockType(newLockType)
 
-                    if (newLockType == LOCK_TRAINS) {
+                    if (newLockType == LockType.trains) {
                         showAppNameChangeSnackbar(view, R.string.train_tracks_title)
                     }
 
@@ -360,7 +362,7 @@ class SettingsController : Controller() {
             passwordDialog.show()
         }
 
-        val lockMode = PrefUtil.lockType.get()
+        val lockMode = SettingsManager.getLockType()
 
         AlertDialog.Builder(view.context)
             .setTitle(R.string.select_lock_mode)
@@ -370,22 +372,24 @@ class SettingsController : Controller() {
                     view.getString(R.string.enabled_normal),
                     view.getString(R.string.enabled_trains)
                 ),
-                lockMode
-            ) { dialog: DialogInterface, newLockType: Int ->
+                lockMode.ordinal
+            ) { dialog: DialogInterface, index: Int ->
+                val newLockType = LockType.values()[index]
+
                 if (lockMode != newLockType) {
                     val hasCode = PrefUtil.lockCode.get().isNotEmpty()
 
                     when {
-                        newLockType == LOCK_OFF -> {
+                        newLockType == LockType.off -> {
                             //Turn off lock, and remove the code
                             showRemovePasswordDialog()
                         }
 
                         hasCode -> {
                             //Changing to another type with the code on, just update type
-                            PrefUtil.lockType.set(newLockType)
+                            SettingsManager.setLockType(newLockType)
 
-                            if (newLockType == LOCK_TRAINS) {
+                            if (newLockType == LockType.trains) {
                                 showAppNameChangeSnackbar(view, R.string.train_tracks_title)
                             } else {
                                 showAppNameChangeSnackbar(view, R.string.app_name)
@@ -586,37 +590,36 @@ fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsRe
             is SettingsResult.Content -> {
                 val themeName = context.getString(
                     when (result.theme) {
-                        THEME_PINK -> R.string.pink
-                        THEME_BLUE -> R.string.blue
-                        THEME_PURPLE -> R.string.purple
-                        THEME_GREEN -> R.string.green
+                        Theme.pink -> R.string.pink
+                        Theme.blue -> R.string.blue
+                        Theme.purple -> R.string.purple
+                        Theme.green -> R.string.green
                         else -> throw IllegalArgumentException("Unhandled theme type")
                     }
                 )
 
                 val lockName = context.getString(
                     when (result.lockType) {
-                        LOCK_OFF -> R.string.disabled
-                        LOCK_NORMAL -> R.string.enabled_normal
-                        LOCK_TRAINS -> R.string.enabled_trains
+                        LockType.off -> R.string.disabled
+                        LockType.normal -> R.string.enabled_normal
+                        LockType.trains -> R.string.enabled_trains
                         else -> throw IllegalArgumentException("Unhandled lock type")
                     }
                 )
 
                 val lockDelayName = context.getString(
                     when (result.lockDelay) {
-                        LOCK_DELAY_INSTANT -> R.string.instant
-                        LOCK_DELAY_ONE_MINUTE -> R.string.one_minute
-                        LOCK_DELAY_TWO_MINUTES -> R.string.two_minutes
-                        LOCK_DELAY_FIVE_MINUTES -> R.string.five_minutes
-                        LOCK_DELAY_FIFTEEN_MINUTES -> R.string.fifteen_minutes
-                        else -> throw IllegalArgumentException("Unhandled lock delay")
+                        LockDelay.instant -> R.string.instant
+                        LockDelay.oneMinute -> R.string.one_minute
+                        LockDelay.twoMinutes -> R.string.two_minutes
+                        LockDelay.fiveMinutes -> R.string.five_minutes
+                        LockDelay.fifteenMinutes -> R.string.fifteen_minutes
                     }
                 )
 
                 SettingsUiState.Loaded(
                     result.userDetails, result.startDate, themeName, lockName,
-                    enableLockDelay = result.lockType != LOCK_OFF, lockDelay = lockDelayName,
+                    enableLockDelay = result.lockType != LockType.off, lockDelay = lockDelayName,
                     appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     copyright = context.getString(
                         R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()
