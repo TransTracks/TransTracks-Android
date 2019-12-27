@@ -20,15 +20,13 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.settings.SettingsManager
 import io.reactivex.disposables.CompositeDisposable
 
 class MilestonesController(args: Bundle) : Controller(args) {
-    constructor(initialDay: Long) : this(Bundle().apply {
-        putLong(KEY_INITIAL_DAY, initialDay)
-    })
+    constructor(initialDay: Long) : this(Bundle().apply { putLong(KEY_INITIAL_DAY, initialDay) })
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
@@ -41,24 +39,18 @@ class MilestonesController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.MilestonesControllerShown)
 
-        view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY), PrefUtil.showAds.get()))
+        view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY), SettingsManager.showAds()))
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.AddMilestone>()
-                .subscribe { event ->
-                    router.pushController(
-                            RouterTransaction.with(AddEditMilestoneController(event.day)))
-                }
+            .subscribe { event -> router.pushController(RouterTransaction.with(AddEditMilestoneController(event.day))) }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.EditMilestone>()
-                .subscribe { event ->
-                    router.pushController(
-                            RouterTransaction.with(AddEditMilestoneController(event.id)))
-                }
+            .subscribe { event -> router.pushController(RouterTransaction.with(AddEditMilestoneController(event.id))) }
     }
 
     override fun onDetach(view: View) {

@@ -16,7 +16,6 @@ import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.hasPasswordProvider
 import com.drspaceboo.transtracks.util.settings.LockDelay
 import com.drspaceboo.transtracks.util.settings.LockType
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.firebase.auth.FirebaseAuth
@@ -60,7 +59,7 @@ class SettingsDomain {
                         }
 
                         SettingsResult.Content(
-                            userDetails, PrefUtil.startDate.get(), SettingsManager.getTheme(),
+                            userDetails, SettingsManager.getStartDate(), SettingsManager.getTheme(),
                             SettingsManager.getLockType(), SettingsManager.getLockDelay()
                         )
                     }

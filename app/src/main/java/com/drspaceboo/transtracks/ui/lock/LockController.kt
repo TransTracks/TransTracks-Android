@@ -49,7 +49,7 @@ class LockController : Controller() {
         viewDisposables += view.events
             .ofType<LockUiEvent.Unlock>()
             .subscribe { event ->
-                if (PrefUtil.lockCode.get() == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
+                if (SettingsManager.getLockCode() == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
                     view.hideKeyboard()
                     router.popCurrentController()
                 } else {

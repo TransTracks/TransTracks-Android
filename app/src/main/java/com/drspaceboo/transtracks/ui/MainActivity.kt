@@ -31,7 +31,6 @@ import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.LockType
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import io.fabric.sdk.android.Fabric
@@ -135,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         //Minimum 1000ms to step issues with rotation
-        val timeToLock = PrefUtil.userLastSeen.get() + SettingsManager.getLockDelay().getMilli() + 1000L
+        val timeToLock = SettingsManager.getUserLastSeen() + SettingsManager.getLockDelay().getMilli() + 1000L
         if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
             showLockControllerIfNotAlreadyShowing()
         }
@@ -144,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 
-        PrefUtil.userLastSeen.set(System.currentTimeMillis())
+        SettingsManager.updateUserLastSeen()
     }
 
     private fun showLockControllerIfNotAlreadyShowing() {

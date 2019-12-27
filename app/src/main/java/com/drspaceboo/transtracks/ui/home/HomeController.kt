@@ -40,6 +40,7 @@ import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
+import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.using
 import io.reactivex.ObservableTransformer
@@ -68,27 +69,26 @@ class HomeController : Controller() {
 
         domain.actions.accept(HomeAction.ReloadDay)
 
-        if (PrefUtil.showWelcome.get()) {
+        if (SettingsManager.showWelcome()) {
             val builder = AlertDialog.Builder(view.context)
-                    .setTitle(R.string.welcome)
-                    .setMessage(R.string.welcome_message)
+                .setTitle(R.string.welcome)
+                .setMessage(R.string.welcome_message)
 
             @SuppressLint("InflateParams") //Cannot avoid passing null for the root here
             val welcomeView = LayoutInflater.from(builder.context).inflate(R.layout.welcome, null)
 
             val startDate: TextView = welcomeView.findViewById(R.id.welcome_start_date)
-            startDate.text = PrefUtil.startDate.get().toFullDateString(startDate.context)
+            startDate.text = SettingsManager.getStartDate().toFullDateString(startDate.context)
 
             builder.setView(welcomeView)
-                    .setPositiveButton(R.string.looks_good, null)
-                    .setNegativeButton(R.string.change_setting) { dialog: DialogInterface, _: Int ->
-                        router.pushController(RouterTransaction.with(SettingsController())
-                                                      .using(VerticalChangeHandler()))
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setPositiveButton(R.string.looks_good, null)
+                .setNegativeButton(R.string.change_setting) { dialog: DialogInterface, _: Int ->
+                    router.pushController(RouterTransaction.with(SettingsController()).using(VerticalChangeHandler()))
+                    dialog.dismiss()
+                }
+                .show()
 
-            PrefUtil.showWelcome.set(false)
+            SettingsManager.setShowWelcome(false)
         }
 
         viewDisposables += domain.results

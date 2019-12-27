@@ -145,13 +145,13 @@ class SettingsController : Controller() {
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeStartDate>()
             .subscribe {
-                val startDate = PrefUtil.startDate.get()
+                val startDate = SettingsManager.getStartDate()
 
                 //Note: The DatePickerDialog uses 0 based months
                 DatePickerDialog(
                     view.context,
                     { _, year, month, dayOfMonth ->
-                        PrefUtil.startDate.set(LocalDate.of(year, month + 1, dayOfMonth))
+                        SettingsManager.setStartDate(LocalDate.of(year, month + 1, dayOfMonth))
                     },
                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth
                 ).show()
@@ -185,7 +185,7 @@ class SettingsController : Controller() {
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeLockMode>()
-            .subscribe { _ -> showChangeLockModeDialog(view) }
+            .subscribe { showChangeLockModeDialog(view) }
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeLockDelay>()
@@ -296,14 +296,14 @@ class SettingsController : Controller() {
                 positiveButton.isEnabled = false
 
                 positiveButton.setOnClickListener {
-                    if (PrefUtil.lockCode.get()
+                    if (SettingsManager.getLockCode()
                         != EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
                     ) {
                         Snackbar.make(view, R.string.incorrect_password, Snackbar.LENGTH_LONG).show()
                         return@setOnClickListener
                     }
 
-                    PrefUtil.lockCode.set("")
+                    SettingsManager.setLockCode("")
                     SettingsManager.setLockType(LockType.off)
                     dialog.dismiss()
                 }
@@ -349,7 +349,9 @@ class SettingsController : Controller() {
                         return@setOnClickListener
                     }
 
-                    PrefUtil.lockCode.set(EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT))
+                    SettingsManager.setLockCode(
+                        EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
+                    )
                     SettingsManager.setLockType(newLockType)
 
                     if (newLockType == LockType.trains) {
@@ -377,7 +379,7 @@ class SettingsController : Controller() {
                 val newLockType = LockType.values()[index]
 
                 if (lockMode != newLockType) {
-                    val hasCode = PrefUtil.lockCode.get().isNotEmpty()
+                    val hasCode = SettingsManager.getLockCode().isNotEmpty()
 
                     when {
                         newLockType == LockType.off -> {
@@ -624,7 +626,7 @@ fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsRe
                     copyright = context.getString(
                         R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()
                     ),
-                    showAds = PrefUtil.showAds.get()
+                    showAds = SettingsManager.showAds()
                 )
             }
         }

@@ -15,6 +15,7 @@ import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
+import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -60,19 +61,18 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
 
     fun getLoadedResult(currentDate: LocalDate): HomeResult.Loaded {
         Realm.getDefaultInstance().use { realm ->
-            val startDate = PrefUtil.startDate.get()
+            val startDate = SettingsManager.getStartDate()
 
             val period: Period = startDate.until(currentDate)
             val currentDateEpochDay = currentDate.toEpochDay()
 
             val previousRecordCount = realm.where(Photo::class.java)
-                    .lessThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
-                    realm.where(Milestone::class.java)
-                            .lessThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
+                .lessThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
+                    realm.where(Milestone::class.java).lessThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
             val nextRecordCount = realm.where(Photo::class.java)
-                    .greaterThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
+                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
                     realm.where(Milestone::class.java)
-                            .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
+                        .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
 
             val showPreviousRecord = previousRecordCount > 0 || currentDate.isAfter(LocalDate.now())
                     || currentDate.isAfter(startDate)
@@ -80,24 +80,26 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
                     || currentDate.isBefore(startDate)
 
             val hasMilestones = realm.where(Milestone::class.java)
-                    .equalTo(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).findFirst() != null
+                .equalTo(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).findFirst() != null
 
-            return HomeResult.Loaded(period.getDisplayString(), showPreviousRecord, showNextRecord,
-                                     startDate, currentDate, hasMilestones, PrefUtil.showAds.get())
+            return HomeResult.Loaded(
+                period.getDisplayString(), showPreviousRecord, showNextRecord, startDate, currentDate, hasMilestones,
+                SettingsManager.showAds()
+            )
         }
     }
 
     fun getNextDate(currentDate: LocalDate): LocalDate {
         Realm.getDefaultInstance().use { realm ->
             val nextPhoto: Photo? = realm.where(Photo::class.java)
-                    .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                    .sort(Photo.FIELD_EPOCH_DAY)
-                    .findFirst()
+                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                .sort(Photo.FIELD_EPOCH_DAY)
+                .findFirst()
 
             val nextMilestone: Milestone? = realm.where(Milestone::class.java)
-                    .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                    .sort(Milestone.FIELD_EPOCH_DAY)
-                    .findFirst()
+                .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                .sort(Milestone.FIELD_EPOCH_DAY)
+                .findFirst()
 
             if (nextPhoto != null || nextMilestone != null) {
                 return when {
@@ -114,7 +116,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
                 }
             }
 
-            val startDate = PrefUtil.startDate.get()
+            val startDate = SettingsManager.getStartDate()
             val today = LocalDate.now()
 
             @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
@@ -137,14 +139,14 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
     fun getPreviousDate(currentDate: LocalDate): LocalDate {
         Realm.getDefaultInstance().use { realm ->
             val previousPhoto: Photo? = realm.where(Photo::class.java)
-                    .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                    .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING)
-                    .findFirst()
+                .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING)
+                .findFirst()
 
             val previousMilestone: Milestone? = realm.where(Milestone::class.java)
-                    .lessThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                    .sort(Milestone.FIELD_EPOCH_DAY, Sort.DESCENDING)
-                    .findFirst()
+                .lessThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
+                .sort(Milestone.FIELD_EPOCH_DAY, Sort.DESCENDING)
+                .findFirst()
 
             if (previousPhoto != null || previousMilestone != null) {
                 return when {
@@ -161,7 +163,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
                 }
             }
 
-            val startDate = PrefUtil.startDate.get()
+            val startDate = SettingsManager.getStartDate()
             val today = LocalDate.now()
 
             @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns

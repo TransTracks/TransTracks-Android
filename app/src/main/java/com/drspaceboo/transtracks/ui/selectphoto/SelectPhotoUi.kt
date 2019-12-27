@@ -21,8 +21,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxrelay2.PublishRelay
@@ -76,7 +76,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                              }
 
                              val uriString: String = adapter?.getUri(position)?.toString() ?: ""
-                             PrefUtil.selectPhotoFirstVisible.set(uriString)
+                             PrefUtil.setSelectPhotoFirstVisible(uriString)
                          })
     }
 
@@ -107,8 +107,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
         }
 
         if (shouldShowActionMode) {
-            actionModeHandler.setTitle(
-                    (state as SelectPhotoUiState.Selection).selectedUris.size.toString())
+            actionModeHandler.setTitle((state as SelectPhotoUiState.Selection).selectedUris.size.toString())
         }
 
         if (adapter == null) {
@@ -116,7 +115,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
             recyclerView.adapter = adapter
 
-            val firstVisibleUriString = PrefUtil.selectPhotoFirstVisible.get()
+            val firstVisibleUriString = PrefUtil.getSelectPhotoFirstVisible()
             if (firstVisibleUriString.isNotBlank()) {
                 val position = adapter!!.getItemPosition(Uri.parse(firstVisibleUriString))
 
@@ -146,8 +145,7 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
         private var titleText = ""
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            val adapter: SelectPhotoAdapter = recyclerView.adapter as SelectPhotoAdapter?
-                    ?: return false
+            val adapter: SelectPhotoAdapter = (recyclerView.adapter as SelectPhotoAdapter?) ?: return false
 
             val event: SelectPhotoUiEvent = when (item.itemId) {
                 R.id.select_photo_selection_save ->

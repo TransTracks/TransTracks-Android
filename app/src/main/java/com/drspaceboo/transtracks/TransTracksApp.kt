@@ -49,15 +49,10 @@ class TransTracksApp : Application() {
 
         appVersionUpdateIfNecessary()
 
-        if (!PrefUtil.startDate.isSet) {
-            //Make sure that the startDate
-            PrefUtil.startDate.set(PrefUtil.startDate.defaultValue())
-        }
-
         FileUtil.clearTempFolder()
 
         //Clearing these, as we don't want to maintain this state across launches
-        PrefUtil.selectPhotoFirstVisible.delete()
+        PrefUtil.setSelectPhotoFirstVisible("")
         PrefUtil.clearAllAlbumFirstVisiblePrefs()
     }
 
@@ -78,7 +73,7 @@ class TransTracksApp : Application() {
                 val prefs = PrefUtil.getDefaultPrefs()
                 val allPrefs = prefs.all
 
-                //Update how we are storing LockDelay, LockType, and Theme
+                //Update how we are storing LockDelay, LockType, StartDate, and Theme
 
                 val lockDelay = allPrefs[Key.lockDelay.name]
                 if (lockDelay != null) {
@@ -130,6 +125,33 @@ class TransTracksApp : Application() {
 
                         else -> prefs.edit().remove(Key.lockType.name).commit()
                     }
+                }
+
+                val startDate = allPrefs[Key.startDate.name]
+                if (startDate != null) {
+                    when (startDate) {
+                        is String -> {
+                            val startDateLong = startDate.toLongOrNull()
+
+                            prefs.edit()
+                                .remove(Key.startDate.name)
+                                .apply { if (startDateLong != null) putLong(Key.startDate.name, startDateLong) }
+                                .commit()
+                        }
+
+                        is Long -> {
+                            //No-op
+                        }
+
+                        else -> prefs.edit().remove(Key.startDate.name).commit()
+                    }
+
+                    val startDateLong = (startDate as? String)?.toLongOrNull()
+
+                    prefs.edit()
+                        .remove(Key.startDate.name)
+                        .apply { if (startDateLong != null) putLong(Key.startDate.name, startDateLong) }
+                        .commit()
                 }
 
                 val theme = allPrefs[Key.theme.name]

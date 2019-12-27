@@ -16,9 +16,6 @@ import android.preference.PreferenceManager
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
-import com.f2prateek.rx.preferences2.LocalDateConverter
-import com.f2prateek.rx.preferences2.Preference
-import com.f2prateek.rx.preferences2.RxSharedPreferences
 import org.threeten.bp.LocalDate
 
 object PrefUtil {
@@ -32,6 +29,10 @@ object PrefUtil {
     fun getBoolean(key: Key, default: Boolean): Boolean = getDefaultPrefs().getBoolean(key.name, default)
 
     fun setBoolean(key: Key, value: Boolean) = getDefaultPrefs().edit().putBoolean(key.name, value).apply()
+
+    fun getDate(key: Key): LocalDate? = getLong(key, null)?.let { LocalDate.ofEpochDay(it) }
+
+    fun setDate(key: Key, value: LocalDate) = setLong(key, value.toEpochDay())
 
     inline fun <reified T : Enum<T>> getEnum(key: Key, default: T): T = getString(key, default.name)?.let {
         return@let try {
@@ -49,6 +50,12 @@ object PrefUtil {
     }
 
     fun setInt(key: Key, value: Int) = getDefaultPrefs().edit().putInt(key.name, value).apply()
+
+    fun getLong(key: Key, default: Long?): Long? = getDefaultPrefs().let { prefs ->
+        if (prefs.contains(key.name)) prefs.getLong(key.name, -1) else default
+    }
+
+    fun setLong(key: Key, value: Long) = getDefaultPrefs().edit().putLong(key.name, value).apply()
 
     fun getString(key: Key, default: String?): String? = getDefaultPrefs().getString(key.name, default)
 
@@ -70,39 +77,12 @@ object PrefUtil {
     fun getAlbumFirstVisible(bucketId: String): String? = getAlbumFirstVisiblePrefs().getString(bucketId, null)
     //endregion
 
-
-    private const val KEY_LOCK_CODE = "lockCode"
+    //region PhotoFirstVisible
     private const val KEY_SELECT_PHOTO_FIRST_VISIBLE = "selectPhotoFirstVisible"
-    private const val KEY_SHOW_ADS = "showAds"
-    private const val KEY_SHOW_WELCOME = "showWelcome"
-    private const val KEY_START_DATE = "startDate"
-    private const val KEY_USER_LAST_SEEN = "userLastSeen"
 
-    private val rxPreferences: RxSharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
-        RxSharedPreferences.create(getDefaultPrefs())
-    }
+    fun getSelectPhotoFirstVisible(): String = getDefaultPrefs().getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")!!
 
-    val lockCode: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getString(KEY_LOCK_CODE, "")
-    }
-
-    val selectPhotoFirstVisible: Preference<String> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")
-    }
-
-    val showAds: Preference<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getBoolean(KEY_SHOW_ADS, true)
-    }
-
-    val showWelcome: Preference<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getBoolean(KEY_SHOW_WELCOME, true)
-    }
-
-    val startDate: Preference<LocalDate> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getObject(KEY_START_DATE, LocalDate.now(), LocalDateConverter())
-    }
-
-    val userLastSeen: Preference<Long> by lazy(LazyThreadSafetyMode.NONE) {
-        rxPreferences.getLong(KEY_USER_LAST_SEEN, 0)
-    }
+    fun setSelectPhotoFirstVisible(value: String) =
+        getDefaultPrefs().edit().putString(KEY_SELECT_PHOTO_FIRST_VISIBLE, value).apply()
+    //endregion
 }
