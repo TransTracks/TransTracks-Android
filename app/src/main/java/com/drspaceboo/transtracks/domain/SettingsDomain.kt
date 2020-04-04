@@ -43,6 +43,7 @@ class SettingsDomain {
     private val mergedActions: Observable<SettingsAction> = Observable.merge(actions, settingsUpdatedActions)
 
     val results: Observable<SettingsResult> = mergedActions
+        .startWith(SettingsUpdated)
         .compose(settingsActionsToResults())
         .subscribeOn(RxSchedulers.io())
         .observeOn(RxSchedulers.main())
@@ -59,7 +60,7 @@ class SettingsDomain {
                         }
 
                         SettingsResult.Content(
-                            userDetails, SettingsManager.getStartDate(), SettingsManager.getTheme(),
+                            userDetails, SettingsManager.getStartDate(context = null), SettingsManager.getTheme(),
                             SettingsManager.getLockType(), SettingsManager.getLockDelay()
                         )
                     }

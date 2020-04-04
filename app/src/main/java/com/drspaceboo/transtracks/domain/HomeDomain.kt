@@ -12,7 +12,6 @@ package com.drspaceboo.transtracks.domain
 
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
 import com.drspaceboo.transtracks.util.settings.SettingsManager
@@ -33,24 +32,26 @@ sealed class HomeAction {
 
 sealed class HomeResult {
     data class Loading(val day: LocalDate) : HomeResult()
-    data class Loaded(val dayString: String,
-                      val showPreviousRecord: Boolean,
-                      val showNextRecord: Boolean,
-                      val startDate: LocalDate,
-                      val currentDate: LocalDate,
-                      val hasMilestones: Boolean,
-                      val showAds: Boolean) : HomeResult()
+    data class Loaded(
+        val dayString: String,
+        val showPreviousRecord: Boolean,
+        val showNextRecord: Boolean,
+        val startDate: LocalDate,
+        val currentDate: LocalDate,
+        val hasMilestones: Boolean,
+        val showAds: Boolean
+    ) : HomeResult()
 }
 
 class HomeDomain {
     val actions: PublishRelay<HomeAction> = PublishRelay.create()
     val results: Observable<HomeResult> = actions
-            .startWith(HomeAction.LoadDay(LocalDate.now()))
-            .compose(homeActionsToResults())
-            .subscribeOn(RxSchedulers.io())
-            .observeOn(RxSchedulers.main())
-            .replay(1)
-            .refCount()
+        .startWith(HomeAction.LoadDay(LocalDate.now()))
+        .compose(homeActionsToResults())
+        .subscribeOn(RxSchedulers.io())
+        .observeOn(RxSchedulers.main())
+        .replay(1)
+        .refCount()
 }
 
 fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
@@ -61,7 +62,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
 
     fun getLoadedResult(currentDate: LocalDate): HomeResult.Loaded {
         Realm.getDefaultInstance().use { realm ->
-            val startDate = SettingsManager.getStartDate()
+            val startDate = SettingsManager.getStartDate(context = null)
 
             val period: Period = startDate.until(currentDate)
             val currentDateEpochDay = currentDate.toEpochDay()
@@ -116,7 +117,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
                 }
             }
 
-            val startDate = SettingsManager.getStartDate()
+            val startDate = SettingsManager.getStartDate(context = null)
             val today = LocalDate.now()
 
             @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
@@ -163,7 +164,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
                 }
             }
 
-            val startDate = SettingsManager.getStartDate()
+            val startDate = SettingsManager.getStartDate(context = null)
             val today = LocalDate.now()
 
             @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns

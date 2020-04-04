@@ -10,11 +10,13 @@
 
 package com.drspaceboo.transtracks.ui.lock
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
@@ -52,6 +54,7 @@ class LockController : Controller() {
                 if (SettingsManager.getLockCode() == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
                     view.hideKeyboard()
                     router.popCurrentController()
+                    SettingsManager.resetIncorrectPasswordCount()
                 } else {
                     @StringRes val messageRes: Int = when (SettingsManager.getLockType()) {
                         LockType.normal -> R.string.incorrect_password
@@ -59,8 +62,18 @@ class LockController : Controller() {
                     }
 
                     Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
+                    SettingsManager.incrementIncorrectPasswordCount()
+
+                    if (SettingsManager.showAccountWarning() && SettingsManager.getIncorrectPasswordCount() >= 25) {
+                        showOneChanceDialog(view)
+                    }
                 }
             }
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        super.onActivityResumed(activity)
+        SettingsManager.resetIncorrectPasswordCount()
     }
 
     override fun onDetach(view: View) {
@@ -71,6 +84,26 @@ class LockController : Controller() {
     override fun handleBack(): Boolean {
         activity?.finish()
         return true
+    }
+
+    private fun showOneChanceDialog(view: View) {
+        AlertDialog.Builder(activity!!)
+            .setTitle(R.string.one_chance_title)
+            .setMessage(R.string.one_chance_message)
+            .setPositiveButton(R.string.yes) { dialog, _ ->
+                SettingsManager.setAccountWarning(false, activity!!)
+                SettingsManager.setLockType(LockType.off, activity!!)
+                SettingsManager.setLockCode("", activity!!)
+
+                dialog.dismiss()
+                view.hideKeyboard()
+                router.popCurrentController()
+            }
+            .setNegativeButton(R.string.no) { dialog, _ ->
+                SettingsManager.setAccountWarning(false, activity!!)
+                dialog.dismiss()
+            }
+            .show()
     }
 
     companion object {

@@ -38,7 +38,7 @@
         <item name="colorAccent">@color/greenColorAccent</item>
     </style>
 
-    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionModeCloseDrawable">@drawable/ic_close_black_24dp</item>
         <item name="windowActionModeOverlay">true</item>
@@ -49,7 +49,7 @@
         <item name="color">@color/white</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 </resources>

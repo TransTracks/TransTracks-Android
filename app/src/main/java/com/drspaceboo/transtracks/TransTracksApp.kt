@@ -14,6 +14,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.drspaceboo.transtracks.domain.DomainManager
 import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.settings.FirebaseSettingUtil
 import com.drspaceboo.transtracks.util.settings.LockDelay
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.PrefUtil
@@ -29,6 +30,8 @@ import io.realm.Realm
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
+
+    val firebaseSettingUtil: FirebaseSettingUtil by lazy(LazyThreadSafetyMode.NONE) { FirebaseSettingUtil() }
 
     override fun onCreate() {
         super.onCreate()
@@ -183,7 +186,7 @@ class TransTracksApp : Application() {
                 //Untracked user that has a lock at this point, we should warn them about not having an account
                 if (SettingsManager.getLockType() != LockType.off) {
                     FirebaseAnalytics.getInstance(instance).logEvent("user_needs_to_show_warning", null)
-                    SettingsManager.setAccountWarning(true)
+                    SettingsManager.setAccountWarning(true, context = null)
                 }
             }
 

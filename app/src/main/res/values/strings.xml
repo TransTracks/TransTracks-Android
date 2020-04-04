@@ -16,6 +16,8 @@
     <string name="later">Later</string>
     <string name="unknown">Unknown</string>
     <string name="update">Update</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!-- Welcome -->
     <string name="welcome">Welcome</string>
@@ -123,6 +125,14 @@
 
     <string name="set_password">Set Password</string>
 
+    <string name="settings_conflict">Settings Conflict</string>
+    <string name="settings_conflict_message">Looks like your local settings are a little different from the ones on our server. Please choose which are correct:</string>
+    <string name="lock_code_label">Lock Code:</string>
+    <string name="use_local_code">Use local code</string>
+    <string name="use_server_code">Use server code</string>
+    <string name="no_code">No code</string>
+    <string name="apply_settings">Apply Settings</string>
+
     <!-- Select Photo -->
     <string name="select_photo">Select Photo</string>
     <string name="view_albums">View Albums</string>
@@ -206,6 +216,9 @@
 
     <string name="password_cannot_be_empty">Password cannot be empty</string>
     <string name="password_and_confirm">The passwords don\'t match</string>
+
+    <string name="one_chance_title">Can we help?</string>
+    <string name="one_chance_message">It looks like you created your Lock Code before we had accounts to help you reset them.\n\nWe would like to give you ONE opportunity to remove your Lock Code to gain access. Would you like to remove your Lock Code?</string>
 
     <!-- Milestones -->
     <string name="milestones">Milestones</string>

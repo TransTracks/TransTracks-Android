@@ -10,117 +10,264 @@
 
 package com.drspaceboo.transtracks.util.settings
 
+import android.app.Activity
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.ui.settings.SettingsConflictDialog
+import com.drspaceboo.transtracks.util.safeValueOf
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.currentAndroidVersion
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.incorrectPasswordCount
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockCode
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockDelay
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockType
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.saveToFirebase
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAccountWarning
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAds
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showWelcome
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.startDate
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.theme
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.userLastSeen
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.values
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import org.threeten.bp.LocalDate
 
 object SettingsManager {
-    private val lockTypeUpdatedRelay: PublishRelay<LockType> = PublishRelay.create()
+    val lockTypeUpdatedRelay: PublishRelay<LockType> = PublishRelay.create()
     val lockTypeUpdated: Observable<LockType> = lockTypeUpdatedRelay
 
-    private val themeUpdatedRelay: PublishRelay<Theme> = PublishRelay.create()
+    val themeUpdatedRelay: PublishRelay<Theme> = PublishRelay.create()
     val themeUpdated: Observable<Theme> = themeUpdatedRelay
 
-    private val userSettingsUpdatedRelay: PublishRelay<Unit> = PublishRelay.create()
+    val userSettingsUpdatedRelay: PublishRelay<Unit> = PublishRelay.create()
     val userSettingsUpdated: Observable<Any> by lazy {
         Observable.merge(userSettingsUpdatedRelay, lockTypeUpdated, themeUpdated)
     }
 
     //region Current Android Version
-    fun getCurrentAndroidVersion(): Int? = PrefUtil.getInt(Key.currentAndroidVersion, null)
+    fun getCurrentAndroidVersion(): Int? = PrefUtil.getInt(currentAndroidVersion, null)
 
-    fun updateCurrentAndroidVersion() = PrefUtil.setInt(Key.currentAndroidVersion, BuildConfig.VERSION_CODE)
+    fun updateCurrentAndroidVersion() = PrefUtil.setInt(currentAndroidVersion, BuildConfig.VERSION_CODE)
     //endregion
 
     //region Incorrect Password Count
-    fun getIncorrectPasswordCount(): Int = PrefUtil.getInt(Key.incorrectPasswordCount, 0)!!
+    fun getIncorrectPasswordCount(): Int = PrefUtil.getInt(incorrectPasswordCount, 0)!!
 
-    fun incrementIncorrectPasswordCount() = PrefUtil.setInt(Key.incorrectPasswordCount, getIncorrectPasswordCount() + 1)
+    fun incrementIncorrectPasswordCount() = PrefUtil.setInt(incorrectPasswordCount, getIncorrectPasswordCount() + 1)
 
-    fun resetIncorrectPasswordCount() = PrefUtil.setInt(Key.incorrectPasswordCount, 0)
+    fun resetIncorrectPasswordCount() = PrefUtil.setInt(incorrectPasswordCount, 0)
     //endregion
 
     //region Lock Code
-    fun getLockCode(): String = PrefUtil.getString(Key.lockCode, "")!!
+    fun getLockCode(): String = PrefUtil.getString(lockCode, "")!!
 
-    fun setLockCode(newLockCode: String) {
-        PrefUtil.setString(Key.lockCode, newLockCode)
+    fun setLockCode(newLockCode: String, activity: Activity) {
+        PrefUtil.setString(lockCode, newLockCode)
         userSettingsUpdatedRelay.accept(Unit)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setString(lockCode, newLockCode, activity)
+        }
     }
     //endregion
 
     //region Lock Delay
-    fun getLockDelay(): LockDelay = PrefUtil.getEnum(Key.lockDelay, LockDelay.default())
+    fun getLockDelay(): LockDelay = PrefUtil.getEnum(lockDelay, LockDelay.default())
 
-    fun setLockDelay(newLockDelay: LockDelay) {
-        PrefUtil.setEnum(Key.lockDelay, newLockDelay)
+    fun setLockDelay(newLockDelay: LockDelay, activity: Activity) {
+        PrefUtil.setEnum(lockDelay, newLockDelay)
         userSettingsUpdatedRelay.accept(Unit)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setEnum(lockDelay, newLockDelay, activity)
+        }
     }
     //endregion
 
     //region Lock Type
-    fun getLockType(): LockType = PrefUtil.getEnum(Key.lockType, LockType.default())
+    fun getLockType(): LockType = PrefUtil.getEnum(lockType, LockType.default())
 
-    fun setLockType(newLockType: LockType) {
-        PrefUtil.setEnum(Key.lockType, newLockType)
+    fun setLockType(newLockType: LockType, activity: Activity) {
+        PrefUtil.setEnum(lockType, newLockType)
         lockTypeUpdatedRelay.accept(newLockType)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setEnum(lockType, newLockType, activity)
+        }
     }
     //endregion
 
     //region Show Account Warning
-    fun showAccountWarning(): Boolean = PrefUtil.getBoolean(Key.showAccountWarning, false)
+    fun showAccountWarning(): Boolean = PrefUtil.getBoolean(showAccountWarning, false)
 
-    fun setAccountWarning(newAccountWarning: Boolean) = PrefUtil.setBoolean(Key.showAccountWarning, newAccountWarning)
+    fun setAccountWarning(newAccountWarning: Boolean, context: Context?) {
+        PrefUtil.setBoolean(showAccountWarning, newAccountWarning)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setBool(showAccountWarning, newAccountWarning, context)
+        }
+    }
     //endregion
 
     //region Show Ads
-    fun showAds(): Boolean = PrefUtil.getBoolean(Key.showAds, true)
+    fun showAds(): Boolean = PrefUtil.getBoolean(showAds, true)
 
-    fun setShowAds(newShowAds: Boolean) = PrefUtil.setBoolean(Key.showAds, newShowAds)
+    fun setShowAds(newShowAds: Boolean, activity: Activity) {
+        PrefUtil.setBoolean(showAds, newShowAds)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setBool(showAds, newShowAds, activity)
+        }
+    }
     //endregion
 
     //region Show Welcome
-    fun showWelcome(): Boolean = PrefUtil.getBoolean(Key.showWelcome, true)
+    fun showWelcome(): Boolean = PrefUtil.getBoolean(showWelcome, true)
 
-    fun setShowWelcome(newShowWelcome: Boolean) = PrefUtil.setBoolean(Key.showWelcome, newShowWelcome)
+    fun setShowWelcome(newShowWelcome: Boolean, activity: Activity) {
+        PrefUtil.setBoolean(showWelcome, newShowWelcome)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setBool(showWelcome, newShowWelcome, activity)
+        }
+    }
     //endregion
 
     //region Start Date
-    fun getStartDate(): LocalDate {
-        val startDate = PrefUtil.getDate(Key.startDate)
+    fun getStartDate(context: Context?): LocalDate {
+        val startDate = PrefUtil.getDate(startDate)
 
         @Suppress("LiftReturnOrAssignment") // Reads better in the if statement
         if (startDate != null) {
             return startDate
         } else {
             val newStartDate = LocalDate.now()
-            setStartDate(newStartDate)
+            setStartDate(newStartDate, context)
             return newStartDate
         }
     }
 
-    fun setStartDate(newStartDate: LocalDate) {
-        PrefUtil.setDate(Key.startDate, newStartDate)
+    fun setStartDate(newStartDate: LocalDate, context: Context?) {
+        PrefUtil.setDate(startDate, newStartDate)
         userSettingsUpdatedRelay.accept(Unit)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setLong(startDate, newStartDate.toEpochDay(), context)
+        }
     }
     //endregion
 
     //region Theme
-    fun getTheme(): Theme = PrefUtil.getEnum(Key.theme, Theme.default())
+    fun getTheme(): Theme = PrefUtil.getEnum(theme, Theme.default())
 
-    fun setTheme(newTheme: Theme) {
-        PrefUtil.setEnum(Key.theme, newTheme)
+    fun setTheme(newTheme: Theme, activity: Activity) {
+        PrefUtil.setEnum(theme, newTheme)
         themeUpdatedRelay.accept(newTheme)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setEnum(theme, newTheme, activity)
+        }
     }
     //endregion
 
     //region User last seen
-    fun getUserLastSeen(): Long = PrefUtil.getLong(Key.userLastSeen, System.currentTimeMillis())!!
+    fun getUserLastSeen(): Long = PrefUtil.getLong(userLastSeen, System.currentTimeMillis())!!
 
-    fun updateUserLastSeen() = PrefUtil.setLong(Key.userLastSeen, System.currentTimeMillis())
+    fun updateUserLastSeen() = PrefUtil.setLong(userLastSeen, System.currentTimeMillis())
+    //endregion
+
+    //region Firebase handling
+    fun enableFirebaseSync() {
+        PrefUtil.setBoolean(saveToFirebase, true)
+        TransTracksApp.instance.firebaseSettingUtil.addListener()
+    }
+
+    fun disableFirebaseSync() {
+        PrefUtil.setBoolean(saveToFirebase, false)
+        TransTracksApp.instance.firebaseSettingUtil.removeListener()
+    }
+
+    fun firebaseNeedsSetup(context: Context?) {
+        disableFirebaseSync()
+
+        if (context != null && FirebaseAuth.getInstance().currentUser != null) {
+            attemptFirebaseAutoSetup(context)
+        }
+    }
+
+    fun attemptFirebaseAutoSetup(context: Context) {
+        try {
+            val docRef = FirebaseSettingUtil.getSettingsDocRef()
+
+            docRef.get().addOnSuccessListener { document ->
+                val data = document.data
+                if (document.exists() && data != null) {
+                    val difference = data.filter { (keyString, value) ->
+                        val key = safeValueOf<Key>(keyString) ?: return@filter false
+                        return@filter when (key) {
+                            lockCode -> value is String && value != getLockCode()
+
+                            lockDelay -> value is String
+                                    && safeValueOf<LockDelay>(value) != null
+                                    && value != getLockDelay().name
+
+                            lockType -> value is String
+                                    && safeValueOf<LockType>(value) != null
+                                    && value != getLockType().name
+
+                            startDate -> value is Long && value != getStartDate(context).toEpochDay()
+
+                            theme -> value is String
+                                    && safeValueOf<Theme>(value) != null
+                                    && value != getTheme().name
+
+                            saveToFirebase, showAccountWarning, showAds, showWelcome, userLastSeen,
+                            currentAndroidVersion, incorrectPasswordCount -> false
+                        }
+                    }.map { (key, value) -> Key.valueOf(key) to value }
+
+                    if (difference.isEmpty()) {
+                        setFirebaseDocument(docRef, context)
+                    } else {
+                        SettingsConflictDialog.create(difference, context).show()
+                    }
+                } else {
+                    setFirebaseDocument(docRef, context)
+                }
+            }
+        } catch (e: UserNotLoggedInException) {
+            //Looks like we called this function at the wrong time, turn of the Firebase saving
+            disableFirebaseSync()
+        }
+    }
+
+    private fun setFirebaseDocument(docRef: DocumentReference, context: Context) {
+        val data: HashMap<String, Any> = HashMap()
+        values().forEach { key -> firebaseValueForKey(key, context)?.let { value -> data[key.name] = value } }
+        docRef.set(data)
+        enableFirebaseSync()
+    }
+
+    fun firebaseValueForKey(key: Key, context: Context): Any? = when (key) {
+        lockCode -> getLockCode()
+        lockDelay -> getLockDelay().name
+        lockType -> getLockType().name
+        showAds -> showAds()
+        showWelcome -> showWelcome()
+        startDate -> getStartDate(context).toEpochDay()
+        theme -> getTheme().name
+
+        currentAndroidVersion, incorrectPasswordCount, saveToFirebase, showAccountWarning,
+        userLastSeen -> null
+    }
+
+    fun saveToFirebase(): Boolean = PrefUtil.getBoolean(saveToFirebase, false)
     //endregion
 
     @Suppress("EnumEntryName") //These don't follow standard naming convention to match across platforms
@@ -144,6 +291,15 @@ object SettingsManager {
 enum class LockDelay {
     instant, oneMinute, twoMinutes, fiveMinutes, fifteenMinutes;
 
+    @StringRes
+    fun displayNameRes() = when (this) {
+        instant -> R.string.instant
+        oneMinute -> R.string.one_minute
+        twoMinutes -> R.string.two_minutes
+        fiveMinutes -> R.string.five_minutes
+        fifteenMinutes -> R.string.fifteen_minutes
+    }
+
     fun getMilli(): Long {
         val delayMinutes = when (this) {
             oneMinute -> 1L
@@ -165,6 +321,13 @@ enum class LockDelay {
 enum class LockType {
     off, normal, trains;
 
+    @StringRes
+    fun displayNameRes() = when (this) {
+        off -> R.string.disabled
+        normal -> R.string.enabled_normal
+        trains -> R.string.enabled_trains
+    }
+
     companion object {
         fun default() = off
     }
@@ -180,6 +343,14 @@ enum class Theme {
         blue -> R.style.BlueAppTheme
         purple -> R.style.PurpleAppTheme
         green -> R.style.GreenAppTheme
+    }
+
+    @StringRes
+    fun displayNameRes() = when (this) {
+        pink -> R.string.pink
+        blue -> R.string.blue
+        purple -> R.string.purple
+        green -> R.string.green
     }
 
     companion object {

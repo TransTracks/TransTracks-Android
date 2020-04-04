@@ -78,7 +78,7 @@ class HomeController : Controller() {
             val welcomeView = LayoutInflater.from(builder.context).inflate(R.layout.welcome, null)
 
             val startDate: TextView = welcomeView.findViewById(R.id.welcome_start_date)
-            startDate.text = SettingsManager.getStartDate().toFullDateString(startDate.context)
+            startDate.text = SettingsManager.getStartDate(activity!!).toFullDateString(startDate.context)
 
             builder.setView(welcomeView)
                 .setPositiveButton(R.string.looks_good, null)
@@ -88,7 +88,7 @@ class HomeController : Controller() {
                 }
                 .show()
 
-            SettingsManager.setShowWelcome(false)
+            SettingsManager.setShowWelcome(false, activity!!)
         }
 
         viewDisposables += domain.results

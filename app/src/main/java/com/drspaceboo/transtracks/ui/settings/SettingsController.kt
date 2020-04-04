@@ -108,7 +108,7 @@ class SettingsController : Controller() {
                     .signOut(context)
                     .addOnCompleteListener { result ->
                         if (result.isSuccessful) {
-                            //TODO disableFirebaseSync()
+                            SettingsManager.disableFirebaseSync()
                         } else {
                             Snackbar.make(view, R.string.sign_out_error, Snackbar.LENGTH_LONG).show()
                         }
@@ -145,13 +145,13 @@ class SettingsController : Controller() {
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeStartDate>()
             .subscribe {
-                val startDate = SettingsManager.getStartDate()
+                val startDate = SettingsManager.getStartDate(activity!!)
 
                 //Note: The DatePickerDialog uses 0 based months
                 DatePickerDialog(
                     view.context,
                     { _, year, month, dayOfMonth ->
-                        SettingsManager.setStartDate(LocalDate.of(year, month + 1, dayOfMonth))
+                        SettingsManager.setStartDate(LocalDate.of(year, month + 1, dayOfMonth), activity!!)
                     },
                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth
                 ).show()
@@ -174,7 +174,7 @@ class SettingsController : Controller() {
                         theme.ordinal
                     ) { dialog: DialogInterface, index: Int ->
                         if (theme.ordinal != index) {
-                            SettingsManager.setTheme(Theme.values()[index])
+                            SettingsManager.setTheme(Theme.values()[index], activity!!)
                             router.replaceTopController(RouterTransaction.with(SettingsController()))
                         }
                         dialog.dismiss()
@@ -205,7 +205,7 @@ class SettingsController : Controller() {
                         delay.ordinal
                     ) { dialog: DialogInterface, index: Int ->
                         if (delay.ordinal != index) {
-                            SettingsManager.setLockDelay(LockDelay.values()[index])
+                            SettingsManager.setLockDelay(LockDelay.values()[index], activity!!)
                         }
                         dialog.dismiss()
                     }
@@ -232,7 +232,7 @@ class SettingsController : Controller() {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
-                //TODO attemptFirebaseAutoSetup
+                SettingsManager.attemptFirebaseAutoSetup(activity!!)
             } else {
                 view?.let { view ->
                     response?.error?.let { Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT) }
@@ -303,8 +303,8 @@ class SettingsController : Controller() {
                         return@setOnClickListener
                     }
 
-                    SettingsManager.setLockCode("")
-                    SettingsManager.setLockType(LockType.off)
+                    SettingsManager.setLockCode("", activity!!)
+                    SettingsManager.setLockType(LockType.off, activity!!)
                     dialog.dismiss()
                 }
             }
@@ -350,9 +350,9 @@ class SettingsController : Controller() {
                     }
 
                     SettingsManager.setLockCode(
-                        EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
+                        EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT), activity!!
                     )
-                    SettingsManager.setLockType(newLockType)
+                    SettingsManager.setLockType(newLockType, activity!!)
 
                     if (newLockType == LockType.trains) {
                         showAppNameChangeSnackbar(view, R.string.train_tracks_title)
@@ -389,7 +389,7 @@ class SettingsController : Controller() {
 
                         hasCode -> {
                             //Changing to another type with the code on, just update type
-                            SettingsManager.setLockType(newLockType)
+                            SettingsManager.setLockType(newLockType, activity!!)
 
                             if (newLockType == LockType.trains) {
                                 showAppNameChangeSnackbar(view, R.string.train_tracks_title)
@@ -590,34 +590,9 @@ fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsRe
     results.map { result ->
         return@map when (result) {
             is SettingsResult.Content -> {
-                val themeName = context.getString(
-                    when (result.theme) {
-                        Theme.pink -> R.string.pink
-                        Theme.blue -> R.string.blue
-                        Theme.purple -> R.string.purple
-                        Theme.green -> R.string.green
-                        else -> throw IllegalArgumentException("Unhandled theme type")
-                    }
-                )
-
-                val lockName = context.getString(
-                    when (result.lockType) {
-                        LockType.off -> R.string.disabled
-                        LockType.normal -> R.string.enabled_normal
-                        LockType.trains -> R.string.enabled_trains
-                        else -> throw IllegalArgumentException("Unhandled lock type")
-                    }
-                )
-
-                val lockDelayName = context.getString(
-                    when (result.lockDelay) {
-                        LockDelay.instant -> R.string.instant
-                        LockDelay.oneMinute -> R.string.one_minute
-                        LockDelay.twoMinutes -> R.string.two_minutes
-                        LockDelay.fiveMinutes -> R.string.five_minutes
-                        LockDelay.fifteenMinutes -> R.string.fifteen_minutes
-                    }
-                )
+                val themeName = context.getString(result.theme.displayNameRes())
+                val lockName = context.getString(result.lockType.displayNameRes())
+                val lockDelayName = context.getString(result.lockDelay.displayNameRes())
 
                 SettingsUiState.Loaded(
                     result.userDetails, result.startDate, themeName, lockName,
