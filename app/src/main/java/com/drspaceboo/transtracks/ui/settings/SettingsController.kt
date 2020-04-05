@@ -358,6 +358,22 @@ class SettingsController : Controller() {
                         showAppNameChangeSnackbar(view, R.string.train_tracks_title)
                     }
 
+                    if (FirebaseAuth.getInstance().currentUser == null) {
+                        AlertDialog.Builder(view.context)
+                            .setTitle(R.string.warning_title)
+                            .setMessage(R.string.warning_message)
+                            .setPositiveButton(R.string.create_account) { dialog, _ ->
+                                SettingsManager.setAccountWarning(false, view.context)
+                                dialog.dismiss()
+                                showAuth()
+                            }
+                            .setNegativeButton(R.string.risk_it) { dialog, _ ->
+                                SettingsManager.setAccountWarning(false, view.context)
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+
                     dialog.dismiss()
                 }
             }
