@@ -24,7 +24,6 @@ import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.squareup.leakcanary.LeakCanary
 import com.twitter.sdk.android.core.Twitter
 import io.realm.Realm
 
@@ -36,13 +35,6 @@ class TransTracksApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
-        LeakCanary.install(this)
 
         MobileAds.initialize(this, BuildConfig.ADS_APP_ID)
 

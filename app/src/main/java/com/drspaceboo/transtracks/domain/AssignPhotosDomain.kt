@@ -129,9 +129,11 @@ class AssignPhotosDomain {
                                 var exifInputStream: InputStream? = null
                                 try {
                                     exifInputStream = contentResolver.openInputStream(uri)
-                                    val exif = ExifInterface(exifInputStream)
+                                    if (exifInputStream != null) {
+                                        val exif = ExifInterface(exifInputStream)
 
-                                    newDateTime = exif.compatGetDateTime()
+                                        newDateTime = exif.compatGetDateTime()
+                                    }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 } finally {
