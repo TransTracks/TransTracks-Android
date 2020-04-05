@@ -89,6 +89,20 @@ class HomeController : Controller() {
                 .show()
 
             SettingsManager.setShowWelcome(false, activity!!)
+        } else if (SettingsManager.showAccountWarning()) {
+            AlertDialog.Builder(view.context)
+                .setTitle(R.string.warning_title)
+                .setMessage(R.string.warning_message)
+                .setPositiveButton(R.string.create_account) { dialog, _ ->
+                    SettingsManager.setAccountWarning(false, view.context)
+                    dialog.dismiss()
+                    router.pushController(RouterTransaction.with(SettingsController()).using(VerticalChangeHandler()))
+                }
+                .setNegativeButton(R.string.risk_it) { dialog, _ ->
+                    SettingsManager.setAccountWarning(false, view.context)
+                    dialog.dismiss()
+                }
+                .show()
         }
 
         viewDisposables += domain.results

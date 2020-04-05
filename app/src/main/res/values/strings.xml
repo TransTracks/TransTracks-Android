@@ -25,6 +25,12 @@
     <string name="looks_good">Looks Good</string>
     <string name="change_setting">Change Settings</string>
 
+    <!-- Warning -->
+    <string name="warning_title">Warning</string>
+    <string name="warning_message">You have a Lock Code set but haven\'t set up an account to be able to recover access if you forget your code.</string>
+    <string name="create_account">Create Account</string>
+    <string name="risk_it">Risk It</string>
+
     <!-- Home -->
     <string name="take_photo">Take Photo</string>
     <string name="edit_settings">Edit Settings</string>
