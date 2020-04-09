@@ -10,8 +10,8 @@
 
 package com.drspaceboo.transtracks.ui.selectphoto.selectalbum
 
+import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -19,49 +19,68 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
-import com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter
+import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter.Album
+import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter.Holder
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
-import java.io.File
 
-class SelectAlbumAdapter(context: Context) : CursorRecyclerViewAdapter<SelectAlbumAdapter.Holder>(
-        context.contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                arrayOf(MediaStore.Images.Media._ID,
-                        MediaStore.Files.FileColumns.DATA,
-                        MediaStore.Images.Media.BUCKET_ID,
-                        MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                        "COUNT(${MediaStore.Images.Media._ID}) AS $COLUMN_BUCKET_IMAGE_COUNT"),
-                //The selection is a bit hacky but it is the best way to do a group by count in a query
-                "${MediaStore.Images.Media.BUCKET_ID} LIKE '%') GROUP BY (${MediaStore.Images.Media.BUCKET_ID}",
-                null,
-                "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} ASC")) {
-
+class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
     private val itemClickRelay: PublishRelay<String> = PublishRelay.create<String>()
     val itemClick: Observable<String> = itemClickRelay
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.select_albums_adapter_item, parent,
-                                                               false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.select_albums_adapter_item, parent, false
+        )
         return Holder(view, itemClickRelay)
     }
 
-    override fun onBindViewHolder(viewHolder: Holder, cursor: Cursor) {
-        val bucketIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
-        val nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-        val countIndex = cursor.getColumnIndexOrThrow(COLUMN_BUCKET_IMAGE_COUNT)
+    override fun onBindViewHolder(viewHolder: Holder, position: Int) {
+        viewHolder.bind(getItem(position))
+    }
 
-        val bucketId = cursor.getString(bucketIdIndex)
-        val data = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
-        val imageUri = Uri.fromFile(File(data))
-        val name = cursor.getString(nameIndex)
-        val count = cursor.getInt(countIndex)
+    fun fetchData(context: Context) {
+        val folders = LinkedHashMap<String, Album>()
+        context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            arrayOf(
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.BUCKET_ID,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+            ),
+            null,
+            null,
+            "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} ASC"
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                val bucketIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
+                val nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
 
-        viewHolder.bind(bucketId, imageUri, name, count)
+                do {
+                    val id = cursor.getLong(idIndex)
+                    val bucketId = cursor.getString(bucketIdIndex)
+
+                    val album = folders[bucketId]
+                        ?: Album(
+                            bucketId = bucketId,
+                            uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id),
+                            name = cursor.getString(nameIndex),
+                            count = 0
+                        )
+                    album.count += 1
+
+                    folders[bucketId] = album
+                } while (cursor.moveToNext())
+            }
+        }
+        submitList(folders.values.toList())
     }
 
     class Holder(itemView: View, private val itemClickRelay: PublishRelay<String>) : RecyclerView.ViewHolder(itemView) {
@@ -76,20 +95,19 @@ class SelectAlbumAdapter(context: Context) : CursorRecyclerViewAdapter<SelectAlb
             itemView.setOnClickListener { if (currentBucketId != null) itemClickRelay.accept(currentBucketId) }
         }
 
-        fun bind(bucketId: String, uri: Uri, nameText: String, countNumber: Int) {
-            currentBucketId = bucketId
-            Picasso.get()
-                    .load(uri)
-                    .fit()
-                    .centerCrop()
-                    .into(image)
+        fun bind(album: Album) {
+            currentBucketId = album.bucketId
+            Picasso.get().load(album.uri).fit().centerCrop().into(image)
 
-            name.text = nameText
-            count.text = String.format("%1\$d", countNumber)
+            name.text = album.name
+            count.text = String.format("%1\$d", album.count)
         }
     }
 
-    companion object {
-        private const val COLUMN_BUCKET_IMAGE_COUNT = "bucket_image_count"
+    data class Album(val bucketId: String, val uri: Uri, val name: String, var count: Int)
+
+    private object DiffCallback : DiffUtil.ItemCallback<Album>() {
+        override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean = oldItem.bucketId == newItem.bucketId
+        override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean = oldItem == newItem
     }
 }

@@ -53,15 +53,16 @@ class AlbumView(context: Context, attributeSet: AttributeSet) : ConstraintLayout
 
                 if (recyclerView.adapter == null) {
                     recyclerView.layoutManager = LinearLayoutManager(context)
-                    selectAlbumAdapter = SelectAlbumAdapter(context)
+                    selectAlbumAdapter = SelectAlbumAdapter()
                     recyclerView.adapter = selectAlbumAdapter
                 } else {
                     selectAlbumAdapter = recyclerView.adapter as SelectAlbumAdapter
                 }
 
+                selectAlbumAdapter.fetchData(context)
                 albumClickDisposable = selectAlbumAdapter.itemClick
-                        .map { SelectAlbumUiEvent.SelectAlbum(it) }
-                        .subscribe(eventRelay)
+                    .map { SelectAlbumUiEvent.SelectAlbum(it) }
+                    .subscribe(eventRelay)
             }
         }
     }
