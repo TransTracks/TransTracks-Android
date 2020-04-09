@@ -12,6 +12,7 @@ package com.drspaceboo.transtracks.util
 
 import android.os.Build
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.attribute.BasicFileAttributes
 
@@ -20,8 +21,13 @@ import java.nio.file.attribute.BasicFileAttributes
  */
 fun File.dateCreated(): Long = when {
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-        val attr = Files.readAttributes(toPath(), BasicFileAttributes::class.java)
-        attr.creationTime().toMillis()
+        try {
+            val attr = Files.readAttributes(toPath(), BasicFileAttributes::class.java)
+            attr.creationTime().toMillis()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            lastModified()
+        }
     }
 
     else -> lastModified()
