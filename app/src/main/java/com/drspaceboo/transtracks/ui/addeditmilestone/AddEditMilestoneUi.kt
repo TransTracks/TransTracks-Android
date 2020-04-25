@@ -20,11 +20,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState.Display
+import com.drspaceboo.transtracks.util.setTextRetainingSelection
 import com.drspaceboo.transtracks.util.showKeyboard
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import io.reactivex.Observable
 import kotterknife.bindView
 import org.threeten.bp.LocalDate
@@ -32,17 +35,16 @@ import org.threeten.bp.LocalDate
 sealed class AddEditMilestoneUiEvent {
     object Back : AddEditMilestoneUiEvent()
     object Delete : AddEditMilestoneUiEvent()
-    data class ChangeDate(val day: Long, val title: String,
-                          val description: String) : AddEditMilestoneUiEvent()
-
-    data class Save(val day: Long, val title: String,
-                    val description: String) : AddEditMilestoneUiEvent()
+    data class ChangeDate(val day: Long) : AddEditMilestoneUiEvent()
+    data class TitleUpdated(val newTitle: String) : AddEditMilestoneUiEvent()
+    data class DescriptionUpdated(val newDescription: String) : AddEditMilestoneUiEvent()
+    data class Save(val day: Long, val title: String, val description: String) : AddEditMilestoneUiEvent()
 }
 
 sealed class AddEditMilestoneUiState {
-    data class Add(val day: Long, val title: String,
-                   val description: String, val isAdd: Boolean) : AddEditMilestoneUiState()
-
+    object Loading : AddEditMilestoneUiState()
+    data class Display(val day: Long, val title: String, val description: String, val isAdd: Boolean) :
+        AddEditMilestoneUiState()
 }
 
 class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -58,22 +60,27 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
 
     private val save: Button by bindView(R.id.add_milestone_save)
 
+    private var isUserChange: Boolean = true
+
     val events: Observable<AddEditMilestoneUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { AddEditMilestoneUiEvent.Back },
-                         toolbar.itemClicks().map { item ->
-                             return@map when (item.itemId) {
-                                 R.id.add_edit_milestone_menu_delete -> AddEditMilestoneUiEvent.Delete
-                                 else -> throw IllegalArgumentException("Unhandled item id")
-                             }
-                         },
-                         date.clicks().map {
-                             AddEditMilestoneUiEvent.ChangeDate(day, title.text.toString(),
-                                                                description.text.toString())
-                         },
-                         save.clicks().map {
-                             AddEditMilestoneUiEvent.Save(day, title.text.toString(),
-                                                          description.text.toString())
-                         })
+        Observable.mergeArray(
+            toolbar.navigationClicks().map { AddEditMilestoneUiEvent.Back },
+            toolbar.itemClicks().map { item ->
+                return@map when (item.itemId) {
+                    R.id.add_edit_milestone_menu_delete -> AddEditMilestoneUiEvent.Delete
+                    else -> throw IllegalArgumentException("Unhandled item id")
+                }
+            },
+            title.afterTextChangeEvents().skipInitialValue().filter { isUserChange }.map {
+                AddEditMilestoneUiEvent.TitleUpdated(it.editable.toString())
+            }.distinctUntilChanged(),
+            description.afterTextChangeEvents().skipInitialValue().filter { isUserChange }.map {
+                AddEditMilestoneUiEvent.DescriptionUpdated(it.editable.toString())
+            }.distinctUntilChanged(),
+            date.clicks().map { AddEditMilestoneUiEvent.ChangeDate(day) },
+            save.clicks().map {
+                AddEditMilestoneUiEvent.Save(day, title.text.toString(), description.text.toString())
+            })
     }
 
     private var day: Long = 0L
@@ -97,8 +104,9 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
     }
 
     fun display(state: AddEditMilestoneUiState) {
+        isUserChange = false
         when (state) {
-            is AddEditMilestoneUiState.Add -> {
+            is Display -> {
                 @StringRes val titleRes: Int = when (state.isAdd) {
                     true -> R.string.add_milestone
                     false -> R.string.edit_milestone
@@ -108,12 +116,13 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
                 toolbar.menu.getItem(0).isVisible = !state.isAdd
 
                 day = state.day
-                title.setText(state.title)
+                title.setTextRetainingSelection(state.title)
                 date.text = LocalDate.ofEpochDay(day).toFullDateString(context)
-                description.setText(state.description)
+                description.setTextRetainingSelection(state.description)
 
                 save.setText(titleRes)
             }
         }
+        isUserChange = true
     }
 }

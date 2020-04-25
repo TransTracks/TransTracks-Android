@@ -40,6 +40,7 @@ import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ProgressDialog
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.LockDelay
@@ -243,12 +244,14 @@ class SettingsController : Controller() {
         }
     }
 
-    override fun onDestroyView(view: View) {
+    override fun onDetach(view: View) {
         viewDisposables.clear()
     }
 
-    override fun onDetach(view: View) {
-        resultsDisposable.dispose()
+    override fun onDestroy() {
+        if (resultsDisposable.isNotDisposed()) {
+            resultsDisposable.dispose()
+        }
     }
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {

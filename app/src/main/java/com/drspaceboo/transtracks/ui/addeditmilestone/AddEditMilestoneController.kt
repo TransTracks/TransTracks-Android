@@ -11,23 +11,38 @@
 package com.drspaceboo.transtracks.ui.addeditmilestone
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.Router
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Milestone
+import com.drspaceboo.transtracks.domain.AddEditMilestoneAction
+import com.drspaceboo.transtracks.domain.AddEditMilestoneAction.InitialAdd
+import com.drspaceboo.transtracks.domain.AddEditMilestoneAction.InitialEdit
+import com.drspaceboo.transtracks.domain.AddEditMilestoneDomain
+import com.drspaceboo.transtracks.domain.AddEditMilestoneResult
+import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent.DescriptionUpdated
+import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiEvent.TitleUpdated
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.dismissIfShowing
+import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import io.realm.Realm
 import org.threeten.bp.LocalDate
 
@@ -40,6 +55,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
         putString(KEY_MILESTONE_ID, milestoneId)
     })
 
+    private var resultsDisposable: Disposable = Disposables.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null
@@ -56,33 +72,41 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.AddEditMilestoneControllerShown)
 
-        if (initialDay != -1L) {
-            view.display(AddEditMilestoneUiState.Add(initialDay, "", "",
-                                                     isAdd = milestoneId == null))
-        } else {
-            Realm.getDefaultInstance().use { realm ->
-                val milestone: Milestone? = realm.where(Milestone::class.java)
-                        .equalTo(Milestone.FIELD_ID, milestoneId).findFirst()
+        val domain: AddEditMilestoneDomain = TransTracksApp.instance.domainManager.addEditMilestoneDomain
 
-                if (milestone == null) {
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.unable_to_find_milestone)
-                            .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
-                                dialog.dismiss()
-                                router.handleBack()
-                            }
-                            .setCancelable(false)
-                            .show()
-                    return@use
+        if (resultsDisposable.isDisposed) {
+            resultsDisposable = domain.results
+                .doOnSubscribe {
+                    Handler().postDelayed(
+                        {
+                            domain.actions.accept(
+                                when {
+                                    initialDay != -1L -> InitialAdd(initialDay)
+                                    milestoneId != null -> InitialEdit(milestoneId)
+                                    else -> throw IllegalArgumentException("One of the required arguments was not set")
+                                }
+                            )
+                        }, 200
+                    )
                 }
-
-                view.display(AddEditMilestoneUiState.Add(milestone.epochDay, milestone.title,
-                                                         milestone.description,
-                                                         isAdd = milestoneId == null))
-            }
+                .subscribe()
         }
 
+        viewDisposables += domain.results
+            .compose(addEditMilestoneResultToViewState(view.context, router))
+            .subscribe { state -> view.display(state) }
+
         val sharedEvents = view.events.share()
+
+        viewDisposables += sharedEvents.filter { it is TitleUpdated || it is DescriptionUpdated }
+            .map { event ->
+                when (event) {
+                    is TitleUpdated -> AddEditMilestoneAction.TitleUpdate(event.newTitle)
+                    is DescriptionUpdated -> AddEditMilestoneAction.DescriptionUpdate(event.newDescription)
+                    else -> throw IllegalArgumentException("Unhandled event ${event.javaClass.simpleName}")
+                }
+            }
+            .subscribe(domain.actions)
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Back>()
                 .subscribe { router.handleBack() }
@@ -131,21 +155,26 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                 }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.ChangeDate>()
-                .subscribe { event ->
-                    val initialDate = LocalDate.ofEpochDay(event.day)
+            .subscribe { event ->
+                val initialDate = LocalDate.ofEpochDay(event.day)
 
-                    //Note: The DatePickerDialog uses 0 based months
-                    val dialog = DatePickerDialog(view.context, { _, year, month, dayOfMonth ->
-                        val date = LocalDate.of(year, month + 1,
-                                                dayOfMonth)
-
-                        view.display(AddEditMilestoneUiState.Add(date.toEpochDay(), event.title,
-                                                                 event.description,
-                                                                 isAdd = milestoneId == null))
-                    }, initialDate.year, initialDate.monthValue - 1, initialDate.dayOfMonth)
-                    dialog.datePicker.maxDate = System.currentTimeMillis()
-                    dialog.show()
-                }
+                //Note: The DatePickerDialog uses 0 based months
+                val dialog = DatePickerDialog(
+                    view.context,
+                    { _, year, month, dayOfMonth ->
+                        val date = LocalDate.of(
+                            year, month + 1,
+                            dayOfMonth
+                        )
+                        domain.actions.accept(AddEditMilestoneAction.DateUpdated(date.toEpochDay()))
+                    },
+                    initialDate.year,
+                    initialDate.monthValue - 1,
+                    initialDate.dayOfMonth
+                )
+                dialog.datePicker.maxDate = System.currentTimeMillis()
+                dialog.show()
+            }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Save>()
                 .subscribe { event ->
@@ -201,8 +230,44 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
         viewDisposables.clear()
     }
 
+    override fun onDestroy() {
+        if (resultsDisposable.isNotDisposed()) {
+            resultsDisposable.dispose()
+        }
+    }
+
     companion object {
         private const val KEY_INITIAL_DAY = "initialDay"
         private const val KEY_MILESTONE_ID = "milestoneId"
+
+        fun addEditMilestoneResultToViewState(
+            context: Context,
+            router: Router
+        ): ObservableTransformer<AddEditMilestoneResult, AddEditMilestoneUiState> {
+            return ObservableTransformer { results ->
+                results.map { result ->
+                    return@map when (result) {
+                        AddEditMilestoneResult.Loading -> AddEditMilestoneUiState.Loading
+
+                        is AddEditMilestoneResult.Display -> AddEditMilestoneUiState.Display(
+                            result.epochDay, result.title, result.description, isAdd = result.milestoneId == null
+                        )
+
+                        AddEditMilestoneResult.UnableToFindMilestone -> {
+                            AlertDialog.Builder(context)
+                                .setTitle(R.string.unable_to_find_milestone)
+                                .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
+                                    dialog.dismiss()
+                                    router.handleBack()
+                                }
+                                .setCancelable(false)
+                                .show()
+
+                            AddEditMilestoneUiState.Loading
+                        }
+                    }
+                }
+            }
+        }
     }
 }
