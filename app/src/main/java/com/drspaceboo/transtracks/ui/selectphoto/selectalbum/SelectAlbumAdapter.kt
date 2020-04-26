@@ -92,7 +92,10 @@ class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
 
         init {
             //Avoiding subscription so we don't need to dispose it
-            itemView.setOnClickListener { if (currentBucketId != null) itemClickRelay.accept(currentBucketId) }
+            itemView.setOnClickListener {
+                val currentBucketId = currentBucketId 
+                if (currentBucketId != null) itemClickRelay.accept(currentBucketId)
+            }
         }
 
         fun bind(album: Album) {

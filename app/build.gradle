@@ -46,12 +46,12 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
 
-    implementation "com.google.firebase:firebase-ads:19.0.1"
+    implementation "com.google.firebase:firebase-ads:19.1.0"
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.2'
 
-    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
 
     ext.rx_binding_version = '3.0.0-alpha2'
     implementation "com.jakewharton.rxbinding3:rxbinding:$rx_binding_version"
@@ -59,7 +59,7 @@ dependencies {
     implementation "com.jakewharton.rxbinding3:rxbinding-material:$rx_binding_version"
     implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$rx_binding_version"
 
-    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
 
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
@@ -70,7 +70,7 @@ dependencies {
     // 3.3.0 crashes the app
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
