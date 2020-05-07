@@ -14,6 +14,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Content
+import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Loading
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -37,17 +39,21 @@ sealed class SettingsUiEvent {
     object ChangeTheme : SettingsUiEvent()
     object ChangeLockMode : SettingsUiEvent()
     object ChangeLockDelay : SettingsUiEvent()
+    object Import : SettingsUiEvent()
+    object Export : SettingsUiEvent()
     object PrivacyPolicy : SettingsUiEvent()
 }
 
 data class SettingsUIUserDetails(val name: String?, val email: String?, val hasPasswordProvider: Boolean)
 
 sealed class SettingsUiState {
-    data class Loaded(
+    data class Content(
         val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String, val lockMode: String,
         val enableLockDelay: Boolean, val lockDelay: String, val appVersion: String, val copyright: String,
         val showAds: Boolean
     ) : SettingsUiState()
+
+    data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsUiState()
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
@@ -63,6 +69,8 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
             settings_theme.clicks().map { SettingsUiEvent.ChangeTheme },
             settings_lock.clicks().map { SettingsUiEvent.ChangeLockMode },
             settings_lock_delay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+            settings_import.clicks().map { SettingsUiEvent.Import },
+            settings_export.clicks().map { SettingsUiEvent.Export },
             settings_privacy_policy.clicks().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
@@ -89,41 +97,51 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     fun display(state: SettingsUiState) {
         when (state) {
-            is SettingsUiState.Loaded -> {
-                if (state.userDetails != null) {
-                    displayUserDetails(state.userDetails)
-                } else {
-                    settings_account_description.visible()
-                    settings_account_name_layout.gone()
-                    settings_account_email_layout.gone()
-                    settings_account_sign_in.visible()
-                    settings_account_change_password.gone()
-                    settings_account_logged_in_button_space.gone()
-                    settings_account_sign_out.gone()
-                }
-
-                currentStartDate = state.startDate
-
-                settings_start_date.text = state.startDate.toFullDateString(settings_start_date.context)
-                settings_theme.text = state.theme
-                settings_lock.text = state.lockMode
-
-                settings_lock_delay_label.isEnabled = state.enableLockDelay
-                settings_lock_delay.isEnabled = state.enableLockDelay
-
-                settings_lock_delay.text = state.lockDelay
-
-                settings_app_version.text = state.appVersion
-
-                settings_copyright.text = state.copyright
-
-                if (state.showAds) {
-                    settings_ad_layout.visible()
-                    settings_ad_view.loadAd()
-                } else {
-                    settings_ad_layout.gone()
-                }
+            is Content -> {
+                settings_loading_layout.gone()
+                displayContent(state)
             }
+            is Loading -> {
+                settings_loading_layout.visible()
+                settings_loading_progress.progress = state.overallProgress
+                settings_loading_progress.secondaryProgress = state.stepProgress
+            }
+        }
+    }
+
+    private fun displayContent(content: Content) {
+        if (content.userDetails != null) {
+            displayUserDetails(content.userDetails)
+        } else {
+            settings_account_description.visible()
+            settings_account_name_layout.gone()
+            settings_account_email_layout.gone()
+            settings_account_sign_in.visible()
+            settings_account_change_password.gone()
+            settings_account_logged_in_button_space.gone()
+            settings_account_sign_out.gone()
+        }
+
+        currentStartDate = content.startDate
+
+        settings_start_date.text = content.startDate.toFullDateString(settings_start_date.context)
+        settings_theme.text = content.theme
+        settings_lock.text = content.lockMode
+
+        settings_lock_delay_label.isEnabled = content.enableLockDelay
+        settings_lock_delay.isEnabled = content.enableLockDelay
+
+        settings_lock_delay.text = content.lockDelay
+
+        settings_app_version.text = content.appVersion
+
+        settings_copyright.text = content.copyright
+
+        if (content.showAds) {
+            settings_ad_layout.visible()
+            settings_ad_view.loadAd()
+        } else {
+            settings_ad_layout.gone()
         }
     }
 

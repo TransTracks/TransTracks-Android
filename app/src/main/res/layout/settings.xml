@@ -355,6 +355,70 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/spacer_grid"
+                android:paddingTop="@dimen/spacer_grid_half"
+                android:paddingEnd="@dimen/spacer_grid"
+                android:paddingBottom="@dimen/spacer_grid_half">
+
+                <TextView
+                    android:id="@+id/settings_data_label"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/data_label"
+                    android:textColor="@color/transparent_white_90_text_selector" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/settings_import"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_import"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/settings_export"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/fading_line"
+                app:layout_constraintBottom_toTopOf="@id/settings_start_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settings_lock_delay_label" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/spacer_grid"
                 android:paddingTop="@dimen/spacer_grid_half"
@@ -433,4 +497,30 @@
             app:adSize="SMART_BANNER"
             app:adUnitId="@string/ADS_SETTINGS_AD_ID" />
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/settings_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_30"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/creating_backup_file"
+            android:textColor="@color/transparent_white_90_text_selector" />
+
+        <ProgressBar
+            android:id="@+id/settings_loading_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="@dimen/spacer_grid"
+            android:indeterminate="false"
+            android:max="100" />
+    </LinearLayout>
 </com.drspaceboo.transtracks.ui.settings.SettingsView>

@@ -34,6 +34,7 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.userLastSeen
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.values
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.gson.JsonObject
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import org.threeten.bp.LocalDate
@@ -180,6 +181,14 @@ object SettingsManager {
     fun getUserLastSeen(): Long = PrefUtil.getLong(userLastSeen, System.currentTimeMillis())!!
 
     fun updateUserLastSeen() = PrefUtil.setLong(userLastSeen, System.currentTimeMillis())
+    //endregion
+
+    //region Json Exporting
+    fun getSettingsAsJson() = JsonObject().apply {
+        addProperty(currentAndroidVersion.name, getCurrentAndroidVersion())
+        addProperty(startDate.name, PrefUtil.getDate(startDate)?.toEpochDay())
+        addProperty(theme.name, getTheme().name)
+    }
     //endregion
 
     //region Firebase handling

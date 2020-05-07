@@ -25,35 +25,43 @@ object FileUtil {
         getTempFolder().deleteRecursively()
     }
 
+    fun getImageFile(fileName: String): File = File(getPhotosDirectory(), fileName)
+
     fun getNewImageFile(photoDate: LocalDate): File {
         val photoDateString = photoDate.toFileDateFormat()
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val filesDir = TransTracksApp.instance.filesDir
-        val storageDir = File(filesDir, "photos/")
-        storageDir.mkdirs()
 
-        val file = File(storageDir, "photo_${photoDateString}_imported_$timeStamp.jpg")
+        val file = getImageFile("photo_${photoDateString}_imported_$timeStamp.jpg")
         file.createNewFile()
         return file
+    }
+
+    fun getPhotosDirectory(): File {
+        val photosDir = File(TransTracksApp.instance.filesDir, "photos/")
+        photosDir.mkdirs()
+        return photosDir
     }
 
     private fun getTempFolder(): File {
         val tempFolder = File(TransTracksApp.instance.filesDir, TEMP_FOLDER)
         tempFolder.mkdirs()
-
         return tempFolder
     }
 
-    fun getTempImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(Date())
-        val file = File(getTempFolder(), "$timeStamp.jpg")
+    fun getTempFile(fileName: String): File {
+        val file = File(getTempFolder(), fileName)
         file.createNewFile()
         return file
     }
 
+    fun getTempImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(Date())
+        return getTempFile("$timeStamp.jpg")
+    }
+
     fun removeImageFromGallery(filePath: String) {
-        TransTracksApp.instance.contentResolver
-                .delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        "${MediaStore.Files.FileColumns.DATA} = ?", arrayOf(filePath))
+        TransTracksApp.instance.contentResolver.delete(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "${MediaStore.Files.FileColumns.DATA} = ?", arrayOf(filePath)
+        )
     }
 }

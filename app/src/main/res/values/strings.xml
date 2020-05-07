@@ -18,6 +18,8 @@
     <string name="update">Update</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="error">Error</string>
+    <string name="send_to">Send to</string>
 
     <!-- Welcome -->
     <string name="welcome">Welcome</string>
@@ -129,6 +131,10 @@
     <string name="five_minutes">Five minutes</string>
     <string name="fifteen_minutes">Fifteen minutes</string>
 
+    <string name="data_label">Data:</string>
+    <string name="_import">Import</string>
+    <string name="export">Export</string>
+
     <string name="set_password">Set Password</string>
 
     <string name="settings_conflict">Settings Conflict</string>
@@ -138,6 +144,10 @@
     <string name="use_server_code">Use server code</string>
     <string name="no_code">No code</string>
     <string name="apply_settings">Apply Settings</string>
+
+    <!-- Backup -->
+    <string name="creating_backup_file">Creating backup file…</string>
+    <string name="error_creating_backup_file">An error occurred creating the backup file. If this problem persists please contact me on contact@drspaceboo.com</string>
 
     <!-- Select Photo -->
     <string name="select_photo">Select Photo</string>

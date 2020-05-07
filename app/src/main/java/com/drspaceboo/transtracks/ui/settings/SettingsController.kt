@@ -25,14 +25,18 @@ import android.widget.EditText
 import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.data.TransTracksFileProvider
+import com.drspaceboo.transtracks.domain.SettingsAction
 import com.drspaceboo.transtracks.domain.SettingsAction.SettingsUpdated
 import com.drspaceboo.transtracks.domain.SettingsDomain
 import com.drspaceboo.transtracks.domain.SettingsResult
+import com.drspaceboo.transtracks.domain.SettingsViewEffect
 import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
@@ -90,7 +94,41 @@ class SettingsController : Controller() {
             .compose(settingsResultsToStates(view.context))
             .subscribe { state -> view.display(state) }
 
+        viewDisposables += domain.viewEffects
+            .ofType<SettingsViewEffect.ShowBackupResult>()
+            .subscribe { effect ->
+                when (val zip = effect.zipFile) {
+                    null -> AlertDialog.Builder(view.context)
+                        .setTitle(R.string.error)
+                        .setMessage(R.string.error_creating_backup_file)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+
+                    else -> {
+                        val uri =
+                            FileProvider.getUriForFile(view.context, TransTracksFileProvider::class.java.name, zip)
+                        val shareIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            type = "application/zip"
+                        }
+                        startActivity(Intent.createChooser(shareIntent, view.resources.getText(R.string.send_to)))
+                    }
+                }
+            }
+
         val sharedEvents = view.events.share()
+
+        viewDisposables += sharedEvents
+            .filter { it is SettingsUiEvent.Import || it is SettingsUiEvent.Export }
+            .map { event ->
+                return@map when (event) {
+                    SettingsUiEvent.Import -> TODO()
+                    SettingsUiEvent.Export -> SettingsAction.Export
+                    else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
+                }
+            }
+            .subscribe(domain.actions)
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.Back>()
@@ -606,23 +644,25 @@ class SettingsController : Controller() {
 }
 
 fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsResult, SettingsUiState> { results ->
-    results.map { result ->
-        return@map when (result) {
-            is SettingsResult.Content -> {
-                val themeName = context.getString(result.theme.displayNameRes())
-                val lockName = context.getString(result.lockType.displayNameRes())
-                val lockDelayName = context.getString(result.lockDelay.displayNameRes())
+    fun contentToLoaded(content: SettingsResult.Content): SettingsUiState.Content {
+        val themeName = context.getString(content.theme.displayNameRes())
+        val lockName = context.getString(content.lockType.displayNameRes())
+        val lockDelayName = context.getString(content.lockDelay.displayNameRes())
 
-                SettingsUiState.Loaded(
-                    result.userDetails, result.startDate, themeName, lockName,
-                    enableLockDelay = result.lockType != LockType.off, lockDelay = lockDelayName,
-                    appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                    copyright = context.getString(
-                        R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()
-                    ),
-                    showAds = SettingsManager.showAds()
-                )
-            }
+        return SettingsUiState.Content(
+            content.userDetails, content.startDate, themeName, lockName,
+            enableLockDelay = content.lockType != LockType.off, lockDelay = lockDelayName,
+            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+            copyright = context.getString(R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()),
+            showAds = SettingsManager.showAds()
+        )
+    }
+
+    return@ObservableTransformer results.map { result ->
+        return@map when (result) {
+            is SettingsResult.Content -> contentToLoaded(result)
+            is SettingsResult.Loading ->
+                SettingsUiState.Loading(contentToLoaded(result.content), result.overallProgress, result.stepProgress)
         }
     }
 }

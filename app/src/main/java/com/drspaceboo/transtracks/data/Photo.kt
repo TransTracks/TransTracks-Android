@@ -13,8 +13,11 @@ package com.drspaceboo.transtracks.data
 import android.content.Context
 import androidx.annotation.IntDef
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.FileUtil.getImageFile
+import com.google.gson.JsonObject
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import java.io.File
 import java.util.UUID
 
 open class Photo : RealmObject() {
@@ -33,6 +36,21 @@ open class Photo : RealmObject() {
     @IntDef(TYPE_FACE, TYPE_BODY)
     annotation class Type
 
+    fun toJson(): JsonObject? {
+        return try {
+            JsonObject().apply {
+                addProperty(FIELD_ID, id)
+                addProperty(FIELD_EPOCH_DAY, epochDay)
+                addProperty(FIELD_TIMESTAMP, timestamp)
+                addProperty(FIELD_FILE_NAME, File(filePath).name)
+                addProperty(FIELD_TYPE, type)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     companion object {
         const val TYPE_FACE = 0
         const val TYPE_BODY = 1
@@ -42,10 +60,31 @@ open class Photo : RealmObject() {
         const val FIELD_TIMESTAMP = "timestamp"
         const val FIELD_TYPE = "type"
 
+        const val FIELD_FILE_NAME = "fileName"
+
         fun getTypeName(@Type type: Int, context: Context) = when (type) {
             TYPE_FACE -> context.getString(R.string.face)
             TYPE_BODY -> context.getString(R.string.body)
             else -> throw IllegalArgumentException("Unhandled Type '$type'")
-        }!!
+        }
+
+        fun fromJson(json: JsonObject): Photo? {
+            return try {
+                Photo().apply {
+                    id = json[FIELD_ID].asString
+                    epochDay = json[FIELD_EPOCH_DAY].asLong
+                    timestamp = json[FIELD_TIMESTAMP].asLong
+
+                    val fileName = json[FIELD_FILE_NAME].asString
+                    filePath = getImageFile(fileName).absolutePath
+
+                    type = json[FIELD_TYPE].asInt
+                    if (type !in arrayOf(TYPE_FACE, TYPE_BODY)) throw IllegalArgumentException("Invalid type '$type'")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
 }
