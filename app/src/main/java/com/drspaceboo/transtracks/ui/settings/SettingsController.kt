@@ -119,15 +119,8 @@ class SettingsController : Controller() {
 
         val sharedEvents = view.events.share()
 
-        viewDisposables += sharedEvents
-            .filter { it is SettingsUiEvent.Import || it is SettingsUiEvent.Export }
-            .map { event ->
-                return@map when (event) {
-                    SettingsUiEvent.Import -> TODO()
-                    SettingsUiEvent.Export -> SettingsAction.Export
-                    else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
-                }
-            }
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.Export>()
+            .map { SettingsAction.Export }
             .subscribe(domain.actions)
 
         viewDisposables += sharedEvents
@@ -249,6 +242,24 @@ class SettingsController : Controller() {
                         dialog.dismiss()
                     }
                     .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.Import>()
+            .subscribe {
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.import_info_title)
+                    .setMessage(R.string.import_info_message)
+                    .setPositiveButton(R.string.ok, null)
+                    .setNeutralButton(R.string.go_to_play_store) { dialog, _ ->
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=com.File.Manager.Filemanager")
+                            )
+                        )
+                        dialog.dismiss()
+                    }
                     .show()
             }
 

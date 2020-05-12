@@ -60,7 +60,7 @@ class FirebaseSettingUtil {
             }
         }
 
-        fun <T : Enum<T>> setEnum(key: Key, value: T, context: Context) {
+        fun <T : Enum<T>> setEnum(key: Key, value: T, context: Context?) {
             try {
                 getSettingsDocRef().update(mapOf(key.name to value.name))
                     .addOnFailureListener(FailureListener(context))

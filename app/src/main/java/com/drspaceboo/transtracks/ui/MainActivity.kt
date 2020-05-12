@@ -11,11 +11,14 @@
 package com.drspaceboo.transtracks.ui
 
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
@@ -26,18 +29,41 @@ import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
+import com.drspaceboo.transtracks.data.Milestone
+import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
+import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.fileName
+import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
+import com.drspaceboo.transtracks.util.visible
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
+import com.google.gson.stream.JsonReader
 import io.fabric.sdk.android.Fabric
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 import kotterknife.bindView
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileReader
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val BUFFER_SIZE = 8_192
+    }
+
     private var router: Router? = null
     private val container: ViewGroup by bindView(R.id.controller_container)
 
@@ -72,6 +98,13 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+
+        processIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        processIntent(intent)
     }
 
     override fun onAttachedToWindow() {
@@ -156,6 +189,196 @@ class MainActivity : AppCompatActivity() {
                     .popChangeHandler(VerticalChangeHandler())
             )
         }
+    }
+
+    private fun processIntent(intent: Intent) {
+        if (intent.action != Intent.ACTION_VIEW) return
+
+        val fileUri: Uri? = intent.data
+        if (fileUri == null) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.error)
+                .setMessage(R.string.import_error)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+            return
+        } else {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.import_warning_title)
+                .setMessage(R.string.import_warning_message)
+                .setPositiveButton(android.R.string.yes) { _, _ -> processImport(fileUri) }
+                .setNegativeButton(android.R.string.no, null)
+                .show()
+        }
+    }
+
+    sealed class ImportResult {
+        object Failure : ImportResult()
+        data class Success(val photoIssues: Int, val milestoneIssues: Int) : ImportResult()
+    }
+
+    private fun processImport(fileUri: Uri) {
+        loading_progress.progress = 0
+        loading_layout.visible()
+
+        val ignored = Observable.just(fileUri)
+            .subscribeOn(RxSchedulers.io())
+            .map<ImportResult> { uri ->
+                return@map try {
+                    var tempDataFile: File? = null
+
+                    contentResolver.openInputStream(uri).use { inputStream ->
+                        ZipInputStream(inputStream).use { zipInputStream ->
+                            val data = ByteArray(BUFFER_SIZE)
+                            var zipEntry: ZipEntry? = zipInputStream.nextEntry
+                            while (zipEntry != null) {
+                                val tempFile: File = when (val fileName = zipEntry.fileName()) {
+                                    "data.json" -> FileUtil.getTempFile(fileName).also { tempDataFile = it }
+                                    else -> FileUtil.getImageFile(fileName)
+                                }
+                                try {
+                                    FileOutputStream(tempFile).use { fileOutputStream ->
+                                        var count: Int = zipInputStream.read(data)
+                                        while (count != -1) {
+                                            fileOutputStream.write(data, 0, count)
+                                            count = zipInputStream.read(data)
+                                        }
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                                zipEntry = zipInputStream.nextEntry
+                            }
+                        }
+                    }
+
+                    runOnUiThread {
+                        loading_progress.progress = 50
+                    }
+
+                    val dataFile = tempDataFile
+                    var photoImportIssues = 0
+                    var milestoneImportIssues = 0
+
+                    if (dataFile != null && dataFile.exists() && dataFile.length() > 0) {
+                        try {
+                            FileReader(tempDataFile!!).use { fileReader ->
+                                BufferedReader(fileReader).use { bufferedReader ->
+                                    JsonReader(bufferedReader).use { jsonReader ->
+                                        Realm.getDefaultInstance().use { realm ->
+                                            realm.executeTransaction { innerRealm ->
+                                                jsonReader.beginObject()
+                                                while (jsonReader.hasNext()) {
+                                                    when (jsonReader.nextName()) {
+                                                        "settings" -> {
+                                                            jsonReader.beginObject()
+                                                            SettingsManager.getSettingsFromJson(jsonReader)
+                                                            jsonReader.endObject()
+                                                        }
+
+                                                        "photos" -> {
+                                                            jsonReader.beginArray()
+                                                            while (jsonReader.hasNext()) {
+                                                                jsonReader.beginObject()
+                                                                val photo = Photo.fromJson(jsonReader)
+                                                                if (photo != null) {
+                                                                    innerRealm.insertOrUpdate(photo)
+                                                                } else {
+                                                                    photoImportIssues++
+                                                                }
+                                                                jsonReader.endObject()
+                                                            }
+                                                            jsonReader.endArray()
+                                                        }
+
+                                                        "milestones" -> {
+                                                            jsonReader.beginArray()
+                                                            while (jsonReader.hasNext()) {
+                                                                jsonReader.beginObject()
+                                                                val milestone = Milestone.fromJson(jsonReader)
+                                                                if (milestone != null) {
+                                                                    innerRealm.insertOrUpdate(milestone)
+                                                                } else {
+                                                                    milestoneImportIssues++
+                                                                }
+                                                                jsonReader.endObject()
+                                                            }
+                                                            jsonReader.endArray()
+                                                        }
+
+                                                        else -> jsonReader.skipValue()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            return@map ImportResult.Success(photoImportIssues, milestoneImportIssues)
+                        } catch (e: Exception) {
+                            return@map ImportResult.Failure
+                        }
+                    } else {
+                        return@map ImportResult.Failure
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    ImportResult.Failure
+                }
+            }
+            .observeOn(RxSchedulers.main())
+            .subscribe { result ->
+                loading_layout.gone()
+                when (result) {
+                    ImportResult.Failure -> {
+                        AlertDialog.Builder(this)
+                            .setTitle(R.string.error)
+                            .setMessage(R.string.import_failure)
+                            .setPositiveButton(R.string.ok, null)
+                            .show()
+                    }
+
+                    is ImportResult.Success -> {
+                        val photoIssues = result.photoIssues
+                        val milestoneIssues = result.milestoneIssues
+                        when {
+                            photoIssues > 0 || milestoneIssues > 0 -> {
+                                val errors = StringBuilder()
+                                if (photoIssues > 0) {
+                                    errors.append(
+                                        resources.getQuantityString(R.plurals.photos, photoIssues, photoIssues)
+                                    )
+                                }
+                                if (milestoneIssues > 0) {
+                                    errors.append(
+                                        resources.getQuantityString(
+                                            R.plurals.milestones,
+                                            milestoneIssues,
+                                            milestoneIssues
+                                        )
+                                    )
+                                }
+                                val message = getString(R.string.import_partial_success_description, errors.toString())
+
+                                AlertDialog.Builder(this)
+                                    .setTitle(R.string.import_partial_success_title)
+                                    .setMessage(message)
+                                    .setPositiveButton(R.string.ok, null)
+                                    .show()
+                            }
+
+                            else -> {
+                                Snackbar.make(
+                                    findViewById(R.id.controller_container),
+                                    R.string.import_complete_success,
+                                    LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
+            }
     }
 
     override fun onDetachedFromWindow() {

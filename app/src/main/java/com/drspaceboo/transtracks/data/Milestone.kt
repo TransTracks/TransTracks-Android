@@ -11,6 +11,7 @@
 package com.drspaceboo.transtracks.data
 
 import com.google.gson.JsonObject
+import com.google.gson.stream.JsonReader
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.util.UUID
@@ -40,14 +41,34 @@ open class Milestone : RealmObject() {
         const val FIELD_TITLE = "title"
         const val FIELD_DESCRIPTION = "description"
 
-        fun fromJson(json: JsonObject): Milestone? {
+        fun fromJson(jsonReader: JsonReader): Milestone? {
             return try {
                 Milestone().apply {
-                    id = json[FIELD_ID].asString
-                    epochDay = json[FIELD_EPOCH_DAY].asLong
-                    timestamp = json[FIELD_TIMESTAMP].asLong
-                    title = json[FIELD_TITLE].asString
-                    description = json[FIELD_DESCRIPTION].asString
+                    while (jsonReader.hasNext()) {
+                        when (jsonReader.nextName()) {
+                            FIELD_ID -> {
+                                id = try {
+                                    UUID.fromString(jsonReader.nextString())
+                                } catch (e: IllegalArgumentException) {
+                                    e.printStackTrace()
+                                    UUID.randomUUID()
+                                }.toString()
+                            }
+                            FIELD_EPOCH_DAY -> {
+                                epochDay = jsonReader.nextLong()
+                            }
+                            FIELD_TIMESTAMP -> {
+                                timestamp = jsonReader.nextLong()
+                            }
+                            FIELD_TITLE -> {
+                                title = jsonReader.nextString()
+                            }
+                            FIELD_DESCRIPTION -> {
+                                jsonReader.nextString()
+                            }
+                            else -> jsonReader.skipValue()
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

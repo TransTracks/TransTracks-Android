@@ -35,9 +35,11 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.values
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.gson.JsonObject
+import com.google.gson.stream.JsonReader
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import org.threeten.bp.LocalDate
+import java.io.IOException
 
 object SettingsManager {
     val lockTypeUpdatedRelay: PublishRelay<LockType> = PublishRelay.create()
@@ -167,12 +169,12 @@ object SettingsManager {
     //region Theme
     fun getTheme(): Theme = PrefUtil.getEnum(theme, Theme.default())
 
-    fun setTheme(newTheme: Theme, activity: Activity) {
+    fun setTheme(newTheme: Theme, context: Context?) {
         PrefUtil.setEnum(theme, newTheme)
         themeUpdatedRelay.accept(newTheme)
 
         if (saveToFirebase()) {
-            FirebaseSettingUtil.setEnum(theme, newTheme, activity)
+            FirebaseSettingUtil.setEnum(theme, newTheme, context)
         }
     }
     //endregion
@@ -183,11 +185,38 @@ object SettingsManager {
     fun updateUserLastSeen() = PrefUtil.setLong(userLastSeen, System.currentTimeMillis())
     //endregion
 
-    //region Json Exporting
+    //region Json Exporting/Importing
     fun getSettingsAsJson() = JsonObject().apply {
         addProperty(currentAndroidVersion.name, getCurrentAndroidVersion())
         addProperty(startDate.name, PrefUtil.getDate(startDate)?.toEpochDay())
         addProperty(theme.name, getTheme().name)
+    }
+
+    @Throws(IOException::class)
+    fun getSettingsFromJson(jsonReader: JsonReader) {
+        while (jsonReader.hasNext()) {
+            when (jsonReader.nextName()) {
+                currentAndroidVersion.name -> {
+                    //No-op, this is here in-case we need to handle incompatibility in the future
+                    jsonReader.skipValue()
+                }
+                startDate.name -> {
+                    try {
+                        setStartDate(LocalDate.ofEpochDay(jsonReader.nextLong()), context = null)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+                theme.name -> {
+                    try {
+                        setTheme(Theme.valueOf(jsonReader.nextString()), context = null)
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                else -> jsonReader.skipValue()
+            }
+        }
     }
     //endregion
 
@@ -367,6 +396,5 @@ enum class Theme {
     }
 }
 
-class DocumentDoesNotExistException : Exception()
 class UserNotLoggedInException : Exception()
 
