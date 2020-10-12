@@ -10,7 +10,6 @@
 
 package com.drspaceboo.transtracks.domain
 
-import com.crashlytics.android.Crashlytics
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
@@ -29,6 +28,7 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.drspaceboo.transtracks.util.writeFile
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.stream.JsonWriter
 import com.jakewharton.rxrelay2.PublishRelay
@@ -187,7 +187,9 @@ class SettingsDomain {
                                                             try {
                                                                 zipOutputStream.writeFile(it, "photos/")
                                                             } catch (e: IOException) {
-                                                                if (!BuildConfig.DEBUG) Crashlytics.logException(e)
+                                                                if (!BuildConfig.DEBUG) {
+                                                                    FirebaseCrashlytics.getInstance().recordException(e)
+                                                                }
                                                                 e.printStackTrace()
                                                             } finally {
                                                                 incrementStep()
@@ -201,7 +203,9 @@ class SettingsDomain {
 
                                         zipFile
                                     } catch (e: Exception) {
-                                        if (!BuildConfig.DEBUG) Crashlytics.logException(e)
+                                        if (!BuildConfig.DEBUG) {
+                                            FirebaseCrashlytics.getInstance().recordException(e)
+                                        }
                                         e.printStackTrace()
                                         null
                                     }

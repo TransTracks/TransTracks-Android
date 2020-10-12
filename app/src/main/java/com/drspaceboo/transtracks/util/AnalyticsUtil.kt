@@ -42,9 +42,6 @@ sealed class Event {
 }
 
 object AnalyticsUtil {
-    fun disable() {
-        FirebaseAnalytics.getInstance(TransTracksApp.instance).setAnalyticsCollectionEnabled(false)
-    }
 
     fun logEvent(event: Event) {
         FirebaseAnalytics

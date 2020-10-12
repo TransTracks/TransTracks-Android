@@ -24,7 +24,6 @@ import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
-import com.crashlytics.android.core.CrashlyticsCore
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
@@ -33,7 +32,6 @@ import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
-import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.fileName
@@ -45,8 +43,9 @@ import com.drspaceboo.transtracks.util.using
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.stream.JsonReader
-import io.fabric.sdk.android.Fabric
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
@@ -75,11 +74,10 @@ class MainActivity : AppCompatActivity() {
         setTheme(SettingsManager.getTheme().styleRes())
         setContentView(R.layout.activity_main)
 
-        if (BuildConfig.DEBUG) {
-            AnalyticsUtil.disable()
+        if (!BuildConfig.DEBUG) {
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         }
-
-        Fabric.with(this, CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
 
         StoragePermissionHandler.install(this)
         CameraHandler.install(this)
