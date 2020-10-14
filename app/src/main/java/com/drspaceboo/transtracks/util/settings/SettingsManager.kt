@@ -221,6 +221,12 @@ object SettingsManager {
     //endregion
 
     //region Firebase handling
+    fun startFirbaseSyncIfLoggedIn(context: Context){
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            enableFirebaseSync()
+        }
+    }
+
     fun enableFirebaseSync() {
         PrefUtil.setBoolean(saveToFirebase, true)
         TransTracksApp.instance.firebaseSettingUtil.addListener()

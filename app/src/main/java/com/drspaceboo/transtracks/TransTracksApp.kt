@@ -46,6 +46,8 @@ class TransTracksApp : Application() {
 
         FileUtil.clearTempFolder()
 
+        SettingsManager.startFirbaseSyncIfLoggedIn(this)
+
         //Clearing these, as we don't want to maintain this state across launches
         PrefUtil.setSelectPhotoFirstVisible("")
         PrefUtil.clearAllAlbumFirstVisiblePrefs()
