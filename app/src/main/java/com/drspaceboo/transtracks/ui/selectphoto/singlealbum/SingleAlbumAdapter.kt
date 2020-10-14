@@ -10,6 +10,7 @@
 
 package com.drspaceboo.transtracks.ui.selectphoto.singlealbum
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -31,7 +32,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
-import java.io.File
 import java.io.FileNotFoundException
 import java.lang.ref.WeakReference
 
@@ -100,11 +100,9 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
         return getUri(localCursor)
     }
 
-    private fun getUri(cursor: Cursor): Uri? {
-        val data = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
-                ?: return null
-
-        return Uri.fromFile(File(data))
+    private fun getUri(cursor: Cursor): Uri {
+        val id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID))
+        return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
@@ -141,7 +139,7 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
     override fun onBindViewHolder(viewHolder: BaseHolder, cursor: Cursor) {
         when (viewHolder) {
             is ImageHolder -> {
-                val uri = getUri(cursor)!!
+                val uri = getUri(cursor)
                 viewHolder.bind(uri, selectionMode, selectedUris.contains(uri))
             }
         }
@@ -250,12 +248,13 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
         private const val TYPE_COUNT = 1
 
         fun getSingleAlbumCursor(context: Context, bucketId: String): Cursor {
-            return context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                                 arrayOf(MediaStore.Images.Media._ID,
-                                                         MediaStore.Files.FileColumns.DATA),
-                                                 "${MediaStore.Images.Media.BUCKET_ID}=?",
-                                                 arrayOf(bucketId),
-                                                 MediaStore.Images.Media._ID + " DESC")!!
+            return context.contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                arrayOf(MediaStore.Images.Media._ID),
+                "${MediaStore.Images.Media.BUCKET_ID}=?",
+                arrayOf(bucketId),
+                MediaStore.Images.Media._ID + " DESC"
+            )!!
         }
     }
 }

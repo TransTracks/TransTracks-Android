@@ -10,6 +10,7 @@
 
 package com.drspaceboo.transtracks.ui.selectphoto
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -27,7 +28,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import kotterknife.bindView
-import java.io.File
 import java.lang.ref.WeakReference
 
 class SelectPhotoAdapter(context: Context)
@@ -84,7 +84,7 @@ class SelectPhotoAdapter(context: Context)
     override fun onBindViewHolder(viewHolder: BaseHolder, cursor: Cursor) {
         when (viewHolder) {
             is ImageHolder -> {
-                val uri = getUri(cursor)!!
+                val uri = getUri(cursor)
                 viewHolder.bind(uri, selectionMode, selectedUris.contains(uri))
             }
         }
@@ -116,11 +116,9 @@ class SelectPhotoAdapter(context: Context)
         return getUri(localCursor)
     }
 
-    private fun getUri(cursor: Cursor): Uri? {
-        val data = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
-                ?: return null
-
-        return Uri.fromFile(File(data))
+    private fun getUri(cursor: Cursor): Uri {
+        val id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID))
+        return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
     }
 
     fun updateSelectedUris(newSelectedUris: ArrayList<Uri>) {
@@ -210,9 +208,13 @@ class SelectPhotoAdapter(context: Context)
 
     companion object {
         fun getGalleryCursor(context: Context): Cursor {
-            return context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                                 arrayOf(MediaStore.Images.Media._ID, MediaStore.Files.FileColumns.DATA),
-                                                 null, null, MediaStore.Images.Media._ID + " DESC")!!
+            return context.contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                arrayOf(MediaStore.Images.Media._ID),
+                null,
+                null,
+                MediaStore.Images.Media._ID + " DESC"
+            )!!
         }
     }
 }
