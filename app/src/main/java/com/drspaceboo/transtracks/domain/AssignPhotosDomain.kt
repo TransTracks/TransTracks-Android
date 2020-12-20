@@ -29,6 +29,7 @@ import io.reactivex.ObservableTransformer
 import io.realm.Realm
 import org.threeten.bp.LocalDate
 import java.io.File
+import java.io.FileDescriptor
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -151,7 +152,11 @@ class AssignPhotosDomain {
                                                                           uris.size)
                                 }
 
-                                photoDate = localDateFromEpochMilli(File(uri.path).dateCreated())
+                                val fileDate = File(uri.path).dateCreated()
+                                if (fileDate > 0L) {
+                                    photoDate = localDateFromEpochMilli(fileDate)
+                                }
+
                                 if (epochDay == null) {
                                     date = photoDate
                                 }
