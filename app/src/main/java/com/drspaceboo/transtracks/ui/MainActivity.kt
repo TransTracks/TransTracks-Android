@@ -30,6 +30,7 @@ import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.databinding.ActivityMainBinding
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.FileUtil
@@ -49,7 +50,6 @@ import com.google.gson.stream.JsonReader
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
 import kotterknife.bindView
 import java.io.BufferedReader
 import java.io.File
@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var router: Router? = null
+    private lateinit var binding: ActivityMainBinding
     private val container: ViewGroup by bindView(R.id.controller_container)
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
@@ -72,7 +73,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setTheme(SettingsManager.getTheme().styleRes())
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         if (!BuildConfig.DEBUG) {
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
@@ -216,8 +220,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun processImport(fileUri: Uri) {
-        loading_progress.progress = 0
-        loading_layout.visible()
+        binding.loadingProgress.progress = 0
+        binding.loadingLayout.visible()
 
         val ignored = Observable.just(fileUri)
             .subscribeOn(RxSchedulers.io())
@@ -251,7 +255,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     runOnUiThread {
-                        loading_progress.progress = 50
+                        binding.loadingProgress.progress = 50
                     }
 
                     val dataFile = tempDataFile
@@ -327,7 +331,7 @@ class MainActivity : AppCompatActivity() {
             }
             .observeOn(RxSchedulers.main())
             .subscribe { result ->
-                loading_layout.gone()
+                binding.loadingLayout.gone()
                 when (result) {
                     ImportResult.Failure -> {
                         AlertDialog.Builder(this)

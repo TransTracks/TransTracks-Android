@@ -14,6 +14,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.databinding.SettingsBinding
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Content
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Loading
 import com.drspaceboo.transtracks.util.getString
@@ -25,7 +26,6 @@ import com.google.android.gms.ads.AdListener
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.settings.view.*
 import org.threeten.bp.LocalDate
 
 sealed class SettingsUiEvent {
@@ -57,40 +57,47 @@ sealed class SettingsUiState {
 }
 
 class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+    private lateinit var binding: SettingsBinding
+
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-            settings_toolbar.navigationClicks().map { SettingsUiEvent.Back },
-            settings_account_name.clicks().map { SettingsUiEvent.ChangeName },
-            settings_account_email.clicks().map { SettingsUiEvent.ChangeEmail },
-            settings_account_sign_in.clicks().map { SettingsUiEvent.SignIn },
-            settings_account_change_password.clicks().map { SettingsUiEvent.ChangePassword },
-            settings_account_sign_out.clicks().map { SettingsUiEvent.SignOut },
-            settings_start_date.clicks().map { SettingsUiEvent.ChangeStartDate },
-            settings_theme.clicks().map { SettingsUiEvent.ChangeTheme },
-            settings_lock.clicks().map { SettingsUiEvent.ChangeLockMode },
-            settings_lock_delay.clicks().map { SettingsUiEvent.ChangeLockDelay },
-            settings_import.clicks().map { SettingsUiEvent.Import },
-            settings_export.clicks().map { SettingsUiEvent.Export },
-            settings_privacy_policy.clicks().map { SettingsUiEvent.PrivacyPolicy }
+            binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
+            binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
+            binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
+            binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
+            binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
+            binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
+            binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
+            binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
+            binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
+            binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+            binding.settingsImport.clicks().map { SettingsUiEvent.Import },
+            binding.settingsExport.clicks().map { SettingsUiEvent.Export },
+            binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
 
     private var currentStartDate: LocalDate? = null
 
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        binding = SettingsBinding.bind(this)
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        settings_account_name_label.setOnClickListener { settings_account_name.performClick() }
-        settings_account_email_label.setOnClickListener { settings_account_email.performClick() }
-        settings_start_label.setOnClickListener { settings_start_date.performClick() }
-        settings_theme_label.setOnClickListener { settings_theme.performClick() }
-        settings_lock_label.setOnClickListener { settings_lock.performClick() }
-        settings_lock_description.setOnClickListener { settings_lock.performClick() }
-        settings_lock_delay_label.setOnClickListener { settings_lock_delay.performClick() }
+        binding.settingsAccountNameLabel.setOnClickListener { binding.settingsAccountName.performClick() }
+        binding.settingsAccountEmailLabel.setOnClickListener { binding.settingsAccountEmail.performClick() }
+        binding.settingsStartLabel.setOnClickListener { binding.settingsStartDate.performClick() }
+        binding.settingsThemeLabel.setOnClickListener { binding.settingsTheme.performClick() }
+        binding.settingsLockLabel.setOnClickListener { binding.settingsLock.performClick() }
+        binding.settingsLockDescription.setOnClickListener { binding.settingsLock.performClick() }
+        binding.settingsLockDelayLabel.setOnClickListener { binding.settingsLockDelay.performClick() }
 
-        settings_ad_view.adListener = object : AdListener() {
+        binding.settingsAdView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(code: Int) {
-                settings_ad_layout.gone()
+                binding.settingsAdLayout.gone()
             }
         }
     }
@@ -98,13 +105,13 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     fun display(state: SettingsUiState) {
         when (state) {
             is Content -> {
-                settings_loading_layout.gone()
+                binding.settingsLoadingLayout.gone()
                 displayContent(state)
             }
             is Loading -> {
-                settings_loading_layout.visible()
-                settings_loading_progress.progress = state.overallProgress
-                settings_loading_progress.secondaryProgress = state.stepProgress
+                binding.settingsLoadingLayout.visible()
+                binding.settingsLoadingProgress.progress = state.overallProgress
+                binding.settingsLoadingProgress.secondaryProgress = state.stepProgress
             }
         }
     }
@@ -113,57 +120,56 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
         if (content.userDetails != null) {
             displayUserDetails(content.userDetails)
         } else {
-            settings_account_description.visible()
-            settings_account_name_layout.gone()
-            settings_account_email_layout.gone()
-            settings_account_sign_in.visible()
-            settings_account_change_password.gone()
-            settings_account_logged_in_button_space.gone()
-            settings_account_sign_out.gone()
+            binding.settingsAccountDescription.visible()
+            binding.settingsAccountNameLayout.gone()
+            binding.settingsAccountEmailLayout.gone()
+            binding.settingsAccountSignIn.visible()
+            binding.settingsAccountChangePassword.gone()
+            binding.settingsAccountLoggedInButtonSpace.gone()
+            binding.settingsAccountSignOut.gone()
         }
 
         currentStartDate = content.startDate
 
-        settings_start_date.text = content.startDate.toFullDateString(settings_start_date.context)
-        settings_theme.text = content.theme
-        settings_lock.text = content.lockMode
+        binding.settingsStartDate.text = content.startDate.toFullDateString(context)
+        binding.settingsTheme.text = content.theme
+        binding.settingsLock.text = content.lockMode
 
-        settings_lock_delay_label.isEnabled = content.enableLockDelay
-        settings_lock_delay.isEnabled = content.enableLockDelay
+        binding.settingsLockDelayLabel.isEnabled = content.enableLockDelay
+        binding.settingsLockDelay.isEnabled = content.enableLockDelay
 
-        settings_lock_delay.text = content.lockDelay
+        binding.settingsLockDelay.text = content.lockDelay
 
-        settings_app_version.text = content.appVersion
+        binding.settingsAppVersion.text = content.appVersion
 
-        settings_copyright.text = content.copyright
+        binding.settingsCopyright.text = content.copyright
 
         if (content.showAds) {
-            settings_ad_layout.visible()
-            settings_ad_view.loadAd()
+            binding.settingsAdLayout.visible()
+            binding.settingsAdView.loadAd()
         } else {
-            settings_ad_layout.gone()
+            binding.settingsAdLayout.gone()
         }
     }
 
     private fun displayUserDetails(user: SettingsUIUserDetails) {
-        settings_account_description.gone()
-        settings_account_name_layout.visible()
-        settings_account_email_layout.visible()
-        settings_account_sign_in.gone()
-        settings_account_logged_in_button_space.visible()
-        settings_account_logged_in_button_space.visible()
-        settings_account_sign_out.visible()
+        binding.settingsAccountDescription.gone()
+        binding.settingsAccountNameLayout.visible()
+        binding.settingsAccountEmailLayout.visible()
+        binding.settingsAccountSignIn.gone()
+        binding.settingsAccountLoggedInButtonSpace.visible()
+        binding.settingsAccountSignOut.visible()
 
         if (user.email != null) {
-            settings_account_change_password.visible()
+            binding.settingsAccountChangePassword.visible()
 
             val buttonRes = if (user.hasPasswordProvider) R.string.change_password else R.string.set_password
-            settings_account_change_password.setText(buttonRes)
+            binding.settingsAccountChangePassword.setText(buttonRes)
         } else {
-            settings_account_change_password.gone()
+            binding.settingsAccountChangePassword.gone()
         }
 
-        settings_account_name.text = user.name ?: getString(R.string.unknown)
-        settings_account_email.text = user.email ?: getString(R.string.unknown)
+        binding.settingsAccountName.text = user.name ?: getString(R.string.unknown)
+        binding.settingsAccountEmail.text = user.email ?: getString(R.string.unknown)
     }
 }
