@@ -23,6 +23,7 @@ import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
@@ -94,12 +95,6 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
         binding.settingsLockLabel.setOnClickListener { binding.settingsLock.performClick() }
         binding.settingsLockDescription.setOnClickListener { binding.settingsLock.performClick() }
         binding.settingsLockDelayLabel.setOnClickListener { binding.settingsLockDelay.performClick() }
-
-        binding.settingsAdView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(code: Int) {
-                binding.settingsAdLayout.gone()
-            }
-        }
     }
 
     fun display(state: SettingsUiState) {
@@ -146,7 +141,19 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
         if (content.showAds) {
             binding.settingsAdLayout.visible()
-            binding.settingsAdView.loadAd()
+
+            if (binding.settingsAdLayout.childCount <= 0) {
+                AdView(context).apply {
+                    adUnitId = getString(R.string.ADS_SETTINGS_AD_ID)
+                    binding.settingsAdLayout.addView(this)
+                    loadAd(context)
+                    adListener = object : AdListener() {
+                        override fun onAdFailedToLoad(code: Int) {
+                            binding.settingsAdLayout.gone()
+                        }
+                    }
+                }
+            }
         } else {
             binding.settingsAdLayout.gone()
         }

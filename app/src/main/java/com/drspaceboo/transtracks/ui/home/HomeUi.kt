@@ -86,7 +86,6 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val bodyRecyclerView: RecyclerView by bindView(R.id.home_body_images)
 
     private val adViewLayout: ViewGroup by bindView(R.id.home_ad_layout)
-    private val adView: AdView by bindView(R.id.home_ad_view)
 
     private val eventRelay: PublishRelay<HomeUiEvent> = PublishRelay.create()
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
@@ -137,19 +136,6 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                                              false)
         bodyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
                                                              false)
-
-        adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(code: Int) {
-                val transitionSet = TransitionSet()
-                        .addTransition(Slide().addTarget(adViewLayout).addTarget(faceGallery)
-                                               .addTarget(bodyRecyclerView))
-                        .addTransition(ChangeBounds().addTarget(faceRecyclerView)
-                                               .addTarget(bodyRecyclerView))
-
-                TransitionManager.beginDelayedTransition(this@HomeView, transitionSet)
-                adViewLayout.gone()
-            }
-        }
     }
 
     fun display(state: HomeUiState) {
@@ -169,9 +155,11 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 nextRecord.setVisibleOrInvisible(state.showNextRecord)
 
                 startDate.text = startDate.getString(
-                        R.string.start_date, state.startDate.toFullDateString(startDate.context))
+                    R.string.start_date, state.startDate.toFullDateString(startDate.context)
+                )
                 currentDate.text = currentDate.getString(
-                        R.string.current_date, state.currentDate.toFullDateString(currentDate.context))
+                    R.string.current_date, state.currentDate.toFullDateString(currentDate.context)
+                )
 
                 val milestonesRes = when (state.hasMilestones) {
                     true -> R.drawable.ic_milestone_selected
@@ -179,14 +167,42 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 }
                 milestones.setImageResource(milestonesRes)
 
-                faceRecyclerView.adapter = HomeGalleryAdapter(state.currentDate, Photo.TYPE_FACE,
-                                                              eventRelay)
-                bodyRecyclerView.adapter = HomeGalleryAdapter(state.currentDate, Photo.TYPE_BODY,
-                                                              eventRelay)
+                faceRecyclerView.adapter = HomeGalleryAdapter(
+                    state.currentDate, Photo.TYPE_FACE,
+                    eventRelay
+                )
+                bodyRecyclerView.adapter = HomeGalleryAdapter(
+                    state.currentDate, Photo.TYPE_BODY,
+                    eventRelay
+                )
 
                 if (state.showAds) {
                     adViewLayout.visible()
-                    adView.loadAd()
+
+                    if (adViewLayout.childCount <= 0) {
+                        AdView(context).apply {
+                            adUnitId = getString(R.string.ADS_HOME_AD_ID)
+                            adViewLayout.addView(this)
+                            loadAd(context)
+                            adListener = object : AdListener() {
+                                override fun onAdFailedToLoad(code: Int) {
+                                    val transitionSet = TransitionSet()
+                                        .addTransition(
+                                            Slide().addTarget(adViewLayout)
+                                                .addTarget(faceGallery)
+                                                .addTarget(bodyRecyclerView)
+                                        )
+                                        .addTransition(
+                                            ChangeBounds().addTarget(faceRecyclerView)
+                                                .addTarget(bodyRecyclerView)
+                                        )
+
+                                    TransitionManager.beginDelayedTransition(this@HomeView, transitionSet)
+                                    adViewLayout.gone()
+                                }
+                            }
+                        }
+                    }
                 } else {
                     adViewLayout.gone()
                 }

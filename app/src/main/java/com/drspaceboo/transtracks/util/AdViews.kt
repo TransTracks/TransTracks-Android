@@ -10,9 +10,29 @@
 
 package com.drspaceboo.transtracks.util
 
+import android.content.Context
+import android.util.DisplayMetrics
+import android.view.Display
+import android.view.WindowManager
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-fun AdView.loadAd() = loadAd(AdRequest.Builder()
-                                     .addTestDevice("7AC8224DC21153F6AF9BEF2076D0DBE1")
-                                     .build())
+fun AdView.loadAd(context: Context) {
+    adSize = getAdaptiveAdSize(context)
+    loadAd(AdRequest.Builder().build())
+}
+
+private fun getAdaptiveAdSize(context: Context): AdSize {
+    val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val display: Display = windowManager.defaultDisplay
+
+    val outMetrics = DisplayMetrics()
+    display.getMetrics(outMetrics)
+
+    val widthPixels = outMetrics.widthPixels.toFloat()
+    val density = outMetrics.density
+    val adWidth = (widthPixels / density).toInt()
+
+    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
+}

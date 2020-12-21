@@ -18,6 +18,7 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
@@ -27,11 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
-import com.drspaceboo.transtracks.util.gone
-import com.drspaceboo.transtracks.util.loadAd
-import com.drspaceboo.transtracks.util.setGone
-import com.drspaceboo.transtracks.util.setVisible
-import com.drspaceboo.transtracks.util.visible
+import com.drspaceboo.transtracks.util.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding3.appcompat.itemClicks
@@ -86,8 +83,7 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
     private val emptyMessage: TextView by bindView(R.id.gallery_empty_message)
     private val emptyAdd: View by bindView(R.id.gallery_empty_add)
 
-    private val adViewLayout: View by bindView(R.id.gallery_ad_layout)
-    private val adView: AdView by bindView(R.id.gallery_ad_view)
+    private val adViewLayout: FrameLayout by bindView(R.id.gallery_ad_layout)
 
     private var layoutManager = GridLayoutManager(context, GRID_SPAN)
 
@@ -115,12 +111,6 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
         layoutManager.spanSizeLookup = AdapterSpanSizeLookup(recyclerView)
         recyclerView.layoutManager = layoutManager
-
-        adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(code: Int) {
-                adViewLayout.gone()
-            }
-        }
     }
 
     fun display(state: GalleryUiState) {
@@ -152,23 +142,29 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
         }
 
         if (recyclerView.adapter == null) {
-            val adapter = GalleryAdapter(type, eventRelay, state is GalleryUiState.Selection,
-                                         selectedIds, postInitialLoad = { adapter ->
-                val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
-                if (scrollTo != -1) {
-                    Handler(Looper.getMainLooper()).post {
-                        layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+            val adapter = GalleryAdapter(
+                type,
+                eventRelay,
+                state is GalleryUiState.Selection,
+                selectedIds,
+                postInitialLoad = { adapter ->
+                    val scrollTo = adapter.getPositionOfDay(GalleryUiState.getInitialDay(state))
+                    if (scrollTo != -1) {
+                        Handler(Looper.getMainLooper()).post {
+                            layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+                        }
+                    }
+                },
+                postLoad = { adapter ->
+                    if (adapter.itemCount > 0) {
+                        setVisible(recyclerView)
+                        setGone(emptyMessage, emptyAdd)
+                    } else {
+                        setVisible(emptyMessage, emptyAdd)
+                        setGone(recyclerView)
                     }
                 }
-            }, postLoad = { adapter ->
-                if (adapter.itemCount > 0) {
-                    setVisible(recyclerView)
-                    setGone(emptyMessage, emptyAdd)
-                } else {
-                    setVisible(emptyMessage, emptyAdd)
-                    setGone(recyclerView)
-                }
-            })
+            )
             recyclerView.adapter = adapter
         } else {
             val adapter: GalleryAdapter = recyclerView.adapter!! as GalleryAdapter
@@ -182,7 +178,19 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
         if (GalleryUiState.getShowAds(state)) {
             adViewLayout.visible()
-            adView.loadAd()
+
+            if (adViewLayout.childCount <= 0) {
+                AdView(context).apply {
+                    adUnitId = getString(R.string.ADS_GALLERY_AD_ID)
+                    adViewLayout.addView(this)
+                    loadAd(context)
+                    adListener = object : AdListener() {
+                        override fun onAdFailedToLoad(code: Int) {
+                            adViewLayout.gone()
+                        }
+                    }
+                }
+            }
         } else {
             adViewLayout.gone()
         }

@@ -15,17 +15,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
-import com.drspaceboo.transtracks.util.gone
-import com.drspaceboo.transtracks.util.loadAd
-import com.drspaceboo.transtracks.util.setGone
-import com.drspaceboo.transtracks.util.setVisible
-import com.drspaceboo.transtracks.util.visible
+import com.drspaceboo.transtracks.util.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.jakewharton.rxbinding3.appcompat.itemClicks
@@ -59,8 +56,7 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
     private val emptyMessage: TextView by bindView(R.id.milestones_empty_message)
     private val emptyAdd: View by bindView(R.id.milestones_empty_add)
 
-    private val adViewLayout: View by bindView(R.id.milestones_ad_layout)
-    private val adView: AdView by bindView(R.id.milestones_ad_view)
+    private val adViewLayout: FrameLayout by bindView(R.id.milestones_ad_layout)
 
     private val eventRelay: PublishRelay<MilestonesUiEvent> = PublishRelay.create()
     val events: Observable<MilestonesUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
@@ -85,12 +81,6 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
         toolbar.inflateMenu(R.menu.milestones)
 
         recyclerView.layoutManager = layoutManager
-
-        adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(code: Int) {
-                adViewLayout.gone()
-            }
-        }
     }
 
     fun display(state: MilestonesUiState) {
@@ -119,7 +109,19 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
 
                 if (state.showAds) {
                     adViewLayout.visible()
-                    adView.loadAd()
+
+                    if (adViewLayout.childCount <= 0) {
+                        AdView(context).apply {
+                            adUnitId = getString(R.string.ADS_MILESTONES_AD_ID)
+                            adViewLayout.addView(this)
+                            loadAd(context)
+                            adListener = object : AdListener() {
+                                override fun onAdFailedToLoad(code: Int) {
+                                    adViewLayout.gone()
+                                }
+                            }
+                        }
+                    }
                 } else {
                     adViewLayout.gone()
                 }
