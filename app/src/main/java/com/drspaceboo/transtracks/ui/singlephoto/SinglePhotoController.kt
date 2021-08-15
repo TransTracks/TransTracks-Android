@@ -35,7 +35,7 @@ import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.io.File
 
 class SinglePhotoController(args: Bundle) : Controller(args) {

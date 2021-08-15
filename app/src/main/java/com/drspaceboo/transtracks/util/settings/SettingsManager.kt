@@ -38,7 +38,7 @@ import com.google.gson.JsonObject
 import com.google.gson.stream.JsonReader
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.io.IOException
 
 object SettingsManager {

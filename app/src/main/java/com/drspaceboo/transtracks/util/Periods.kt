@@ -13,7 +13,7 @@ package com.drspaceboo.transtracks.util
 import android.content.Context
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
-import org.threeten.bp.Period
+import java.time.Period
 
 fun Period.getDisplayString(): String {
     val context: Context = TransTracksApp.instance

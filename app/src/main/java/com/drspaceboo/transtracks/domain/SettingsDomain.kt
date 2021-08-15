@@ -35,7 +35,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.realm.Realm
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter
 import java.io.File

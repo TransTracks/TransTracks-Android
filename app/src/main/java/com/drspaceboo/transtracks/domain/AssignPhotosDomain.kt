@@ -27,12 +27,12 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.realm.Realm
-import org.threeten.bp.LocalDate
 import java.io.File
 import java.io.FileDescriptor
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.time.LocalDate
 
 sealed class AssignPhotosAction {
     data class InitialData(val uris: ArrayList<Uri>, val epochDay: Long?, @Photo.Type val type: Int) : AssignPhotosAction()

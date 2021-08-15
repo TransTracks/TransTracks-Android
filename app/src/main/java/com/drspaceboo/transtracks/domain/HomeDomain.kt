@@ -20,8 +20,8 @@ import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.realm.Realm
 import io.realm.Sort
-import org.threeten.bp.LocalDate
-import org.threeten.bp.Period
+import java.time.LocalDate
+import java.time.Period
 
 sealed class HomeAction {
     object PreviousDay : HomeAction()

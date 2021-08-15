@@ -16,7 +16,7 @@ import android.preference.PreferenceManager
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 object PrefUtil {
     //region Constants

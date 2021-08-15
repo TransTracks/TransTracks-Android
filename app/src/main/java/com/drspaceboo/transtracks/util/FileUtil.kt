@@ -12,7 +12,7 @@ package com.drspaceboo.transtracks.util
 
 import android.provider.MediaStore
 import com.drspaceboo.transtracks.TransTracksApp
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date

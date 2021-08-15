@@ -68,7 +68,7 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.util.Calendar
 
 class SettingsController : Controller() {

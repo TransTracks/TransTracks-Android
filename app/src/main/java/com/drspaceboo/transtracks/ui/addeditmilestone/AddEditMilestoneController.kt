@@ -44,7 +44,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import io.realm.Realm
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 class AddEditMilestoneController(args: Bundle) : Controller(args) {
     constructor(initialDay: Long) : this(Bundle().apply {

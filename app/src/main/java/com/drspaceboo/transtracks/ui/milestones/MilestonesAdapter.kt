@@ -24,7 +24,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.realm.Realm
 import io.realm.Sort
 import kotterknife.bindView
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.lang.ref.WeakReference
 
 class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,

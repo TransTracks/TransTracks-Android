@@ -28,7 +28,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 sealed class SettingsUiEvent {
     object Back : SettingsUiEvent()

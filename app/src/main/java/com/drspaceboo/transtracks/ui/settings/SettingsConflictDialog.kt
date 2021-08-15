@@ -47,7 +47,7 @@ import com.drspaceboo.transtracks.util.toFullDateString
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import kotterknife.bindView
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 object SettingsConflictDialog {
     fun create(differences: List<Pair<Key, Any>>, context: Context): AlertDialog {

@@ -40,7 +40,7 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 class AssignPhotosController(args: Bundle) : Controller(args) {
     constructor(uris: ArrayList<Uri>, epochDay: Long?, @Photo.Type type: Int,

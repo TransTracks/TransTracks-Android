@@ -30,7 +30,7 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import io.reactivex.Observable
 import kotterknife.bindView
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 sealed class AddEditMilestoneUiEvent {
     object Back : AddEditMilestoneUiEvent()

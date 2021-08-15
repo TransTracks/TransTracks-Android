@@ -23,7 +23,6 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.core.Twitter
 import io.realm.Realm
 
@@ -38,7 +37,6 @@ class TransTracksApp : Application() {
 
         MobileAds.initialize(this)
 
-        AndroidThreeTen.init(this)
         Realm.init(this)
         Twitter.initialize(this)
 

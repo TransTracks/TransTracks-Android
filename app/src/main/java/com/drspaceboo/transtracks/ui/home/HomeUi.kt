@@ -41,7 +41,7 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import kotterknife.bindView
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 sealed class HomeUiEvent {
     object SelectPhoto : HomeUiEvent()

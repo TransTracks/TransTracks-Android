@@ -25,7 +25,7 @@ import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.realm.Sort
 import kotterknife.bindView
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import java.io.File
 import java.lang.ref.WeakReference
 

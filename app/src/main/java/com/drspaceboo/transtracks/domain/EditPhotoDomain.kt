@@ -17,8 +17,8 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.realm.Realm
-import org.threeten.bp.LocalDate
 import java.io.File
+import java.time.LocalDate
 
 sealed class EditPhotoAction {
     data class InitialLoad(val photoId: String) : EditPhotoAction()
