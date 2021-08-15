@@ -25,6 +25,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
@@ -116,7 +117,7 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
                             adViewLayout.addView(this)
                             loadAd(context)
                             adListener = object : AdListener() {
-                                override fun onAdFailedToLoad(code: Int) {
+                                override fun onAdFailedToLoad(error: LoadAdError) {
                                     adViewLayout.gone()
                                 }
                             }

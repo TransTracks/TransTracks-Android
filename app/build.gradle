@@ -2,15 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.drspaceboo.transtracks"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 19
         versionName "1.2.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -18,7 +17,6 @@ android {
 
     buildTypes {
         buildTypes.each {
-            it.buildConfigField 'String', 'ADS_APP_ID', '"' + getSecretString('ADS_APP_ID') + '"'
             it.resValue 'string', 'ADS_APP_ID', getSecretString('ADS_APP_ID')
             it.resValue 'string', 'ADS_GALLERY_AD_ID', getSecretString('ADS_GALLERY_AD_ID')
             it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
@@ -39,24 +37,24 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.exifinterface:exifinterface:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.exifinterface:exifinterface:1.3.3'
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
-    implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
-    implementation platform('com.google.firebase:firebase-bom:26.4.0')
-    implementation 'com.google.firebase:firebase-ads'
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation platform('com.google.firebase:firebase-bom:28.3.1')
+    implementation 'com.google.firebase:firebase-ads:20.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
 
     ext.rx_binding_version = '3.1.0'
     implementation "com.jakewharton.rxbinding3:rxbinding:$rx_binding_version"
@@ -83,8 +81,8 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.threeten:threetenbp:1.3.4'
 
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
 String getSecretString(String key) {
@@ -94,3 +92,4 @@ String getSecretString(String key) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'

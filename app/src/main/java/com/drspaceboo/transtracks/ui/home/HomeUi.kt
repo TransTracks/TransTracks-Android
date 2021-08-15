@@ -36,6 +36,7 @@ import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -185,7 +186,7 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                             adViewLayout.addView(this)
                             loadAd(context)
                             adListener = object : AdListener() {
-                                override fun onAdFailedToLoad(code: Int) {
+                                override fun onAdFailedToLoad(error: LoadAdError) {
                                     val transitionSet = TransitionSet()
                                         .addTransition(
                                             Slide().addTarget(adViewLayout)

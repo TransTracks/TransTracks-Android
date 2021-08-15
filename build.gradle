@@ -1,22 +1,21 @@
 buildscript {
-    ext.kotlin_version = '1.4.30'
+    ext.kotlin_version = '1.5.21'
 
     repositories {
         google()
         mavenCentral()
         maven {
-            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
         }
-        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.0'
 
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
 
-        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.gms:google-services:4.3.10'
 
-        classpath "io.realm:realm-gradle-plugin:6.0.2"
+        classpath "io.realm:realm-gradle-plugin:10.7.0"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }

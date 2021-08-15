@@ -36,7 +36,7 @@ class TransTracksApp : Application() {
         super.onCreate()
         instance = this
 
-        MobileAds.initialize(this, BuildConfig.ADS_APP_ID)
+        MobileAds.initialize(this)
 
         AndroidThreeTen.init(this)
         Realm.init(this)

@@ -24,6 +24,7 @@ import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
@@ -148,7 +149,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                     binding.settingsAdLayout.addView(this)
                     loadAd(context)
                     adListener = object : AdListener() {
-                        override fun onAdFailedToLoad(code: Int) {
+                        override fun onAdFailedToLoad(error: LoadAdError) {
                             binding.settingsAdLayout.gone()
                         }
                     }
