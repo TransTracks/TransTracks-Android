@@ -25,6 +25,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.twitter.sdk.android.core.Twitter
 import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
@@ -38,6 +39,7 @@ class TransTracksApp : Application() {
         MobileAds.initialize(this)
 
         Realm.init(this)
+        Realm.setDefaultConfiguration(getDefaultRealmConfig())
         Twitter.initialize(this)
 
         appVersionUpdateIfNecessary()
@@ -54,6 +56,12 @@ class TransTracksApp : Application() {
     companion object {
         lateinit var instance: TransTracksApp
             private set
+
+        //TODO this is a work around for an issue we encountered when updating. The code should be re-written to not
+        // write on the UI thread instead of doing this
+        private fun getDefaultRealmConfig() = RealmConfiguration.Builder()
+            .allowWritesOnUiThread(true)
+            .build()
 
         @SuppressLint("ApplySharedPref") //Share pref changes we want to block on
         fun appVersionUpdateIfNecessary() {
