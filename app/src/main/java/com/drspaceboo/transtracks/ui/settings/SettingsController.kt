@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -38,38 +38,19 @@ import com.drspaceboo.transtracks.domain.SettingsDomain
 import com.drspaceboo.transtracks.domain.SettingsResult
 import com.drspaceboo.transtracks.domain.SettingsViewEffect
 import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
-import com.drspaceboo.transtracks.util.AnalyticsUtil
-import com.drspaceboo.transtracks.util.EncryptionUtil
-import com.drspaceboo.transtracks.util.Event
-import com.drspaceboo.transtracks.util.ProgressDialog
-import com.drspaceboo.transtracks.util.RxSchedulers
-import com.drspaceboo.transtracks.util.getString
-import com.drspaceboo.transtracks.util.isNotDisposed
-import com.drspaceboo.transtracks.util.ofType
-import com.drspaceboo.transtracks.util.plusAssign
-import com.drspaceboo.transtracks.util.settings.LockDelay
-import com.drspaceboo.transtracks.util.settings.LockType
-import com.drspaceboo.transtracks.util.settings.PrefUtil
-import com.drspaceboo.transtracks.util.settings.SettingsManager
-import com.drspaceboo.transtracks.util.settings.Theme
-import com.drspaceboo.transtracks.util.simpleIsEmail
+import com.drspaceboo.transtracks.util.*
+import com.drspaceboo.transtracks.util.settings.*
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import io.reactivex.Completable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import java.time.LocalDate
-import java.util.Calendar
+import java.util.*
 
 class SettingsController : Controller() {
     private var resultsDisposable: Disposable = Disposables.disposed()
@@ -263,16 +244,27 @@ class SettingsController : Controller() {
                     .show()
             }
 
-        viewDisposables += sharedEvents.ofType<SettingsUiEvent.PrivacyPolicy>()
-            .subscribe {
-                val activity = activity ?: return@subscribe
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.Contribute>()
+                .subscribe {
+                    val activity = activity ?: return@subscribe
 
-                val webpage = Uri.parse("http://www.drspaceboo.com/privacy-policy/")
-                val intent = Intent(Intent.ACTION_VIEW, webpage)
-                if (intent.resolveActivity(activity.packageManager) != null) {
-                    startActivity(intent)
+                    val webpage = Uri.parse("https://transtracks.app/contributing/")
+                    val intent = Intent(Intent.ACTION_VIEW, webpage)
+                    if (intent.resolveActivity(activity.packageManager) != null) {
+                        startActivity(intent)
+                    }
                 }
-            }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.PrivacyPolicy>()
+                .subscribe {
+                    val activity = activity ?: return@subscribe
+
+                    val webpage = Uri.parse("https://transtracks.app/privacy-policy/")
+                    val intent = Intent(Intent.ACTION_VIEW, webpage)
+                    if (intent.resolveActivity(activity.packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

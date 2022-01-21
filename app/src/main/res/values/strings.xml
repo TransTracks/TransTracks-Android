@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2018 TransTracks. All rights reserved.
+  ~ Copyright © 2018-2022 TransTracks. All rights reserved.
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
   ~
@@ -110,8 +110,12 @@
     <string name="lock_delay_label">Lock Delay:</string>
     <string name="app_version_label">App Version:</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="copyright">© 2018 - %1$s by Dr Boo, All rights reserved</string>
+    <string name="copyright">© 2018 - %1$s by TransTracks, All rights reserved</string>
     <string name="lock_description">Require a password to access the app</string>
+
+    <string name="about_transtracks_title">About TransTracks</string>
+    <string name="about_transtracks_description">TransTracks is a passion project that doesn\'t have a full-time development team. We try to fix things up and make improvements when we can. If you would like to contribute we would love to have the help.</string>
+    <string name="contribute">Contribute</string>
 
     <string name="select_theme">Select Theme</string>
     <string name="blue">Blue</string>
@@ -142,10 +146,10 @@
     <string name="import_error">We were unable to open that backup file to import. Please ensure you are opening a valid .ttbackup file.</string>
     <string name="import_warning_title">Import file</string>
     <string name="import_warning_message">You are about to import data from a backup file. This will overwrite some of your settings and any duplicate data. Would you like to continue?</string>
-    <string name="import_failure">An error occurred importing your file, email contact@drspaceboo.com for help</string>
+    <string name="import_failure">An error occurred importing your file, email contact@transtracks.app for help</string>
     <string name="import_complete_success">Import Success</string>
     <string name="import_partial_success_title">Partial import success</string>
-    <string name="import_partial_success_description">Some of the data from your import file wasn\'t imported correctly. Issues importing:\n%1$s\n\nEmail contact@drspaceboo.com for help</string>
+    <string name="import_partial_success_description">Some of the data from your import file wasn\'t imported correctly. Issues importing:\n%1$s\n\nEmail contact@transtracks.app for help</string>
 
     <string name="set_password">Set Password</string>
 
@@ -159,7 +163,7 @@
 
     <!-- Backup -->
     <string name="creating_backup_file">Creating backup file…</string>
-    <string name="error_creating_backup_file">An error occurred creating the backup file. If this problem persists please contact me on contact@drspaceboo.com</string>
+    <string name="error_creating_backup_file">An error occurred creating the backup file. If this problem persists please contact me on contact@transtracks.app</string>
 
     <!-- Select Photo -->
     <string name="select_photo">Select Photo</string>
