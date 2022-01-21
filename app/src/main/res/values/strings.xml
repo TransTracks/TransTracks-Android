@@ -113,6 +113,10 @@
     <string name="copyright">© 2018 - %1$s by TransTracks, All rights reserved</string>
     <string name="lock_description">Require a password to access the app</string>
 
+    <string name="about_transtracks_title">About TransTracks</string>
+    <string name="about_transtracks_description">TransTracks is a passion project that doesn\'t have a full-time development team. We try to fix things up and make improvements when we can. If you would like to contribute we would love to have the help.</string>
+    <string name="contribute">Contribute</string>
+
     <string name="select_theme">Select Theme</string>
     <string name="blue">Blue</string>
     <string name="pink">Pink</string>

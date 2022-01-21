@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -17,11 +17,7 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.databinding.SettingsBinding
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Content
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Loading
-import com.drspaceboo.transtracks.util.getString
-import com.drspaceboo.transtracks.util.gone
-import com.drspaceboo.transtracks.util.loadAd
-import com.drspaceboo.transtracks.util.toFullDateString
-import com.drspaceboo.transtracks.util.visible
+import com.drspaceboo.transtracks.util.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
@@ -43,6 +39,7 @@ sealed class SettingsUiEvent {
     object ChangeLockDelay : SettingsUiEvent()
     object Import : SettingsUiEvent()
     object Export : SettingsUiEvent()
+    object Contribute : SettingsUiEvent()
     object PrivacyPolicy : SettingsUiEvent()
 }
 
@@ -50,9 +47,9 @@ data class SettingsUIUserDetails(val name: String?, val email: String?, val hasP
 
 sealed class SettingsUiState {
     data class Content(
-        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String, val lockMode: String,
-        val enableLockDelay: Boolean, val lockDelay: String, val appVersion: String, val copyright: String,
-        val showAds: Boolean
+            val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String,
+            val lockMode: String, val enableLockDelay: Boolean, val lockDelay: String,
+            val appVersion: String, val copyright: String, val showAds: Boolean
     ) : SettingsUiState()
 
     data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsUiState()
@@ -63,19 +60,20 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-            binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
-            binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
-            binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
-            binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
-            binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
-            binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
-            binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
-            binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
-            binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
-            binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
-            binding.settingsImport.clicks().map { SettingsUiEvent.Import },
-            binding.settingsExport.clicks().map { SettingsUiEvent.Export },
-            binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
+                binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
+                binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
+                binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
+                binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
+                binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
+                binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
+                binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
+                binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
+                binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
+                binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+                binding.settingsImport.clicks().map { SettingsUiEvent.Import },
+                binding.settingsExport.clicks().map { SettingsUiEvent.Export },
+                binding.settingsContribute.clicks().map { SettingsUiEvent.Contribute },
+                binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
 
