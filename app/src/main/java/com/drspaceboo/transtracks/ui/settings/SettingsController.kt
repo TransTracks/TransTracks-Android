@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -267,7 +267,7 @@ class SettingsController : Controller() {
             .subscribe {
                 val activity = activity ?: return@subscribe
 
-                val webpage = Uri.parse("http://www.drspaceboo.com/privacy-policy/")
+                val webpage = Uri.parse("http://www.transtracks.app/privacy-policy/")
                 val intent = Intent(Intent.ACTION_VIEW, webpage)
                 if (intent.resolveActivity(activity.packageManager) != null) {
                     startActivity(intent)
