@@ -244,6 +244,15 @@ class SettingsController : Controller() {
                     .show()
             }
 
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAnalytics>()
+                .subscribe { SettingsManager.toggleEnableAnalytics(activity!!) }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleCrashReports>()
+                .subscribe { SettingsManager.toggleEnableCrashReports(activity!!) }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAds>()
+                .subscribe { SettingsManager.toggleShowAds(activity!!) }
+
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.Contribute>()
                 .subscribe {
                     val activity = activity ?: return@subscribe
@@ -653,11 +662,12 @@ fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsRe
         val lockDelayName = context.getString(content.lockDelay.displayNameRes())
 
         return SettingsUiState.Content(
-            content.userDetails, content.startDate, themeName, lockName,
-            enableLockDelay = content.lockType != LockType.off, lockDelay = lockDelayName,
-            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-            copyright = context.getString(R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()),
-            showAds = SettingsManager.showAds()
+                content.userDetails, content.startDate, themeName, lockName,
+                enableLockDelay = content.lockType != LockType.off, lockDelay = lockDelayName,
+                appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                copyright = context.getString(R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()),
+                showAds = SettingsManager.showAds(), enableAnalytics = content.enableAnalytics,
+                enableCrashReports = content.enableCrashReports
         )
     }
 

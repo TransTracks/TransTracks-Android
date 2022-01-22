@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 TransTracks. All rights reserved.
+ * Copyright © 2019-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -19,27 +19,17 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.ui.settings.SettingsConflictDialog
 import com.drspaceboo.transtracks.util.safeValueOf
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.currentAndroidVersion
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.incorrectPasswordCount
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockCode
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockDelay
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockType
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.saveToFirebase
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAccountWarning
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAds
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showWelcome
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.startDate
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.theme
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.userLastSeen
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.values
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.*
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.DocumentReference
 import com.google.gson.JsonObject
 import com.google.gson.stream.JsonReader
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
-import java.time.LocalDate
 import java.io.IOException
+import java.time.LocalDate
 
 object SettingsManager {
     val lockTypeUpdatedRelay: PublishRelay<LockType> = PublishRelay.create()
@@ -121,11 +111,13 @@ object SettingsManager {
     //region Show Ads
     fun showAds(): Boolean = PrefUtil.getBoolean(showAds, true)
 
-    fun setShowAds(newShowAds: Boolean, activity: Activity) {
+    fun toggleShowAds(context: Context?) {
+        val newShowAds = !showAds()
         PrefUtil.setBoolean(showAds, newShowAds)
+        userSettingsUpdatedRelay.accept(Unit)
 
         if (saveToFirebase()) {
-            FirebaseSettingUtil.setBool(showAds, newShowAds, activity)
+            FirebaseSettingUtil.setBool(showAds, newShowAds, context)
         }
     }
     //endregion
@@ -179,6 +171,42 @@ object SettingsManager {
     }
     //endregion
 
+    //region Analytics
+    fun getEnableAnalytics(): Boolean = PrefUtil.getBoolean(enableAnalytics, true)
+
+    fun toggleEnableAnalytics(context: Context?) {
+        val newEnableAnalytics = !getEnableAnalytics()
+        PrefUtil.setBoolean(enableAnalytics, newEnableAnalytics)
+
+        context?.apply {
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(newEnableAnalytics)
+        }
+        userSettingsUpdatedRelay.accept(Unit)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setBool(enableAnalytics, newEnableAnalytics, context)
+        }
+    }
+    //endregion
+
+    //region Crash Reports
+    fun getEnableCrashReports(): Boolean = PrefUtil.getBoolean(enableCrashReports, true)
+
+    fun toggleEnableCrashReports(context: Context?) {
+        val newEnableCrashReports = !getEnableCrashReports()
+        PrefUtil.setBoolean(enableCrashReports, newEnableCrashReports)
+
+        context?.apply {
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(newEnableCrashReports)
+        }
+        userSettingsUpdatedRelay.accept(Unit)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setBool(enableCrashReports, newEnableCrashReports, context)
+        }
+    }
+    //endregion
+
     //region User last seen
     fun getUserLastSeen(): Long = PrefUtil.getLong(userLastSeen, System.currentTimeMillis())!!
 
@@ -221,7 +249,7 @@ object SettingsManager {
     //endregion
 
     //region Firebase handling
-    fun startFirbaseSyncIfLoggedIn(context: Context){
+    fun startFirbaseSyncIfLoggedIn(context: Context) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             enableFirebaseSync()
         }
@@ -271,7 +299,13 @@ object SettingsManager {
                                     && safeValueOf<Theme>(value) != null
                                     && value != getTheme().name
 
-                            saveToFirebase, showAccountWarning, showAds, showWelcome, userLastSeen,
+                            enableAnalytics -> value is Boolean && value != getEnableAnalytics()
+
+                            enableCrashReports -> value is Boolean && value != getEnableCrashReports()
+
+                            showAds -> value is Boolean && value != showAds()
+
+                            saveToFirebase, showAccountWarning, showWelcome, userLastSeen,
                             currentAndroidVersion, incorrectPasswordCount -> false
                         }
                     }.map { (key, value) -> Key.valueOf(key) to value }
@@ -306,6 +340,8 @@ object SettingsManager {
         showWelcome -> showWelcome()
         startDate -> getStartDate(context).toEpochDay()
         theme -> getTheme().name
+        enableAnalytics -> getEnableAnalytics()
+        enableCrashReports -> getEnableCrashReports()
 
         currentAndroidVersion, incorrectPasswordCount, saveToFirebase, showAccountWarning,
         userLastSeen -> null
@@ -327,7 +363,9 @@ object SettingsManager {
         showWelcome,
         startDate,
         theme,
-        userLastSeen
+        userLastSeen,
+        enableAnalytics,
+        enableCrashReports
     }
 }
 

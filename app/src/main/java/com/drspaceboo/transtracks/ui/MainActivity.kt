@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -79,8 +79,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         if (!BuildConfig.DEBUG) {
-            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(SettingsManager.getEnableAnalytics())
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(SettingsManager.getEnableCrashReports())
         }
 
         StoragePermissionHandler.install(this)
