@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 TransTracks. All rights reserved.
+ * Copyright © 2019-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -54,8 +54,9 @@ sealed class SettingsAction {
 
 sealed class SettingsResult {
     data class Content(
-        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: Theme, val lockType: LockType,
-        val lockDelay: LockDelay
+        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: Theme,
+        val lockType: LockType, val lockDelay: LockDelay, val enableAnalytics: Boolean,
+        val enableCrashReports: Boolean, val showAds:Boolean
     ) : SettingsResult()
 
     data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsResult()
@@ -92,8 +93,10 @@ class SettingsDomain {
                     }
 
                     return Content(
-                        userDetails, SettingsManager.getStartDate(context = null), SettingsManager.getTheme(),
-                        SettingsManager.getLockType(), SettingsManager.getLockDelay()
+                            userDetails, SettingsManager.getStartDate(context = null),
+                            SettingsManager.getTheme(), SettingsManager.getLockType(),
+                            SettingsManager.getLockDelay(), SettingsManager.getEnableAnalytics(),
+                            SettingsManager.getEnableCrashReports(), SettingsManager.showAds()
                     )
                 }
 

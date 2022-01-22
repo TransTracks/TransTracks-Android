@@ -138,6 +138,12 @@
     <string name="data_label">Data:</string>
     <string name="_import">Import</string>
     <string name="export">Export</string>
+    
+    <string name="anonymous_analytics">Collect Anonymous Analytics:</string>
+    <string name="anonymous_crash_reports">Collect Anonymous Crash Reports:</string>
+    <string name="support_ads">Support Via Ads:</string>
+
+    <string name="enabled">Enabled</string>
 
     <string name="import_info_title">How to Import</string>
     <string name="import_info_message">Open the .ttbackup with TransTracks from your file browser.\n\nNot all file browsers work.\n\nIf you need a browser I suggest ES File Manager.</string>

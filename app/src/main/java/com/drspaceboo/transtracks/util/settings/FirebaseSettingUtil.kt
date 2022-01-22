@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020 TransTracks. All rights reserved.
+ * Copyright © 2020-2022 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -14,18 +14,7 @@ import android.content.Context
 import android.util.Log
 import com.drspaceboo.transtracks.util.safeValueOf
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.currentAndroidVersion
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.incorrectPasswordCount
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockCode
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockDelay
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockType
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.saveToFirebase
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAccountWarning
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAds
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showWelcome
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.startDate
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.theme
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.userLastSeen
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -63,7 +52,7 @@ class FirebaseSettingUtil {
         fun <T : Enum<T>> setEnum(key: Key, value: T, context: Context?) {
             try {
                 getSettingsDocRef().update(mapOf(key.name to value.name))
-                    .addOnFailureListener(FailureListener(context))
+                        .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -136,7 +125,7 @@ class FirebaseSettingUtil {
                             else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
                         }
 
-                        showAds, showWelcome -> when (value) {
+                        enableCrashReports, enableAnalytics, showAds, showWelcome -> when (value) {
                             is Boolean -> PrefUtil.setBoolean(key, value)
                             else -> Log.d(LOG_TAG, "${key.name} is not a Boolean : '$value'")
                         }

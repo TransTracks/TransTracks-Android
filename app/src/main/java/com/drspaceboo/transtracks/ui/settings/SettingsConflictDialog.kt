@@ -30,18 +30,7 @@ import com.drspaceboo.transtracks.util.settings.LockDelay
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.currentAndroidVersion
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.incorrectPasswordCount
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockCode
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockDelay
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.lockType
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.saveToFirebase
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAccountWarning
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showAds
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.showWelcome
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.startDate
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.theme
-import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.userLastSeen
+import com.drspaceboo.transtracks.util.settings.SettingsManager.Key.*
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.google.android.material.button.MaterialButton
@@ -156,7 +145,25 @@ object SettingsConflictDialog {
                         serverValue = itemView.getString(Theme.valueOf(serverConflictValue as String).displayNameRes())
                     }
 
-                    currentAndroidVersion, incorrectPasswordCount, saveToFirebase, showAccountWarning, showAds, showWelcome,
+                    enableAnalytics -> {
+                        nameRes = R.string.anonymous_analytics
+                        localValue = itemView.getString(SettingsManager.getEnableAnalytics().displayNameRes())
+                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                    }
+
+                    enableCrashReports -> {
+                        nameRes = R.string.anonymous_crash_reports
+                        localValue = itemView.getString(SettingsManager.getEnableCrashReports().displayNameRes())
+                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                    }
+
+                    showAds -> {
+                        nameRes = R.string.support_ads
+                        localValue = itemView.getString(SettingsManager.showAds().displayNameRes())
+                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                    }
+
+                    currentAndroidVersion, incorrectPasswordCount, saveToFirebase, showAccountWarning, showWelcome,
                     userLastSeen -> throw IllegalArgumentException("This settings should not be in conflict because they don't get synced")
                 }
 
@@ -172,6 +179,12 @@ object SettingsConflictDialog {
                 )
             }
         }
+    }
+
+    @StringRes
+    private fun Boolean.displayNameRes() = when(this){
+        true -> R.string.enabled
+            false -> R.string.disabled
     }
 }
 

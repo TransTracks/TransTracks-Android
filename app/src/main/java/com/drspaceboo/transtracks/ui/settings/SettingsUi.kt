@@ -23,6 +23,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.checkedChanges
 import io.reactivex.Observable
 import java.time.LocalDate
 
@@ -39,6 +40,9 @@ sealed class SettingsUiEvent {
     object ChangeLockDelay : SettingsUiEvent()
     object Import : SettingsUiEvent()
     object Export : SettingsUiEvent()
+    object ToggleAnalytics : SettingsUiEvent()
+    object ToggleCrashReports : SettingsUiEvent()
+    object ToggleAds : SettingsUiEvent()
     object Contribute : SettingsUiEvent()
     object PrivacyPolicy : SettingsUiEvent()
 }
@@ -49,7 +53,8 @@ sealed class SettingsUiState {
     data class Content(
             val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String,
             val lockMode: String, val enableLockDelay: Boolean, val lockDelay: String,
-            val appVersion: String, val copyright: String, val showAds: Boolean
+            val appVersion: String, val copyright: String, val showAds: Boolean,
+            val enableAnalytics: Boolean, val enableCrashReports: Boolean
     ) : SettingsUiState()
 
     data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsUiState()
@@ -72,12 +77,17 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
                 binding.settingsImport.clicks().map { SettingsUiEvent.Import },
                 binding.settingsExport.clicks().map { SettingsUiEvent.Export },
+                binding.settingsAnalytics.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAnalytics },
+                binding.settingsCrashReports.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
+                binding.settingsShowAds.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAds },
                 binding.settingsContribute.clicks().map { SettingsUiEvent.Contribute },
                 binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
 
     private var currentStartDate: LocalDate? = null
+
+    private var userAction = false
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -97,6 +107,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
     }
 
     fun display(state: SettingsUiState) {
+        userAction = false
         when (state) {
             is Content -> {
                 binding.settingsLoadingLayout.gone()
@@ -108,6 +119,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 binding.settingsLoadingProgress.secondaryProgress = state.stepProgress
             }
         }
+        userAction = true
     }
 
     private fun displayContent(content: Content) {
@@ -133,6 +145,10 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
         binding.settingsLockDelay.isEnabled = content.enableLockDelay
 
         binding.settingsLockDelay.text = content.lockDelay
+
+        binding.settingsAnalytics.isChecked = content.enableAnalytics
+        binding.settingsCrashReports.isChecked = content.enableCrashReports
+        binding.settingsShowAds.isChecked = content.showAds
 
         binding.settingsAppVersion.text = content.appVersion
 
