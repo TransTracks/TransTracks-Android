@@ -169,7 +169,22 @@
                     android:textColor="@color/white" />
 
                 <Space
-                    android:id="@+id/settings_account_logged_in_button_space"
+                    android:id="@+id/settings_account_logged_in_button_space_1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5" />
+
+                <Button
+                    android:id="@+id/settings_account_delete_account"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_account"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Space
+                    android:id="@+id/settings_account_logged_in_button_space_2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5" />

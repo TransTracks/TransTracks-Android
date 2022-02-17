@@ -33,6 +33,7 @@ sealed class SettingsUiEvent {
     object ChangeEmail : SettingsUiEvent()
     object SignIn : SettingsUiEvent()
     object ChangePassword : SettingsUiEvent()
+    object DeleteAccount : SettingsUiEvent()
     object SignOut : SettingsUiEvent()
     object ChangeStartDate : SettingsUiEvent()
     object ChangeTheme : SettingsUiEvent()
@@ -65,23 +66,27 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-                binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
-                binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
-                binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
-                binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
-                binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
-                binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
-                binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
-                binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
-                binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
-                binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
-                binding.settingsImport.clicks().map { SettingsUiEvent.Import },
-                binding.settingsExport.clicks().map { SettingsUiEvent.Export },
-                binding.settingsAnalytics.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAnalytics },
-                binding.settingsCrashReports.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
-                binding.settingsShowAds.checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAds },
-                binding.settingsContribute.clicks().map { SettingsUiEvent.Contribute },
-                binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
+            binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
+            binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
+            binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
+            binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
+            binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
+            binding.settingsAccountDeleteAccount.clicks().map { SettingsUiEvent.DeleteAccount },
+            binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
+            binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
+            binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
+            binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
+            binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
+            binding.settingsImport.clicks().map { SettingsUiEvent.Import },
+            binding.settingsExport.clicks().map { SettingsUiEvent.Export },
+            binding.settingsAnalytics
+                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAnalytics },
+            binding.settingsCrashReports
+                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
+            binding.settingsShowAds
+                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAds },
+            binding.settingsContribute.clicks().map { SettingsUiEvent.Contribute },
+            binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
 
@@ -131,7 +136,9 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
             binding.settingsAccountEmailLayout.gone()
             binding.settingsAccountSignIn.visible()
             binding.settingsAccountChangePassword.gone()
-            binding.settingsAccountLoggedInButtonSpace.gone()
+            binding.settingsAccountLoggedInButtonSpace1.gone()
+            binding.settingsAccountDeleteAccount.gone()
+            binding.settingsAccountLoggedInButtonSpace2.gone()
             binding.settingsAccountSignOut.gone()
         }
 
@@ -179,13 +186,16 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
         binding.settingsAccountNameLayout.visible()
         binding.settingsAccountEmailLayout.visible()
         binding.settingsAccountSignIn.gone()
-        binding.settingsAccountLoggedInButtonSpace.visible()
+        binding.settingsAccountLoggedInButtonSpace1.visible()
+        binding.settingsAccountDeleteAccount.visible()
+        binding.settingsAccountLoggedInButtonSpace2.visible()
         binding.settingsAccountSignOut.visible()
 
         if (user.email != null) {
             binding.settingsAccountChangePassword.visible()
 
-            val buttonRes = if (user.hasPasswordProvider) R.string.change_password else R.string.set_password
+            val buttonRes =
+                if (user.hasPasswordProvider) R.string.change_password else R.string.set_password
             binding.settingsAccountChangePassword.setText(buttonRes)
         } else {
             binding.settingsAccountChangePassword.gone()

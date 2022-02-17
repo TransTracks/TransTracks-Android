@@ -113,6 +113,10 @@ class SettingsController : Controller() {
             .subscribe { showAuth() }
 
         viewDisposables += sharedEvents
+            .ofType<SettingsUiEvent.DeleteAccount>()
+            .subscribe { showDeleteAccount(view) }
+
+        viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.SignOut>()
             .subscribe {
                 val context = activity ?: return@subscribe
@@ -647,6 +651,50 @@ class SettingsController : Controller() {
                 showAuth()
                 dialog.dismiss()
             }
+            .show()
+    }
+
+    private fun showDeleteAccount(view: View) {
+        val currentUser = FirebaseAuth.getInstance().currentUser ?: return
+
+        AlertDialog.Builder(view.context)
+            .setTitle(R.string.delete_account_warning_title)
+            .setMessage(R.string.delete_account_warning_message)
+            .setPositiveButton(R.string.yes)
+            { dialog, _ ->
+                val progressDialog = ProgressDialog.make(R.string.deleting_account, view.context)
+                progressDialog.show()
+
+                Completable
+                    .fromAction {
+                        try {
+                            currentUser.delete()
+                                .addOnCompleteListener { result ->
+                                    if(result.isSuccessful){
+                                        Snackbar.make(view, R.string.delete_success, Snackbar.LENGTH_LONG)
+                                            .show()
+                                    } else {
+                                        Snackbar.make(view, R.string.delete_failed, Snackbar.LENGTH_LONG)
+                                            .show()
+                                    }
+
+                                    TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                    progressDialog.dismiss()
+                                }
+                        } catch (e: FirebaseAuthInvalidUserException) {
+                            e.printStackTrace()
+                            Snackbar.make(view, R.string.delete_failed, Snackbar.LENGTH_LONG)
+                                .show()
+                            progressDialog.dismiss()
+                        }
+                    }
+                    .subscribeOn(RxSchedulers.io())
+                    .observeOn(RxSchedulers.main())
+                    .subscribe()
+
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.no, null)
             .show()
     }
 
