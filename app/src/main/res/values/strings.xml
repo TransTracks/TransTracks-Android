@@ -173,6 +173,7 @@
     <string name="deleting_account">Deleting account</string>
     <string name="delete_failed">Error occurred trying to delete your account</string>
     <string name="delete_success">Account Deleted</string>
+    <string name="log_in_before_delete">Please log in again before deleting</string>
 
     <!-- Backup -->
     <string name="creating_backup_file">Creating backup file…</string>

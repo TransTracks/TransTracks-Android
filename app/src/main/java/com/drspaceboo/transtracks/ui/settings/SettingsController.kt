@@ -43,6 +43,7 @@ import com.drspaceboo.transtracks.util.settings.*
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import io.reactivex.Completable
 import io.reactivex.ObservableTransformer
@@ -643,15 +644,17 @@ class SettingsController : Controller() {
     }
 
     private fun showReauth(view: View) {
-        AlertDialog.Builder(view.context)
-            .setTitle(R.string.session_expired)
-            .setMessage(R.string.session_expired_message)
-            .setNegativeButton(R.string.later, null)
-            .setPositiveButton(R.string.ok) { dialog, _ ->
-                showAuth()
-                dialog.dismiss()
-            }
-            .show()
+        activity?.runOnUiThread {
+            AlertDialog.Builder(view.context)
+                .setTitle(R.string.session_expired)
+                .setMessage(R.string.session_expired_message)
+                .setNegativeButton(R.string.later, null)
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    showAuth()
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     private fun showDeleteAccount(view: View) {
@@ -670,18 +673,35 @@ class SettingsController : Controller() {
                         try {
                             currentUser.delete()
                                 .addOnCompleteListener { result ->
-                                    if(result.isSuccessful){
-                                        Snackbar.make(view, R.string.delete_success, Snackbar.LENGTH_LONG)
-                                            .show()
+                                    if (result.isSuccessful) {
+                                        Snackbar.make(
+                                            view, R.string.delete_success, Snackbar.LENGTH_LONG
+                                        ).show()
+                                    } else if (result.exception is FirebaseAuthRecentLoginRequiredException) {
+                                        Snackbar.make(
+                                            view, R.string.log_in_before_delete,
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+                                        showReauth(view)
+                                        progressDialog.dismiss()
                                     } else {
-                                        Snackbar.make(view, R.string.delete_failed, Snackbar.LENGTH_LONG)
-                                            .show()
+                                        Snackbar.make(
+                                            view, R.string.delete_failed, Snackbar.LENGTH_LONG
+                                        ).show()
                                     }
 
-                                    TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                    TransTracksApp.instance.domainManager.settingsDomain.actions
+                                        .accept(SettingsUpdated)
                                     progressDialog.dismiss()
                                 }
-                        } catch (e: FirebaseAuthInvalidUserException) {
+                        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+                            e.printStackTrace()
+                            Snackbar.make(
+                                view, R.string.log_in_before_delete, Snackbar.LENGTH_SHORT
+                            ).show()
+                            showReauth(view)
+                            progressDialog.dismiss()
+                        } catch (e: FirebaseException) {
                             e.printStackTrace()
                             Snackbar.make(view, R.string.delete_failed, Snackbar.LENGTH_LONG)
                                 .show()
