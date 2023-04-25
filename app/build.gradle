@@ -54,7 +54,7 @@ dependencies {
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
 
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
     implementation 'com.google.firebase:firebase-ads:20.2.0'
