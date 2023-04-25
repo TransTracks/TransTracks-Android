@@ -79,7 +79,7 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     // 3.3.0 crashes the app
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
