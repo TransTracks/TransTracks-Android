@@ -199,6 +199,8 @@ class HomeController : Controller() {
                             router.pushController(RouterTransaction.with(
                                     SelectPhotoController(event.currentDate.toEpochDay(), event.type))
                                                           .using(VerticalChangeHandler()))
+
+                        is HomeUiEvent.SelectPhoto -> throw IllegalStateException("unexpected event")
                     }
                 }
     }

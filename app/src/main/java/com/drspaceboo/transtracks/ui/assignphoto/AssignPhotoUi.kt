@@ -84,6 +84,10 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
     fun display(state: AssignPhotoUiState) {
         when (state) {
+            is AssignPhotoUiState.Loading -> {
+                //TODO update to set to loading state instead of resetting and setting
+            }
+
             is AssignPhotoUiState.Loaded -> {
                 if (state.photoDate != null) {
                     currentPhotoDate = state.photoDate

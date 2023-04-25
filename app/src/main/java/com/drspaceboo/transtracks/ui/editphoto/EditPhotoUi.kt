@@ -64,6 +64,10 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
 
     fun display(state: EditPhotoUiState) {
         when (state) {
+            is EditPhotoUiState.Loading -> {
+                //TODO update to set to loading state instead of resetting and setting
+            }
+
             is EditPhotoUiState.Loaded -> {
                 Picasso.get()
                         .load(File(state.photoPath))
