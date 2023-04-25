@@ -91,6 +91,7 @@ class SettingsController : Controller() {
                             FileProvider.getUriForFile(view.context, TransTracksFileProvider::class.java.name, zip)
                         val shareIntent: Intent = Intent().apply {
                             action = Intent.ACTION_SEND
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             putExtra(Intent.EXTRA_STREAM, uri)
                             type = "application/zip"
                         }

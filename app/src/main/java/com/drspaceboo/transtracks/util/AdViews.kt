@@ -19,7 +19,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
 fun AdView.loadAd(context: Context) {
-    adSize = getAdaptiveAdSize(context)
+    setAdSize(getAdaptiveAdSize(context))
     loadAd(AdRequest.Builder().build())
 }
 

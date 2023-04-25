@@ -146,6 +146,7 @@ class CameraHandler : Fragment() {
         val uri = FileProvider.getUriForFile(localContext, TransTracksFileProvider::class.java.name, currentFile!!)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
         startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
     }

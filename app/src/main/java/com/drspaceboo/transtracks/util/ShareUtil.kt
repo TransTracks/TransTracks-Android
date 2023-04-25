@@ -26,6 +26,7 @@ object ShareUtil {
 
         val uri = FileProvider.getUriForFile(context, TransTracksFileProvider::class.java.name,
                                              imageToShare)
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putExtra(Intent.EXTRA_STREAM, uri)
 
         controller.startActivity(Intent.createChooser(share,
@@ -42,6 +43,7 @@ object ShareUtil {
                                                  file))
         }
 
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files)
 
         controller.startActivity(Intent.createChooser(share,
