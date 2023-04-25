@@ -101,7 +101,11 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
     }
 
     private fun getUri(cursor: Cursor): Uri {
-        val id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID))
+        val idIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
+        if (idIndex < 0){
+            throw IllegalStateException("couldn't find the column index of 'MediaStore.Images.Media._ID'")
+        }
+        val id = cursor.getLong(idIndex)
         return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
     }
 

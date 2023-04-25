@@ -43,7 +43,7 @@ class StoragePermissionHandler : Fragment() {
 
             if (!permissionGranted) {
                 permissionBlockedRelay.accept(
-                        ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
+                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
                                                                             Manifest.permission.READ_EXTERNAL_STORAGE))
             }
         }
@@ -51,9 +51,9 @@ class StoragePermissionHandler : Fragment() {
 
     private fun checkPermissionGranted(): Boolean {
         val readPermissionStatus = ContextCompat.checkSelfPermission(
-                context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
         val writePermissionStatus = ContextCompat.checkSelfPermission(
-                context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         val permissionGranted = readPermissionStatus == PackageManager.PERMISSION_GRANTED
                 && writePermissionStatus == PackageManager.PERMISSION_GRANTED
