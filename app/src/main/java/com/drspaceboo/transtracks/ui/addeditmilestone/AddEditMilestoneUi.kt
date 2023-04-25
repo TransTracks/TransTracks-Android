@@ -106,6 +106,10 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
     fun display(state: AddEditMilestoneUiState) {
         isUserChange = false
         when (state) {
+            is AddEditMilestoneUiState.Loading -> {
+                //TODO update to set to loading state instead of resetting and setting
+            }
+
             is Display -> {
                 @StringRes val titleRes: Int = when (state.isAdd) {
                     true -> R.string.add_milestone

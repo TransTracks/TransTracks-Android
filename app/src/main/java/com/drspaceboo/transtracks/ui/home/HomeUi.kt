@@ -144,6 +144,10 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
         bodyPhotoIds.nullAllElements()
 
         when (state) {
+            is HomeUiState.Loading -> {
+                //TODO update to set to loading state instead of resetting and setting
+            }
+
             is HomeUiState.Loaded -> {
                 date = state.currentDate
 
