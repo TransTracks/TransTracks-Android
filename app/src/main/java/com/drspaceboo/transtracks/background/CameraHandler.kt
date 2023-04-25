@@ -56,7 +56,7 @@ class CameraHandler : Fragment() {
             try {
                 val imageUri = data.data!!
 
-                val inputStream = activity!!.contentResolver.openInputStream(imageUri)
+                val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
                 val selectedImage: Bitmap
                 try {
                     selectedImage = BitmapFactory.decodeStream(inputStream)
@@ -74,7 +74,7 @@ class CameraHandler : Fragment() {
 
                 var exifInputStream: InputStream? = null
                 try {
-                    exifInputStream = activity!!.contentResolver.openInputStream(imageUri)
+                    exifInputStream = requireActivity().contentResolver.openInputStream(imageUri)
                     val inExif = ExifInterface(exifInputStream!!)
                     ExifInterface(imageFile.absolutePath).copyFrom(inExif)
                 } finally {
@@ -103,13 +103,13 @@ class CameraHandler : Fragment() {
 
             if (!permissionGranted) {
                 permissionBlockedRelay.accept(
-                        ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.CAMERA))
+                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CAMERA))
             }
         }
     }
 
     private fun checkPermissionGranted(): Boolean {
-        val cameraPermissionStatus = ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
+        val cameraPermissionStatus = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
 
         val permissionGranted = cameraPermissionStatus == PackageManager.PERMISSION_GRANTED
         cameraPermissionRelay.accept(permissionGranted)
@@ -141,7 +141,7 @@ class CameraHandler : Fragment() {
     }
 
     private fun takePhoto() {
-        val localContext = context!!
+        val localContext = requireContext()
         currentFile = FileUtil.getTempImageFile()
         val uri = FileProvider.getUriForFile(localContext, TransTracksFileProvider::class.java.name, currentFile!!)
 
