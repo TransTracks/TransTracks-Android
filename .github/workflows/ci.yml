@@ -5,8 +5,8 @@ on:
     branches: [ "production" ]
 
 jobs:
-  build:
 
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,3 +33,13 @@ jobs:
       
     - name: 👷‍♀️ Build with Gradle
       run: ./gradlew build
+
+  check-gradle-wrapper:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🚚 Checkout PR
+      uses: actions/checkout@v3
+      
+    - name: 🌯 Gradle Wrapper Validation
+      uses: gradle/wrapper-validation-action@v1.0.6
