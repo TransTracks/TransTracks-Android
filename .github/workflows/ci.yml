@@ -22,6 +22,11 @@ jobs:
         
     - name: 🙌 Copy secrets file
       run: cp secrets.properties.example secrets.properties
+      
+    - name: 📑 Create Google Services file
+      env:
+        GOOGLE_SERVICES_JSON_64: ${{ secrets.GOOGLE_SERVICES_JSON_64 }}
+      run: echo $GOOGLE_SERVICES_JSON_64 | base64 -di > ./app/google-services.json
 
     - name: 📝 Grant execute permission for gradlew
       run: chmod +x gradlew
