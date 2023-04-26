@@ -58,9 +58,11 @@ dependencies {
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
 
-    implementation platform('com.google.firebase:firebase-bom:28.3.1')
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation 'com.google.firebase:firebase-ads:22.0.0'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -80,9 +82,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
-
-    // 3.3.0 crashes the app
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'

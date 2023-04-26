@@ -26,7 +26,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        jcenter() //Need this still for the Twitter SDK :(
     }
 }
 
