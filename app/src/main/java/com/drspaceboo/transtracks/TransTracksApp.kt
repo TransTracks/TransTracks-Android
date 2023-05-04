@@ -23,7 +23,6 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.twitter.sdk.android.core.Twitter
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -40,7 +39,6 @@ class TransTracksApp : Application() {
 
         Realm.init(this)
         Realm.setDefaultConfiguration(getDefaultRealmConfig())
-        Twitter.initialize(this)
 
         appVersionUpdateIfNecessary()
 

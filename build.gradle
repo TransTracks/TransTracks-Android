@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.10'
 
     repositories {
         google()
@@ -11,11 +11,11 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
 
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
 
         classpath 'com.google.gms:google-services:4.3.15'
 
-        classpath "io.realm:realm-gradle-plugin:10.7.0"
+        classpath "io.realm:realm-gradle-plugin:10.11.1"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -26,7 +26,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        jcenter() //Need this still for the Twitter SDK :(
     }
 }
 
