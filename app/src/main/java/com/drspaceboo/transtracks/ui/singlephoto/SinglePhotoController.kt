@@ -29,14 +29,15 @@ import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.ofType
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
-import io.realm.Realm
-import java.time.LocalDate
+import io.realm.kotlin.Realm
 import java.io.File
+import java.time.LocalDate
 
 class SinglePhotoController(args: Bundle) : Controller(args) {
     constructor(photoId: String) : this(Bundle().apply {
@@ -49,7 +50,10 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
     private var confirmDeleteDialog: AlertDialog? = null
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
+    override fun onCreateView(
+        @NonNull inflater: LayoutInflater,
+        @NonNull container: ViewGroup
+    ): View {
         return inflater.inflate(R.layout.single_photo, container, false)
     }
 
@@ -58,109 +62,117 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.SinglePhotoControllerShown)
 
-        Realm.getDefaultInstance().use { realm ->
-            val photo = realm.where(Photo::class.java).equalTo(Photo.FIELD_ID, photoId)
-                    .findFirst()
+        val loadRealm = Realm.openDefault()
+        val photo = loadRealm.query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+            .first()
+            .find()
 
-            if (photo == null) {
-                AlertDialog.Builder(view.context)
-                        .setTitle(R.string.error_loading_photo)
-                        .setMessage(R.string.error_loading_photo_message)
-                        .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
-                            dialog.dismiss()
-                            router.handleBack()
-                        }
-                        .setCancelable(false)
-                        .show()
-                return@use
-            }
-
+        if (photo == null) {
+            AlertDialog.Builder(view.context)
+                .setTitle(R.string.error_loading_photo)
+                .setMessage(R.string.error_loading_photo_message)
+                .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
+                    dialog.dismiss()
+                    router.handleBack()
+                }
+                .setCancelable(false)
+                .show()
+            return
+        } else {
             val details = view.getString(
-                    R.string.photo_detail_replacement,
-                    LocalDate.ofEpochDay(photo.epochDay).toFullDateString(view.context),
-                    Photo.getTypeName(photo.type, view.context))
+                R.string.photo_detail_replacement,
+                LocalDate.ofEpochDay(photo.epochDay).toFullDateString(view.context),
+                Photo.getTypeName(photo.type, view.context)
+            )
 
             view.display(SinglePhotoUiState.Loaded(photo.filePath, details, photo.id))
         }
+        loadRealm.close()
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Edit>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction.with(EditPhotoController(event.photoId))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction.with(EditPhotoController(event.photoId))
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Share>()
-                .subscribe { event ->
-                    var filePath: String? = null
+            .subscribe { event ->
+                val realm = Realm.openDefault()
+                val filePath: String? = realm
+                    .query(clazz = Photo::class, "${Photo.FIELD_ID} == ${event.photoId}")
+                    .first()
+                    .find()
+                    ?.filePath
+                realm.close()
 
-                    Realm.getDefaultInstance().use { realm ->
-                        val photoToDelete: Photo = realm.where(Photo::class.java)
-                                .equalTo(Photo.FIELD_ID, event.photoId)
-                                .findFirst() ?: return@use
-
-                        filePath = photoToDelete.filePath
-                    }
-
-                    if (filePath == null) {
-                        Snackbar.make(view, R.string.error_sharing_photo, Snackbar.LENGTH_LONG)
-                                .show()
-                        return@subscribe
-                    }
-
-                    ShareUtil.sharePhoto(File(filePath), view.context, this)
+                if (filePath == null) {
+                    Snackbar.make(view, R.string.error_sharing_photo, Snackbar.LENGTH_LONG)
+                        .show()
+                    return@subscribe
                 }
+
+                ShareUtil.sharePhoto(File(filePath), view.context, this)
+            }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Delete>()
-                .subscribe { event ->
-                    confirmDeleteDialog?.dismissIfShowing()
+            .subscribe { event ->
+                confirmDeleteDialog?.dismissIfShowing()
 
-                    confirmDeleteDialog = AlertDialog.Builder(view.context)
-                            .setTitle(R.string.are_you_sure)
-                            .setMessage(R.string.confirm_delete_photo)
-                            .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
-                                var success = false
-                                Realm.getDefaultInstance().use { realm ->
-                                    val photoToDelete: Photo? = realm.where(Photo::class.java)
-                                            .equalTo(Photo.FIELD_ID, event.photoId)
-                                            .findFirst()
+                confirmDeleteDialog = AlertDialog.Builder(view.context)
+                    .setTitle(R.string.are_you_sure)
+                    .setMessage(R.string.confirm_delete_photo)
+                    .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
+                        var success = false
 
-                                    if (photoToDelete == null) {
-                                        success = false
-                                        return@use
-                                    }
+                        val realm = Realm.openDefault()
 
-                                    val image = File(photoToDelete.filePath)
+                        val photoToDelete =
+                            realm.query(Photo::class, "${Photo.FIELD_ID} == ${event.photoId}")
+                                .first()
+                                .find()
 
-                                    if (image.exists()) {
-                                        image.delete()
-                                    }
+                        if (photoToDelete == null) {
+                            success = false
+                            realm.close()
+                            return@setPositiveButton
+                        }
 
-                                    realm.executeTransaction {
-                                        photoToDelete.deleteFromRealm()
-                                        success = true
-                                    }
-                                }
+                        val image = File(photoToDelete.filePath)
 
-                                dialog.dismiss()
-                                if (success) {
-                                    router.handleBack()
-                                } else {
-                                    Snackbar.make(view, R.string.error_deleting_photo,
-                                                  Snackbar.LENGTH_LONG)
-                                            .show()
-                                }
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .setOnDismissListener { confirmDeleteDialog = null }
-                            .create()
+                        if (image.exists()) {
+                            image.delete()
+                        }
 
-                    confirmDeleteDialog!!.show()
-                }
+                        realm.writeBlocking {
+                            delete(photoToDelete)
+                            success = true
+                        }
+                        realm.close()
+
+                        dialog.dismiss()
+                        if (success) {
+                            router.handleBack()
+                        } else {
+                            Snackbar.make(
+                                view, R.string.error_deleting_photo,
+                                Snackbar.LENGTH_LONG
+                            )
+                                .show()
+                        }
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .setOnDismissListener { confirmDeleteDialog = null }
+                    .create()
+
+                confirmDeleteDialog!!.show()
+            }
     }
 
     override fun onDetach(view: View) {

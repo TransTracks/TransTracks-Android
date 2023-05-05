@@ -13,10 +13,12 @@ package com.drspaceboo.transtracks.domain
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.openDefault
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.realm.Realm
+import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import java.io.File
 import java.time.LocalDate
 
@@ -31,13 +33,21 @@ sealed class EditPhotoAction {
 
 sealed class EditPhotoResult {
     object Loading : EditPhotoResult()
-    data class Display(val path: String, val date: LocalDate, @Photo.Type val type: Int) : EditPhotoResult()
+    data class Display(val path: String, val date: LocalDate, @Photo.Type val type: Int) :
+        EditPhotoResult()
+
     object ErrorLoadingPhoto : EditPhotoResult()
-    data class ShowDateDialog(val path: String, val date: LocalDate, @Photo.Type val type: Int) : EditPhotoResult()
-    data class ShowTypeDialog(val path: String, val date: LocalDate, @Photo.Type val type: Int) : EditPhotoResult()
+    data class ShowDateDialog(val path: String, val date: LocalDate, @Photo.Type val type: Int) :
+        EditPhotoResult()
+
+    data class ShowTypeDialog(val path: String, val date: LocalDate, @Photo.Type val type: Int) :
+        EditPhotoResult()
+
     object UpdatingImage : EditPhotoResult()
     object UpdateSuccess : EditPhotoResult()
-    data class ErrorUpdatingImage(val path: String, val date: LocalDate, @Photo.Type val type: Int) : EditPhotoResult()
+    data class ErrorUpdatingImage(
+        val path: String, val date: LocalDate, @Photo.Type val type: Int
+    ) : EditPhotoResult()
 }
 
 class EditPhotoDomain {
@@ -48,33 +58,41 @@ class EditPhotoDomain {
 
     val actions: PublishRelay<EditPhotoAction> = PublishRelay.create()
     val results: Observable<EditPhotoResult> = actions
-            .compose(editPhotoActionsToResults())
-            .startWith(EditPhotoResult.Loading)
-            .subscribeOn(RxSchedulers.io())
-            .observeOn(RxSchedulers.main())
-            .replay(1)
-            .refCount()
+        .compose(editPhotoActionsToResults())
+        .startWith(EditPhotoResult.Loading)
+        .subscribeOn(RxSchedulers.io())
+        .observeOn(RxSchedulers.main())
+        .replay(1)
+        .refCount()
 
-    private fun editPhotoActionsToResults() = ObservableTransformer<EditPhotoAction, EditPhotoResult> { actions ->
-        actions.switchMap<EditPhotoResult> { action ->
-            return@switchMap when (action) {
-                is EditPhotoAction.InitialLoad -> {
-                    id = action.photoId
+    private fun editPhotoActionsToResults() =
+        ObservableTransformer<EditPhotoAction, EditPhotoResult> { actions ->
+            actions.switchMap<EditPhotoResult> { action ->
+                return@switchMap when (action) {
+                    is EditPhotoAction.InitialLoad -> {
+                        id = action.photoId
 
-                    Observable.just(Unit)
+                        Observable.just(Unit)
                             .observeOn(RxSchedulers.io())
                             .map<Boolean> {
-                                Realm.getDefaultInstance().use { realm ->
-                                    val photo: Photo = realm.where(Photo::class.java)
-                                            .equalTo(Photo.FIELD_ID, action.photoId)
-                                            .findFirst() ?: return@map false
+                                val realm = Realm.openDefault()
 
-                                    path = photo.filePath
-                                    date = LocalDate.ofEpochDay(photo.epochDay)
-                                    type = photo.type
+                                val photo = realm
+                                    .query(Photo::class, "${Photo.FIELD_ID} == ${action.photoId}")
+                                    .first()
+                                    .find()
 
-                                    return@map true
+                                if (photo == null) {
+                                    realm.close()
+                                    return@map false
                                 }
+
+                                path = photo.filePath
+                                date = LocalDate.ofEpochDay(photo.epochDay)
+                                type = photo.type
+
+                                realm.close()
+                                return@map true
                             }.observeOn(RxSchedulers.main())
                             .map<EditPhotoResult> { success ->
                                 return@map when (success) {
@@ -83,62 +101,74 @@ class EditPhotoDomain {
                                 }
                             }
                             .startWith(EditPhotoResult.Loading)
-                }
+                    }
 
-                EditPhotoAction.ShowDateDialog ->
-                    Observable.just(EditPhotoResult.ShowDateDialog(path, date, type))
+                    EditPhotoAction.ShowDateDialog ->
+                        Observable.just(EditPhotoResult.ShowDateDialog(path, date, type))
 
-                is EditPhotoAction.ChangeDate -> {
-                    date = action.newDate
-                    Observable.just(EditPhotoResult.Display(path, date, type))
-                }
+                    is EditPhotoAction.ChangeDate -> {
+                        date = action.newDate
+                        Observable.just(EditPhotoResult.Display(path, date, type))
+                    }
 
-                EditPhotoAction.ShowTypeDialog ->
-                    Observable.just(EditPhotoResult.ShowTypeDialog(path, date, type))
+                    EditPhotoAction.ShowTypeDialog ->
+                        Observable.just(EditPhotoResult.ShowTypeDialog(path, date, type))
 
-                is EditPhotoAction.ChangeType -> {
-                    type = action.newType
-                    Observable.just(EditPhotoResult.Display(path, date, type))
-                }
+                    is EditPhotoAction.ChangeType -> {
+                        type = action.newType
+                        Observable.just(EditPhotoResult.Display(path, date, type))
+                    }
 
-                EditPhotoAction.Update -> Observable.just(Unit)
+                    EditPhotoAction.Update -> Observable.just(Unit)
                         .observeOn(RxSchedulers.io())
                         .map<Boolean> {
-                            Realm.getDefaultInstance().use { realm ->
-                                val photo: Photo = realm.where(Photo::class.java)
-                                        .equalTo(Photo.FIELD_ID, id)
-                                        .findFirst() ?: return@map false
+                            val realm = Realm.openDefault()
 
-                                val newPath: String? = when {
-                                    photo.epochDay != date.toEpochDay() -> {
-                                        // We need to rename our image file since we keep the day in the
-                                        // name so they are ordered correctly in any export
-                                        val file = File(path)
-                                        if (!file.exists()) return@map false
+                            val photo = realm.query(Photo::class, "${Photo.FIELD_ID} == $id")
+                                .first()
+                                .find()
+                            realm.close()
 
-                                        val newFile = FileUtil.getNewImageFile(date)
-
-                                        if (!file.renameTo(newFile)) return@map false
-
-                                        newFile.absolutePath
-                                    }
-
-                                    else -> null
-                                }
-
-                                realm.executeTransaction { innerRealm ->
-                                    if (newPath != null) {
-                                        photo.filePath = newPath
-                                    }
-
-                                    photo.epochDay = date.toEpochDay()
-                                    photo.type = type
-
-                                    innerRealm.insertOrUpdate(photo)
-                                }
-
-                                return@map true
+                            if (photo == null) {
+                                realm.close()
+                                return@map false
                             }
+
+                            val newPath: String? = when {
+                                photo.epochDay != date.toEpochDay() -> {
+                                    // We need to rename our image file since we keep the day in the
+                                    // name so they are ordered correctly in any export
+                                    val file = File(path)
+                                    if (!file.exists()) {
+                                        realm.close()
+                                        return@map false
+                                    }
+
+                                    val newFile = FileUtil.getNewImageFile(date)
+
+                                    if (!file.renameTo(newFile)) {
+                                        realm.close()
+                                        return@map false
+                                    }
+
+                                    newFile.absolutePath
+                                }
+
+                                else -> null
+                            }
+
+                            realm.writeBlocking {
+                                if (newPath != null) {
+                                    photo.filePath = newPath
+                                }
+
+                                photo.epochDay = date.toEpochDay()
+                                photo.type = type
+
+                                copyToRealm(photo, UpdatePolicy.ALL)
+                            }
+
+                            return@map true
                         }
                         .observeOn(RxSchedulers.main())
                         .map<EditPhotoResult> { success ->
@@ -148,7 +178,7 @@ class EditPhotoDomain {
                             }
                         }
                         .startWith(EditPhotoResult.UpdatingImage)
+                }
             }
         }
-    }
 }

@@ -16,12 +16,12 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.FileUtil.getImageFile
 import com.google.gson.JsonObject
 import com.google.gson.stream.JsonReader
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import java.io.File
 import java.util.UUID
 
-open class Photo : RealmObject() {
+class Photo : RealmObject {
     @PrimaryKey
     var id: String = UUID.randomUUID().toString()
 
@@ -82,21 +82,26 @@ open class Photo : RealmObject() {
                                     UUID.randomUUID()
                                 }.toString()
                             }
+
                             FIELD_EPOCH_DAY -> {
                                 epochDay = jsonReader.nextLong()
                             }
+
                             FIELD_TIMESTAMP -> {
                                 timestamp = jsonReader.nextLong()
                             }
+
                             FIELD_FILE_NAME -> {
                                 filePath = getImageFile(jsonReader.nextString()).absolutePath
                             }
+
                             FIELD_TYPE -> {
                                 type = jsonReader.nextInt()
                                 if (type !in arrayOf(TYPE_FACE, TYPE_BODY)) {
                                     type = TYPE_FACE
                                 }
                             }
+
                             else -> jsonReader.skipValue()
                         }
                     }

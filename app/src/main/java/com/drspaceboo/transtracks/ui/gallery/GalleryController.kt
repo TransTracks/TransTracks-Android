@@ -15,7 +15,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Controller
@@ -30,16 +29,16 @@ import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.ShareUtil
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.ofType
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
-import io.realm.Realm
+import io.realm.kotlin.Realm
 import java.io.File
 
 class GalleryController(args: Bundle) : Controller(args) {
@@ -55,7 +54,7 @@ class GalleryController(args: Bundle) : Controller(args) {
 
     private var confirmDeleteDialog: AlertDialog? = null
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         return inflater.inflate(R.layout.gallery, container, false)
     }
 
@@ -74,13 +73,15 @@ class GalleryController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.ImageClick>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction.with(SinglePhotoController(event.photoId))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction.with(SinglePhotoController(event.photoId))
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         viewDisposables += sharedEvents
             .filter { event ->
@@ -93,51 +94,67 @@ class GalleryController(args: Bundle) : Controller(args) {
                     else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
                 }
 
-                view.display(GalleryUiState.Selection(type, initialDay, selectedIds, SettingsManager.showAds()))
+                view.display(
+                    GalleryUiState.Selection(
+                        type, initialDay, selectedIds, SettingsManager.showAds()
+                    )
+                )
             }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.EndActionMode>()
-            .subscribe { view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds())) }
+            .subscribe {
+                view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds()))
+            }
 
         viewDisposables += Observables.combineLatest(
-                sharedEvents.ofType<GalleryUiEvent.AddPhoto>(),
-                StoragePermissionHandler.storagePermissionEnabled) { event, storageEnabled -> event to storageEnabled }
-                .subscribe { (event, storageEnabled) ->
-                    if (storageEnabled) {
-                        router.pushController(RouterTransaction.with(
-                                SelectPhotoController(type = event.type, tagOfControllerToPopTo = TAG))
-                                                      .using(VerticalChangeHandler()))
-                    } else {
-                        StoragePermissionHandler.handleRequestingPermission(
-                                view, activity as AppCompatActivity)
-                    }
+            sharedEvents.ofType<GalleryUiEvent.AddPhoto>(),
+            StoragePermissionHandler.storagePermissionEnabled
+        ) { event, storageEnabled -> event to storageEnabled }
+            .subscribe { (event, storageEnabled) ->
+                if (storageEnabled) {
+                    router.pushController(
+                        RouterTransaction
+                            .with(
+                                SelectPhotoController(
+                                    type = event.type, tagOfControllerToPopTo = TAG
+                                )
+                            )
+                            .using(VerticalChangeHandler())
+                    )
+                } else {
+                    StoragePermissionHandler.handleRequestingPermission(
+                        view, activity as AppCompatActivity
+                    )
                 }
+            }
 
         viewDisposables += StoragePermissionHandler.storagePermissionBlocked
-                .filter { showRationale -> !showRationale }
-                .subscribe { _ ->
-                    StoragePermissionHandler.showStoragePermissionDisabledSnackBar(
-                            view, activity as AppCompatActivity)
-                }
+            .filter { showRationale -> !showRationale }
+            .subscribe { _ ->
+                StoragePermissionHandler.showStoragePermissionDisabledSnackBar(
+                    view, activity as AppCompatActivity
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.Share>()
             .subscribe { event ->
                 if (event.selectedIds.isEmpty()) {
-                    Snackbar.make(view, R.string.select_photos_to_share, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, R.string.select_photos_to_share, Snackbar.LENGTH_LONG)
+                        .show()
                     return@subscribe
                 }
 
                 val filePaths = ArrayList<String>(event.selectedIds.size)
+                val realm = Realm.openDefault()
 
-                Realm.getDefaultInstance().use { realm ->
-                    event.selectedIds.forEach { photoId ->
-                        val photoToDelete: Photo = realm.where(Photo::class.java)
-                            .equalTo(Photo.FIELD_ID, photoId)
-                            .findFirst() ?: return@use
-
-                        filePaths.add(photoToDelete.filePath)
-                    }
+                event.selectedIds.forEach { photoId ->
+                    realm.query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+                        .first()
+                        .find()
+                        ?.let { filePaths.add(it.filePath) }
                 }
+
+                realm.close()
 
                 if (event.selectedIds.size != filePaths.size) {
                     Snackbar.make(view, R.string.error_sharing_photos, Snackbar.LENGTH_LONG).show()
@@ -154,7 +171,8 @@ class GalleryController(args: Bundle) : Controller(args) {
                 confirmDeleteDialog?.dismissIfShowing()
 
                 if (event.selectedIds.isEmpty()) {
-                    Snackbar.make(view, R.string.select_photos_to_delete, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, R.string.select_photos_to_delete, Snackbar.LENGTH_LONG)
+                        .show()
                     return@subscribe
                 }
 
@@ -163,24 +181,23 @@ class GalleryController(args: Bundle) : Controller(args) {
                     .setMessage(R.string.confirm_delete_photo)
                     .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
                         var success = false
-                        Realm.getDefaultInstance().use { realm ->
-                            val photosToDelete = ArrayList<Photo>()
 
-                            event.selectedIds.forEach { photoId ->
-                                val photoToDelete: Photo? = realm.where(Photo::class.java)
-                                    .equalTo(Photo.FIELD_ID, photoId)
-                                    .findFirst()
+                        val realm = Realm.openDefault()
+                        val photosToDelete = ArrayList<Photo>()
 
-                                if (photoToDelete != null) {
-                                    photosToDelete.add(photoToDelete)
-                                }
+                        event.selectedIds.forEach { photoId ->
+                            val photoToDelete: Photo? = realm
+                                .query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+                                .first()
+                                .find()
+
+                            if (photoToDelete != null) {
+                                photosToDelete.add(photoToDelete)
                             }
+                        }
 
-                            if (event.selectedIds.size != photosToDelete.size) {
-                                success = false
-                                return@use
-                            }
-
+                        //If we found all the photos we were trying to delete
+                        if (event.selectedIds.size == photosToDelete.size) {
                             photosToDelete.forEach { photoToDelete ->
                                 val image = File(photoToDelete.filePath)
 
@@ -188,18 +205,24 @@ class GalleryController(args: Bundle) : Controller(args) {
                                     image.delete()
                                 }
 
-                                realm.executeTransaction {
-                                    photoToDelete.deleteFromRealm()
+                                realm.writeBlocking {
+                                    delete(photoToDelete)
                                     success = true
                                 }
                             }
                         }
 
+                        realm.close()
+
                         dialog.dismiss()
                         if (success) {
-                            view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds()))
+                            view.display(
+                                GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds())
+                            )
                         } else {
-                            Snackbar.make(view, R.string.error_deleting_photos, Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(
+                                view, R.string.error_deleting_photos, Snackbar.LENGTH_LONG
+                            ).show()
                         }
                     }
                     .setNegativeButton(R.string.cancel, null)

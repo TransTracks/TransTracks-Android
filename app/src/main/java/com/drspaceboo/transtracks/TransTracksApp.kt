@@ -23,8 +23,8 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
@@ -36,9 +36,6 @@ class TransTracksApp : Application() {
         instance = this
 
         MobileAds.initialize(this)
-
-        Realm.init(this)
-        Realm.setDefaultConfiguration(getDefaultRealmConfig())
 
         appVersionUpdateIfNecessary()
 
@@ -54,12 +51,6 @@ class TransTracksApp : Application() {
     companion object {
         lateinit var instance: TransTracksApp
             private set
-
-        //TODO this is a work around for an issue we encountered when updating. The code should be re-written to not
-        // write on the UI thread instead of doing this
-        private fun getDefaultRealmConfig() = RealmConfiguration.Builder()
-            .allowWritesOnUiThread(true)
-            .build()
 
         @SuppressLint("ApplySharedPref") //Share pref changes we want to block on
         fun appVersionUpdateIfNecessary() {

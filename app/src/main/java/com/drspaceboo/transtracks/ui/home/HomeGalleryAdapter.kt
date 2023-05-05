@@ -18,33 +18,42 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.util.openDefault
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
-import io.realm.Realm
-import io.realm.RealmChangeListener
-import io.realm.RealmResults
-import io.realm.Sort
+import io.realm.kotlin.Realm
+import io.realm.kotlin.query.Sort
+import kotlinx.coroutines.rx3.asObservable
 import kotterknife.bindView
-import java.time.LocalDate
 import java.io.File
 import java.lang.ref.WeakReference
+import java.time.LocalDate
 
-class HomeGalleryAdapter(private val currentDate: LocalDate, @Photo.Type private val type: Int,
-                         eventRelay: PublishRelay<HomeUiEvent>)
-    : RecyclerView.Adapter<HomeGalleryAdapter.BaseViewHolder>() {
-    private val realm = Realm.getDefaultInstance()
-    private val result = realm.where(Photo::class.java).equalTo(Photo.FIELD_TYPE, type)
-            .equalTo(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-            .sort(Photo.FIELD_TIMESTAMP, Sort.DESCENDING).findAllAsync().apply {
-                addChangeListener(RealmChangeListener<RealmResults<Photo>> { notifyDataSetChanged() })
-            }
+class HomeGalleryAdapter(
+    private val currentDate: LocalDate, @Photo.Type private val type: Int,
+    eventRelay: PublishRelay<HomeUiEvent>
+) : RecyclerView.Adapter<HomeGalleryAdapter.BaseViewHolder>() {
+    private val photosFlow = Realm.openDefault()
+        .query(
+            Photo::class,
+            "${Photo.FIELD_TYPE} == $type && ${Photo.FIELD_EPOCH_DAY} ==  ${currentDate.toEpochDay()}"
+        )
+        .sort(Photo.FIELD_TIMESTAMP, Sort.DESCENDING)
+        .find()
+        .asFlow()
+        .asObservable()
+        .subscribe {
+            result = it.list
+            notifyDataSetChanged()
+        }
+    private var result = emptyList<Photo>()
 
     private val eventRelayRef = WeakReference(eventRelay)
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (holder) {
             is AddViewHolder -> holder.bind(currentDate, type)
-            is PhotoViewHolder -> holder.bind(result[position - 1]!!)
+            is PhotoViewHolder -> holder.bind(result[position - 1])
         }
     }
 
@@ -67,12 +76,14 @@ class HomeGalleryAdapter(private val currentDate: LocalDate, @Photo.Type private
 
     abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    class AddViewHolder(itemView: View, eventRelay: PublishRelay<HomeUiEvent>?) : BaseViewHolder(itemView) {
+    class AddViewHolder(itemView: View, eventRelay: PublishRelay<HomeUiEvent>?) :
+        BaseViewHolder(itemView) {
         private val add: AppCompatImageButton by bindView(R.id.home_adapter_add_button)
 
         private val eventRelayRef = WeakReference(eventRelay)
 
         private var currentDate: LocalDate = LocalDate.MIN
+
         @Photo.Type
         private var type: Int = Photo.TYPE_FACE
 
@@ -88,7 +99,8 @@ class HomeGalleryAdapter(private val currentDate: LocalDate, @Photo.Type private
         }
     }
 
-    class PhotoViewHolder(itemView: View, eventRelay: PublishRelay<HomeUiEvent>?) : BaseViewHolder(itemView) {
+    class PhotoViewHolder(itemView: View, eventRelay: PublishRelay<HomeUiEvent>?) :
+        BaseViewHolder(itemView) {
         private val image: ImageView by bindView(R.id.home_adapter_item_image)
 
         private val eventRelayRef = WeakReference(eventRelay)
@@ -105,15 +117,16 @@ class HomeGalleryAdapter(private val currentDate: LocalDate, @Photo.Type private
             currentPhotoId = photo.id
 
             Picasso.get()
-                    .load(File(photo.filePath))
-                    .fit()
-                    .centerCrop()
-                    .into(image)
+                .load(File(photo.filePath))
+                .fit()
+                .centerCrop()
+                .into(image)
         }
     }
 
+    @Suppress("MayBeConstant")
     companion object {
-        private const val TYPE_PHOTO = R.layout.home_adapter_item
-        private const val TYPE_ADD = R.layout.home_adapter_add_item
+        private val TYPE_PHOTO = R.layout.home_adapter_item
+        private val TYPE_ADD = R.layout.home_adapter_add_item
     }
 }
