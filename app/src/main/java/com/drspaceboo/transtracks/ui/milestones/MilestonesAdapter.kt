@@ -18,31 +18,40 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Milestone
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxrelay2.PublishRelay
-import io.realm.Realm
-import io.realm.Sort
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.isValid
+import io.realm.kotlin.query.Sort
+import kotlinx.coroutines.rx3.asObservable
 import kotterknife.bindView
-import java.time.LocalDate
 import java.lang.ref.WeakReference
+import java.time.LocalDate
 
-class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,
-                        private val postInitialLoad: (adapter: MilestonesAdapter) -> Unit,
-                        private val postLoad: (adapter: MilestonesAdapter) -> Unit) : RecyclerView.Adapter<MilestonesAdapter.BaseViewHolder>() {
-    private val realm = Realm.getDefaultInstance()
-    private val result = realm.where(Milestone::class.java)
-            .sort(Milestone.FIELD_EPOCH_DAY, Sort.DESCENDING).findAllAsync().apply {
-                addChangeListener { _ ->
-                    generateItems()
-                    if (initialLoad) {
-                        initialLoad = false
-                        postInitialLoad.invoke(this@MilestonesAdapter)
-                    }
-
-                    postLoad.invoke(this@MilestonesAdapter)
-                }
+class MilestonesAdapter(
+    eventRelay: PublishRelay<MilestonesUiEvent>,
+    private val postInitialLoad: (adapter: MilestonesAdapter) -> Unit,
+    private val postLoad: (adapter: MilestonesAdapter) -> Unit
+) : RecyclerView.Adapter<MilestonesAdapter.BaseViewHolder>() {
+    private val milestonesFlow = Realm.openDefault()
+        .query(Milestone::class)
+        .sort(Milestone.FIELD_EPOCH_DAY, Sort.DESCENDING)
+        .find()
+        .asFlow()
+        .asObservable()
+        .subscribe {
+            result = it.list
+            generateItems()
+            if (initialLoad) {
+                initialLoad = false
+                postInitialLoad.invoke(this@MilestonesAdapter)
             }
+
+            postLoad.invoke(this@MilestonesAdapter)
+        }
+    private var result = emptyList<Milestone>()
 
     private var items = ArrayList<MilestonesAdapterItem>()
     private var initialLoad = true
@@ -116,8 +125,9 @@ class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,
                     return old.epochDay == new.epochDay
                 }
 
-                if (old.milestone == null || !old.milestone.isValid || new.milestone == null
-                        || !new.milestone.isValid) {
+                if (old.milestone == null || !old.milestone.isValid() || new.milestone == null
+                    || !new.milestone.isValid()
+                ) {
                     return false
                 }
 
@@ -180,7 +190,8 @@ class MilestonesAdapter(eventRelay: PublishRelay<MilestonesUiEvent>,
         }
     }
 
-    class MilestoneViewHolder(itemView: View, eventRelay: PublishRelay<MilestonesUiEvent>?) : BaseViewHolder(itemView) {
+    class MilestoneViewHolder(itemView: View, eventRelay: PublishRelay<MilestonesUiEvent>?) :
+        BaseViewHolder(itemView) {
         private val title: TextView by bindView(R.id.milestones_adapter_item_title)
         private val descriptionIcon: View by bindView(R.id.milestones_adapter_item_description_icon)
         private val description: TextView by bindView(R.id.milestones_adapter_item_description)

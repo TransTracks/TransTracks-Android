@@ -22,13 +22,14 @@ import com.drspaceboo.transtracks.util.compatGetDateTime
 import com.drspaceboo.transtracks.util.copyFrom
 import com.drspaceboo.transtracks.util.dateCreated
 import com.drspaceboo.transtracks.util.localDateFromEpochMilli
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.quietlyClose
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.realm.Realm
+import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import java.io.File
-import java.io.FileDescriptor
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -228,17 +229,19 @@ class AssignPhotosDomain {
                                 exifInputStream?.quietlyClose()
                             }
 
-                            Realm.getDefaultInstance().use { realm ->
-                                realm.executeTransaction { innerRealm ->
-                                    val photo = Photo()
-                                    photo.epochDay = date.toEpochDay()
-                                    photo.timestamp = System.currentTimeMillis()
-                                    photo.filePath = imageFile.absolutePath
-                                    photo.type = type
+                            val realm = Realm.openDefault()
 
-                                    innerRealm.insertOrUpdate(photo)
-                                }
+                            realm.writeBlocking {
+                                val photo = Photo()
+                                photo.epochDay = date.toEpochDay()
+                                photo.timestamp = System.currentTimeMillis()
+                                photo.filePath = imageFile.absolutePath
+                                photo.type = type
+
+                                copyToRealm(photo, UpdatePolicy.ALL)
                             }
+
+                            realm.close()
 
                             return@map action to true
                         }

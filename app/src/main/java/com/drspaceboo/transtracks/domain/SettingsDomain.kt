@@ -22,6 +22,7 @@ import com.drspaceboo.transtracks.ui.settings.SettingsUIUserDetails
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.hasPasswordProvider
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.settings.LockDelay
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
@@ -34,8 +35,7 @@ import com.google.gson.stream.JsonWriter
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.realm.Realm
-import java.time.LocalDate
+import io.realm.kotlin.Realm
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter
 import java.io.File
@@ -43,6 +43,7 @@ import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
 import java.util.zip.ZipOutputStream
@@ -56,10 +57,11 @@ sealed class SettingsResult {
     data class Content(
         val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: Theme,
         val lockType: LockType, val lockDelay: LockDelay, val enableAnalytics: Boolean,
-        val enableCrashReports: Boolean, val showAds:Boolean
+        val enableCrashReports: Boolean, val showAds: Boolean
     ) : SettingsResult()
 
-    data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsResult()
+    data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) :
+        SettingsResult()
 }
 
 sealed class SettingsViewEffect {
@@ -74,7 +76,8 @@ class SettingsDomain {
     val viewEffects: Observable<SettingsViewEffect> = viewEffectRelay
 
     val actions: PublishRelay<SettingsAction> = PublishRelay.create()
-    private val mergedActions: Observable<SettingsAction> = Observable.merge(actions, settingsUpdatedActions)
+    private val mergedActions: Observable<SettingsAction> =
+        Observable.merge(actions, settingsUpdatedActions)
 
     val results: Observable<SettingsResult> = mergedActions
         .startWith(SettingsUpdated)
@@ -93,10 +96,10 @@ class SettingsDomain {
                     }
 
                     return Content(
-                            userDetails, SettingsManager.getStartDate(context = null),
-                            SettingsManager.getTheme(), SettingsManager.getLockType(),
-                            SettingsManager.getLockDelay(), SettingsManager.getEnableAnalytics(),
-                            SettingsManager.getEnableCrashReports(), SettingsManager.showAds()
+                        userDetails, SettingsManager.getStartDate(context = null),
+                        SettingsManager.getTheme(), SettingsManager.getLockType(),
+                        SettingsManager.getLockDelay(), SettingsManager.getEnableAnalytics(),
+                        SettingsManager.getEnableCrashReports(), SettingsManager.showAds()
                     )
                 }
 
@@ -109,7 +112,10 @@ class SettingsDomain {
                             val progressRelay = PublishRelay.create<SettingsResult>()
                             var overallProgress = 0
                             var stepProgress = 0
-                            fun updateProgress() = progressRelay.accept(Loading(content, overallProgress, stepProgress))
+                            fun updateProgress() = progressRelay.accept(
+                                Loading(content, overallProgress, stepProgress)
+                            )
+
                             fun incrementOverall() {
                                 stepProgress = 0
                                 overallProgress += 50
@@ -127,36 +133,49 @@ class SettingsDomain {
                                                 JsonWriter(bufferedWriter).use { jsonWriter ->
                                                     val gson = Gson()
                                                     jsonWriter.beginObject()
-                                                    Realm.getDefaultInstance().use { realm ->
-                                                        val stepMax = realm.where(Photo::class.java).count() +
-                                                                realm.where(Milestone::class.java).count() + 1
-                                                        var stepCount = 0.0
-                                                        fun incrementStep() {
-                                                            stepCount++
-                                                            stepProgress = (stepCount / stepMax * 100.0).toInt()
-                                                            updateProgress()
-                                                        }
-                                                        jsonWriter.name("settings")
-                                                        Gson().toJson(SettingsManager.getSettingsAsJson(), jsonWriter)
-                                                        incrementStep()
+                                                    val realm = Realm.openDefault()
 
-                                                        jsonWriter.name("photos")
-                                                        jsonWriter.beginArray()
-                                                        realm.where(Photo::class.java).findAll().forEach { photo ->
-                                                            photo.toJson()?.let { gson.toJson(it, jsonWriter) }
+                                                    val stepMax = realm.query(Photo::class)
+                                                        .count()
+                                                        .find() + realm.query(Milestone::class)
+                                                        .count()
+                                                        .find() + 1
+                                                    var stepCount = 0.0
+                                                    fun incrementStep() {
+                                                        stepCount++
+                                                        stepProgress =
+                                                            (stepCount / stepMax * 100.0).toInt()
+                                                        updateProgress()
+                                                    }
+                                                    jsonWriter.name("settings")
+                                                    Gson().toJson(
+                                                        SettingsManager.getSettingsAsJson(),
+                                                        jsonWriter
+                                                    )
+                                                    incrementStep()
+
+                                                    jsonWriter.name("photos")
+                                                    jsonWriter.beginArray()
+                                                    realm.query(Photo::class).find()
+                                                        .forEach { photo ->
+                                                            photo.toJson()?.let {
+                                                                gson.toJson(it, jsonWriter)
+                                                            }
                                                             incrementStep()
                                                         }
-                                                        jsonWriter.endArray()
+                                                    jsonWriter.endArray()
 
-                                                        jsonWriter.name("milestones")
-                                                        jsonWriter.beginArray()
-                                                        realm.where(Milestone::class.java).findAll()
-                                                            .forEach { milestone ->
-                                                                gson.toJson(milestone.toJson(), jsonWriter)
-                                                                incrementStep()
-                                                            }
-                                                        jsonWriter.endArray()
-                                                    }
+                                                    jsonWriter.name("milestones")
+                                                    jsonWriter.beginArray()
+                                                    realm.query(Milestone::class).find()
+                                                        .forEach { milestone ->
+                                                            gson.toJson(
+                                                                milestone.toJson(), jsonWriter
+                                                            )
+                                                            incrementStep()
+                                                        }
+                                                    jsonWriter.endArray()
+
                                                     jsonWriter.endObject()
                                                 }
                                             }
@@ -165,19 +184,23 @@ class SettingsDomain {
                                         //endregion
 
                                         //region Zip file creation
-                                        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+                                        val timeStamp =
+                                            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
+                                                .format(Date())
                                         val zipFile = FileUtil.getTempFile("$timeStamp.ttbackup")
 
                                         FileOutputStream(zipFile).use { fileOutputStream ->
                                             BufferedOutputStream(fileOutputStream).use { bufferedOutputStream ->
                                                 ZipOutputStream(bufferedOutputStream).use { zipOutputStream ->
                                                     val photosDir = FileUtil.getPhotosDirectory()
-                                                    val stepMax = (photosDir.takeIf { it.exists() && it.isDirectory }
-                                                        ?.listFiles()?.size ?: 0) + 1
+                                                    val stepMax =
+                                                        (photosDir.takeIf { it.exists() && it.isDirectory }
+                                                            ?.listFiles()?.size ?: 0) + 1
                                                     var stepCount = 0.0
                                                     fun incrementStep() {
                                                         stepCount++
-                                                        stepProgress = (stepCount / stepMax * 100.0).toInt()
+                                                        stepProgress =
+                                                            (stepCount / stepMax * 100.0).toInt()
                                                         updateProgress()
                                                     }
 
@@ -188,10 +211,13 @@ class SettingsDomain {
                                                         ?.listFiles()
                                                         ?.forEach {
                                                             try {
-                                                                zipOutputStream.writeFile(it, "photos/")
+                                                                zipOutputStream.writeFile(
+                                                                    it, "photos/"
+                                                                )
                                                             } catch (e: IOException) {
                                                                 if (!BuildConfig.DEBUG) {
-                                                                    FirebaseCrashlytics.getInstance().recordException(e)
+                                                                    FirebaseCrashlytics.getInstance()
+                                                                        .recordException(e)
                                                                 }
                                                                 e.printStackTrace()
                                                             } finally {

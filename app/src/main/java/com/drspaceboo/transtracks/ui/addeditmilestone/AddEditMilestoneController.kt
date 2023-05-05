@@ -37,13 +37,15 @@ import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.dismissIfShowing
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
-import io.realm.Realm
+import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import java.time.LocalDate
 
 class AddEditMilestoneController(args: Bundle) : Controller(args) {
@@ -72,7 +74,8 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.AddEditMilestoneControllerShown)
 
-        val domain: AddEditMilestoneDomain = TransTracksApp.instance.domainManager.addEditMilestoneDomain
+        val domain: AddEditMilestoneDomain =
+            TransTracksApp.instance.domainManager.addEditMilestoneDomain
 
         if (resultsDisposable.isDisposed) {
             resultsDisposable = domain.results
@@ -109,50 +112,49 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
             .subscribe(domain.actions)
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Delete>()
-                .subscribe { _ ->
-                    confirmDeleteDialog?.dismissIfShowing()
+            .subscribe { _ ->
+                confirmDeleteDialog?.dismissIfShowing()
 
-                    if (milestoneId != null) {
-                        confirmDeleteDialog = AlertDialog.Builder(view.context)
-                                .setTitle(R.string.are_you_sure)
-                                .setMessage(R.string.confirm_delete_milestone)
-                                .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
-                                    var success = false
-                                    Realm.getDefaultInstance().use { realm ->
-                                        realm.executeTransaction {
-                                            val milestoneToDelete: Milestone? = realm.where(Milestone::class.java)
-                                                    .equalTo(Milestone.FIELD_ID, milestoneId)
-                                                    .findFirst()
+                if (milestoneId != null) {
+                    confirmDeleteDialog = AlertDialog.Builder(view.context)
+                        .setTitle(R.string.are_you_sure)
+                        .setMessage(R.string.confirm_delete_milestone)
+                        .setPositiveButton(R.string.delete) { dialog: DialogInterface, _: Int ->
+                            var success = false
+                            val realm = Realm.openDefault()
+                            realm.writeBlocking {
+                                val milestoneToDelete: Milestone = realm
+                                    .query(
+                                        Milestone::class, "${Milestone.FIELD_ID} == $milestoneId"
+                                    )
+                                    .first()
+                                    .find() ?: return@writeBlocking
 
-                                            if (milestoneToDelete == null) {
-                                                success = false
-                                                return@executeTransaction
-                                            }
+                                delete(milestoneToDelete)
+                                success = true
+                            }
 
-                                            milestoneToDelete.deleteFromRealm()
-                                            success = true
-                                        }
-                                    }
+                            dialog.dismiss()
+                            if (success) {
+                                router.handleBack()
+                            } else {
+                                Snackbar.make(
+                                    view,
+                                    R.string.error_deleting_milestone,
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .setOnDismissListener { confirmDeleteDialog = null }
+                        .create()
 
-                                    dialog.dismiss()
-                                    if (success) {
-                                        router.handleBack()
-                                    } else {
-                                        Snackbar.make(view, R.string.error_deleting_milestone,
-                                                      Snackbar.LENGTH_LONG)
-                                                .show()
-                                    }
-                                }
-                                .setNegativeButton(R.string.cancel, null)
-                                .setOnDismissListener { confirmDeleteDialog = null }
-                                .create()
-
-                        confirmDeleteDialog!!.show()
-                    }
+                    confirmDeleteDialog!!.show()
                 }
+            }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.ChangeDate>()
             .subscribe { event ->
@@ -177,53 +179,56 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
             }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Save>()
-                .subscribe { event ->
-                    Realm.getDefaultInstance().use { realm ->
-                        if (milestoneId == null) {
-                            realm.executeTransaction { innerRealm ->
-                                val milestone = Milestone()
-                                milestone.timestamp = System.currentTimeMillis()
-                                milestone.epochDay = event.day
-                                milestone.title = event.title
-                                milestone.description = event.description
-                                innerRealm.copyToRealmOrUpdate(milestone)
-                            }
-                        } else {
-                            val milestone: Milestone? = realm.where(Milestone::class.java)
-                                    .equalTo(Milestone.FIELD_ID, milestoneId).findFirst()
+            .subscribe { event ->
+                val realm = Realm.openDefault()
 
-                            if (milestone == null) {
-                                AlertDialog.Builder(view.context)
-                                        .setTitle(R.string.unable_to_find_milestone)
-                                        .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
-                                            dialog.dismiss()
-                                            router.handleBack()
-                                        }
-                                        .setCancelable(false)
-                                        .show()
-                                return@use
-                            }
-
-                            realm.executeTransaction { innerRealm ->
-                                milestone.timestamp = System.currentTimeMillis()
-                                milestone.epochDay = event.day
-                                milestone.title = event.title
-                                milestone.description = event.description
-                                innerRealm.copyToRealmOrUpdate(milestone)
-                            }
-
-                        }
-
-                        @StringRes
-                        val messageRes: Int = when (milestoneId) {
-                            null -> R.string.milestone_saved
-                            else -> R.string.milestone_updated
-                        }
-
-                        Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
-                        router.handleBack()
+                if (milestoneId == null) {
+                    realm.writeBlocking {
+                        val milestone = Milestone()
+                        milestone.timestamp = System.currentTimeMillis()
+                        milestone.epochDay = event.day
+                        milestone.title = event.title
+                        milestone.description = event.description
+                        copyToRealm(milestone, UpdatePolicy.ALL)
                     }
+                } else {
+                    val milestone: Milestone? =
+                        realm.query(Milestone::class, "${Milestone.FIELD_ID} == $milestoneId")
+                            .first()
+                            .find()
+
+                    if (milestone == null) {
+                        AlertDialog.Builder(view.context)
+                            .setTitle(R.string.unable_to_find_milestone)
+                            .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
+                                dialog.dismiss()
+                                router.handleBack()
+                            }
+                            .setCancelable(false)
+                            .show()
+                        realm.close()
+                        return@subscribe
+                    }
+
+                    realm.writeBlocking {
+                        milestone.timestamp = System.currentTimeMillis()
+                        milestone.epochDay = event.day
+                        milestone.title = event.title
+                        milestone.description = event.description
+                        copyToRealm(milestone, UpdatePolicy.ALL)
+                    }
+                    realm.close()
                 }
+
+                @StringRes
+                val messageRes: Int = when (milestoneId) {
+                    null -> R.string.milestone_saved
+                    else -> R.string.milestone_updated
+                }
+
+                Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
+                router.handleBack()
+            }
     }
 
     override fun onDetach(view: View) {
@@ -250,7 +255,10 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                         AddEditMilestoneResult.Loading -> AddEditMilestoneUiState.Loading
 
                         is AddEditMilestoneResult.Display -> AddEditMilestoneUiState.Display(
-                            result.epochDay, result.title, result.description, isAdd = result.milestoneId == null
+                            result.epochDay,
+                            result.title,
+                            result.description,
+                            isAdd = result.milestoneId == null
                         )
 
                         AddEditMilestoneResult.UnableToFindMilestone -> {

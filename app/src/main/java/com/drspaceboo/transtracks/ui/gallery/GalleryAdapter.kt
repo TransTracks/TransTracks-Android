@@ -21,36 +21,44 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.jakewharton.rxrelay2.PublishRelay
 import com.squareup.picasso.Picasso
-import io.realm.Realm
-import io.realm.Sort
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.isValid
+import io.realm.kotlin.query.Sort.DESCENDING
+import kotlinx.coroutines.rx3.asObservable
 import kotterknife.bindView
-import java.time.LocalDate
 import java.io.File
 import java.lang.ref.WeakReference
+import java.time.LocalDate
 
-class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay<GalleryUiEvent>,
-                     initialSelectionMode: Boolean, private val selectedIds: ArrayList<String>,
-                     private val postInitialLoad: (adapter: GalleryAdapter) -> Unit,
-                     private val postLoad: (adapter: GalleryAdapter) -> Unit)
-    : RecyclerView.Adapter<GalleryAdapter.BaseViewHolder>(), AdapterSpanSizeLookup.Interface {
-    private val realm = Realm.getDefaultInstance()
-    private val result = realm.where(Photo::class.java).equalTo(Photo.FIELD_TYPE, type)
-            .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING).findAllAsync()
-            .apply {
-                addChangeListener { _ ->
-                    generateItems()
-                    if (initialLoad) {
-                        initialLoad = false
-                        postInitialLoad.invoke(this@GalleryAdapter)
-                    }
-
-                    postLoad.invoke(this@GalleryAdapter)
-                }
+class GalleryAdapter(
+    @Photo.Type private val type: Int, eventRelay: PublishRelay<GalleryUiEvent>,
+    initialSelectionMode: Boolean, private val selectedIds: ArrayList<String>,
+    private val postInitialLoad: (adapter: GalleryAdapter) -> Unit,
+    private val postLoad: (adapter: GalleryAdapter) -> Unit
+) : RecyclerView.Adapter<GalleryAdapter.BaseViewHolder>(), AdapterSpanSizeLookup.Interface {
+    private val photosFlow = Realm.openDefault()
+        .query(Photo::class, "${Photo.FIELD_TYPE} == $type")
+        .sort(Photo.FIELD_EPOCH_DAY, DESCENDING)
+        .find()
+        .asFlow()
+        .asObservable()
+        .subscribe {
+            result = it.list
+            generateItems()
+            if (initialLoad) {
+                initialLoad = false
+                postInitialLoad.invoke(this@GalleryAdapter)
             }
+
+            postLoad.invoke(this@GalleryAdapter)
+        }
+
+    private var result = emptyList<Photo>()
 
     private val eventRelayRef = WeakReference(eventRelay)
 
@@ -148,8 +156,7 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                     return old.epochDay == new.epochDay
                 }
 
-                if (old.photo == null || !old.photo.isValid || new.photo == null
-                        || !new.photo.isValid) {
+                if (old.photo == null || !old.photo.isValid() || new.photo == null || !new.photo.isValid()) {
                     return false
                 }
 
@@ -218,7 +225,8 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
         }
     }
 
-    class PhotoViewHolder(itemView: View, creatingAdapter: GalleryAdapter?) : BaseViewHolder(itemView) {
+    class PhotoViewHolder(itemView: View, creatingAdapter: GalleryAdapter?) :
+        BaseViewHolder(itemView) {
         private val image: ImageView by bindView(R.id.gallery_adapter_item_image)
         private val selection: ImageView by bindView(R.id.gallery_adapter_item_selection)
 
@@ -254,8 +262,8 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
                 val adapter = adapterRef.get() ?: return@setOnLongClickListener false
 
                 if (!adapter.selectionMode) {
-                    adapter.eventRelayRef.get()?.accept(
-                            GalleryUiEvent.SelectionUpdated(arrayListOf(currentPhotoId)))
+                    adapter.eventRelayRef.get()
+                        ?.accept(GalleryUiEvent.SelectionUpdated(arrayListOf(currentPhotoId)))
                 } else {
                     itemView.performClick()
                 }
@@ -268,10 +276,10 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
             currentPhotoId = item.photo!!.id
 
             Picasso.get()
-                    .load(File(item.photo.filePath))
-                    .fit()
-                    .centerCrop()
-                    .into(image)
+                .load(File(item.photo.filePath))
+                .fit()
+                .centerCrop()
+                .into(image)
 
             selection.setVisibleOrGone(selectionMode)
 
@@ -290,8 +298,9 @@ class GalleryAdapter(@Photo.Type private val type: Int, eventRelay: PublishRelay
         }
     }
 
+    @Suppress("MayBeConstant")
     companion object {
-        private const val TYPE_TITLE = R.layout.gallery_adapter_title_item
-        private const val TYPE_PHOTO = R.layout.gallery_adapter_item
+        private val TYPE_TITLE = R.layout.gallery_adapter_title_item
+        private val TYPE_PHOTO = R.layout.gallery_adapter_item
     }
 }

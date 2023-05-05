@@ -20,10 +20,13 @@ import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.Display
 import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.Loading
 import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.UnableToFindMilestone
 import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.default
+import com.drspaceboo.transtracks.util.openDefault
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.realm.Realm
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 
 sealed class AddEditMilestoneAction {
     data class InitialAdd(val epochDate: Long) : AddEditMilestoneAction()
@@ -38,7 +41,10 @@ sealed class AddEditMilestoneResult {
     object Loading : AddEditMilestoneResult()
 
     data class Display(
-        val epochDay: Long, val title: String, val description: String, val milestoneId: String? = null
+        val epochDay: Long,
+        val title: String,
+        val description: String,
+        val milestoneId: String? = null
     ) : AddEditMilestoneResult()
 
     object UnableToFindMilestone : AddEditMilestoneResult()
@@ -61,14 +67,25 @@ class AddEditMilestoneDomain {
                     return@scan when (action) {
                         is InitialAdd -> Display(action.epochDate, title = "", description = "")
 
-                        is InitialEdit -> Realm.getDefaultInstance().use { realm ->
-                            val milestone: Milestone? = realm.where(Milestone::class.java)
-                                .equalTo(Milestone.FIELD_ID, action.milestoneId).findFirst()
+                        is InitialEdit -> {
+                            val realm = Realm.openDefault()
 
-                            return@use when {
+                            val milestone: Milestone? = realm.query(
+                                Milestone::class, "${Milestone.FIELD_ID} == ${action.milestoneId}"
+                            )
+                                .first()
+                                .find()
+
+                            realm.close()
+
+                            when {
                                 milestone != null -> Display(
-                                    milestone.epochDay, milestone.title, milestone.description, action.milestoneId
+                                    milestone.epochDay,
+                                    milestone.title,
+                                    milestone.description,
+                                    action.milestoneId
                                 )
+
                                 else -> UnableToFindMilestone
                             }
                         }

@@ -37,6 +37,7 @@ import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.fileName
 import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
@@ -49,7 +50,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.stream.JsonReader
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.realm.Realm
+import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import kotterknife.bindView
 import java.io.BufferedReader
 import java.io.File
@@ -79,8 +81,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         if (!BuildConfig.DEBUG) {
-            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(SettingsManager.getEnableAnalytics())
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(SettingsManager.getEnableCrashReports())
+            FirebaseAnalytics.getInstance(this)
+                .setAnalyticsCollectionEnabled(SettingsManager.getEnableAnalytics())
+            FirebaseCrashlytics.getInstance()
+                .setCrashlyticsCollectionEnabled(SettingsManager.getEnableCrashReports())
         }
 
         StoragePermissionHandler.install(this)
@@ -94,7 +98,8 @@ class MainActivity : AppCompatActivity() {
                 router!!.setBackstack(
                     listOf(
                         RouterTransaction.with(HomeController()).tag(HomeController.TAG),
-                        RouterTransaction.with(LockController()).tag(LockController.TAG).using(VerticalChangeHandler())
+                        RouterTransaction.with(LockController()).tag(LockController.TAG)
+                            .using(VerticalChangeHandler())
                     ),
                     null
                 )
@@ -127,7 +132,10 @@ class MainActivity : AppCompatActivity() {
                 if (lockType == LockType.off) {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
                 } else {
-                    window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+                    window.setFlags(
+                        WindowManager.LayoutParams.FLAG_SECURE,
+                        WindowManager.LayoutParams.FLAG_SECURE
+                    )
                 }
 
                 val defaultLauncherState: Int
@@ -143,7 +151,8 @@ class MainActivity : AppCompatActivity() {
 
                 packageManager.setComponentEnabledSetting(
                     ComponentName(
-                        "com.drspaceboo.transtracks", "com.drspaceboo.transtracks.MainActivityDefault"
+                        "com.drspaceboo.transtracks",
+                        "com.drspaceboo.transtracks.MainActivityDefault"
                     ),
                     defaultLauncherState, PackageManager.DONT_KILL_APP
                 )
@@ -169,7 +178,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         //Minimum 1000ms to step issues with rotation
-        val timeToLock = SettingsManager.getUserLastSeen() + SettingsManager.getLockDelay().getMilli() + 1000L
+        val timeToLock =
+            SettingsManager.getUserLastSeen() + SettingsManager.getLockDelay().getMilli() + 1000L
         if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
             showLockControllerIfNotAlreadyShowing()
         }
@@ -235,7 +245,9 @@ class MainActivity : AppCompatActivity() {
                             var zipEntry: ZipEntry? = zipInputStream.nextEntry
                             while (zipEntry != null) {
                                 val tempFile: File = when (val fileName = zipEntry.fileName()) {
-                                    "data.json" -> FileUtil.getTempFile(fileName).also { tempDataFile = it }
+                                    "data.json" -> FileUtil.getTempFile(fileName)
+                                        .also { tempDataFile = it }
+
                                     else -> FileUtil.getImageFile(fileName)
                                 }
                                 try {
@@ -267,57 +279,65 @@ class MainActivity : AppCompatActivity() {
                             FileReader(tempDataFile!!).use { fileReader ->
                                 BufferedReader(fileReader).use { bufferedReader ->
                                     JsonReader(bufferedReader).use { jsonReader ->
-                                        Realm.getDefaultInstance().use { realm ->
-                                            realm.executeTransaction { innerRealm ->
-                                                jsonReader.beginObject()
-                                                while (jsonReader.hasNext()) {
-                                                    when (jsonReader.nextName()) {
-                                                        "settings" -> {
+                                        val realm = Realm.openDefault()
+                                        realm.writeBlocking {
+                                            jsonReader.beginObject()
+                                            while (jsonReader.hasNext()) {
+                                                when (jsonReader.nextName()) {
+                                                    "settings" -> {
+                                                        jsonReader.beginObject()
+                                                        SettingsManager.getSettingsFromJson(
+                                                            jsonReader
+                                                        )
+                                                        jsonReader.endObject()
+                                                    }
+
+                                                    "photos" -> {
+                                                        jsonReader.beginArray()
+                                                        while (jsonReader.hasNext()) {
                                                             jsonReader.beginObject()
-                                                            SettingsManager.getSettingsFromJson(jsonReader)
+                                                            val photo = Photo.fromJson(jsonReader)
+                                                            if (photo != null) {
+                                                                copyToRealm(photo, UpdatePolicy.ALL)
+                                                            } else {
+                                                                photoImportIssues++
+                                                            }
                                                             jsonReader.endObject()
                                                         }
-
-                                                        "photos" -> {
-                                                            jsonReader.beginArray()
-                                                            while (jsonReader.hasNext()) {
-                                                                jsonReader.beginObject()
-                                                                val photo = Photo.fromJson(jsonReader)
-                                                                if (photo != null) {
-                                                                    innerRealm.insertOrUpdate(photo)
-                                                                } else {
-                                                                    photoImportIssues++
-                                                                }
-                                                                jsonReader.endObject()
-                                                            }
-                                                            jsonReader.endArray()
-                                                        }
-
-                                                        "milestones" -> {
-                                                            jsonReader.beginArray()
-                                                            while (jsonReader.hasNext()) {
-                                                                jsonReader.beginObject()
-                                                                val milestone = Milestone.fromJson(jsonReader)
-                                                                if (milestone != null) {
-                                                                    innerRealm.insertOrUpdate(milestone)
-                                                                } else {
-                                                                    milestoneImportIssues++
-                                                                }
-                                                                jsonReader.endObject()
-                                                            }
-                                                            jsonReader.endArray()
-                                                        }
-
-                                                        else -> jsonReader.skipValue()
+                                                        jsonReader.endArray()
                                                     }
+
+                                                    "milestones" -> {
+                                                        jsonReader.beginArray()
+                                                        while (jsonReader.hasNext()) {
+                                                            jsonReader.beginObject()
+                                                            val milestone =
+                                                                Milestone.fromJson(jsonReader)
+                                                            if (milestone != null) {
+                                                                copyToRealm(
+                                                                    milestone, UpdatePolicy.ALL
+                                                                )
+                                                            } else {
+                                                                milestoneImportIssues++
+                                                            }
+                                                            jsonReader.endObject()
+                                                        }
+                                                        jsonReader.endArray()
+                                                    }
+
+                                                    else -> jsonReader.skipValue()
                                                 }
                                             }
                                         }
+
+                                        realm.close()
                                     }
                                 }
                             }
 
-                            return@map ImportResult.Success(photoImportIssues, milestoneImportIssues)
+                            return@map ImportResult.Success(
+                                photoImportIssues, milestoneImportIssues
+                            )
                         } catch (e: Exception) {
                             return@map ImportResult.Failure
                         }
@@ -349,19 +369,21 @@ class MainActivity : AppCompatActivity() {
                                 val errors = StringBuilder()
                                 if (photoIssues > 0) {
                                     errors.append(
-                                        resources.getQuantityString(R.plurals.photos, photoIssues, photoIssues)
+                                        resources.getQuantityString(
+                                            R.plurals.photos, photoIssues, photoIssues
+                                        )
                                     )
                                 }
                                 if (milestoneIssues > 0) {
                                     errors.append(
                                         resources.getQuantityString(
-                                            R.plurals.milestones,
-                                            milestoneIssues,
-                                            milestoneIssues
+                                            R.plurals.milestones, milestoneIssues, milestoneIssues
                                         )
                                     )
                                 }
-                                val message = getString(R.string.import_partial_success_description, errors.toString())
+                                val message = getString(
+                                    R.string.import_partial_success_description, errors.toString()
+                                )
 
                                 AlertDialog.Builder(this)
                                     .setTitle(R.string.import_partial_success_title)

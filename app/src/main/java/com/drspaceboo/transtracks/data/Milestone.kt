@@ -12,11 +12,11 @@ package com.drspaceboo.transtracks.data
 
 import com.google.gson.JsonObject
 import com.google.gson.stream.JsonReader
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
+import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import java.util.UUID
 
-open class Milestone : RealmObject() {
+class Milestone : RealmObject {
     @PrimaryKey
     var id: String = UUID.randomUUID().toString()
 
@@ -54,18 +54,23 @@ open class Milestone : RealmObject() {
                                     UUID.randomUUID()
                                 }.toString()
                             }
+
                             FIELD_EPOCH_DAY -> {
                                 epochDay = jsonReader.nextLong()
                             }
+
                             FIELD_TIMESTAMP -> {
                                 timestamp = jsonReader.nextLong()
                             }
+
                             FIELD_TITLE -> {
                                 title = jsonReader.nextString()
                             }
+
                             FIELD_DESCRIPTION -> {
-                                jsonReader.nextString()
+                                description = jsonReader.nextString()
                             }
+
                             else -> jsonReader.skipValue()
                         }
                     }

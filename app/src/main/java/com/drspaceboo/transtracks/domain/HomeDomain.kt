@@ -14,12 +14,13 @@ import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
+import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import io.realm.Realm
-import io.realm.Sort
+import io.realm.kotlin.Realm
+import io.realm.kotlin.query.Sort.DESCENDING
 import java.time.LocalDate
 import java.time.Period
 
@@ -61,133 +62,160 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
     }
 
     fun getLoadedResult(currentDate: LocalDate): HomeResult.Loaded {
-        Realm.getDefaultInstance().use { realm ->
-            val startDate = SettingsManager.getStartDate(context = null)
+        val realm = Realm.openDefault()
+        val startDate = SettingsManager.getStartDate(context = null)
 
-            val period: Period = startDate.until(currentDate)
-            val currentDateEpochDay = currentDate.toEpochDay()
+        val period: Period = startDate.until(currentDate)
+        val currentDateEpochDay = currentDate.toEpochDay()
 
-            val previousRecordCount = realm.where(Photo::class.java)
-                .lessThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
-                    realm.where(Milestone::class.java).lessThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
-            val nextRecordCount = realm.where(Photo::class.java)
-                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDateEpochDay).count() +
-                    realm.where(Milestone::class.java)
-                        .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).count()
+        val previousPhotos = realm
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} ==  $currentDateEpochDay")
+            .count()
+            .find()
+        val previousMilestones = realm
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .count()
+            .find()
+        val previousRecordCount = previousPhotos + previousMilestones
 
-            val showPreviousRecord = previousRecordCount > 0 || currentDate.isAfter(LocalDate.now())
-                    || currentDate.isAfter(startDate)
-            val showNextRecord = nextRecordCount > 0 || currentDate.isBefore(LocalDate.now())
-                    || currentDate.isBefore(startDate)
+        val nextPhotos = realm
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .count()
+            .find()
+        val nextMilestones = realm
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .count()
+            .find()
+        val nextRecordCount = nextPhotos + nextMilestones
 
-            val hasMilestones = realm.where(Milestone::class.java)
-                .equalTo(Milestone.FIELD_EPOCH_DAY, currentDateEpochDay).findFirst() != null
+        val showPreviousRecord = previousRecordCount > 0 || currentDate.isAfter(LocalDate.now())
+                || currentDate.isAfter(startDate)
+        val showNextRecord = nextRecordCount > 0 || currentDate.isBefore(LocalDate.now())
+                || currentDate.isBefore(startDate)
 
-            return HomeResult.Loaded(
-                period.getDisplayString(), showPreviousRecord, showNextRecord, startDate, currentDate, hasMilestones,
-                SettingsManager.showAds()
-            )
-        }
+        val hasMilestones: Boolean =
+            realm.query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+                .first()
+                .find() != null
+
+        realm.close()
+
+        return HomeResult.Loaded(
+            period.getDisplayString(),
+            showPreviousRecord,
+            showNextRecord,
+            startDate,
+            currentDate,
+            hasMilestones,
+            SettingsManager.showAds()
+        )
     }
 
     fun getNextDate(currentDate: LocalDate): LocalDate {
-        Realm.getDefaultInstance().use { realm ->
-            val nextPhoto: Photo? = realm.where(Photo::class.java)
-                .greaterThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Photo.FIELD_EPOCH_DAY)
-                .findFirst()
+        val realm = Realm.openDefault()
 
-            val nextMilestone: Milestone? = realm.where(Milestone::class.java)
-                .greaterThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Milestone.FIELD_EPOCH_DAY)
-                .findFirst()
+        val nextPhoto: Photo? = realm
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .sort(Photo.FIELD_EPOCH_DAY)
+            .first()
+            .find()
 
-            if (nextPhoto != null || nextMilestone != null) {
-                return when {
-                    nextPhoto != null && nextMilestone == null ->
-                        LocalDate.ofEpochDay(nextPhoto.epochDay)
+        val nextMilestone: Milestone? = realm
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .sort(Milestone.FIELD_EPOCH_DAY)
+            .first()
+            .find()
 
-                    nextPhoto == null && nextMilestone != null ->
-                        LocalDate.ofEpochDay(nextMilestone.epochDay)
+        realm.close()
 
-                    nextPhoto!!.epochDay < nextMilestone!!.epochDay ->
-                        LocalDate.ofEpochDay(nextPhoto.epochDay)
+        if (nextPhoto != null || nextMilestone != null) {
+            return when {
+                nextPhoto != null && nextMilestone == null -> LocalDate.ofEpochDay(nextPhoto.epochDay)
 
-                    else -> LocalDate.ofEpochDay(nextMilestone.epochDay)
-                }
+                nextPhoto == null && nextMilestone != null -> LocalDate.ofEpochDay(nextMilestone.epochDay)
+
+                nextPhoto!!.epochDay < nextMilestone!!.epochDay -> LocalDate.ofEpochDay(nextPhoto.epochDay)
+
+                else -> LocalDate.ofEpochDay(nextMilestone.epochDay)
             }
+        }
 
-            val startDate = SettingsManager.getStartDate(context = null)
-            val today = LocalDate.now()
+        val startDate = SettingsManager.getStartDate(context = null)
+        val today = LocalDate.now()
 
-            @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
-            if (startDate.isAfter(currentDate) && today.isAfter(currentDate)) {
-                if (startDate.isBefore(today)) {
-                    return startDate
-                } else {
-                    return today
-                }
-            } else if (startDate.isAfter(currentDate)) {
+        @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
+        if (startDate.isAfter(currentDate) && today.isAfter(currentDate)) {
+            if (startDate.isBefore(today)) {
                 return startDate
-            } else if (today.isAfter(currentDate)) {
-                return today
             } else {
-                return currentDate
+                return today
             }
+        } else if (startDate.isAfter(currentDate)) {
+            return startDate
+        } else if (today.isAfter(currentDate)) {
+            return today
+        } else {
+            return currentDate
         }
     }
 
     fun getPreviousDate(currentDate: LocalDate): LocalDate {
-        Realm.getDefaultInstance().use { realm ->
-            val previousPhoto: Photo? = realm.where(Photo::class.java)
-                .lessThan(Photo.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Photo.FIELD_EPOCH_DAY, Sort.DESCENDING)
-                .findFirst()
+        val realm = Realm.openDefault()
 
-            val previousMilestone: Milestone? = realm.where(Milestone::class.java)
-                .lessThan(Milestone.FIELD_EPOCH_DAY, currentDate.toEpochDay())
-                .sort(Milestone.FIELD_EPOCH_DAY, Sort.DESCENDING)
-                .findFirst()
+        val previousPhoto: Photo? = realm
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .sort(Photo.FIELD_EPOCH_DAY, DESCENDING)
+            .first()
+            .find()
 
-            if (previousPhoto != null || previousMilestone != null) {
-                return when {
-                    previousPhoto != null && previousMilestone == null ->
-                        LocalDate.ofEpochDay(previousPhoto.epochDay)
+        val previousMilestone: Milestone? = realm
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .sort(Milestone.FIELD_EPOCH_DAY, DESCENDING)
+            .first()
+            .find()
 
-                    previousPhoto == null && previousMilestone != null ->
-                        LocalDate.ofEpochDay(previousMilestone.epochDay)
+        realm.close()
 
-                    previousPhoto!!.epochDay > previousMilestone!!.epochDay ->
-                        LocalDate.ofEpochDay(previousPhoto.epochDay)
+        if (previousPhoto != null || previousMilestone != null) {
+            return when {
+                previousPhoto != null && previousMilestone == null ->
+                    LocalDate.ofEpochDay(previousPhoto.epochDay)
 
-                    else -> LocalDate.ofEpochDay(previousMilestone.epochDay)
-                }
+                previousPhoto == null && previousMilestone != null ->
+                    LocalDate.ofEpochDay(previousMilestone.epochDay)
+
+                previousPhoto!!.epochDay > previousMilestone!!.epochDay ->
+                    LocalDate.ofEpochDay(previousPhoto.epochDay)
+
+                else -> LocalDate.ofEpochDay(previousMilestone.epochDay)
             }
+        }
 
-            val startDate = SettingsManager.getStartDate(context = null)
-            val today = LocalDate.now()
+        val startDate = SettingsManager.getStartDate(context = null)
+        val today = LocalDate.now()
 
-            @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
-            if (startDate.isBefore(currentDate) && today.isBefore(currentDate)) {
-                if (startDate.isAfter(today)) {
-                    return startDate
-                } else {
-                    return today
-                }
-            } else if (startDate.isBefore(currentDate)) {
+        @Suppress("LiftReturnOrAssignment") //Reads better without lifting out the returns
+        if (startDate.isBefore(currentDate) && today.isBefore(currentDate)) {
+            if (startDate.isAfter(today)) {
                 return startDate
-            } else if (today.isBefore(currentDate)) {
-                return today
             } else {
-                return currentDate
+                return today
             }
+        } else if (startDate.isBefore(currentDate)) {
+            return startDate
+        } else if (today.isBefore(currentDate)) {
+            return today
+        } else {
+            return currentDate
         }
     }
 
     return ObservableTransformer { actions ->
         actions.scan<HomeResult>(HomeResult.Loading(LocalDate.now())) { previousResult, action ->
             return@scan when (action) {
-                HomeAction.PreviousDay -> getLoadedResult(getPreviousDate(getCurrentDate(previousResult)))
+                HomeAction.PreviousDay -> getLoadedResult(
+                    getPreviousDate(getCurrentDate(previousResult))
+                )
 
                 is HomeAction.LoadDay -> getLoadedResult(action.day)
 
