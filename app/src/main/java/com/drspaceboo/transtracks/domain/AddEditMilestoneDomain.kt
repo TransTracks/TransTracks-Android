@@ -70,7 +70,7 @@ class AddEditMilestoneDomain {
                             val realm = Realm.openDefault()
 
                             val milestone: Milestone? = realm.query(
-                                Milestone::class, "${Milestone.FIELD_ID} == ${action.milestoneId}"
+                                Milestone::class, "${Milestone.FIELD_ID} == '${action.milestoneId}'"
                             )
                                 .first()
                                 .find()

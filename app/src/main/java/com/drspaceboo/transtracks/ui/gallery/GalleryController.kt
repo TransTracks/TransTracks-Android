@@ -148,7 +148,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                 val realm = Realm.openDefault()
 
                 event.selectedIds.forEach { photoId ->
-                    realm.query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+                    realm.query(Photo::class, "${Photo.FIELD_ID} == '$photoId'")
                         .first()
                         .find()
                         ?.let { filePaths.add(it.filePath) }
@@ -187,7 +187,7 @@ class GalleryController(args: Bundle) : Controller(args) {
 
                         event.selectedIds.forEach { photoId ->
                             val photoToDelete: Photo? = realm
-                                .query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+                                .query(Photo::class, "${Photo.FIELD_ID} == '$photoId'")
                                 .first()
                                 .find()
 
