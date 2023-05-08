@@ -87,7 +87,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-    implementation 'io.realm.kotlin:library-base:1.7.0'
+    implementation 'io.realm.kotlin:library-base:1.8.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.6.4'
