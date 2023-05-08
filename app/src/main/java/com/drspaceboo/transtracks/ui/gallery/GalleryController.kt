@@ -37,7 +37,7 @@ import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.realm.kotlin.Realm
 import java.io.File
 

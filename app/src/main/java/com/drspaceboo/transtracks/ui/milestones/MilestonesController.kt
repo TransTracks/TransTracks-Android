@@ -23,7 +23,7 @@ import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class MilestonesController(args: Bundle) : Controller(args) {
     constructor(initialDay: Long) : this(Bundle().apply { putLong(KEY_INITIAL_DAY, initialDay) })

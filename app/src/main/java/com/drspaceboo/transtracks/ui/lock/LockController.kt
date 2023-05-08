@@ -29,7 +29,7 @@ import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class LockController : Controller() {
     private val viewDisposables: CompositeDisposable = CompositeDisposable()

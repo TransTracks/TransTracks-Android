@@ -24,11 +24,12 @@ import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneUiState.Di
 import com.drspaceboo.transtracks.util.setTextRetainingSelection
 import com.drspaceboo.transtracks.util.showKeyboard
 import com.drspaceboo.transtracks.util.toFullDateString
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.time.LocalDate
 
@@ -64,22 +65,26 @@ class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : Const
 
     val events: Observable<AddEditMilestoneUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-            toolbar.navigationClicks().map { AddEditMilestoneUiEvent.Back },
-            toolbar.itemClicks().map { item ->
+            toolbar.navigationClicks().toV3().map { AddEditMilestoneUiEvent.Back },
+            toolbar.itemClicks().toV3().map { item ->
                 return@map when (item.itemId) {
                     R.id.add_edit_milestone_menu_delete -> AddEditMilestoneUiEvent.Delete
                     else -> throw IllegalArgumentException("Unhandled item id")
                 }
             },
-            title.afterTextChangeEvents().skipInitialValue().filter { isUserChange }.map {
-                AddEditMilestoneUiEvent.TitleUpdated(it.editable.toString())
-            }.distinctUntilChanged(),
-            description.afterTextChangeEvents().skipInitialValue().filter { isUserChange }.map {
-                AddEditMilestoneUiEvent.DescriptionUpdated(it.editable.toString())
-            }.distinctUntilChanged(),
-            date.clicks().map { AddEditMilestoneUiEvent.ChangeDate(day) },
-            save.clicks().map {
-                AddEditMilestoneUiEvent.Save(day, title.text.toString(), description.text.toString())
+            title.afterTextChangeEvents().skipInitialValue().toV3()
+                .filter { isUserChange }
+                .map { AddEditMilestoneUiEvent.TitleUpdated(it.editable.toString()) }
+                .distinctUntilChanged(),
+            description.afterTextChangeEvents().skipInitialValue().toV3()
+                .filter { isUserChange }
+                .map { AddEditMilestoneUiEvent.DescriptionUpdated(it.editable.toString()) }
+                .distinctUntilChanged(),
+            date.clicks().toV3().map { AddEditMilestoneUiEvent.ChangeDate(day) },
+            save.clicks().toV3().map {
+                AddEditMilestoneUiEvent.Save(
+                    day, title.text.toString(), description.text.toString()
+                )
             })
     }
 

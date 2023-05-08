@@ -24,9 +24,9 @@ import com.drspaceboo.transtracks.util.dateCreated
 import com.drspaceboo.transtracks.util.localDateFromEpochMilli
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.quietlyClose
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import java.io.File
@@ -96,7 +96,7 @@ class AssignPhotosDomain {
     val actions: PublishRelay<AssignPhotosAction> = PublishRelay.create()
     val results: Observable<AssignPhotosResult> = actions
             .compose(assignPhotoActionsToResults())
-            .startWith(AssignPhotosResult.Loading(0, 1))
+            .startWithItem(AssignPhotosResult.Loading(0, 1))
             .subscribeOn(RxSchedulers.io())
             .observeOn(RxSchedulers.main())
             .replay(1)
@@ -165,7 +165,7 @@ class AssignPhotosDomain {
                                 return@map AssignPhotosResult.Display(uri, date, photoDate, type,
                                                                       action.index, uris.size)
                             }
-                            .startWith(AssignPhotosResult.Loading(action.index, uris.size))
+                            .startWithItem(AssignPhotosResult.Loading(action.index, uris.size))
                 }
 
                 is AssignPhotosAction.ShowDateDialog -> Observable.just(
@@ -255,7 +255,7 @@ class AssignPhotosDomain {
                                                                              action.index, uris.size)
                             }
                         }
-                        .startWith(AssignPhotosResult.SavingImage(action.index, uris.size))
+                        .startWithItem(AssignPhotosResult.SavingImage(action.index, uris.size))
             }
         }
     }

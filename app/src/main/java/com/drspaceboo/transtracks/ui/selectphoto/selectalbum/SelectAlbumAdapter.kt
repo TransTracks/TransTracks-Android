@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter.Album
 import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumAdapter.Holder
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 
 class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {

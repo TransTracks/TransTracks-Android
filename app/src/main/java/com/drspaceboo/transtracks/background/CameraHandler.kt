@@ -27,13 +27,12 @@ import com.drspaceboo.transtracks.data.TransTracksFileProvider
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.copyFrom
 import com.drspaceboo.transtracks.util.quietlyClose
-import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.BehaviorRelay
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-
 
 class CameraHandler : Fragment() {
     private var currentFile: File? = null
@@ -45,14 +44,16 @@ class CameraHandler : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == Activity.RESULT_OK
-                && currentFile != null) {
+            && currentFile != null
+        ) {
 
             val imageFile = currentFile!!
             if (imageFile.exists() && imageFile.length() > 0) {
                 photoTakenRelay.accept(imageFile.absolutePath)
             }
         } else if (requestCode == REQUEST_CODE_PHOTO_FROM_ANOTHER_APP
-                && resultCode == Activity.RESULT_OK && data != null) {
+            && resultCode == Activity.RESULT_OK && data != null
+        ) {
             try {
                 val imageUri = data.data!!
 
@@ -95,21 +96,26 @@ class CameraHandler : Fragment() {
         checkPermissionGranted()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CODE_CAMERA_PERMISSION && grantResults.isNotEmpty()) {
             val permissionGranted = (grantResults[0] == PackageManager.PERMISSION_GRANTED)
             cameraPermissionRelay.accept(permissionGranted)
 
             if (!permissionGranted) {
                 permissionBlockedRelay.accept(
-                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CAMERA))
+                    ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(), Manifest.permission.CAMERA
+                    )
+                )
             }
         }
     }
 
     private fun checkPermissionGranted(): Boolean {
-        val cameraPermissionStatus = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+        val cameraPermissionStatus =
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
 
         val permissionGranted = cameraPermissionStatus == PackageManager.PERMISSION_GRANTED
         cameraPermissionRelay.accept(permissionGranted)
@@ -143,7 +149,9 @@ class CameraHandler : Fragment() {
     private fun takePhoto() {
         val localContext = requireContext()
         currentFile = FileUtil.getTempImageFile()
-        val uri = FileProvider.getUriForFile(localContext, TransTracksFileProvider::class.java.name, currentFile!!)
+        val uri = FileProvider.getUriForFile(
+            localContext, TransTracksFileProvider::class.java.name, currentFile!!
+        )
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -158,7 +166,8 @@ class CameraHandler : Fragment() {
         private const val REQUEST_CODE_PHOTO_FROM_ANOTHER_APP = 580
 
         private val cameraPermissionRelay = BehaviorRelay.createDefault(false)
-        val cameraPermissionEnabled: Observable<Boolean> = cameraPermissionRelay.distinctUntilChanged()
+        val cameraPermissionEnabled: Observable<Boolean> =
+            cameraPermissionRelay.distinctUntilChanged()
 
         private val permissionBlockedRelay = PublishRelay.create<Boolean>()
         val cameraPermissionBlocked: Observable<Boolean> = permissionBlockedRelay
@@ -176,10 +185,10 @@ class CameraHandler : Fragment() {
         }
 
         fun requestIfNeeded(activity: AppCompatActivity): Boolean = from(activity)
-                .makeRequestsIfNeeded()
+            .makeRequestsIfNeeded()
 
         fun requestPhotoFromAnotherApp(activity: AppCompatActivity) = from(activity)
-                .requestPhotoFromAnotherApp()
+            .requestPhotoFromAnotherApp()
 
         fun takePhoto(activity: AppCompatActivity) = from(activity).takePhoto()
 

@@ -24,11 +24,12 @@ import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import kotterknife.bindView
 import java.lang.ref.WeakReference
 
@@ -58,7 +59,7 @@ class SingleAlbumView(context: Context, attributeSet: AttributeSet) : Constraint
 
     private val eventRelay: PublishRelay<SingleAlbumUiEvent> = PublishRelay.create()
     val events: Observable<SingleAlbumUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { SingleAlbumUiEvent.Back },
+        Observable.merge(toolbar.navigationClicks().toV3().map { SingleAlbumUiEvent.Back },
                          eventRelay.doOnNext { event ->
                              if (event !is SingleAlbumUiEvent.SelectPhoto) {
                                  return@doOnNext
@@ -80,7 +81,7 @@ class SingleAlbumView(context: Context, attributeSet: AttributeSet) : Constraint
                          })
     }
 
-    private var photoClickDisposable: Disposable = Disposables.disposed()
+    private var photoClickDisposable: Disposable = Disposable.disposed()
 
     private val gridLayoutManager = GridLayoutManager(context, GRID_SPAN)
     private var adapter: SingleAlbumAdapter? = null

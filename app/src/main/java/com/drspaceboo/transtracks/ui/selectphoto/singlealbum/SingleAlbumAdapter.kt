@@ -27,10 +27,10 @@ import com.drspaceboo.transtracks.ui.widget.CursorRecyclerViewAdapter
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.setVisibleOrGone
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.io.FileNotFoundException
 import java.lang.ref.WeakReference

@@ -18,10 +18,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.editorActions
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindOptionalView
 import kotterknife.bindView
 
@@ -36,7 +37,7 @@ class LockView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
 
     val events: Observable<LockUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge<LockUiEvent>(
-                code.editorActions()
+                code.editorActions().toV3()
                         .filter { action ->
                             action == EditorInfo.IME_ACTION_SEARCH
                                     || action == EditorInfo.IME_ACTION_DONE
@@ -48,7 +49,7 @@ class LockView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                 else -> throw IllegalArgumentException("Unhandled IME Action '$action'")
                             }
                         },
-                go.clicks().map { LockUiEvent.Unlock(code.text.toString()) })
+                go.clicks().toV3().map { LockUiEvent.Unlock(code.text.toString()) })
     }
 
     override fun onAttachedToWindow() {

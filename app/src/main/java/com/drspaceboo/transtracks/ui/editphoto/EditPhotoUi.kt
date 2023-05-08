@@ -18,10 +18,11 @@ import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.io.File
 
@@ -49,10 +50,10 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
     private val save: Button by bindView(R.id.edit_photo_save)
 
     val events: Observable<EditPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { EditPhotoUiEvent.Back },
-                         date.clicks().map { EditPhotoUiEvent.ChangeDate },
-                         type.clicks().map { EditPhotoUiEvent.ChangeType },
-                         save.clicks().map { EditPhotoUiEvent.Update })
+        Observable.merge(toolbar.navigationClicks().toV3().map { EditPhotoUiEvent.Back },
+                         date.clicks().toV3().map { EditPhotoUiEvent.ChangeDate },
+                         type.clicks().toV3().map { EditPhotoUiEvent.ChangeType },
+                         save.clicks().toV3().map { EditPhotoUiEvent.Update })
     }
 
     override fun onAttachedToWindow() {

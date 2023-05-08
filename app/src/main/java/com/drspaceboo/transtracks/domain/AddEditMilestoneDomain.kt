@@ -20,13 +20,12 @@ import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.Display
 import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.Loading
 import com.drspaceboo.transtracks.domain.AddEditMilestoneResult.UnableToFindMilestone
 import com.drspaceboo.transtracks.util.RxSchedulers
-import com.drspaceboo.transtracks.util.default
 import com.drspaceboo.transtracks.util.openDefault
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
+import io.realm.kotlin.ext.copyFromRealm
 
 sealed class AddEditMilestoneAction {
     data class InitialAdd(val epochDate: Long) : AddEditMilestoneAction()
@@ -54,7 +53,7 @@ class AddEditMilestoneDomain {
     val actions: PublishRelay<AddEditMilestoneAction> = PublishRelay.create()
     val results: Observable<AddEditMilestoneResult> = actions
         .compose(addEditMilestoneActionsToResults)
-        .startWith(Loading)
+        .startWithItem(Loading)
         .subscribeOn(RxSchedulers.io())
         .observeOn(RxSchedulers.main())
         .replay(1)
@@ -75,6 +74,7 @@ class AddEditMilestoneDomain {
                             )
                                 .first()
                                 .find()
+                                ?.copyFromRealm()
 
                             realm.close()
 

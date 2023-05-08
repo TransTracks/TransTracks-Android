@@ -48,8 +48,8 @@ import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.stream.JsonReader
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import kotterknife.bindView

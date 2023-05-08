@@ -10,6 +10,7 @@
 
 package com.drspaceboo.transtracks.ui.home
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +19,12 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.openDefault
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import com.squareup.picasso.Picasso
+import io.reactivex.rxjava3.disposables.Disposable
 import io.realm.kotlin.Realm
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.rx3.asObservable
@@ -33,22 +37,39 @@ class HomeGalleryAdapter(
     private val currentDate: LocalDate, @Photo.Type private val type: Int,
     eventRelay: PublishRelay<HomeUiEvent>
 ) : RecyclerView.Adapter<HomeGalleryAdapter.BaseViewHolder>() {
-    private val photosFlow = Realm.openDefault()
-        .query(
-            Photo::class,
-            "${Photo.FIELD_TYPE} == $type && ${Photo.FIELD_EPOCH_DAY} ==  ${currentDate.toEpochDay()}"
-        )
-        .sort(Photo.FIELD_TIMESTAMP, Sort.DESCENDING)
-        .find()
-        .asFlow()
-        .asObservable()
-        .subscribe {
-            result = it.list
-            notifyDataSetChanged()
-        }
+    private var photosDisposable = Disposable.disposed()
     private var result = emptyList<Photo>()
 
     private val eventRelayRef = WeakReference(eventRelay)
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        if (photosDisposable.isNotDisposed()) {
+            photosDisposable.dispose()
+        }
+
+        val mainThreadHandler = Handler(recyclerView.context.mainLooper)
+
+        photosDisposable = Realm.openDefault()
+            .query(
+                Photo::class,
+                "${Photo.FIELD_TYPE} == $type && ${Photo.FIELD_EPOCH_DAY} ==  ${currentDate.toEpochDay()}"
+            )
+            .sort(Photo.FIELD_TIMESTAMP, Sort.DESCENDING)
+            .find()
+            .asFlow()
+            .asObservable()
+            .observeOn(RxSchedulers.io())
+            .subscribe {
+                result = it.list
+                mainThreadHandler.post(::notifyDataSetChanged)
+            }
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        photosDisposable.dispose()
+    }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (holder) {

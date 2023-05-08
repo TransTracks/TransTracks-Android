@@ -18,11 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.isNotDisposed
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import kotterknife.bindView
 
 sealed class SelectAlbumUiEvent {
@@ -40,11 +41,11 @@ class AlbumView(context: Context, attributeSet: AttributeSet) : ConstraintLayout
 
     private val eventRelay: PublishRelay<SelectAlbumUiEvent> = PublishRelay.create<SelectAlbumUiEvent>()
     val events: Observable<SelectAlbumUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { SelectAlbumUiEvent.Back },
+        Observable.merge(toolbar.navigationClicks().toV3().map { SelectAlbumUiEvent.Back },
                          eventRelay)
     }
 
-    private var albumClickDisposable: Disposable = Disposables.disposed()
+    private var albumClickDisposable: Disposable = Disposable.disposed()
 
     fun display(state: SelectAlbumUiState) {
         when (state) {

@@ -24,7 +24,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.checkedChanges
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import java.time.LocalDate
 
 sealed class SettingsUiEvent {
@@ -66,27 +66,29 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-            binding.settingsToolbar.navigationClicks().map { SettingsUiEvent.Back },
-            binding.settingsAccountName.clicks().map { SettingsUiEvent.ChangeName },
-            binding.settingsAccountEmail.clicks().map { SettingsUiEvent.ChangeEmail },
-            binding.settingsAccountSignIn.clicks().map { SettingsUiEvent.SignIn },
-            binding.settingsAccountChangePassword.clicks().map { SettingsUiEvent.ChangePassword },
-            binding.settingsAccountDeleteAccount.clicks().map { SettingsUiEvent.DeleteAccount },
-            binding.settingsAccountSignOut.clicks().map { SettingsUiEvent.SignOut },
-            binding.settingsStartDate.clicks().map { SettingsUiEvent.ChangeStartDate },
-            binding.settingsTheme.clicks().map { SettingsUiEvent.ChangeTheme },
-            binding.settingsLock.clicks().map { SettingsUiEvent.ChangeLockMode },
-            binding.settingsLockDelay.clicks().map { SettingsUiEvent.ChangeLockDelay },
-            binding.settingsImport.clicks().map { SettingsUiEvent.Import },
-            binding.settingsExport.clicks().map { SettingsUiEvent.Export },
-            binding.settingsAnalytics
-                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAnalytics },
-            binding.settingsCrashReports
-                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
-            binding.settingsShowAds
-                .checkedChanges().filter { userAction }.map { SettingsUiEvent.ToggleAds },
-            binding.settingsContribute.clicks().map { SettingsUiEvent.Contribute },
-            binding.settingsPrivacyPolicy.clicks().map { SettingsUiEvent.PrivacyPolicy }
+            binding.settingsToolbar.navigationClicks().toV3().map { SettingsUiEvent.Back },
+            binding.settingsAccountName.clicks().toV3().map { SettingsUiEvent.ChangeName },
+            binding.settingsAccountEmail.clicks().toV3().map { SettingsUiEvent.ChangeEmail },
+            binding.settingsAccountSignIn.clicks().toV3().map { SettingsUiEvent.SignIn },
+            binding.settingsAccountChangePassword.clicks().toV3()
+                .map { SettingsUiEvent.ChangePassword },
+            binding.settingsAccountDeleteAccount.clicks().toV3()
+                .map { SettingsUiEvent.DeleteAccount },
+            binding.settingsAccountSignOut.clicks().toV3().map { SettingsUiEvent.SignOut },
+            binding.settingsStartDate.clicks().toV3().map { SettingsUiEvent.ChangeStartDate },
+            binding.settingsTheme.clicks().toV3().map { SettingsUiEvent.ChangeTheme },
+            binding.settingsLock.clicks().toV3().map { SettingsUiEvent.ChangeLockMode },
+            binding.settingsLockDelay.clicks().toV3().map { SettingsUiEvent.ChangeLockDelay },
+            binding.settingsImport.clicks().toV3().map { SettingsUiEvent.Import },
+            binding.settingsExport.clicks().toV3().map { SettingsUiEvent.Export },
+            binding.settingsAnalytics.checkedChanges().toV3()
+                .filter { userAction }.map { SettingsUiEvent.ToggleAnalytics },
+            binding.settingsCrashReports.checkedChanges().toV3()
+                .filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
+            binding.settingsShowAds.checkedChanges().toV3()
+                .filter { userAction }.map { SettingsUiEvent.ToggleAds },
+            binding.settingsContribute.clicks().toV3().map { SettingsUiEvent.Contribute },
+            binding.settingsPrivacyPolicy.clicks().toV3().map { SettingsUiEvent.PrivacyPolicy }
         )
     }
 

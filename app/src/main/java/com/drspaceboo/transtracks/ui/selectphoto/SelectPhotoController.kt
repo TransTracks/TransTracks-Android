@@ -38,9 +38,9 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import java.io.File
 
 class SelectPhotoController(args: Bundle) : Controller(args) {
@@ -60,7 +60,7 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
     private val type: Int = args.getInt(KEY_TYPE)
 
-    private var photoTakenDisposable: Disposable = Disposables.disposed()
+    private var photoTakenDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {

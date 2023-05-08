@@ -16,10 +16,11 @@ import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.settings.SettingsManager
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.copyFromRealm
 import io.realm.kotlin.query.Sort.DESCENDING
 import java.time.LocalDate
 import java.time.Period
@@ -47,7 +48,7 @@ sealed class HomeResult {
 class HomeDomain {
     val actions: PublishRelay<HomeAction> = PublishRelay.create()
     val results: Observable<HomeResult> = actions
-        .startWith(HomeAction.LoadDay(LocalDate.now()))
+        .startWithItem(HomeAction.LoadDay(LocalDate.now()))
         .compose(homeActionsToResults())
         .subscribeOn(RxSchedulers.io())
         .observeOn(RxSchedulers.main())
@@ -69,21 +70,21 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
         val currentDateEpochDay = currentDate.toEpochDay()
 
         val previousPhotos = realm
-            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} ==  $currentDateEpochDay")
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} <  $currentDateEpochDay")
             .count()
             .find()
         val previousMilestones = realm
-            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} < $currentDateEpochDay")
             .count()
             .find()
         val previousRecordCount = previousPhotos + previousMilestones
 
         val nextPhotos = realm
-            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} > $currentDateEpochDay")
             .count()
             .find()
         val nextMilestones = realm
-            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == $currentDateEpochDay")
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} > $currentDateEpochDay")
             .count()
             .find()
         val nextRecordCount = nextPhotos + nextMilestones
@@ -115,16 +116,18 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
         val realm = Realm.openDefault()
 
         val nextPhoto: Photo? = realm
-            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} > ${currentDate.toEpochDay()}")
             .sort(Photo.FIELD_EPOCH_DAY)
             .first()
             .find()
+            ?.copyFromRealm()
 
         val nextMilestone: Milestone? = realm
-            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} > ${currentDate.toEpochDay()}")
             .sort(Milestone.FIELD_EPOCH_DAY)
             .first()
             .find()
+            ?.copyFromRealm()
 
         realm.close()
 
@@ -163,16 +166,18 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
         val realm = Realm.openDefault()
 
         val previousPhoto: Photo? = realm
-            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .query(Photo::class, "${Photo.FIELD_EPOCH_DAY} < ${currentDate.toEpochDay()}")
             .sort(Photo.FIELD_EPOCH_DAY, DESCENDING)
             .first()
             .find()
+            ?.copyFromRealm()
 
         val previousMilestone: Milestone? = realm
-            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} == ${currentDate.toEpochDay()}")
+            .query(Milestone::class, "${Milestone.FIELD_EPOCH_DAY} < ${currentDate.toEpochDay()}")
             .sort(Milestone.FIELD_EPOCH_DAY, DESCENDING)
             .first()
             .find()
+            ?.copyFromRealm()
 
         realm.close()
 

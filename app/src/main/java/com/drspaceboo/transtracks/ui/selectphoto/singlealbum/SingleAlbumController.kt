@@ -27,7 +27,7 @@ import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SingleAlbumController(args: Bundle) : Controller(args) {
     constructor(bucketId: String, epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,

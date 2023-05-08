@@ -33,13 +33,14 @@ import com.drspaceboo.transtracks.util.loadAd
 import com.drspaceboo.transtracks.util.nullAllElements
 import com.drspaceboo.transtracks.util.setVisibleOrInvisible
 import com.drspaceboo.transtracks.util.toFullDateString
+import com.drspaceboo.transtracks.util.toV3
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.time.LocalDate
 
@@ -91,13 +92,13 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val eventRelay: PublishRelay<HomeUiEvent> = PublishRelay.create()
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-                takePhoto.clicks().map { HomeUiEvent.SelectPhoto },
-                settings.clicks().map { HomeUiEvent.Settings },
-                previousRecord.clicks().map { HomeUiEvent.PreviousRecord },
-                nextRecord.clicks().map { HomeUiEvent.NextRecord },
-                milestones.clicks().map { HomeUiEvent.Milestones(date.toEpochDay()) },
-                faceGallery.clicks().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
-                bodyGallery.clicks().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
+                takePhoto.clicks().toV3().map { HomeUiEvent.SelectPhoto },
+                settings.clicks().toV3().map { HomeUiEvent.Settings },
+                previousRecord.clicks().toV3().map { HomeUiEvent.PreviousRecord },
+                nextRecord.clicks().toV3().map { HomeUiEvent.NextRecord },
+                milestones.clicks().toV3().map { HomeUiEvent.Milestones(date.toEpochDay()) },
+                faceGallery.clicks().toV3().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
+                bodyGallery.clicks().toV3().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
                 eventRelay)
     }
 
