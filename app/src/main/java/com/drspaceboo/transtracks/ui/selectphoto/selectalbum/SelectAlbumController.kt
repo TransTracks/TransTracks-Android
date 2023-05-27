@@ -26,7 +26,7 @@ import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SelectAlbumController(args: Bundle) : Controller(args) {
     constructor(epochDay: Long? = null, @Photo.Type type: Int,

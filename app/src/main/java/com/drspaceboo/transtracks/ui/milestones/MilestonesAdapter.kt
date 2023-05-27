@@ -21,7 +21,7 @@ import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.isValid
 import io.realm.kotlin.query.Sort

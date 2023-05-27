@@ -23,12 +23,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.settings.PrefUtil
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import kotterknife.bindView
 import java.lang.ref.WeakReference
 
@@ -48,36 +49,38 @@ sealed class SelectPhotoUiState {
     data class Selection(val selectedUris: ArrayList<Uri>) : SelectPhotoUiState()
 }
 
-class SelectPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class SelectPhotoView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.select_photo_toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.select_photo_recycler_view)
 
-    private var adapterDisposable: Disposable = Disposables.disposed()
+    private var adapterDisposable: Disposable = Disposable.disposed()
 
     private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
     val events: Observable<SelectPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map { SelectPhotoUiEvent.Back },
-                         toolbar.itemClicks().map<SelectPhotoUiEvent> { item ->
-                             return@map when (item.itemId) {
-                                 R.id.select_photo_menu_folders -> SelectPhotoUiEvent.ViewAlbums
-                                 R.id.select_photo_menu_external -> SelectPhotoUiEvent.ExternalGalleries
-                                 else -> throw IllegalArgumentException("Unhandled toolbar item")
-                             }
-                         },
-                         eventRelay.doOnNext { event ->
-                             if (event !is SelectPhotoUiEvent.PhotoSelected) {
-                                 return@doOnNext
-                             }
+        Observable.merge(
+            toolbar.navigationClicks().toV3().map { SelectPhotoUiEvent.Back },
+            toolbar.itemClicks().toV3().map<SelectPhotoUiEvent> { item ->
+                return@map when (item.itemId) {
+                    R.id.select_photo_menu_folders -> SelectPhotoUiEvent.ViewAlbums
+                    R.id.select_photo_menu_external -> SelectPhotoUiEvent.ExternalGalleries
+                    else -> throw IllegalArgumentException("Unhandled toolbar item")
+                }
+            },
+            eventRelay.doOnNext { event ->
+                if (event !is SelectPhotoUiEvent.PhotoSelected) {
+                    return@doOnNext
+                }
 
-                             val position = gridLayoutManager.findFirstVisibleItemPosition()
+                val position = gridLayoutManager.findFirstVisibleItemPosition()
 
-                             if (position == RecyclerView.NO_POSITION) {
-                                 return@doOnNext
-                             }
+                if (position == RecyclerView.NO_POSITION) {
+                    return@doOnNext
+                }
 
-                             val uriString: String = adapter?.getUri(position)?.toString() ?: ""
-                             PrefUtil.setSelectPhotoFirstVisible(uriString)
-                         })
+                val uriString: String = adapter?.getUri(position)?.toString() ?: ""
+                PrefUtil.setSelectPhotoFirstVisible(uriString)
+            })
     }
 
     private val gridLayoutManager = GridLayoutManager(context, GRID_SPAN)
@@ -145,7 +148,8 @@ class SelectPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
         private var titleText = ""
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            val adapter: SelectPhotoAdapter = (recyclerView.adapter as SelectPhotoAdapter?) ?: return false
+            val adapter: SelectPhotoAdapter = (recyclerView.adapter as SelectPhotoAdapter?)
+                ?: return false
 
             val event: SelectPhotoUiEvent = when (item.itemId) {
                 R.id.select_photo_selection_save ->

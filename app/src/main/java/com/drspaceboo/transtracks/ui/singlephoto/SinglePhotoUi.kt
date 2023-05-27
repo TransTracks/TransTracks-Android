@@ -17,10 +17,11 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.io.File
 
@@ -43,8 +44,8 @@ class SinglePhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
     val events: Observable<SinglePhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(
-                toolbar.navigationClicks().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back },
-                toolbar.itemClicks().map { item ->
+                toolbar.navigationClicks().toV3().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back },
+                toolbar.itemClicks().toV3().map { item ->
                     return@map when (item.itemId) {
                         R.id.single_photo_menu_edit -> SinglePhotoUiEvent.Edit(photoId)
                         R.id.single_photo_menu_share -> SinglePhotoUiEvent.Share(photoId)

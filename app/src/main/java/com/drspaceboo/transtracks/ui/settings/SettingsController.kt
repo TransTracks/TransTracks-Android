@@ -45,16 +45,16 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
-import io.reactivex.Completable
-import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import java.time.LocalDate
 import java.util.*
 
 class SettingsController : Controller() {
-    private var resultsDisposable: Disposable = Disposables.disposed()
+    private var resultsDisposable: Disposable = Disposable.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {

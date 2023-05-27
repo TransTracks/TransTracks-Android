@@ -35,8 +35,8 @@ import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.lang.ref.WeakReference
 
@@ -90,16 +90,18 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
 
     private val eventRelay: PublishRelay<GalleryUiEvent> = PublishRelay.create()
     val events: Observable<GalleryUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().map<GalleryUiEvent> { GalleryUiEvent.Back },
-                         toolbar.itemClicks().map<GalleryUiEvent> { item ->
-                             return@map when (item.itemId) {
-                                 R.id.gallery_menu_add -> GalleryUiEvent.AddPhoto(type)
-                                 R.id.gallery_menu_share -> GalleryUiEvent.StartMultiSelect
-                                 else -> throw IllegalArgumentException("Unhandled menu item id")
-                             }
-                         },
-                         emptyAdd.clicks().map { GalleryUiEvent.AddPhoto(type) },
-                         eventRelay)
+        Observable.merge(
+            toolbar.navigationClicks().toV3().map<GalleryUiEvent> { GalleryUiEvent.Back },
+            toolbar.itemClicks().toV3().map<GalleryUiEvent> { item ->
+                return@map when (item.itemId) {
+                    R.id.gallery_menu_add -> GalleryUiEvent.AddPhoto(type)
+                    R.id.gallery_menu_share -> GalleryUiEvent.StartMultiSelect
+                    else -> throw IllegalArgumentException("Unhandled menu item id")
+                }
+            },
+            emptyAdd.clicks().toV3().map { GalleryUiEvent.AddPhoto(type) },
+            eventRelay
+        )
     }
 
     @Photo.Type

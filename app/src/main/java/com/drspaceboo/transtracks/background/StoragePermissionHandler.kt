@@ -21,9 +21,9 @@ import androidx.fragment.app.Fragment
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.Utils
 import com.google.android.material.snackbar.Snackbar
-import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.BehaviorRelay
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 
 class StoragePermissionHandler : Fragment() {
     init {

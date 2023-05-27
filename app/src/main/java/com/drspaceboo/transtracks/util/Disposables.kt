@@ -10,6 +10,6 @@
 
 package com.drspaceboo.transtracks.util
 
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 fun Disposable.isNotDisposed() = !isDisposed

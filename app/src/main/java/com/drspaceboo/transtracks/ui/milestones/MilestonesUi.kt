@@ -29,8 +29,8 @@ import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 
 sealed class MilestonesUiEvent {
@@ -62,14 +62,14 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
     private val eventRelay: PublishRelay<MilestonesUiEvent> = PublishRelay.create()
     val events: Observable<MilestonesUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge<MilestonesUiEvent>(
-                toolbar.navigationClicks().map { MilestonesUiEvent.Back },
-                toolbar.itemClicks().map<MilestonesUiEvent> { item ->
+                toolbar.navigationClicks().toV3().map { MilestonesUiEvent.Back },
+                toolbar.itemClicks().toV3().map<MilestonesUiEvent> { item ->
                     return@map when (item.itemId) {
                         R.id.milestones_menu_add -> MilestonesUiEvent.AddMilestone(day)
                         else -> throw IllegalArgumentException("Unhandled menu item id")
                     }
                 },
-                emptyAdd.clicks().map { MilestonesUiEvent.AddMilestone(day) },
+                emptyAdd.clicks().toV3().map { MilestonesUiEvent.AddMilestone(day) },
                 eventRelay)
     }
 

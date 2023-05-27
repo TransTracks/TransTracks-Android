@@ -32,9 +32,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.stream.JsonWriter
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.realm.kotlin.Realm
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter
@@ -80,7 +80,7 @@ class SettingsDomain {
         Observable.merge(actions, settingsUpdatedActions)
 
     val results: Observable<SettingsResult> = mergedActions
-        .startWith(SettingsUpdated)
+        .startWithItem(SettingsUpdated)
         .compose(settingsActionsToResults(viewEffectRelay))
         .subscribeOn(RxSchedulers.io())
         .observeOn(RxSchedulers.main())
@@ -245,7 +245,7 @@ class SettingsDomain {
                                 .subscribeOn(RxSchedulers.io())
 
                             Observable.merge(progressRelay, export)
-                                .startWith(Loading(content, overallProgress, stepProgress))
+                                .startWithItem(Loading(content, overallProgress, stepProgress))
                         }
                     }
                 }

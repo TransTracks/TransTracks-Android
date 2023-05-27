@@ -14,9 +14,9 @@ import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.openDefault
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import java.io.File
@@ -59,7 +59,7 @@ class EditPhotoDomain {
     val actions: PublishRelay<EditPhotoAction> = PublishRelay.create()
     val results: Observable<EditPhotoResult> = actions
         .compose(editPhotoActionsToResults())
-        .startWith(EditPhotoResult.Loading)
+        .startWithItem(EditPhotoResult.Loading)
         .subscribeOn(RxSchedulers.io())
         .observeOn(RxSchedulers.main())
         .replay(1)
@@ -100,7 +100,7 @@ class EditPhotoDomain {
                                     false -> EditPhotoResult.ErrorLoadingPhoto
                                 }
                             }
-                            .startWith(EditPhotoResult.Loading)
+                            .startWithItem(EditPhotoResult.Loading)
                     }
 
                     EditPhotoAction.ShowDateDialog ->
@@ -127,7 +127,6 @@ class EditPhotoDomain {
                             val photo = realm.query(Photo::class, "${Photo.FIELD_ID} == $id")
                                 .first()
                                 .find()
-                            realm.close()
 
                             if (photo == null) {
                                 realm.close()
@@ -167,6 +166,7 @@ class EditPhotoDomain {
 
                                 copyToRealm(photo, UpdatePolicy.ALL)
                             }
+                            realm.close()
 
                             return@map true
                         }
@@ -177,7 +177,7 @@ class EditPhotoDomain {
                                 false -> EditPhotoResult.ErrorUpdatingImage(path, date, type)
                             }
                         }
-                        .startWith(EditPhotoResult.UpdatingImage)
+                        .startWithItem(EditPhotoResult.UpdatingImage)
                 }
             }
         }

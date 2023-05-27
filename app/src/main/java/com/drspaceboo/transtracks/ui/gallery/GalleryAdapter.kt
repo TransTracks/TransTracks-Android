@@ -24,7 +24,7 @@ import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import com.squareup.picasso.Picasso
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.isValid

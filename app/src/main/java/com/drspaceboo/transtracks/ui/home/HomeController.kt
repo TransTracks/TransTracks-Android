@@ -43,13 +43,13 @@ import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.using
-import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+
 
 class HomeController : Controller() {
-    private var resultDisposable: Disposable = Disposables.disposed()
+    private var resultDisposable: Disposable = Disposable.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
@@ -166,14 +166,6 @@ class HomeController : Controller() {
                             router.pushController(RouterTransaction.with(SettingsController())
                                                           .using(VerticalChangeHandler()))
 
-                        is HomeUiEvent.PreviousRecord ->
-                            router.pushController(RouterTransaction.with(HomeController())
-                                                          .tag(HomeController.TAG))
-
-                        is HomeUiEvent.NextRecord ->
-                            router.pushController(RouterTransaction.with(HomeController())
-                                                          .tag(HomeController.TAG))
-
                         is HomeUiEvent.Milestones ->
                             router.pushController(RouterTransaction.with(
                                     MilestonesController(event.day)).tag(MilestonesController.TAG))
@@ -195,11 +187,9 @@ class HomeController : Controller() {
                                     SinglePhotoController(event.photoId))
                                                           .using(VerticalChangeHandler()))
 
-                        is HomeUiEvent.AddPhoto ->
-                            router.pushController(RouterTransaction.with(
-                                    SelectPhotoController(event.currentDate.toEpochDay(), event.type))
-                                                          .using(VerticalChangeHandler()))
-
+                        is HomeUiEvent.AddPhoto,
+                        is HomeUiEvent.NextRecord,
+                        is HomeUiEvent.PreviousRecord,
                         is HomeUiEvent.SelectPhoto -> throw IllegalStateException("unexpected event")
                     }
                 }

@@ -22,10 +22,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.setVisibleOrGone
+import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import com.squareup.picasso.Picasso
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.time.LocalDate
 
@@ -61,14 +62,15 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
     private val skip: Button by bindView(R.id.assign_photo_skip)
 
     val events: Observable<AssignPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.mergeArray(toolbar.navigationClicks().map { AssignPhotoUiEvent.Back },
-                              date.clicks().map { AssignPhotoUiEvent.ChangeDate(currentIndex) },
-                              photoDate.clicks().map {
-                                  AssignPhotoUiEvent.UsePhotoDate(currentIndex, currentPhotoDate)
-                              },
-                              type.clicks().map { AssignPhotoUiEvent.ChangeType(currentIndex) },
-                              save.clicks().map { AssignPhotoUiEvent.Save(currentIndex) },
-                              skip.clicks().map { AssignPhotoUiEvent.Skip(currentIndex, currentCount) })
+        Observable.mergeArray(
+            toolbar.navigationClicks().toV3().map { AssignPhotoUiEvent.Back },
+            date.clicks().toV3().map { AssignPhotoUiEvent.ChangeDate(currentIndex) },
+            photoDate.clicks().toV3().map {
+                AssignPhotoUiEvent.UsePhotoDate(currentIndex, currentPhotoDate)
+            },
+            type.clicks().toV3().map { AssignPhotoUiEvent.ChangeType(currentIndex) },
+            save.clicks().toV3().map { AssignPhotoUiEvent.Save(currentIndex) },
+            skip.clicks().toV3().map { AssignPhotoUiEvent.Skip(currentIndex, currentCount) })
     }
 
     private var currentPhotoDate: LocalDate = LocalDate.MIN

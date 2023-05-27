@@ -40,10 +40,9 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import java.time.LocalDate
@@ -57,7 +56,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
         putString(KEY_MILESTONE_ID, milestoneId)
     })
 
-    private var resultsDisposable: Disposable = Disposables.disposed()
+    private var resultsDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null

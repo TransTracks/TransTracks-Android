@@ -34,10 +34,10 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.ObservableTransformer
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.disposables.Disposables
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+
 import java.time.LocalDate
 
 class EditPhotoController(args: Bundle) : Controller(args) {
@@ -45,7 +45,7 @@ class EditPhotoController(args: Bundle) : Controller(args) {
         putString(KEY_PHOTO_ID, photoId)
     })
 
-    private var resultsDisposable: Disposable = Disposables.disposed()
+    private var resultsDisposable: Disposable = Disposable.disposed()
     private val viewDisposables = CompositeDisposable()
 
     private var savingDialog: AlertDialog? = null

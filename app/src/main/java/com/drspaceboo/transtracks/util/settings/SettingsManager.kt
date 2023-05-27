@@ -26,8 +26,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.DocumentReference
 import com.google.gson.JsonObject
 import com.google.gson.stream.JsonReader
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.Observable
 import java.io.IOException
 import java.time.LocalDate
 
