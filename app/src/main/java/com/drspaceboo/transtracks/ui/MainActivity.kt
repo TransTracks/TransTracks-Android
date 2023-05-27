@@ -18,11 +18,16 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VisualMediaType
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
@@ -31,10 +36,12 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.databinding.ActivityMainBinding
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.copyPhotoToTempFiles
 import com.drspaceboo.transtracks.util.fileName
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.openDefault
@@ -71,6 +78,9 @@ class MainActivity : AppCompatActivity() {
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
+    private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private var pickMediaHandlingData = PickMediaHandlingData()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -89,6 +99,29 @@ class MainActivity : AppCompatActivity() {
 
         StoragePermissionHandler.install(this)
         CameraHandler.install(this)
+
+        pickMediaLauncher = registerForActivityResult(PickMultipleVisualMedia()) { uris ->
+            if (uris.isNullOrEmpty()) {
+                return@registerForActivityResult
+            }
+
+            val photos = uris.mapNotNull { copyPhotoToTempFiles(it) }
+                .map { Uri.fromFile(File(it)) }
+                .let { ArrayList(it) }
+
+            router?.pushController(
+                RouterTransaction
+                    .with(
+                        AssignPhotosController(
+                            uris = photos,
+                            epochDay = pickMediaHandlingData.epochDay,
+                            type = pickMediaHandlingData.type,
+                            tagOfControllerToPopTo = pickMediaHandlingData.popToTag
+                        )
+                    )
+                    .using(HorizontalChangeHandler())
+            )
+        }
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
         if (!router!!.hasRootController()) {
@@ -222,6 +255,11 @@ class MainActivity : AppCompatActivity() {
                 .setNegativeButton(android.R.string.no, null)
                 .show()
         }
+    }
+
+    fun launchPickMedia(type: VisualMediaType, handlingData: PickMediaHandlingData) {
+        pickMediaHandlingData = handlingData
+        pickMediaLauncher.launch(PickVisualMediaRequest(type))
     }
 
     sealed class ImportResult {
@@ -410,3 +448,9 @@ class MainActivity : AppCompatActivity() {
         viewDisposables.clear()
     }
 }
+
+data class PickMediaHandlingData(
+    val epochDay: Long? = null,
+    @Photo.Type val type: Int = Photo.TYPE_BODY,
+    val popToTag: String = HomeController.TAG
+)

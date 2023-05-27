@@ -17,10 +17,12 @@ import android.transition.TransitionManager
 import android.transition.TransitionSet
 import android.util.AttributeSet
 import android.view.GestureDetector
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +47,6 @@ import kotterknife.bindView
 import java.time.LocalDate
 
 sealed class HomeUiEvent {
-    object SelectPhoto : HomeUiEvent()
     object Settings : HomeUiEvent()
     object PreviousRecord : HomeUiEvent()
     object NextRecord : HomeUiEvent()
@@ -53,21 +54,26 @@ sealed class HomeUiEvent {
     data class FaceGallery(val day: Long) : HomeUiEvent()
     data class BodyGallery(val day: Long) : HomeUiEvent()
     data class ImageClick(val photoId: String) : HomeUiEvent()
-    data class AddPhoto(val currentDate: LocalDate, @Photo.Type val type: Int) : HomeUiEvent()
+    data class AddPhotoCamera(
+        val currentDate: LocalDate? = null, @Photo.Type val type: Int? = null
+    ) : HomeUiEvent()
+
+    data class AddPhotoGallery(
+        val currentDate: LocalDate? = null, @Photo.Type val type: Int? = null
+    ) : HomeUiEvent()
 }
 
 sealed class HomeUiState {
     object Loading : HomeUiState()
-    data class Loaded(val dayString: String,
-                      val showPreviousRecord: Boolean,
-                      val showNextRecord: Boolean,
-                      val startDate: LocalDate,
-                      val currentDate: LocalDate,
-                      val hasMilestones: Boolean,
-                      val showAds: Boolean) : HomeUiState()
+    data class Loaded(
+        val dayString: String, val showPreviousRecord: Boolean, val showNextRecord: Boolean,
+        val startDate: LocalDate, val currentDate: LocalDate, val hasMilestones: Boolean,
+        val showAds: Boolean
+    ) : HomeUiState()
 }
 
-class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class HomeView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private val takePhoto: ImageButton by bindView(R.id.home_take_photo)
     private val settings: ImageButton by bindView(R.id.home_settings)
 
@@ -92,14 +98,14 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
     private val eventRelay: PublishRelay<HomeUiEvent> = PublishRelay.create()
     val events: Observable<HomeUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.mergeArray(
-                takePhoto.clicks().toV3().map { HomeUiEvent.SelectPhoto },
-                settings.clicks().toV3().map { HomeUiEvent.Settings },
-                previousRecord.clicks().toV3().map { HomeUiEvent.PreviousRecord },
-                nextRecord.clicks().toV3().map { HomeUiEvent.NextRecord },
-                milestones.clicks().toV3().map { HomeUiEvent.Milestones(date.toEpochDay()) },
-                faceGallery.clicks().toV3().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
-                bodyGallery.clicks().toV3().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
-                eventRelay)
+            settings.clicks().toV3().map { HomeUiEvent.Settings },
+            previousRecord.clicks().toV3().map { HomeUiEvent.PreviousRecord },
+            nextRecord.clicks().toV3().map { HomeUiEvent.NextRecord },
+            milestones.clicks().toV3().map { HomeUiEvent.Milestones(date.toEpochDay()) },
+            faceGallery.clicks().toV3().map { HomeUiEvent.FaceGallery(date.toEpochDay()) },
+            bodyGallery.clicks().toV3().map { HomeUiEvent.BodyGallery(date.toEpochDay()) },
+            eventRelay
+        )
     }
 
     private val facePhotoIds = Array<String?>(3) { _ -> null }
@@ -134,10 +140,14 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
             return@setOnTouchListener true
         }
 
-        faceRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
-                                                             false)
-        bodyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,
-                                                             false)
+        takePhoto.setOnClickListener { showPhotoSourceMenu() }
+
+        faceRecyclerView.layoutManager = LinearLayoutManager(
+            context, LinearLayoutManager.HORIZONTAL, false
+        )
+        bodyRecyclerView.layoutManager = LinearLayoutManager(
+            context, LinearLayoutManager.HORIZONTAL, false
+        )
     }
 
     fun display(state: HomeUiState) {
@@ -203,7 +213,9 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                                                 .addTarget(bodyRecyclerView)
                                         )
 
-                                    TransitionManager.beginDelayedTransition(this@HomeView, transitionSet)
+                                    TransitionManager.beginDelayedTransition(
+                                        this@HomeView, transitionSet
+                                    )
                                     adViewLayout.gone()
                                 }
                             }
@@ -214,5 +226,24 @@ class HomeView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(
                 }
             }
         }
+    }
+
+    private fun showPhotoSourceMenu(currentDate: LocalDate? = null, @Photo.Type type: Int? = null) {
+        val popup = PopupMenu(context, takePhoto)
+        popup.menuInflater.inflate(R.menu.popup_media_source, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.media_source_camera ->
+                    eventRelay.accept(HomeUiEvent.AddPhotoCamera(currentDate, type))
+
+                R.id.media_source_gallery ->
+                    eventRelay.accept(HomeUiEvent.AddPhotoGallery(currentDate, type))
+
+                else -> return@setOnMenuItemClickListener false
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+        popup.show()
     }
 }

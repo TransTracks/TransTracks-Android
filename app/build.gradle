@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'io.realm.kotlin'
+
+    id 'com.google.gms.google-services' //Should be second last
+    id 'com.google.firebase.crashlytics' // Should be last
 }
 
 android {
@@ -51,6 +54,7 @@ android {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 
+    implementation 'androidx.activity:activity-ktx:1.7.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.10.0'
@@ -59,12 +63,13 @@ dependencies {
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
+    implementation 'com.google.android.gms:play-services-ads:22.0.0'
+
     implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
 
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
-    implementation 'com.google.firebase:firebase-ads:22.0.0'
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
@@ -103,6 +108,3 @@ String getSecretString(String key) {
     props.load(new FileInputStream(file("$rootDir/secrets.properties")))
     return props[key]
 }
-
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'

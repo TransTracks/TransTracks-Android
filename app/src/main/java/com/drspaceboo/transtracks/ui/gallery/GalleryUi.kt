@@ -21,12 +21,14 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.ui.home.HomeUiEvent
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
 import com.drspaceboo.transtracks.util.*
 import com.google.android.gms.ads.AdListener
@@ -39,11 +41,13 @@ import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.lang.ref.WeakReference
+import java.time.LocalDate
 
 sealed class GalleryUiEvent {
     object Back : GalleryUiEvent()
     data class ImageClick(val photoId: String) : GalleryUiEvent()
-    data class AddPhoto(@Photo.Type val type: Int) : GalleryUiEvent()
+    data class AddPhotoCamera(@Photo.Type val type: Int) : GalleryUiEvent()
+    data class AddPhotoGallery(@Photo.Type val type: Int) : GalleryUiEvent()
     object StartMultiSelect : GalleryUiEvent()
     data class SelectionUpdated(val selectedIds: ArrayList<String>) : GalleryUiEvent()
     object EndActionMode : GalleryUiEvent()
@@ -92,14 +96,6 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
     val events: Observable<GalleryUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(
             toolbar.navigationClicks().toV3().map<GalleryUiEvent> { GalleryUiEvent.Back },
-            toolbar.itemClicks().toV3().map<GalleryUiEvent> { item ->
-                return@map when (item.itemId) {
-                    R.id.gallery_menu_add -> GalleryUiEvent.AddPhoto(type)
-                    R.id.gallery_menu_share -> GalleryUiEvent.StartMultiSelect
-                    else -> throw IllegalArgumentException("Unhandled menu item id")
-                }
-            },
-            emptyAdd.clicks().toV3().map { GalleryUiEvent.AddPhoto(type) },
             eventRelay
         )
     }
@@ -111,9 +107,19 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
         super.onAttachedToWindow()
 
         toolbar.inflateMenu(R.menu.gallery)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.gallery_menu_add -> showPhotoSourceMenu(toolbar.findViewById(R.id.gallery_menu_add))
+                R.id.gallery_menu_share -> eventRelay.accept(GalleryUiEvent.StartMultiSelect)
+                else -> return@setOnMenuItemClickListener false
+            }
+            return@setOnMenuItemClickListener true
+        }
 
         layoutManager.spanSizeLookup = AdapterSpanSizeLookup(recyclerView)
         recyclerView.layoutManager = layoutManager
+
+        emptyAdd.setOnClickListener { showPhotoSourceMenu(emptyAdd) }
     }
 
     fun display(state: GalleryUiState) {
@@ -197,6 +203,25 @@ class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayo
         } else {
             adViewLayout.gone()
         }
+    }
+
+    private fun showPhotoSourceMenu(view: View) {
+        val popup = PopupMenu(context, view)
+        popup.menuInflater.inflate(R.menu.popup_media_source, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.media_source_camera ->
+                    eventRelay.accept(GalleryUiEvent.AddPhotoCamera(type = type))
+
+                R.id.media_source_gallery ->
+                    eventRelay.accept(GalleryUiEvent.AddPhotoGallery(type = type))
+
+                else -> return@setOnMenuItemClickListener false
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+        popup.show()
     }
 
     private val actionModeHandler = object : ActionMode.Callback {

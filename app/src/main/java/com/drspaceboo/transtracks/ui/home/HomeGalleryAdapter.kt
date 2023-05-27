@@ -12,10 +12,12 @@ package com.drspaceboo.transtracks.ui.home
 
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
@@ -110,7 +112,22 @@ class HomeGalleryAdapter(
 
         init {
             add.setOnClickListener {
-                eventRelayRef.get()?.accept(HomeUiEvent.AddPhoto(currentDate, type))
+                val popup = PopupMenu(it.context, it)
+                popup.menuInflater.inflate(R.menu.popup_media_source, popup.menu)
+                popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+                    when (menuItem.itemId) {
+                        R.id.media_source_camera -> eventRelayRef.get()
+                            ?.accept(HomeUiEvent.AddPhotoCamera(currentDate, type))
+
+                        R.id.media_source_gallery -> eventRelayRef.get()
+                            ?.accept(HomeUiEvent.AddPhotoGallery(currentDate, type))
+
+                        else -> return@setOnMenuItemClickListener false
+                    }
+
+                    return@setOnMenuItemClickListener true
+                }
+                popup.show()
             }
         }
 

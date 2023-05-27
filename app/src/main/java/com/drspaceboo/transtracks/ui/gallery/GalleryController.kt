@@ -10,11 +10,15 @@
 
 package com.drspaceboo.transtracks.ui.gallery
 
+import android.Manifest
 import android.content.DialogInterface
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Controller
@@ -22,8 +26,13 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Photo
+import com.drspaceboo.transtracks.ui.MainActivity
+import com.drspaceboo.transtracks.ui.PickMediaHandlingData
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
+import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
 import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
@@ -38,6 +47,7 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.realm.kotlin.Realm
 import java.io.File
 
@@ -50,6 +60,7 @@ class GalleryController(args: Bundle) : Controller(args) {
     private val isFaceGallery: Boolean = args.getBoolean(KEY_IS_FACE_GALLERY)
     private val initialDay: Long = args.getLong(KEY_INITIAL_DAY)
 
+    private var photoTakenDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null
@@ -107,11 +118,51 @@ class GalleryController(args: Bundle) : Controller(args) {
             }
 
         viewDisposables += Observables.combineLatest(
-            sharedEvents.ofType<GalleryUiEvent.AddPhoto>(),
+            sharedEvents.ofType<GalleryUiEvent.AddPhotoCamera>(),
+            CameraHandler.cameraPermissionEnabled
+        ) { _, cameraEnabled -> cameraEnabled }
+            .subscribe { cameraEnabled ->
+                if (cameraEnabled) {
+                    CameraHandler.takePhoto(activity as AppCompatActivity)
+                } else {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                        AlertDialog.Builder(activity!!)
+                            .setTitle(R.string.permission_required)
+                            .setMessage(R.string.camera_permission_required_message)
+                            .setPositiveButton(R.string.grant_permission) { _, _ ->
+                                CameraHandler
+                                    .requestIfNeeded(router.activity as AppCompatActivity)
+                            }
+                            .setNeutralButton(R.string.cancel, null)
+                            .show()
+                    } else {
+                        val didShow = CameraHandler
+                            .requestIfNeeded(router.activity as AppCompatActivity)
+
+                        if (!didShow) {
+                            CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
+                        }
+                    }
+                }
+            }
+
+        viewDisposables += CameraHandler.cameraPermissionBlocked
+            .filter { showRationale -> !showRationale }
+            .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
+
+        viewDisposables += Observables.combineLatest(
+            sharedEvents.ofType<GalleryUiEvent.AddPhotoGallery>(),
             StoragePermissionHandler.storagePermissionEnabled
         ) { event, storageEnabled -> event to storageEnabled }
             .subscribe { (event, storageEnabled) ->
-                if (storageEnabled) {
+                val activity = activity as? MainActivity ?: return@subscribe
+
+                if (PickVisualMedia.isPhotoPickerAvailable(activity)) {
+                    activity.launchPickMedia(
+                        PickVisualMedia.ImageOnly,
+                        PickMediaHandlingData(type = event.type, popToTag = HomeController.TAG)
+                    )
+                } else if (storageEnabled) {
                     router.pushController(
                         RouterTransaction
                             .with(
@@ -121,6 +172,9 @@ class GalleryController(args: Bundle) : Controller(args) {
                             )
                             .using(VerticalChangeHandler())
                     )
+
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    CameraHandler.requestPhotoFromAnotherApp(activity)
                 } else {
                     StoragePermissionHandler.handleRequestingPermission(
                         view, activity as AppCompatActivity
@@ -231,6 +285,24 @@ class GalleryController(args: Bundle) : Controller(args) {
 
                 confirmDeleteDialog!!.show()
             }
+
+        if (photoTakenDisposable.isDisposed) {
+            photoTakenDisposable = CameraHandler.photoTaken
+                .subscribe { absolutePath ->
+                    router.pushController(
+                        RouterTransaction
+                            .with(
+                                AssignPhotosController(
+                                    uris = arrayListOf(Uri.fromFile(File(absolutePath))),
+                                    epochDay = null,
+                                    type = type,
+                                    tagOfControllerToPopTo = TAG
+                                )
+                            )
+                            .using(HorizontalChangeHandler())
+                    )
+                }
+        }
     }
 
     override fun onDetach(view: View) {

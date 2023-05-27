@@ -11,6 +11,7 @@
 package com.drspaceboo.transtracks.ui.selectphoto
 
 import android.Manifest
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -43,6 +44,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 
 import java.io.File
 
+@Deprecated("This shouldn't be handled in app, let's move to use selecting with other apps")
 class SelectPhotoController(args: Bundle) : Controller(args) {
     constructor(epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
                 tagOfControllerToPopTo: String = HomeController.TAG) : this(Bundle().apply {
@@ -128,7 +130,7 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
                                     .requestIfNeeded(router.activity as AppCompatActivity)
 
                             if (!didShow) {
-                                showCameraPermissionDisabledSnackBar(view)
+                                CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
                             }
                         }
                     }
@@ -136,7 +138,7 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
         viewDisposables += CameraHandler.cameraPermissionBlocked
                 .filter { showRationale -> !showRationale }
-                .subscribe { showCameraPermissionDisabledSnackBar(view) }
+                .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
 
         viewDisposables += sharedEvents
                 .ofType<SelectPhotoUiEvent.PhotoSelected>()
@@ -175,13 +177,6 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
         if (photoTakenDisposable.isNotDisposed()) {
             photoTakenDisposable.dispose()
         }
-    }
-
-    private fun showCameraPermissionDisabledSnackBar(view: View) {
-        Snackbar.make(view, R.string.camera_permission_disabled,
-                      Snackbar.LENGTH_LONG)
-                .setAction(R.string.settings) { Utils.goToDeviceSettings(activity!!) }
-                .show()
     }
 
     companion object {
