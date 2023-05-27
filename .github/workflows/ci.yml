@@ -36,6 +36,12 @@ jobs:
       
     - name: 👷‍♀️ Build with Gradle
       run: ./gradlew build
+    
+    - name: 🛜 Upload reports
+      if: always()
+      with:
+        name: Lint Results
+        path: app/build/reports/lint-results-debug.html
 
 
   check-gradle-wrapper:
