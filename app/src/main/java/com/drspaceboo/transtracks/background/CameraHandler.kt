@@ -17,16 +17,20 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.provider.MediaStore
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
+import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.TransTracksFileProvider
 import com.drspaceboo.transtracks.util.FileUtil
+import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.copyFrom
 import com.drspaceboo.transtracks.util.quietlyClose
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxrelay3.BehaviorRelay
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
@@ -199,5 +203,10 @@ class CameraHandler : Fragment() {
                 throw IllegalStateException("install() not called before from()!", e)
             }
         }
+
+        fun showCameraPermissionDisabledSnackBar(view: View, activity: Activity) =
+            Snackbar.make(view, R.string.camera_permission_disabled, Snackbar.LENGTH_LONG)
+                .setAction(R.string.settings) { Utils.goToDeviceSettings(activity) }
+                .show()
     }
 }

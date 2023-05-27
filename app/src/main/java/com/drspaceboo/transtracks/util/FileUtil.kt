@@ -17,6 +17,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 object FileUtil {
     private const val TEMP_FOLDER = "temp/"
@@ -56,7 +57,8 @@ object FileUtil {
 
     fun getTempImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(Date())
-        return getTempFile("$timeStamp.jpg")
+        val uuid = UUID.randomUUID().toString()
+        return getTempFile("${timeStamp}_${uuid}.jpg")
     }
 
     fun removeImageFromGallery(filePath: String) {

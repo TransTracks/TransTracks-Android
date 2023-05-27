@@ -78,7 +78,7 @@ class EditPhotoDomain {
                                 val realm = Realm.openDefault()
 
                                 val photo = realm
-                                    .query(Photo::class, "${Photo.FIELD_ID} == ${action.photoId}")
+                                    .query(Photo::class, "${Photo.FIELD_ID} == '${action.photoId}'")
                                     .first()
                                     .find()
 
@@ -124,7 +124,7 @@ class EditPhotoDomain {
                         .map<Boolean> {
                             val realm = Realm.openDefault()
 
-                            val photo = realm.query(Photo::class, "${Photo.FIELD_ID} == $id")
+                            val photo = realm.query(Photo::class, "${Photo.FIELD_ID} == '$id'")
                                 .first()
                                 .find()
 

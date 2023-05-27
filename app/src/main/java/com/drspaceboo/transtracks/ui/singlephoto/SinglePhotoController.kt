@@ -63,7 +63,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
         AnalyticsUtil.logEvent(Event.SinglePhotoControllerShown)
 
         val loadRealm = Realm.openDefault()
-        val photo = loadRealm.query(Photo::class, "${Photo.FIELD_ID} == $photoId")
+        val photo = loadRealm.query(Photo::class, "${Photo.FIELD_ID} == '$photoId'")
             .first()
             .find()
 
@@ -106,7 +106,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
             .subscribe { event ->
                 val realm = Realm.openDefault()
                 val filePath: String? = realm
-                    .query(clazz = Photo::class, "${Photo.FIELD_ID} == ${event.photoId}")
+                    .query(clazz = Photo::class, "${Photo.FIELD_ID} == '${event.photoId}'")
                     .first()
                     .find()
                     ?.filePath
@@ -134,7 +134,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                         val realm = Realm.openDefault()
 
                         val photoToDelete =
-                            realm.query(Photo::class, "${Photo.FIELD_ID} == ${event.photoId}")
+                            realm.query(Photo::class, "${Photo.FIELD_ID} == '${event.photoId}'")
                                 .first()
                                 .find()
 
