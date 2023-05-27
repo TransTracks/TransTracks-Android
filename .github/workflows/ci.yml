@@ -41,6 +41,7 @@ jobs:
     
     - name: 🛜 Upload reports
       if: always()
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: Lint Results
         path: app/build/reports/lint-results-debug.html
@@ -88,7 +89,7 @@ jobs:
       
     - name: 📑 Create keystore file
       env:
-        GOOGLE_SERVICES_JSON_64: ${{ secrets.KEYSTORE_64 }}
+        KEYSTORE_64: ${{ secrets.KEYSTORE_64 }}
       run: echo $KEYSTORE_64 | base64 -di > keystore.jks
       
     - name: ✍️ Sign bundle
