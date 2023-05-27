@@ -1,5 +1,8 @@
 name: Continuous Integration
 
+env:
+  BUILD_NUMBER: ${{ github.run_number }}
+
 on:
   pull_request:
     branches: [ "production" ]
