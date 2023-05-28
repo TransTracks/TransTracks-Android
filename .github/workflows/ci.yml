@@ -99,7 +99,7 @@ jobs:
         releaseDir: ${{ env.RELEASE_DIR }}
         signingKey: ${{ secrets.KEYSTORE_64 }}
         keyAlias: ${{ secrets.KEY_ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_PASS }}
+        keyStorePassword: ${{ secrets.STORE_PASS }}
         keyPassword: ${{ secrets.KEY_PASS }}
       
     - name: 🛜 Upload Android Release to Play Store
