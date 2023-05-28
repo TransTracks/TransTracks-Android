@@ -96,11 +96,8 @@ jobs:
       id: sign_app
       uses: ilharp/sign-android-release@v1.0.4
       with:
-        # The directory to find your release to sign
-        releaseDir: ${{ env.RELEASE_DIR }
-        # The key used to sign your release in base64 encoded format
+        releaseDir: ${{ env.RELEASE_DIR }}
         signingKey: ${{ secrets.KEYSTORE_64 }}
-        # The key alias
         keyAlias: ${{ secrets.KEY_ALIAS }}
         keyStorePassword: ${{ secrets.KEY_PASS }}
         keyPassword: ${{ secrets.KEY_PASS }}
