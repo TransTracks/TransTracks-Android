@@ -91,19 +91,25 @@ jobs:
       env:
         KEYSTORE_64: ${{ secrets.KEYSTORE_64 }}
       run: echo $KEYSTORE_64 | base64 -di > keystore.jks
-      
+
     - name: ✍️ Sign bundle
-      env:
-        STORE_PASS: ${{ secrets.STORE_PASS }}
-        KEY_PASS: ${{ secrets.KEY_PASS }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-      run: jarsigner -keystore keystore.jks -storepass $STORE_PASS -keypass $KEY_PASS $RELEASE_BUNDLE_PATH "$KEY_ALIAS"
+      id: sign_app
+      uses: ilharp/sign-android-release@v1.0.4
+      with:
+        # The directory to find your release to sign
+        releaseDir: ${{ env.RELEASE_DIR }
+        # The key used to sign your release in base64 encoded format
+        signingKey: ${{ secrets.KEYSTORE_64 }}
+        # The key alias
+        keyAlias: ${{ secrets.KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.KEY_PASS }}
+        keyPassword: ${{ secrets.KEY_PASS }}
       
     - name: 🛜 Upload Android Release to Play Store
       uses: r0adkll/upload-google-play@v1.1.1
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: com.drspaceboo.transtracks
-        releaseFile: ${{ env.RELEASE_BUNDLE_PATH }}
+        releaseFile: ${{ steps.sign_app.outputs.signedFile }}
         track: internal
         mappingFile: ${{ env.RELEASE_MAPPING_PATH }}
