@@ -94,11 +94,11 @@ jobs:
 
     - name: ✍️ Sign bundle
       id: sign_app
-      uses: ilharp/sign-android-release@v1.0.4
+      uses: r0adkll/sign-android-release@v1
       with:
-        releaseDir: ${{ env.RELEASE_DIR }}
-        signingKey: ${{ secrets.KEYSTORE_64 }}
-        keyAlias: ${{ secrets.KEY_ALIAS }}
+        releaseDirectory: ${{ env.RELEASE_DIR }}
+        signingKeyBase64: ${{ secrets.KEYSTORE_64 }}
+        alias: ${{ secrets.KEY_ALIAS }}
         keyStorePassword: ${{ secrets.STORE_PASS }}
         keyPassword: ${{ secrets.KEY_PASS }}
       
@@ -107,6 +107,6 @@ jobs:
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: com.drspaceboo.transtracks
-        releaseFile: ${{ steps.sign_app.outputs.signedFile }}
+        releaseFile: ${{ steps.sign_app.outputs.signedReleaseFile }}
         track: internal
         mappingFile: ${{ env.RELEASE_MAPPING_PATH }}
