@@ -87,6 +87,11 @@ jobs:
     - name: 👷‍♀️ Bundle Release
       run: ./gradlew bundleRelease
       
+    - name: 📏 Zip Align Bundle
+      env:
+        RELEASE_DIR: ${{ env.RELEASE_DIR }}
+      run: zipalign -v -p 4 "$RELEASE_DIR/app-release.aab" "$RELEASE_DIR/app-release-aligned.aab"
+
     - name: 📑 Create keystore file
       env:
         KEYSTORE_64: ${{ secrets.KEYSTORE_64 }}
@@ -94,19 +99,18 @@ jobs:
 
     - name: ✍️ Sign bundle
       id: sign_app
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: ${{ env.RELEASE_DIR }}
-        signingKeyBase64: ${{ secrets.KEYSTORE_64 }}
-        alias: ${{ secrets.KEY_ALIAS }}
-        keyStorePassword: ${{ secrets.STORE_PASS }}
-        keyPassword: ${{ secrets.KEY_PASS }}
+      env:
+        RELEASE_DIR: ${{ env.RELEASE_DIR }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        STORE_PASS: ${{ secrets.STORE_PASS }}
+        KEY_PASS: ${{ secrets.KEY_PASS }}
+      run: apksigner sign --ks keystore.jks --ks-pass "$STORE_PASS" --key-pass "$KEY_PASS" --out "app-release-signed.aab" "$RELEASE_DIR/app-release-aligned.aab"
       
     - name: 🛜 Upload Android Release to Play Store
       uses: r0adkll/upload-google-play@v1.1.1
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: com.drspaceboo.transtracks
-        releaseFile: ${{ steps.sign_app.outputs.signedReleaseFile }}
+        releaseFile: app-release-signed.aab
         track: internal
         mappingFile: ${{ env.RELEASE_MAPPING_PATH }}
