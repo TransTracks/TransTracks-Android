@@ -97,7 +97,7 @@ jobs:
         STORE_PASS: ${{ secrets.STORE_PASS }}
         KEY_PASS: ${{ secrets.KEY_PASS }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-      run: jarsigner -keystore keystore.jks -storepass $STORE_PASS -keypass $KEY_PASS -digestalg SHA1 -sigalg SHA256withRSA $RELEASE_BUNDLE_PATH "$KEY_ALIAS"
+      run: jarsigner -keystore keystore.jks -storepass $STORE_PASS -keypass $KEY_PASS -digestalg SHA1 -sigalg SHA256withRSA "$RELEASE_BUNDLE_PATH" "$KEY_ALIAS"
       
     - name: 🛜 Upload Android Release to Play Store
       uses: r0adkll/upload-google-play@v1.1.1
