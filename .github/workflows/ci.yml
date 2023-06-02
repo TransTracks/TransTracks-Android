@@ -87,6 +87,11 @@ jobs:
     - name: 👷‍♀️ Bundle Release
       run: ./gradlew bundleRelease
       
+    - name: Install ZipAlign
+      uses: awalsh128/cache-apt-pkgs-action@v1.3.0
+      with:
+        packages: zipalign
+      
     - name: 📏 Zip Align Bundle
       env:
         RELEASE_DIR: ${{ env.RELEASE_DIR }}
