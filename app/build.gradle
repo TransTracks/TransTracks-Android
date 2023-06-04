@@ -26,6 +26,23 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        def debugKey = file("${rootDir.getAbsolutePath()}/keys/debug-keystore.jks")
+        debug {
+            storeFile = debugKey
+            storePassword = "debugkey"
+            keyAlias = "transtracks"
+            keyPassword = "debugkey"
+        }
+        release {
+            def releaseKey = file("${rootDir.getAbsolutePath()}/keys/release-keystore.jks")
+            storeFile = releaseKey.exists() ? releaseKey : debugKey
+            storePassword = System.getenv("STORE_PASS") ?: "debugkey"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "transtracks"
+            keyPassword = System.getenv("KEY_PASS") ?: "debugkey"
+        }
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -46,9 +63,14 @@ android {
             it.buildConfigField 'String', 'CODE_SALT', '"' + getSecretString('CODE_SALT') + '"'
         }
 
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
