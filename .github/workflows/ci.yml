@@ -87,7 +87,7 @@ jobs:
     - name: 📑 Create keystore file
       env:
         KEYSTORE_64: ${{ secrets.KEYSTORE_64 }}
-      run: echo $KEYSTORE_64 | base64 -di > keystore.jks
+      run: echo $KEYSTORE_64 | base64 -di > ./keys/release-keystore.jks
       
     - name: 👷‍♀️ Bundle Release
       run: ./gradlew bundleRelease
