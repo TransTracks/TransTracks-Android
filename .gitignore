@@ -3,6 +3,7 @@ bin/
 gen/
 out/
 build/
+/app/release
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -28,7 +29,8 @@ local.properties
 
 # Sandbox stuff
 _sandbox
+
+# Important files
 /secrets.properties
 /app/google-services.json
-/app/release
-/keystore.jks
+release-keystore.jks
