@@ -101,6 +101,6 @@ jobs:
       with:
         serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
         packageName: com.drspaceboo.transtracks
-        releaseFile: ${{ env.RELEASE_BUNDLE_PATH }}
+        releaseFiles: ${{ env.RELEASE_BUNDLE_PATH }}
         track: internal
         mappingFile: ${{ env.RELEASE_MAPPING_PATH }}
