@@ -92,8 +92,8 @@ jobs:
     - name: 👷‍♀️ Bundle Release
       env:
         STORE_PASS: ${{ secrets.STORE_PASS }}
-        KEY_ALIAS: ${{ secret.KEY_ALIAS }}
-        KEY_PASS: ${{ secret.KEY_PASS }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASS: ${{ secrets.KEY_PASS }}
       run: ./gradlew bundleRelease
 
     - name: 🛜 Upload Android Release to Play Store
