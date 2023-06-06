@@ -7,6 +7,10 @@ plugins {
     id 'com.google.firebase.crashlytics' // Should be last
 }
 
+plugins.withId("com.android.application") {
+    android.buildTypes.debug.ext.enableCrashlytics = false
+}
+
 android {
     compileSdkVersion 33
 
