@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
@@ -47,6 +48,7 @@ class GalleryAdapter(
         .find()
         .asFlow()
         .asObservable()
+        .observeOn(RxSchedulers.main())
         .subscribe {
             result = it.list
             generateItems()

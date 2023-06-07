@@ -125,8 +125,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                             var success = false
                             val realm = Realm.openDefault()
                             realm.writeBlocking {
-                                val milestoneToDelete: Milestone = realm
-                                    .query(
+                                val milestoneToDelete: Milestone = query(
                                         Milestone::class, "${Milestone.FIELD_ID} == '$milestoneId'"
                                     )
                                     .first()

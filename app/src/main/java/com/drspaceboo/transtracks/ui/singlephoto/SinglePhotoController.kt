@@ -151,7 +151,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                         }
 
                         realm.writeBlocking {
-                            delete(photoToDelete)
+                            findLatest(photoToDelete)?.let{ delete( it) }
                             success = true
                         }
                         realm.close()
