@@ -104,3 +104,10 @@ jobs:
         releaseFiles: ${{ vars.RELEASE_BUNDLE_PATH }}
         track: alpha
         mappingFile: ${{ vars.RELEASE_MAPPING_PATH }}
+        
+    - name: 🔖 Tag release
+      env:
+        TAG_NAME: 'v${{ env.BUILD_NUMBER}}'
+      run: |
+        git tag "v$BUILD_NUMBER"
+        git push origin 
