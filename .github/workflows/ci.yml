@@ -90,6 +90,7 @@ jobs:
       run: echo $KEYSTORE_64 | base64 -di > ./keys/release-keystore.jks
       
     - name: 👷‍♀️ Bundle Release
+      id: bundleRelease
       env:
         STORE_PASS: ${{ secrets.STORE_PASS }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -107,9 +108,9 @@ jobs:
         
     - name: 🔖 Tag release
       env:
-        TAG_NAME: 'v${{ env.BUILD_NUMBER}}'
+        TAG_NAME: 'v${{ steps.bundleRelease.outputs.VERSION_NAME }}'
       run: |
         git config --global user.name "Continuous Integration"
         git config --global user.email "username@users.noreply.github.com"
-        git tag "v$BUILD_NUMBER"
+        git tag "$TAG_NAME"
         git push origin 
