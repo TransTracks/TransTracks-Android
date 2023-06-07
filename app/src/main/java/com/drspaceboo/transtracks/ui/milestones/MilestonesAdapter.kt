@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Milestone
+import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
@@ -41,6 +42,7 @@ class MilestonesAdapter(
         .find()
         .asFlow()
         .asObservable()
+        .observeOn(RxSchedulers.main())
         .subscribe {
             result = it.list
             generateItems()
