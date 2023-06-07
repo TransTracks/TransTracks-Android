@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.8.10'
+    ext.realm_version = '1.9.0'
 
     repositories {
         google()
@@ -20,7 +21,7 @@ buildscript {
 }
 
 plugins {
-    id 'io.realm.kotlin' version '1.7.0' apply false
+    id 'io.realm.kotlin' version "$realm_version" apply false
 }
 
 allprojects {
