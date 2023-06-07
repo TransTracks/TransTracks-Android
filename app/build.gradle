@@ -150,7 +150,7 @@ String getSecretString(String key) {
 
 def setGitHubOutput = task setGitHubOutput(type: Exec) {
     workingDir "${buildDir}"
-    commandLine 'echo', "\"VERSION_NAME=${getVersionName()}\"", '>>', '$GITHUB_OUTPUT'
+    commandLine 'echo', "\"VERSION_NAME=${getVersionName()}\"", '>>', '"$GITHUB_OUTPUT"'
     doLast {
         println "Output VERSION_NAME set to '${getVersionName()}'"
     }
