@@ -11,22 +11,28 @@ plugins.withId("com.android.application") {
     android.buildTypes.debug.ext.enableCrashlytics = false
 }
 
+def major = 1
+def minor = 3
+
+def getVersionCode = { ->
+    def envBuildNumber = System.getenv("BUILD_NUMBER")?.toInteger() ?: 0
+    def baseBuildNumber = 25
+    return baseBuildNumber + (major * 100) + minor + envBuildNumber
+}
+
+def getVersionName = { ->
+    return "$major.$minor.${getVersionCode()}"
+}
+
 android {
     compileSdkVersion 33
 
     defaultConfig {
-        def major = 1
-        def minor = 3
-
-        def envBuildNumber = System.getenv("BUILD_NUMBER")?.toInteger() ?: 0
-        def baseBuildNumber = 25
-        def buildNumber = baseBuildNumber + (major * 100) + minor + envBuildNumber
-
         applicationId "com.drspaceboo.transtracks"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode buildNumber
-        versionName "$major.$minor.$buildNumber"
+        versionCode getVersionCode()
+        versionName getVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -140,4 +146,16 @@ String getSecretString(String key) {
     Properties props = new Properties()
     props.load(new FileInputStream(file("$rootDir/secrets.properties")))
     return props[key]
+}
+
+def setGitHubOutput = task setGitHubOutput(type: Exec) {
+    workingDir "${buildDir}"
+    commandLine 'echo', "'::set-output name=VERSION_NAME::${getVersionName()}'"
+    doLast {
+        println "Output VERSION_NAME set to '${getVersionName()}'"
+    }
+}
+
+afterEvaluate {
+    bundleRelease.configure { finalizedBy setGitHubOutput }
 }
