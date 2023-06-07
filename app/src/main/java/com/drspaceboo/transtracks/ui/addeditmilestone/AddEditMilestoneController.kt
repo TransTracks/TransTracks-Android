@@ -126,8 +126,8 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                             val realm = Realm.openDefault()
                             realm.writeBlocking {
                                 val milestoneToDelete: Milestone = query(
-                                        Milestone::class, "${Milestone.FIELD_ID} == '$milestoneId'"
-                                    )
+                                    Milestone::class, "${Milestone.FIELD_ID} == '$milestoneId'"
+                                )
                                     .first()
                                     .find() ?: return@writeBlocking
 
@@ -209,11 +209,13 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                     }
 
                     realm.writeBlocking {
-                        milestone.timestamp = System.currentTimeMillis()
-                        milestone.epochDay = event.day
-                        milestone.title = event.title
-                        milestone.description = event.description
-                        copyToRealm(milestone, UpdatePolicy.ALL)
+                        findLatest(milestone)?.let {
+                            it.timestamp = System.currentTimeMillis()
+                            it.epochDay = event.day
+                            it.title = event.title
+                            it.description = event.description
+                            copyToRealm(it, UpdatePolicy.ALL)
+                        }
                     }
                     realm.close()
                 }

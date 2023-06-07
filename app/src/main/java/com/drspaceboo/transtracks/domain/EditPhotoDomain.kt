@@ -157,14 +157,16 @@ class EditPhotoDomain {
                             }
 
                             realm.writeBlocking {
-                                if (newPath != null) {
-                                    photo.filePath = newPath
+                                findLatest(photo)?.let {
+                                    if (newPath != null) {
+                                        it.filePath = newPath
+                                    }
+
+                                    it.epochDay = date.toEpochDay()
+                                    it.type = type
+
+                                    copyToRealm(it, UpdatePolicy.ALL)
                                 }
-
-                                photo.epochDay = date.toEpochDay()
-                                photo.type = type
-
-                                copyToRealm(photo, UpdatePolicy.ALL)
                             }
                             realm.close()
 
