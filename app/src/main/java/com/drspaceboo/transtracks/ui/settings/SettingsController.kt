@@ -78,6 +78,7 @@ class SettingsController : Controller() {
 
         viewDisposables += domain.viewEffects
             .ofType<SettingsViewEffect.ShowBackupResult>()
+            .observeOn(RxSchedulers.main())
             .subscribe { effect ->
                 when (val zip = effect.zipFile) {
                     null -> AlertDialog.Builder(view.context)
