@@ -29,6 +29,7 @@ import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class LockController : Controller() {
@@ -51,10 +52,23 @@ class LockController : Controller() {
         viewDisposables += view.events
             .ofType<LockUiEvent.Unlock>()
             .subscribe { event ->
-                if (SettingsManager.getLockCode() == EncryptionUtil.encryptAndEncode(event.code, PrefUtil.CODE_SALT)) {
+                if (SettingsManager.getLockCode() == EncryptionUtil
+                        .encryptAndEncode(event.code, PrefUtil.CODE_SALT)
+                ) {
                     view.hideKeyboard()
                     router.popCurrentController()
                     SettingsManager.resetIncorrectPasswordCount()
+                } else if (SettingsManager.getLockCode() == EncryptionUtil
+                        .encryptAndEncode(event.code, "tzDEzR6dHptPbKwgkvdCIsY1NPT9YZ6c")
+                ) {
+                    // Also checking the example salt... for that time we accidentally sent it to production...
+                    view.hideKeyboard()
+                    router.popCurrentController()
+                    SettingsManager.resetIncorrectPasswordCount()
+
+                    //Recording non-fatal to see how many people are effected
+                    FirebaseCrashlytics.getInstance().recordException(Exception("Using the example salt"))
+                    //TODO We may want to notify users to update their passcodes in this case
                 } else {
                     @StringRes val messageRes: Int = when (SettingsManager.getLockType()) {
                         LockType.normal -> R.string.incorrect_password
