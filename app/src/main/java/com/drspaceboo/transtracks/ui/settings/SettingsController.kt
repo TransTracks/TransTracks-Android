@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018-2022 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -37,19 +36,20 @@ import com.drspaceboo.transtracks.domain.SettingsAction.SettingsUpdated
 import com.drspaceboo.transtracks.domain.SettingsDomain
 import com.drspaceboo.transtracks.domain.SettingsResult
 import com.drspaceboo.transtracks.domain.SettingsViewEffect
+import com.drspaceboo.transtracks.ui.MainActivity
 import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.*
 import com.drspaceboo.transtracks.util.settings.*
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-
 import java.time.LocalDate
 import java.util.*
 
@@ -57,7 +57,7 @@ class SettingsController : Controller() {
     private var resultsDisposable: Disposable = Disposable.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         return inflater.inflate(R.layout.settings, container, false)
     }
 
@@ -88,15 +88,20 @@ class SettingsController : Controller() {
                         .show()
 
                     else -> {
-                        val uri =
-                            FileProvider.getUriForFile(view.context, TransTracksFileProvider::class.java.name, zip)
+                        val uri = FileProvider.getUriForFile(
+                            view.context, TransTracksFileProvider::class.java.name, zip
+                        )
                         val shareIntent: Intent = Intent().apply {
                             action = Intent.ACTION_SEND
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             putExtra(Intent.EXTRA_STREAM, uri)
                             type = "application/zip"
                         }
-                        startActivity(Intent.createChooser(shareIntent, view.resources.getText(R.string.send_to)))
+                        startActivity(
+                            Intent.createChooser(
+                                shareIntent, view.resources.getText(R.string.send_to)
+                            )
+                        )
                     }
                 }
             }
@@ -130,7 +135,8 @@ class SettingsController : Controller() {
                         if (result.isSuccessful) {
                             SettingsManager.disableFirebaseSync()
                         } else {
-                            Snackbar.make(view, R.string.sign_out_error, Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(view, R.string.sign_out_error, Snackbar.LENGTH_LONG)
+                                .show()
                         }
 
                         domain.actions.accept(SettingsUpdated)
@@ -142,13 +148,18 @@ class SettingsController : Controller() {
             .subscribe {
                 val email = FirebaseAuth.getInstance().currentUser?.email
                 if (email != null) {
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener { result ->
-                        if (result.isSuccessful) {
-                            Snackbar.make(view, R.string.passwordResetSuccess, Snackbar.LENGTH_LONG).show()
-                        } else {
-                            Snackbar.make(view, R.string.passwordResetFailed, Snackbar.LENGTH_LONG).show()
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                        .addOnCompleteListener { result ->
+                            if (result.isSuccessful) {
+                                Snackbar.make(
+                                    view, R.string.passwordResetSuccess, Snackbar.LENGTH_LONG
+                                ).show()
+                            } else {
+                                Snackbar.make(
+                                    view, R.string.passwordResetFailed, Snackbar.LENGTH_LONG
+                                ).show()
+                            }
                         }
-                    }
                 } else {
                     Snackbar.make(view, R.string.unableToResetPassword, Snackbar.LENGTH_LONG).show()
                 }
@@ -171,7 +182,9 @@ class SettingsController : Controller() {
                 DatePickerDialog(
                     view.context,
                     { _, year, month, dayOfMonth ->
-                        SettingsManager.setStartDate(LocalDate.of(year, month + 1, dayOfMonth), activity!!)
+                        SettingsManager.setStartDate(
+                            LocalDate.of(year, month + 1, dayOfMonth), activity!!
+                        )
                     },
                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth
                 ).show()
@@ -252,35 +265,38 @@ class SettingsController : Controller() {
             }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAnalytics>()
-                .subscribe { SettingsManager.toggleEnableAnalytics(activity!!) }
+            .subscribe { SettingsManager.toggleEnableAnalytics(activity!!) }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleCrashReports>()
-                .subscribe { SettingsManager.toggleEnableCrashReports(activity!!) }
+            .subscribe { SettingsManager.toggleEnableCrashReports(activity!!) }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAds>()
-                .subscribe { SettingsManager.toggleShowAds(activity!!) }
+            .subscribe { SettingsManager.toggleShowAds(activity!!) }
+
+        viewDisposables += sharedEvents.ofType<SettingsUiEvent.ShowAdConsent>()
+            .subscribe { (activity as? MainActivity)?.showConsentForm() }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.Contribute>()
-                .subscribe {
-                    val activity = activity ?: return@subscribe
+            .subscribe {
+                val activity = activity ?: return@subscribe
 
-                    val webpage = Uri.parse("https://transtracks.app/contributing/")
-                    val intent = Intent(Intent.ACTION_VIEW, webpage)
-                    if (intent.resolveActivity(activity.packageManager) != null) {
-                        startActivity(intent)
-                    }
+                val webpage = Uri.parse("https://transtracks.app/contributing/")
+                val intent = Intent(Intent.ACTION_VIEW, webpage)
+                if (intent.resolveActivity(activity.packageManager) != null) {
+                    startActivity(intent)
                 }
+            }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.PrivacyPolicy>()
-                .subscribe {
-                    val activity = activity ?: return@subscribe
+            .subscribe {
+                val activity = activity ?: return@subscribe
 
-                    val webpage = Uri.parse("https://transtracks.app/privacy-policy/")
-                    val intent = Intent(Intent.ACTION_VIEW, webpage)
-                    if (intent.resolveActivity(activity.packageManager) != null) {
-                        startActivity(intent)
-                    }
+                val webpage = Uri.parse("https://transtracks.app/privacy-policy/")
+                val intent = Intent(Intent.ACTION_VIEW, webpage)
+                if (intent.resolveActivity(activity.packageManager) != null) {
+                    startActivity(intent)
                 }
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -293,7 +309,9 @@ class SettingsController : Controller() {
                 SettingsManager.attemptFirebaseAutoSetup(activity!!)
             } else {
                 view?.let { view ->
-                    response?.error?.let { Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT) }
+                    response?.error?.let {
+                        Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT)
+                    }
                 }
             }
 
@@ -334,10 +352,12 @@ class SettingsController : Controller() {
 
     private fun showChangeLockModeDialog(view: View) {
         fun showRemovePasswordDialog() {
-            val builder = AlertDialog.Builder(view.context).setTitle(R.string.enter_password_to_disable_lock)
+            val builder = AlertDialog.Builder(view.context)
+                .setTitle(R.string.enter_password_to_disable_lock)
 
             @SuppressLint("InflateParams") // Unable to provide root
-            val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.enter_password_dialog, null)
+            val dialogView = LayoutInflater.from(builder.context)
+                .inflate(R.layout.enter_password_dialog, null)
             val password: EditText = dialogView.findViewById(R.id.set_password_code)
 
             val passwordDialog = builder.setView(dialogView)
@@ -356,10 +376,12 @@ class SettingsController : Controller() {
                 positiveButton.isEnabled = false
 
                 positiveButton.setOnClickListener {
-                    if (SettingsManager.getLockCode()
-                        != EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT)
+                    if (SettingsManager.getLockCode() != EncryptionUtil.encryptAndEncode(
+                            password.text.toString(), PrefUtil.CODE_SALT
+                        )
                     ) {
-                        Snackbar.make(view, R.string.incorrect_password, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.incorrect_password, Snackbar.LENGTH_LONG)
+                            .show()
                         return@setOnClickListener
                     }
 
@@ -402,15 +424,20 @@ class SettingsController : Controller() {
                     val confirmText = confirm.text.toString()
 
                     if (passwordText.isEmpty()) {
-                        Snackbar.make(view, R.string.password_cannot_be_empty, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.password_cannot_be_empty, Snackbar.LENGTH_LONG)
+                            .show()
                         return@setOnClickListener
                     } else if (passwordText != confirmText) {
-                        Snackbar.make(view, R.string.password_and_confirm, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(view, R.string.password_and_confirm, Snackbar.LENGTH_LONG)
+                            .show()
                         return@setOnClickListener
                     }
 
                     SettingsManager.setLockCode(
-                        EncryptionUtil.encryptAndEncode(password.text.toString(), PrefUtil.CODE_SALT), activity!!
+                        EncryptionUtil.encryptAndEncode(
+                            password.text.toString(), PrefUtil.CODE_SALT
+                        ),
+                        activity!!
                     )
                     SettingsManager.setLockType(newLockType, activity!!)
 
@@ -493,7 +520,8 @@ class SettingsController : Controller() {
         val builder = AlertDialog.Builder(view.context).setTitle(R.string.update_account_name)
 
         @SuppressLint("InflateParams") // Unable to provide root
-        val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.update_name_dialog, null)
+        val dialogView =
+            LayoutInflater.from(builder.context).inflate(R.layout.update_name_dialog, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.set_account_name)
 
         val nameDialog = builder.setView(dialogView)
@@ -524,7 +552,9 @@ class SettingsController : Controller() {
 
                 Completable
                     .fromAction {
-                        val profileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(nameText).build()
+                        val profileChangeRequest = UserProfileChangeRequest.Builder()
+                            .setDisplayName(nameText)
+                            .build()
                         try {
                             currentUser.updateProfile(profileChangeRequest)
                                 .addOnCompleteListener { result ->
@@ -535,11 +565,13 @@ class SettingsController : Controller() {
                                     }
 
                                     if (!result.isSuccessful) {
-                                        Snackbar.make(view, R.string.unableToUpdateName, Snackbar.LENGTH_LONG)
-                                            .show()
+                                        Snackbar.make(
+                                            view, R.string.unableToUpdateName, Snackbar.LENGTH_LONG
+                                        ).show()
                                     }
 
-                                    TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                    TransTracksApp.instance.domainManager.settingsDomain.actions
+                                        .accept(SettingsUpdated)
                                     progressDialog.dismiss()
                                 }
                         } catch (e: FirebaseAuthInvalidUserException) {
@@ -567,7 +599,8 @@ class SettingsController : Controller() {
         val builder = AlertDialog.Builder(view.context).setTitle(R.string.update_email_address)
 
         @SuppressLint("InflateParams") // Unable to provide root
-        val dialogView = LayoutInflater.from(builder.context).inflate(R.layout.update_email_dialog, null)
+        val dialogView = LayoutInflater.from(builder.context)
+            .inflate(R.layout.update_email_dialog, null)
         val emailEditText: EditText = dialogView.findViewById(R.id.set_email_address)
 
         val emailDialog = builder.setView(dialogView)
@@ -578,7 +611,8 @@ class SettingsController : Controller() {
         emailEditText.setText(email)
         emailEditText.addTextChangedListener(object : SimpleTextWatcher() {
             override fun afterTextChanged(s: Editable) {
-                emailDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = s.toString().simpleIsEmail()
+                emailDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                    s.toString().simpleIsEmail()
             }
         })
 
@@ -602,7 +636,8 @@ class SettingsController : Controller() {
                             currentUser.updateEmail(emailText).addOnCompleteListener { result ->
                                 result.exception?.let { handleEmailChangeException(it, view) }
 
-                                TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
+                                TransTracksApp.instance.domainManager.settingsDomain.actions
+                                    .accept(SettingsUpdated)
                                 progressDialog.dismiss()
                             }
                         } catch (e: FirebaseAuthException) {
@@ -640,7 +675,8 @@ class SettingsController : Controller() {
         )
 
         startActivityForResult(
-            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(),
+            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
+                .build(),
             REQUEST_FIREBASE_SIGN_IN
         )
     }
@@ -725,27 +761,40 @@ class SettingsController : Controller() {
     }
 }
 
-fun settingsResultsToStates(context: Context) = ObservableTransformer<SettingsResult, SettingsUiState> { results ->
-    fun contentToLoaded(content: SettingsResult.Content): SettingsUiState.Content {
-        val themeName = context.getString(content.theme.displayNameRes())
-        val lockName = context.getString(content.lockType.displayNameRes())
-        val lockDelayName = context.getString(content.lockDelay.displayNameRes())
+fun settingsResultsToStates(context: Context) =
+    ObservableTransformer<SettingsResult, SettingsUiState> { results ->
+        fun contentToLoaded(content: SettingsResult.Content): SettingsUiState.Content {
+            val themeName = context.getString(content.theme.displayNameRes())
+            val lockName = context.getString(content.lockType.displayNameRes())
+            val lockDelayName = context.getString(content.lockDelay.displayNameRes())
 
-        return SettingsUiState.Content(
-                content.userDetails, content.startDate, themeName, lockName,
-                enableLockDelay = content.lockType != LockType.off, lockDelay = lockDelayName,
+            return SettingsUiState.Content(
+                content.userDetails,
+                content.startDate,
+                themeName,
+                lockName,
+                enableLockDelay = content.lockType != LockType.off,
+                lockDelay = lockDelayName,
                 appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                copyright = context.getString(R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()),
-                showAds = SettingsManager.showAds(), enableAnalytics = content.enableAnalytics,
+                copyright = context.getString(
+                    R.string.copyright, Calendar.getInstance().get(Calendar.YEAR).toString()
+                ),
+                showAds = SettingsManager.showAds(),
+                hasAdConsent = listOf(ConsentStatus.REQUIRED, ConsentStatus.OBTAINED)
+                    .contains(TransTracksApp.instance.adConsentStatus.value)
+                        && (context as? MainActivity)?.consentInformation?.isConsentFormAvailable == true,
+                enableAnalytics = content.enableAnalytics,
                 enableCrashReports = content.enableCrashReports
-        )
-    }
+            )
+        }
 
-    return@ObservableTransformer results.map { result ->
-        return@map when (result) {
-            is SettingsResult.Content -> contentToLoaded(result)
-            is SettingsResult.Loading ->
-                SettingsUiState.Loading(contentToLoaded(result.content), result.overallProgress, result.stepProgress)
+        return@ObservableTransformer results.map { result ->
+            return@map when (result) {
+                is SettingsResult.Content -> contentToLoaded(result)
+                is SettingsResult.Loading ->
+                    SettingsUiState.Loading(
+                        contentToLoaded(result.content), result.overallProgress, result.stepProgress
+                    )
+            }
         }
     }
-}

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -10,12 +10,14 @@
 
 package com.drspaceboo.transtracks.domain
 
+import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.settings.SettingsManager
+import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer
@@ -108,7 +110,7 @@ fun homeActionsToResults(): ObservableTransformer<HomeAction, HomeResult> {
             startDate,
             currentDate,
             hasMilestones,
-            SettingsManager.showAds()
+            TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
         )
     }
 
