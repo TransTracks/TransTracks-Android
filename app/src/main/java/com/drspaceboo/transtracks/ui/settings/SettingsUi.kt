@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018-2022 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -14,10 +14,17 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.databinding.SettingsBinding
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Content
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Loading
-import com.drspaceboo.transtracks.util.*
+import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
+import com.drspaceboo.transtracks.util.setVisibleOrGone
+import com.drspaceboo.transtracks.util.toFullDateString
+import com.drspaceboo.transtracks.util.toV3
+import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
@@ -44,24 +51,29 @@ sealed class SettingsUiEvent {
     object ToggleAnalytics : SettingsUiEvent()
     object ToggleCrashReports : SettingsUiEvent()
     object ToggleAds : SettingsUiEvent()
+    object ShowAdConsent : SettingsUiEvent()
     object Contribute : SettingsUiEvent()
     object PrivacyPolicy : SettingsUiEvent()
 }
 
-data class SettingsUIUserDetails(val name: String?, val email: String?, val hasPasswordProvider: Boolean)
+data class SettingsUIUserDetails(
+    val name: String?, val email: String?, val hasPasswordProvider: Boolean
+)
 
 sealed class SettingsUiState {
     data class Content(
-            val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String,
-            val lockMode: String, val enableLockDelay: Boolean, val lockDelay: String,
-            val appVersion: String, val copyright: String, val showAds: Boolean,
-            val enableAnalytics: Boolean, val enableCrashReports: Boolean
+        val userDetails: SettingsUIUserDetails?, val startDate: LocalDate, val theme: String,
+        val lockMode: String, val enableLockDelay: Boolean, val lockDelay: String,
+        val appVersion: String, val copyright: String, val showAds: Boolean,
+        val hasAdConsent: Boolean, val enableAnalytics: Boolean, val enableCrashReports: Boolean
     ) : SettingsUiState()
 
-    data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) : SettingsUiState()
+    data class Loading(val content: Content, val overallProgress: Int, val stepProgress: Int) :
+        SettingsUiState()
 }
 
-class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class SettingsView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private lateinit var binding: SettingsBinding
 
     val events: Observable<SettingsUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
@@ -87,6 +99,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 .filter { userAction }.map { SettingsUiEvent.ToggleCrashReports },
             binding.settingsShowAds.checkedChanges().toV3()
                 .filter { userAction }.map { SettingsUiEvent.ToggleAds },
+            binding.settingsAdConsentShow.clicks().toV3().map { SettingsUiEvent.ShowAdConsent },
             binding.settingsContribute.clicks().toV3().map { SettingsUiEvent.Contribute },
             binding.settingsPrivacyPolicy.clicks().toV3().map { SettingsUiEvent.PrivacyPolicy }
         )
@@ -120,6 +133,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
                 binding.settingsLoadingLayout.gone()
                 displayContent(state)
             }
+
             is Loading -> {
                 binding.settingsLoadingLayout.visible()
                 binding.settingsLoadingProgress.progress = state.overallProgress
@@ -158,12 +172,14 @@ class SettingsView(context: Context, attributeSet: AttributeSet) : ConstraintLay
         binding.settingsAnalytics.isChecked = content.enableAnalytics
         binding.settingsCrashReports.isChecked = content.enableCrashReports
         binding.settingsShowAds.isChecked = content.showAds
+        binding.settingsAdLayout.setVisibleOrGone(content.hasAdConsent)
+        binding.settingsAdConsentShow.isEnabled = content.showAds
 
         binding.settingsAppVersion.text = content.appVersion
 
         binding.settingsCopyright.text = content.copyright
 
-        if (content.showAds) {
+        if (TransTracksApp.hasConsentToShowAds() && content.showAds) {
             binding.settingsAdLayout.visible()
 
             if (binding.settingsAdLayout.childCount <= 0) {

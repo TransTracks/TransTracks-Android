@@ -17,6 +17,8 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
+import com.drspaceboo.transtracks.ui.MainActivity
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
@@ -39,7 +41,12 @@ class MilestonesController(args: Bundle) : Controller(args) {
 
         AnalyticsUtil.logEvent(Event.MilestonesControllerShown)
 
-        view.display(MilestonesUiState.Loaded(args.getLong(KEY_INITIAL_DAY), SettingsManager.showAds()))
+        view.display(
+            MilestonesUiState.Loaded(
+                args.getLong(KEY_INITIAL_DAY),
+                TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+            )
+        )
 
         val sharedEvents = view.events.share()
 
@@ -47,10 +54,22 @@ class MilestonesController(args: Bundle) : Controller(args) {
             .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.AddMilestone>()
-            .subscribe { event -> router.pushController(RouterTransaction.with(AddEditMilestoneController(event.day))) }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction.with(
+                        AddEditMilestoneController(event.day)
+                    )
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.EditMilestone>()
-            .subscribe { event -> router.pushController(RouterTransaction.with(AddEditMilestoneController(event.id))) }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction.with(
+                        AddEditMilestoneController(event.id)
+                    )
+                )
+            }
     }
 
     override fun onDetach(view: View) {

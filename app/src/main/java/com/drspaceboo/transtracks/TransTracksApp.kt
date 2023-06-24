@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -22,14 +22,18 @@ import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.settings.SettingsManager.Key
 import com.drspaceboo.transtracks.util.settings.Theme
 import com.google.android.gms.ads.MobileAds
+import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class TransTracksApp : Application() {
     val domainManager = DomainManager()
 
-    val firebaseSettingUtil: FirebaseSettingUtil by lazy(LazyThreadSafetyMode.NONE) { FirebaseSettingUtil() }
+    val adConsentStatus = BehaviorSubject.createDefault(ConsentStatus.UNKNOWN)
+
+    val firebaseSettingUtil: FirebaseSettingUtil by lazy(LazyThreadSafetyMode.NONE) {
+        FirebaseSettingUtil()
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -127,7 +131,11 @@ class TransTracksApp : Application() {
 
                             prefs.edit()
                                 .remove(Key.startDate.name)
-                                .apply { if (startDateLong != null) putLong(Key.startDate.name, startDateLong) }
+                                .apply {
+                                    if (startDateLong != null) {
+                                        putLong(Key.startDate.name, startDateLong)
+                                    }
+                                }
                                 .commit()
                         }
 
@@ -142,7 +150,11 @@ class TransTracksApp : Application() {
 
                     prefs.edit()
                         .remove(Key.startDate.name)
-                        .apply { if (startDateLong != null) putLong(Key.startDate.name, startDateLong) }
+                        .apply {
+                            if (startDateLong != null) {
+                                putLong(Key.startDate.name, startDateLong)
+                            }
+                        }
                         .commit()
                 }
 
@@ -174,12 +186,17 @@ class TransTracksApp : Application() {
 
                 //Untracked user that has a lock at this point, we should warn them about not having an account
                 if (SettingsManager.getLockType() != LockType.off) {
-                    FirebaseAnalytics.getInstance(instance).logEvent("user_needs_to_show_warning", null)
+                    FirebaseAnalytics.getInstance(instance)
+                        .logEvent("user_needs_to_show_warning", null)
                     SettingsManager.setAccountWarning(true, context = null)
                 }
             }
 
             SettingsManager.updateCurrentAndroidVersion()
         }
+
+        fun hasConsentToShowAds(): Boolean =
+            listOf(ConsentStatus.NOT_REQUIRED, ConsentStatus.OBTAINED)
+                .contains(instance.adConsentStatus.value)
     }
 }

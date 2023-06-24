@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018-2022 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VisualMediaType
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Conductor
@@ -31,6 +32,7 @@ import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Milestone
@@ -52,6 +54,11 @@ import com.drspaceboo.transtracks.util.using
 import com.drspaceboo.transtracks.util.visible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
+import com.google.android.ump.ConsentForm
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentInformation.ConsentStatus
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.stream.JsonReader
@@ -80,6 +87,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private var pickMediaHandlingData = PickMediaHandlingData()
+
+    lateinit var consentInformation: ConsentInformation
+    private lateinit var consentForm: ConsentForm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,6 +150,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         processIntent(intent)
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this).apply {
+            TransTracksApp.instance.adConsentStatus.onNext(this.consentStatus)
+
+            requestConsentInfoUpdate(this@MainActivity,
+                // Our app isn't targeted at those under the age of consent
+                ConsentRequestParameters.Builder().setTagForUnderAgeOfConsent(false).build(),
+                { TransTracksApp.instance.adConsentStatus.onNext(consentStatus) },
+                {
+                    // Handle the error.
+                    FirebaseCrashlytics.getInstance().recordException(
+                        Error("UMP Error Code '${it.errorCode}' message '${it.message}'")
+                    )
+                }
+            )
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -197,8 +223,18 @@ class MainActivity : AppCompatActivity() {
                     trainLauncherState, PackageManager.DONT_KILL_APP
                 )
             }
+
+        viewDisposables += TransTracksApp.instance.adConsentStatus.subscribe {
+            if (it == ConsentStatus.REQUIRED
+                && consentInformation.isConsentFormAvailable
+                && SettingsManager.showAds()
+            ) {
+                showConsentForm()
+            }
+        }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val localRouter = router
 
@@ -235,6 +271,27 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
+    // Loads a consent form. Must be called on the main thread.
+    @MainThread
+    fun showConsentForm(): Unit = UserMessagingPlatform.loadConsentForm(
+        this,
+        {
+            consentForm = it
+            consentForm.show(this) { error ->
+                if (error == null) return@show
+
+                FirebaseCrashlytics.getInstance().recordException(
+                    Error("UMP Error Code '${error.errorCode}' message '${error.message}'")
+                )
+            }
+        },
+        {
+            Snackbar.make(container, R.string.unable_to_show_form, Snackbar.LENGTH_SHORT).show()
+            FirebaseCrashlytics.getInstance()
+                .recordException(Error("UMP Error Code '${it.errorCode}' message '${it.message}'"))
+        }
+    )
 
     private fun processIntent(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) return

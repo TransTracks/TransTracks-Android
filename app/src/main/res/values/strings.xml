@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2018-2022 TransTracks. All rights reserved.
+  ~ Copyright © 2018-2023 TransTracks. All rights reserved.
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
   ~
@@ -142,10 +142,14 @@
     <string name="data_label">Data:</string>
     <string name="_import">Import</string>
     <string name="export">Export</string>
-    
+
     <string name="anonymous_analytics">Collect Anonymous Analytics:</string>
     <string name="anonymous_crash_reports">Collect Anonymous Crash Reports:</string>
     <string name="support_ads">Support Via Ads:</string>
+
+    <string name="ad_consent_label">Ad Consent:</string>
+    <string name="redo_consent_form">Redo consent form</string>
+    <string name="unable_to_show_form">Unable to show GDPR consent, try again later or you may be outside of EU or UK</string>
 
     <string name="enabled">Enabled</string>
 

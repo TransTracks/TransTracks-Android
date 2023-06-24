@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -26,6 +26,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.CameraHandler
 import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Photo
@@ -79,7 +80,11 @@ class GalleryController(args: Bundle) : Controller(args) {
             false -> Photo.TYPE_BODY
         }
 
-        view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds()))
+        view.display(
+            GalleryUiState.Loaded(
+                type, initialDay, TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+            )
+        )
 
         val sharedEvents = view.events.share()
 
@@ -107,14 +112,23 @@ class GalleryController(args: Bundle) : Controller(args) {
 
                 view.display(
                     GalleryUiState.Selection(
-                        type, initialDay, selectedIds, SettingsManager.showAds()
+                        type,
+                        initialDay,
+                        selectedIds,
+                        TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
                     )
                 )
             }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.EndActionMode>()
             .subscribe {
-                view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds()))
+                view.display(
+                    GalleryUiState.Loaded(
+                        type,
+                        initialDay,
+                        TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+                    )
+                )
             }
 
         viewDisposables += Observables.combineLatest(
@@ -215,7 +229,13 @@ class GalleryController(args: Bundle) : Controller(args) {
                     return@subscribe
                 }
 
-                view.display(GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds()))
+                view.display(
+                    GalleryUiState.Loaded(
+                        type,
+                        initialDay,
+                        TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+                    )
+                )
 
                 ShareUtil.sharePhotos(filePaths.map { path -> File(path) }, view.context, this)
             }
@@ -260,7 +280,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                                 }
 
                                 realm.writeBlocking {
-                                    findLatest(photoToDelete)?.let{ delete( it) }
+                                    findLatest(photoToDelete)?.let { delete(it) }
                                     success = true
                                 }
                             }
@@ -271,7 +291,11 @@ class GalleryController(args: Bundle) : Controller(args) {
                         dialog.dismiss()
                         if (success) {
                             view.display(
-                                GalleryUiState.Loaded(type, initialDay, SettingsManager.showAds())
+                                GalleryUiState.Loaded(
+                                    type,
+                                    initialDay,
+                                    TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+                                )
                             )
                         } else {
                             Snackbar.make(
