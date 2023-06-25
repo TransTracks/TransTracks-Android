@@ -127,7 +127,7 @@ dependencies {
     //noinspection GradleDependency 2.8 is newer than 2.71828 but the Maven is messed up
     implementation 'com.squareup.picasso:picasso:2.8'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.11'
 
     implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
