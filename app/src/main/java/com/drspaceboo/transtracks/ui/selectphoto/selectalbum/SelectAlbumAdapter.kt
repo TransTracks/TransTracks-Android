@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.database.getStringOrNull
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -61,7 +62,8 @@ class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
             if (cursor.moveToFirst()) {
                 val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
                 val bucketIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
-                val nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+                val nameIndex = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
 
                 do {
                     val id = cursor.getLong(idIndex)
@@ -70,8 +72,12 @@ class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
                     val album = folders[bucketId]
                         ?: Album(
                             bucketId = bucketId,
-                            uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id),
-                            name = cursor.getString(nameIndex),
+                            uri = ContentUris.withAppendedId(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                id
+                            ),
+                            name = cursor.getStringOrNull(nameIndex)
+                                ?: context.getString(R.string.untitled_album),
                             count = 0
                         )
                     album.count += 1
@@ -83,7 +89,8 @@ class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
         submitList(folders.values.toList())
     }
 
-    class Holder(itemView: View, private val itemClickRelay: PublishRelay<String>) : RecyclerView.ViewHolder(itemView) {
+    class Holder(itemView: View, private val itemClickRelay: PublishRelay<String>) :
+        RecyclerView.ViewHolder(itemView) {
         private val image: ImageView by bindView(R.id.select_album_adapter_item_image)
         private val name: TextView by bindView(R.id.select_album_adapter_item_name)
         private val count: TextView by bindView(R.id.select_album_adapter_item_count)
@@ -110,7 +117,10 @@ class SelectAlbumAdapter() : ListAdapter<Album, Holder>(DiffCallback) {
     data class Album(val bucketId: String, val uri: Uri, val name: String, var count: Int)
 
     private object DiffCallback : DiffUtil.ItemCallback<Album>() {
-        override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean = oldItem.bucketId == newItem.bucketId
-        override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean = oldItem == newItem
+        override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean =
+            oldItem.bucketId == newItem.bucketId
+
+        override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean =
+            oldItem == newItem
     }
 }
