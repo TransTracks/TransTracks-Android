@@ -247,6 +247,7 @@
     <string name="select_photos_to_delete">Select photos to delete</string>
     <string name="error_deleting_photos">Error deleting photos</string>
     <string name="error_sharing_photos">Error sharing photos</string>
+    <string name="untitled_album">Untitled Album</string>
 
     <!-- Lock -->
     <string name="train_tracks_title">Train Tracks</string>
