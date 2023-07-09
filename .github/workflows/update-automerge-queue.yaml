@@ -40,7 +40,6 @@ jobs:
   update-queue:
     runs-on: ubuntu-latest
     needs: [get-prs]
-    continue-on-error: true
 
     strategy:
       max-parallel: 1
