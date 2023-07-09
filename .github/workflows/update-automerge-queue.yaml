@@ -13,6 +13,9 @@ jobs:
   get-prs:
     runs-on: ubuntu-latest
 
+    outputs:
+      automerge_prs: ${{ steps.automerge-prs.outputs.automerge_prs }}
+
     steps:
       - name: 🚚 Checkout PR
         uses: actions/checkout@v3
@@ -24,12 +27,51 @@ jobs:
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls?state=open
         run: |
           prListRequest=$(curl -s -H "Authorization: Bearer $TOKEN" "$API_URL")
-          prList="$prListRequest"
-          echo pr_list=$prList >> "$GITHUB_OUTPUT"
+          prs="$prListRequest"
+          echo prs=$prs >> "$GITHUB_OUTPUT"
 
       - name: Filter to those with automerge details
+        id: automerge-prs
         env:
-          PR_LIST_JSON: ${{ steps.prs.outputs.pr_list }}
+          PRS: ${{ steps.prs.outputs.prs }}
         run: |
-          autoMergePrList=$(echo "$PR_LIST_JSON" | jq -c 'map(select(.auto_merge))')
-          echo automerge_pr_list=$autoMergePrList >> "$GITHUB_OUTPUT"
+          autoMergePrs=$(echo "$PRS" | jq -c 'map(select(.auto_merge))')
+          echo automerge_prs=$autoMergePrs >> "$GITHUB_OUTPUT"
+
+  merge-prs:
+    runs-on: ubuntu-latest
+    needs: [get-prs]
+    continue-on-error: true
+
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        pr-details: ${{ needs.get-prs.outputs.automerge_prs }}
+
+     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: 🚚 Checkout PR
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.pr-details.head.ref }}
+
+      - name: Attempt merge
+        id: merge
+        evn:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/merge
+        run: |
+          curl --no-progress-meter -H "Authorization: Bearer $TOKEN" "$API_URL"
+
+      - name: Update PR if merge failed
+        if: steps.merge.outcome == 'failure'
+        evn:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/update-branch
+          HEAD_SHA: ${{ matrix.pr-details.head.sha }}
+        run: |
+          curl --no-progress-meter -H "Authorization: Bearer $TOKEN" "$API_URL" -d "{\"expected_head_sha\":\"$HEAD_SHA\"}"
