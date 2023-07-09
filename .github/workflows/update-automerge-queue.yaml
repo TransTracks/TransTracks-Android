@@ -50,7 +50,7 @@ jobs:
     steps:
       - name: Attempt merge
         id: merge
-        evn:
+        env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/merge
         run: |
@@ -58,7 +58,7 @@ jobs:
 
       - name: Update PR if merge failed
         if: steps.merge.outcome == 'failure'
-        evn:
+        env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/update-branch
           HEAD_SHA: ${{ matrix.pr-details.head.sha }}
