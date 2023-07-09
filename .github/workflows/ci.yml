@@ -26,9 +26,7 @@ jobs:
         cache: gradle
 
     - name: 🙌 Copy secrets file
-      env:
-        SECRETS_PROPERTIES_64: ${{ secrets.SECRETS_PROPERTIES_64 }}
-      run: echo $SECRETS_PROPERTIES_64 | base64 -di > ./secrets.properties
+      run: cp ./secrets.properties.example ./secrets.properties
 
     - name: 📑 Create Google Services file
       env:
