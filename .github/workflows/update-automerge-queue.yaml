@@ -23,7 +23,8 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls?state=open
         run: |
-          prList=$(curl -s -H "Authorization: Bearer $TOKEN" "$API_URL")
+          prListRequest=$(curl -s -H "Authorization: Bearer $TOKEN" "$API_URL")
+          prList=$(echo "$prListRequest" | jq --raw-output '.items')
           echo "pr_list='$prList'" >> "$GITHUB_OUTPUT"
 
       - name: Filter to those with automerge details
