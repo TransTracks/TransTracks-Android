@@ -145,10 +145,10 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
 
                     Snackbar.make(view, R.string.saved_photo, Snackbar.LENGTH_SHORT).show()
 
-                    if (result.index + 1 >= result.count) {
-                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
-                    } else {
+                    if (result.index + 1 < result.count) {
                         domain.actions.accept(AssignPhotosAction.LoadImage(result.index + 1))
+                    } else {
+                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
                     }
                 }
 
@@ -171,10 +171,10 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
                 .subscribe { event ->
                     Snackbar.make(view, R.string.skipped_photo, Snackbar.LENGTH_SHORT).show()
 
-                    if (event.index + 1 >= event.count) {
-                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
-                    } else {
+                    if (event.index + 1 < event.count) {
                         domain.actions.accept(AssignPhotosAction.LoadImage(event.index + 1))
+                    } else {
+                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
                     }
                 }
 
