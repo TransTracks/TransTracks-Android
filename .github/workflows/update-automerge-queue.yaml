@@ -37,9 +37,10 @@ jobs:
           autoMergePrs=$(echo "$PRS" | jq -c 'map(select(.auto_merge))')
           echo automerge_prs=$autoMergePrs >> "$GITHUB_OUTPUT"
 
-  merge-prs:
+  update-queue:
     runs-on: ubuntu-latest
     needs: [get-prs]
+    continue-on-error: true
 
     strategy:
       max-parallel: 1
@@ -47,7 +48,7 @@ jobs:
       matrix:
         pr-details: ${{ needs.get-prs.outputs.automerge_prs }}
 
-     steps:
+    steps:
       - name: Attempt merge
         id: merge
         evn:
