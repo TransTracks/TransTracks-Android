@@ -4,10 +4,9 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
 
 on:
-  pull_request:
-    branches: [ "production" ]
   push:
     branches: [ "production" ]
+  pull_request:
 
 jobs:
 
