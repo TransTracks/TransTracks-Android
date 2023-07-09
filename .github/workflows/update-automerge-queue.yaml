@@ -23,11 +23,11 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/${{ github.repository_owner }}/repos/${{ github.repository }}/pulls?state=open
         run: |
-          pr-list-json=$(curl -L -s -S -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" $API_URL) 
-          echo "pr-list-json=$pr-list-json" >> "$GITHUB_OUTPUT"
+          prListJon=$(curl -L -s -S -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" $API_URL) 
+          echo "pr-list=$prListJon" >> "$GITHUB_OUTPUT"
 
       - name: Filter to those with automerge details
         env:
-          pr_list_json: ${{ steps.prs.outputs.pr_list_json.items }}
+          PR_LIST_JSON: ${{ steps.prs.outputs.pr-list.items }}
         run: |
-          echo "automerge_pr_list_json=$(echo \"$pr_list_json\" | jq -c 'select( .auto_merge )')" >> "$GITHUB_OUTPUT"
+          echo "automerge-pr-list=$(echo \"$PR_LIST_JSON\" | jq -c 'select( .auto_merge )')" >> "$GITHUB_OUTPUT"
