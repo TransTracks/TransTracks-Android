@@ -12,12 +12,12 @@ jobs:
 
   get-prs:
     runs-on: ubuntu-latest
+    outputs:
+      pr_ids: ${{ steps.prs.outputs.pr_list_json.items.*.properties.number }}
 
     steps:
       - name: 🚚 Checkout PR
         uses: actions/checkout@v3
-        outputs:
-          pr_ids: ${{ steps.prs.outputs.pr_list_json.items.*.properties.number }}
 
       - name: 📝 Get open prs
         id: prs
