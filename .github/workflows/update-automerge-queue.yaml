@@ -31,5 +31,5 @@ jobs:
         env:
           PR_LIST_JSON: ${{ steps.prs.outputs.pr_list }}
         run: |
-          autoMergePrList=$(echo "$PR_LIST_JSON" | jq -c 'select(.item | select( .auto_merge ))')
-          echo "automerge_pr_list=$autoMergePrList" >> "$GITHUB_OUTPUT"
+          autoMergePrList=$(echo "$PR_LIST_JSON" | jq -c 'map(select(.auto_merge))')
+          echo automerge_pr_list=$autoMergePrList >> "$GITHUB_OUTPUT"
