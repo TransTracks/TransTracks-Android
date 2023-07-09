@@ -23,7 +23,7 @@ jobs:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls?state=open
         run: |
-          prList=$(curl --no-progress-meter -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" "$API_URL") 
+          prList=$(curl -s -H "Authorization: Bearer $TOKEN" "$API_URL")
           echo "pr_list=$prList" >> "$GITHUB_OUTPUT"
 
       - name: Filter to those with automerge details
