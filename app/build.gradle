@@ -125,7 +125,7 @@ dependencies {
     implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.1'
 
     //noinspection GradleDependency 2.8 is newer than 2.71828 but the Maven is messed up
-    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.11'
 
