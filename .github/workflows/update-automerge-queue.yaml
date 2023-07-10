@@ -34,7 +34,7 @@ jobs:
         env:
           PRS: ${{ steps.prs.outputs.prs }}
         run: |
-          autoMergePrs=$(echo "$PRS" | jq -r -c 'map(select(.auto_merge)) | {"include":map({"number":.number,"head-sha":.head.sha})}')
+          autoMergePrs=$(echo "$PRS" | jq -r -c 'map(select(.auto_merge)) | {"include":map({"number":.number,"headsha":.head.sha})}')
           echo automerge_prs=$autoMergePrs >> "$GITHUB_OUTPUT"
 
   update-queue:
@@ -60,6 +60,6 @@ jobs:
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.number}}/update-branch
-          HEAD_SHA: ${{ matrix.head-sha }}
+          HEAD_SHA: ${{ matrix.headsha }}
         run: |
           curl --no-progress-meter -H "Authorization: Bearer $TOKEN" "$API_URL" -d "{\"expected_head_sha\":\"$HEAD_SHA\"}"
