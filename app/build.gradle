@@ -102,7 +102,7 @@ dependencies {
 
     implementation 'com.bluelinelabs:conductor:2.1.5'
 
-    implementation 'com.google.android.gms:play-services-ads:22.1.0'
+    implementation 'com.google.android.gms:play-services-ads:22.2.0'
 
     implementation 'com.google.code.gson:gson:2.10.1'
 
