@@ -34,7 +34,7 @@ jobs:
         env:
           PRS: ${{ steps.prs.outputs.prs }}
         run: |
-          autoMergePrs=$(echo "$PRS" | jq -r -c 'map(select(.automerge)) | {"include":map({"number":.number,"ref":.head.sha})}')
+          autoMergePrs=$(echo "$PRS" | jq -r -c 'map(select(.auto_merge)) | {"include":map({"number":.number,"head-sha":.head.sha})}')
           echo automerge_prs=$autoMergePrs >> "$GITHUB_OUTPUT"
 
   update-queue:
@@ -51,7 +51,7 @@ jobs:
         id: merge
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/merge
+          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.number}}/merge
         run: |
           curl --no-progress-meter -H "Authorization: Bearer $TOKEN" "$API_URL"
 
@@ -59,7 +59,7 @@ jobs:
         if: steps.merge.outcome == 'failure'
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.pr-details.number}}/update-branch
-          HEAD_SHA: ${{ matrix.pr-details.head.sha }}
+          API_URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ matrix.number}}/update-branch
+          HEAD_SHA: ${{ matrix.head-sha }}
         run: |
           curl --no-progress-meter -H "Authorization: Bearer $TOKEN" "$API_URL" -d "{\"expected_head_sha\":\"$HEAD_SHA\"}"
