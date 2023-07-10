@@ -44,8 +44,7 @@ jobs:
     strategy:
       max-parallel: 1
       fail-fast: false
-      matrix:
-        pr-details: ${{ needs.get-prs.outputs.automerge_prs }}
+      matrix: ${{fromJson(needs.get-prs.outputs.automerge_prs)}}
 
     steps:
       - name: Attempt merge
