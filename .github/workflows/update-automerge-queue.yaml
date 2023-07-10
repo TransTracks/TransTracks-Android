@@ -34,7 +34,7 @@ jobs:
         env:
           PRS: ${{ steps.prs.outputs.prs }}
         run: |
-          autoMergePrs=$(echo "$PRS" | jq -c 'map(select(.auto_merge))')
+          autoMergePrs=$(echo "$PRS" | jq -r -c 'map(select(.number)) | {"include":map({"number":.number,"ref":.head.sha})}')
           echo automerge_prs=$autoMergePrs >> "$GITHUB_OUTPUT"
 
   update-queue:
