@@ -8,6 +8,10 @@ on:
     branches: [ "production" ]
   pull_request:
 
+concurrency:
+  group: build-android-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
 
   build:
