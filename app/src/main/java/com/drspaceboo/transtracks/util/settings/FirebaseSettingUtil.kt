@@ -149,8 +149,8 @@ class FirebaseSettingUtil {
                             else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
                         }
 
-                        currentAndroidVersion, saveToFirebase, userLastSeen, incorrectPasswordCount,
-                        showAccountWarning -> {
+                        currentAndroidVersion, incorrectPasswordCount, saveToFirebase,
+                        showAccountWarning, userLastSeen -> {
                             //No-op
                         }
                     }
