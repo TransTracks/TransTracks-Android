@@ -265,10 +265,15 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        //Minimum 1000ms to step issues with rotation
+        //Minimum 1000ms to stop issues with rotation
         val timeToLock =
             SettingsManager.getUserLastSeen() + SettingsManager.getLockDelay().getMilli() + 1000L
-        if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
+        if (SettingsManager.getLockType() == LockType.off) {
+            //Remove lock screen if the lock turned off in the background
+            router?.apply {
+                getControllerWithTag(LockController.TAG)?.let { popController(it) }
+            }
+        } else if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
             showLockControllerIfNotAlreadyShowing()
         }
     }
