@@ -11,7 +11,6 @@
 package com.drspaceboo.transtracks.ui.settings
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -41,7 +40,6 @@ import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.*
 import com.drspaceboo.transtracks.util.settings.*
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.google.firebase.FirebaseException
@@ -54,7 +52,6 @@ import java.time.LocalDate
 import java.util.*
 
 class SettingsController : Controller() {
-    private var resultsDisposable: Disposable = Disposable.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -67,10 +64,6 @@ class SettingsController : Controller() {
         AnalyticsUtil.logEvent(Event.SettingsControllerShown)
 
         val domain: SettingsDomain = TransTracksApp.instance.domainManager.settingsDomain
-
-        if (resultsDisposable.isDisposed) {
-            resultsDisposable = domain.results.subscribe()
-        }
 
         viewDisposables += domain.results
             .compose(settingsResultsToStates(view.context))
@@ -299,34 +292,8 @@ class SettingsController : Controller() {
             }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_FIREBASE_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
-            if (resultCode == Activity.RESULT_OK) {
-                SettingsManager.attemptFirebaseAutoSetup(activity!!)
-            } else {
-                view?.let { view ->
-                    response?.error?.let {
-                        Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT)
-                    }
-                }
-            }
-
-            TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsUpdated)
-        }
-    }
-
     override fun onDetach(view: View) {
         viewDisposables.clear()
-    }
-
-    override fun onDestroy() {
-        if (resultsDisposable.isNotDisposed()) {
-            resultsDisposable.dispose()
-        }
     }
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
@@ -669,15 +636,17 @@ class SettingsController : Controller() {
     }
 
     private fun showAuth() {
+        val mainActivity = activity as? MainActivity ?: return
         val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build(),
-            AuthUI.IdpConfig.TwitterBuilder().build()
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.TwitterBuilder().build(),
+            AuthUI.IdpConfig.AppleBuilder().build()
         )
 
-        startActivityForResult(
+        mainActivity.signInLauncher.launch(
             AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
-                .build(),
-            REQUEST_FIREBASE_SIGN_IN
+                .build()
         )
     }
 
@@ -754,10 +723,6 @@ class SettingsController : Controller() {
             }
             .setNegativeButton(R.string.no, null)
             .show()
-    }
-
-    companion object {
-        private const val REQUEST_FIREBASE_SIGN_IN = 6524
     }
 }
 

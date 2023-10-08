@@ -38,6 +38,7 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.databinding.ActivityMainBinding
+import com.drspaceboo.transtracks.domain.SettingsAction
 import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
 import com.drspaceboo.transtracks.ui.home.HomeController
 import com.drspaceboo.transtracks.ui.lock.LockController
@@ -52,6 +53,7 @@ import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.using
 import com.drspaceboo.transtracks.util.visible
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.google.android.ump.ConsentForm
@@ -87,6 +89,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private var pickMediaHandlingData = PickMediaHandlingData()
+
+    lateinit var signInLauncher: ActivityResultLauncher<Intent>
 
     lateinit var consentInformation: ConsentInformation
     private lateinit var consentForm: ConsentForm
@@ -131,6 +135,21 @@ class MainActivity : AppCompatActivity() {
                     )
                     .using(HorizontalChangeHandler())
             )
+        }
+
+        signInLauncher = registerForActivityResult(
+            FirebaseAuthUIActivityResultContract()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                //Logged in
+                SettingsManager.attemptFirebaseAutoSetup(this)
+            } else {
+                result.idpResponse?.error?.let {
+                    Snackbar.make(view, R.string.sign_in_error, Snackbar.LENGTH_SHORT)
+                }
+            }
+
+            TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsAction.SettingsUpdated)
         }
 
         router = Conductor.attachRouter(this, container, savedInstanceState)
