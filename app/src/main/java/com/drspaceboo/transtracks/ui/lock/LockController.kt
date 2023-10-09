@@ -57,17 +57,18 @@ class LockController : Controller() {
                 ) {
                     view.hideKeyboard()
                     router.popCurrentController()
-                    SettingsManager.resetIncorrectPasswordCount()
+                    activity?.let { SettingsManager.resetIncorrectPasswordCount(it) }
                 } else if (SettingsManager.getLockCode() == EncryptionUtil
                         .encryptAndEncode(event.code, "tzDEzR6dHptPbKwgkvdCIsY1NPT9YZ6c")
                 ) {
                     // Also checking the example salt... for that time we accidentally sent it to production...
                     view.hideKeyboard()
                     router.popCurrentController()
-                    SettingsManager.resetIncorrectPasswordCount()
+                    activity?.let { SettingsManager.resetIncorrectPasswordCount(it) }
 
                     //Recording non-fatal to see how many people are effected
-                    FirebaseCrashlytics.getInstance().recordException(Exception("Using the example salt"))
+                    FirebaseCrashlytics.getInstance()
+                        .recordException(Exception("Using the example salt"))
                     //TODO We may want to notify users to update their passcodes in this case
                 } else {
                     @StringRes val messageRes: Int = when (SettingsManager.getLockType()) {
@@ -76,7 +77,7 @@ class LockController : Controller() {
                     }
 
                     Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
-                    SettingsManager.incrementIncorrectPasswordCount()
+                    activity?.let { SettingsManager.incrementIncorrectPasswordCount(it) }
 
                     if (SettingsManager.showAccountWarning() && SettingsManager.getIncorrectPasswordCount() >= 25) {
                         showOneChanceDialog(view)
@@ -87,7 +88,7 @@ class LockController : Controller() {
 
     override fun onActivityResumed(activity: Activity) {
         super.onActivityResumed(activity)
-        SettingsManager.resetIncorrectPasswordCount()
+        SettingsManager.resetIncorrectPasswordCount(activity)
     }
 
     override fun onDetach(view: View) {

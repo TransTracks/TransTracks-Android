@@ -58,6 +58,14 @@ class FirebaseSettingUtil {
             }
         }
 
+        fun setInt(key: Key, value: Int, context: Context?) {
+            try {
+                getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         fun setLong(key: Key, value: Long, context: Context?) {
             try {
                 getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
