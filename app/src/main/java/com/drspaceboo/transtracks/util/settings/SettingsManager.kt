@@ -46,15 +46,29 @@ object SettingsManager {
     //region Current Android Version
     fun getCurrentAndroidVersion(): Int? = PrefUtil.getInt(currentAndroidVersion, null)
 
-    fun updateCurrentAndroidVersion() = PrefUtil.setInt(currentAndroidVersion, BuildConfig.VERSION_CODE)
+    fun updateCurrentAndroidVersion() =
+        PrefUtil.setInt(currentAndroidVersion, BuildConfig.VERSION_CODE)
     //endregion
 
     //region Incorrect Password Count
     fun getIncorrectPasswordCount(): Int = PrefUtil.getInt(incorrectPasswordCount, 0)!!
 
-    fun incrementIncorrectPasswordCount() = PrefUtil.setInt(incorrectPasswordCount, getIncorrectPasswordCount() + 1)
+    fun incrementIncorrectPasswordCount(activity: Activity) {
+        val newCount = getIncorrectPasswordCount() + 1
+        PrefUtil.setInt(incorrectPasswordCount, newCount)
 
-    fun resetIncorrectPasswordCount() = PrefUtil.setInt(incorrectPasswordCount, 0)
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setInt(incorrectPasswordCount, newCount, activity)
+        }
+    }
+
+    fun resetIncorrectPasswordCount(activity: Activity) {
+        PrefUtil.setInt(incorrectPasswordCount, 0)
+
+        if (saveToFirebase()) {
+            FirebaseSettingUtil.setInt(incorrectPasswordCount, 0, activity)
+        }
+    }
     //endregion
 
     //region Lock Code
@@ -228,6 +242,7 @@ object SettingsManager {
                     //No-op, this is here in-case we need to handle incompatibility in the future
                     jsonReader.skipValue()
                 }
+
                 startDate.name -> {
                     try {
                         setStartDate(LocalDate.ofEpochDay(jsonReader.nextLong()), context = null)
@@ -235,6 +250,7 @@ object SettingsManager {
                         e.printStackTrace()
                     }
                 }
+
                 theme.name -> {
                     try {
                         setTheme(Theme.valueOf(jsonReader.nextString()), context = null)
@@ -242,6 +258,7 @@ object SettingsManager {
                         e.printStackTrace()
                     }
                 }
+
                 else -> jsonReader.skipValue()
             }
         }
@@ -327,7 +344,9 @@ object SettingsManager {
 
     private fun setFirebaseDocument(docRef: DocumentReference, context: Context) {
         val data: HashMap<String, Any> = HashMap()
-        values().forEach { key -> firebaseValueForKey(key, context)?.let { value -> data[key.name] = value } }
+        values().forEach { key ->
+            firebaseValueForKey(key, context)?.let { value -> data[key.name] = value }
+        }
         docRef.set(data)
         enableFirebaseSync()
     }
