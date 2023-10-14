@@ -66,21 +66,29 @@ android {
     buildTypes {
         buildTypes.each {
             it.resValue 'string', 'ADS_APP_ID', getSecretString('ADS_APP_ID')
-            it.resValue 'string', 'ADS_GALLERY_AD_ID', getSecretString('ADS_GALLERY_AD_ID')
-            it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
-            it.resValue 'string', 'ADS_MILESTONES_AD_ID', getSecretString('ADS_MILESTONES_AD_ID')
-            it.resValue 'string', 'ADS_SETTINGS_AD_ID', getSecretString('ADS_SETTINGS_AD_ID')
             it.buildConfigField 'String', 'CODE_SALT', '"' + getSecretString('CODE_SALT') + '"'
         }
 
         debug {
             signingConfig signingConfigs.debug
+
+            //Test Ad Ids
+            it.resValue 'string', 'ADS_GALLERY_AD_ID', "ca-app-pub-3940256099942544/9214589741"
+            it.resValue 'string', 'ADS_HOME_AD_ID', "ca-app-pub-3940256099942544/9214589741"
+            it.resValue 'string', 'ADS_MILESTONES_AD_ID', "ca-app-pub-3940256099942544/9214589741"
+            it.resValue 'string', 'ADS_SETTINGS_AD_ID', "ca-app-pub-3940256099942544/9214589741"
         }
 
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
+            //Real Ad Ids
+            it.resValue 'string', 'ADS_GALLERY_AD_ID', getSecretString('ADS_GALLERY_AD_ID')
+            it.resValue 'string', 'ADS_HOME_AD_ID', getSecretString('ADS_HOME_AD_ID')
+            it.resValue 'string', 'ADS_MILESTONES_AD_ID', getSecretString('ADS_MILESTONES_AD_ID')
+            it.resValue 'string', 'ADS_SETTINGS_AD_ID', getSecretString('ADS_SETTINGS_AD_ID')
         }
     }
 
