@@ -42,12 +42,15 @@ sealed class AssignPhotoUiEvent {
 sealed class AssignPhotoUiState {
     object Loading : AssignPhotoUiState()
 
-    data class Loaded(val index: Int, val count: Int, val photoUri: Uri, val title: String,
-                      val date: String, val photoDate: LocalDate?, val type: String,
-                      val showSkip: Boolean) : AssignPhotoUiState()
+    data class Loaded(
+        val index: Int, val count: Int, val photoUri: Uri, val title: String,
+        val date: String, val photoDate: LocalDate?, val type: String,
+        val showSkip: Boolean
+    ) : AssignPhotoUiState()
 }
 
-class AssignPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class AssignPhotoView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.assign_photo_toolbar)
     private val title: TextView by bindView(R.id.assign_photo_title)
     private val image: ImageView by bindView(R.id.assign_photo_image)
@@ -100,10 +103,10 @@ class AssignPhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                 title.text = state.title
 
                 Picasso.get()
-                        .load(state.photoUri)
-                        .fit()
-                        .centerInside()
-                        .into(image)
+                    .load(state.photoUri)
+                    .fit()
+                    .centerInside()
+                    .into(image)
 
                 date.text = state.date
 

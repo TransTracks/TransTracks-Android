@@ -30,37 +30,39 @@ sealed class LockUiEvent {
     data class Unlock(val code: String) : LockUiEvent()
 }
 
-class LockView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class LockView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val background: ImageView? by bindOptionalView(R.id.lock_background_image)
     private val code: EditText by bindView(R.id.lock_code)
     private val go: Button by bindView(R.id.lock_go)
 
     val events: Observable<LockUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge<LockUiEvent>(
-                code.editorActions().toV3()
-                        .filter { action ->
-                            action == EditorInfo.IME_ACTION_SEARCH
-                                    || action == EditorInfo.IME_ACTION_DONE
-                        }
-                        .map { action ->
-                            return@map when (action) {
-                                EditorInfo.IME_ACTION_SEARCH,
-                                EditorInfo.IME_ACTION_DONE -> LockUiEvent.Unlock(code.text.toString())
-                                else -> throw IllegalArgumentException("Unhandled IME Action '$action'")
-                            }
-                        },
-                go.clicks().toV3().map { LockUiEvent.Unlock(code.text.toString()) })
+            code.editorActions().toV3()
+                .filter { action ->
+                    action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_DONE
+                }
+                .map { action ->
+                    return@map when (action) {
+                        EditorInfo.IME_ACTION_SEARCH,
+                        EditorInfo.IME_ACTION_DONE -> LockUiEvent.Unlock(code.text.toString())
+
+                        else -> throw IllegalArgumentException("Unhandled IME Action '$action'")
+                    }
+                },
+            go.clicks().toV3().map { LockUiEvent.Unlock(code.text.toString()) })
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (background != null && !isInEditMode) {
             Picasso.get()
-                    .load(R.drawable.train_track_background)
-                    .placeholder(R.color.black)
-                    .fit()
-                    .centerCrop()
-                    .into(background)
+                .load(R.drawable.train_track_background)
+                .placeholder(R.color.black)
+                .fit()
+                .centerCrop()
+                .into(background)
         }
     }
 }

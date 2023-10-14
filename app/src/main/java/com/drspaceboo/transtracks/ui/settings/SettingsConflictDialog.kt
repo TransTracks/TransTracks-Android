@@ -12,11 +12,9 @@ package com.drspaceboo.transtracks.ui.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -43,7 +41,8 @@ object SettingsConflictDialog {
         val themedContext = context
 
         @SuppressLint("InflateParams") //We can't pass root for the dialog we haven't created yet
-        val view = LayoutInflater.from(context).inflate(R.layout.settings_conflict_dialog, null) as RecyclerView
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.settings_conflict_dialog, null) as RecyclerView
         val adapter = SettingsConflictAdapter(differences)
         view.adapter = adapter
         view.layoutManager = LinearLayoutManager(themedContext)
@@ -74,10 +73,12 @@ object SettingsConflictDialog {
         RecyclerView.Adapter<SettingsConflictViewHolder>() {
         val choices: Array<Boolean> = Array(differences.size) { true }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SettingsConflictViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.settings_conflict_item, parent, false),
-            this
-        )
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            SettingsConflictViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.settings_conflict_item, parent, false),
+                this
+            )
 
         override fun getItemCount(): Int = differences.size
 
@@ -94,7 +95,8 @@ object SettingsConflictDialog {
 
             init {
                 group.addOnButtonCheckedListener { _, id, isChecked ->
-                    adapter.choices[adapterPosition] = (id == local.id && !isChecked) || (id == server.id && isChecked)
+                    adapter.choices[adapterPosition] =
+                        (id == local.id && !isChecked) || (id == server.id && isChecked)
                 }
             }
 
@@ -109,62 +111,87 @@ object SettingsConflictDialog {
                     lockCode -> {
                         nameRes = R.string.lock_code_label
                         localValue = when {
-                            SettingsManager.getLockCode().isEmpty() -> itemView.getString(R.string.no_code)
+                            SettingsManager.getLockCode()
+                                .isEmpty() -> itemView.getString(R.string.no_code)
+
                             else -> itemView.getString(R.string.use_local_code)
                         }
                         serverValue = when {
-                            ((serverConflictValue as? String) ?: "").isEmpty() -> itemView.getString(R.string.no_code)
+                            ((serverConflictValue as? String)
+                                ?: "").isEmpty() -> itemView.getString(R.string.no_code)
+
                             else -> itemView.getString(R.string.use_server_code)
                         }
                     }
 
                     lockDelay -> {
                         nameRes = R.string.lock_delay_label
-                        localValue = itemView.getString(SettingsManager.getLockDelay().displayNameRes())
-                        serverValue =
-                            itemView.getString(LockDelay.valueOf(serverConflictValue as String).displayNameRes())
+                        localValue = itemView.getString(
+                            SettingsManager.getLockDelay().displayNameRes()
+                        )
+                        serverValue = itemView.getString(
+                            LockDelay.valueOf(serverConflictValue as String).displayNameRes()
+                        )
                     }
 
                     lockType -> {
                         nameRes = R.string.select_lock_mode
-                        localValue = itemView.getString(SettingsManager.getLockType().displayNameRes())
-                        serverValue =
-                            itemView.getString(LockType.valueOf(serverConflictValue as String).displayNameRes())
+                        localValue = itemView.getString(
+                            SettingsManager.getLockType().displayNameRes()
+                        )
+                        serverValue = itemView.getString(
+                            LockType.valueOf(serverConflictValue as String).displayNameRes()
+                        )
                     }
 
                     startDate -> {
                         nameRes = R.string.start_date_label
-                        localValue = SettingsManager.getStartDate(itemView.context).toFullDateString(itemView.context)
-                        serverValue =
-                            LocalDate.ofEpochDay(serverConflictValue as Long).toFullDateString(itemView.context)
+                        localValue = SettingsManager.getStartDate(itemView.context)
+                            .toFullDateString(itemView.context)
+                        serverValue = LocalDate.ofEpochDay(serverConflictValue as Long)
+                            .toFullDateString(itemView.context)
                     }
 
                     theme -> {
                         nameRes = R.string.theme_label
                         localValue = itemView.getString(SettingsManager.getTheme().displayNameRes())
-                        serverValue = itemView.getString(Theme.valueOf(serverConflictValue as String).displayNameRes())
+                        serverValue = itemView.getString(
+                            Theme.valueOf(serverConflictValue as String).displayNameRes()
+                        )
                     }
 
                     enableAnalytics -> {
                         nameRes = R.string.anonymous_analytics
-                        localValue = itemView.getString(SettingsManager.getEnableAnalytics().displayNameRes())
-                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                        localValue = itemView.getString(
+                            SettingsManager.getEnableAnalytics().displayNameRes()
+                        )
+                        serverValue = itemView.getString(
+                            (serverConflictValue as Boolean).displayNameRes()
+                        )
                     }
 
                     enableCrashReports -> {
                         nameRes = R.string.anonymous_crash_reports
-                        localValue = itemView.getString(SettingsManager.getEnableCrashReports().displayNameRes())
-                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                        localValue = itemView.getString(
+                            SettingsManager.getEnableCrashReports().displayNameRes()
+                        )
+                        serverValue = itemView.getString(
+                            (serverConflictValue as Boolean).displayNameRes()
+                        )
                     }
 
                     showAds -> {
                         nameRes = R.string.support_ads
                         localValue = itemView.getString(SettingsManager.showAds().displayNameRes())
-                        serverValue = itemView.getString((serverConflictValue as Boolean).displayNameRes())
+                        serverValue = itemView.getString(
+                            (serverConflictValue as Boolean).displayNameRes()
+                        )
                     }
 
-                    currentAndroidVersion, incorrectPasswordCount, saveToFirebase, showAccountWarning, showWelcome,
-                    userLastSeen -> throw IllegalArgumentException("This settings should not be in conflict because they don't get synced")
+                    currentAndroidVersion, incorrectPasswordCount, saveToFirebase,
+                    showAccountWarning, showWelcome, userLastSeen -> throw IllegalArgumentException(
+                        "This settings should not be in conflict because they don't get synced"
+                    )
                 }
 
                 label.setText(nameRes)
@@ -182,9 +209,9 @@ object SettingsConflictDialog {
     }
 
     @StringRes
-    private fun Boolean.displayNameRes() = when(this){
+    private fun Boolean.displayNameRes() = when (this) {
         true -> R.string.enabled
-            false -> R.string.disabled
+        false -> R.string.disabled
     }
 }
 

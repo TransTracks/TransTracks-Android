@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright © 2018 TransTracks. All rights reserved.
   ~
@@ -9,10 +10,12 @@
   ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient android:type="linear"
-              android:startColor="?colorPrimary"
-              android:centerColor="?colorPrimaryLight"
-              android:endColor="?colorAccent"
-              android:angle="225"/>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:type="linear"
+        android:startColor="?colorPrimary"
+        android:centerColor="?colorPrimaryLight"
+        android:endColor="?colorAccent"
+        android:angle="225" />
 </shape>

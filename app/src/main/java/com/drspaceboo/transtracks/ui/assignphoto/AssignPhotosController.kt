@@ -43,8 +43,9 @@ import io.reactivex.rxjava3.disposables.Disposable
 import java.time.LocalDate
 
 class AssignPhotosController(args: Bundle) : Controller(args) {
-    constructor(uris: ArrayList<Uri>, epochDay: Long?, @Photo.Type type: Int,
-                tagOfControllerToPopTo: String) : this(Bundle().apply {
+    constructor(
+        uris: ArrayList<Uri>, epochDay: Long?, @Photo.Type type: Int, tagOfControllerToPopTo: String
+    ) : this(Bundle().apply {
         putParcelableArrayList(KEY_URIS, uris)
         if (epochDay != null) {
             putLong(KEY_EPOCH_DAY, epochDay)
@@ -71,62 +72,72 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
 
         if (resultsDisposable.isDisposed) {
             resultsDisposable = domain.results
-                    .doOnSubscribe {
-                        Handler().postDelayed(
-                                {
-                                    val day: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
-                                        true -> args.getLong(KEY_EPOCH_DAY)
-                                        else -> null
-                                    }
+                .doOnSubscribe {
+                    Handler().postDelayed(
+                        {
+                            val day: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
+                                true -> args.getLong(KEY_EPOCH_DAY)
+                                else -> null
+                            }
 
-                                    domain.actions.accept(AssignPhotosAction.InitialData(
-                                            args.getParcelableArrayList<Uri>(KEY_URIS)!!, day,
-                                            args.getInt(KEY_TYPE)))
-                                }, 200)
-                    }.subscribe()
+                            domain.actions.accept(
+                                AssignPhotosAction.InitialData(
+                                    args.getParcelableArrayList<Uri>(KEY_URIS)!!, day,
+                                    args.getInt(KEY_TYPE)
+                                )
+                            )
+                        }, 200
+                    )
+                }.subscribe()
 
 
         }
 
         viewDisposables += domain.results
-                .filter { result ->
-                    result !is AssignPhotosResult.SavingImage
-                            && result !is AssignPhotosResult.SaveSuccess
-                }
-                .compose(assignPhotoResultsToUiState(view.context))
-                .subscribe { state -> view.display(state) }
+            .filter { result ->
+                result !is AssignPhotosResult.SavingImage
+                        && result !is AssignPhotosResult.SaveSuccess
+            }
+            .compose(assignPhotoResultsToUiState(view.context))
+            .subscribe { state -> view.display(state) }
 
         viewDisposables += domain.results
-                .ofType<AssignPhotosResult.ShowDateDialog>()
-                .subscribe { result ->
-                    //Note: The DatePickerDialog uses 0 based months
-                    val dialog = DatePickerDialog(view.context, { _, year, month, dayOfMonth ->
-                        domain.actions.accept(AssignPhotosAction.ChangeDate(
-                                result.index, LocalDate.of(year, month + 1, dayOfMonth)))
+            .ofType<AssignPhotosResult.ShowDateDialog>()
+            .subscribe { result ->
+                //Note: The DatePickerDialog uses 0 based months
+                val dialog = DatePickerDialog(
+                    view.context, { _, year, month, dayOfMonth ->
+                        domain.actions.accept(
+                            AssignPhotosAction.ChangeDate(
+                                result.index, LocalDate.of(year, month + 1, dayOfMonth)
+                            )
+                        )
                     },
-                                                  result.date.year,
-                                                  result.date.monthValue - 1,
-                                                  result.date.dayOfMonth)
-                    dialog.datePicker.maxDate = System.currentTimeMillis()
+                    result.date.year,
+                    result.date.monthValue - 1,
+                    result.date.dayOfMonth
+                )
+                dialog.datePicker.maxDate = System.currentTimeMillis()
 
-                    dialog.show()
-                }
+                dialog.show()
+            }
 
         viewDisposables += domain.results
-                .ofType<AssignPhotosResult.ShowTypeDialog>()
-                .subscribe { result ->
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_type)
-                            .setSingleChoiceItems(arrayOf(view.getString(R.string.face), view.getString(R.string.body)),
-                                                  result.type) { dialog: DialogInterface, type: Int ->
-                                if (result.type != type) {
-                                    domain.actions.accept(AssignPhotosAction.ChangeType(result.index,
-                                                                                        type))
-                                }
-                                dialog.dismiss()
-                            }
-                            .show()
-                }
+            .ofType<AssignPhotosResult.ShowTypeDialog>()
+            .subscribe { result ->
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.select_type)
+                    .setSingleChoiceItems(
+                        arrayOf(view.getString(R.string.face), view.getString(R.string.body)),
+                        result.type
+                    ) { dialog: DialogInterface, type: Int ->
+                        if (result.type != type) {
+                            domain.actions.accept(AssignPhotosAction.ChangeType(result.index, type))
+                        }
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
 
         viewDisposables += domain.results
             .ofType<AssignPhotosResult.SavingImage>()
@@ -138,67 +149,67 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
             }
 
         viewDisposables += domain.results
-                .ofType<AssignPhotosResult.SaveSuccess>()
-                .subscribe { result ->
-                    savingDialog?.dismiss()
-                    savingDialog = null
+            .ofType<AssignPhotosResult.SaveSuccess>()
+            .subscribe { result ->
+                savingDialog?.dismiss()
+                savingDialog = null
 
-                    Snackbar.make(view, R.string.saved_photo, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view, R.string.saved_photo, Snackbar.LENGTH_SHORT).show()
 
-                    if (result.index + 1 < result.count) {
-                        domain.actions.accept(AssignPhotosAction.LoadImage(result.index + 1))
-                    } else {
-                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
-                    }
+                if (result.index + 1 < result.count) {
+                    domain.actions.accept(AssignPhotosAction.LoadImage(result.index + 1))
+                } else {
+                    router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
                 }
+            }
 
         viewDisposables += domain.results
-                .ofType<AssignPhotosResult.ErrorSavingImage>()
-                .subscribe {
-                    savingDialog?.dismiss()
-                    savingDialog = null
+            .ofType<AssignPhotosResult.ErrorSavingImage>()
+            .subscribe {
+                savingDialog?.dismiss()
+                savingDialog = null
 
-                    Snackbar.make(view, R.string.error_saving_photo, Snackbar.LENGTH_LONG).show()
-                }
+                Snackbar.make(view, R.string.error_saving_photo, Snackbar.LENGTH_LONG).show()
+            }
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents
-                .ofType<AssignPhotoUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .ofType<AssignPhotoUiEvent.Back>()
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<AssignPhotoUiEvent.Skip>()
-                .subscribe { event ->
-                    Snackbar.make(view, R.string.skipped_photo, Snackbar.LENGTH_SHORT).show()
+            .subscribe { event ->
+                Snackbar.make(view, R.string.skipped_photo, Snackbar.LENGTH_SHORT).show()
 
-                    if (event.index + 1 < event.count) {
-                        domain.actions.accept(AssignPhotosAction.LoadImage(event.index + 1))
-                    } else {
-                        router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
-                    }
+                if (event.index + 1 < event.count) {
+                    domain.actions.accept(AssignPhotosAction.LoadImage(event.index + 1))
+                } else {
+                    router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
                 }
+            }
 
         viewDisposables += sharedEvents
-                .filter { event ->
-                    event !== AssignPhotoUiEvent.Back && event !is AssignPhotoUiEvent.Skip
+            .filter { event ->
+                event !== AssignPhotoUiEvent.Back && event !is AssignPhotoUiEvent.Skip
+            }
+            .map<AssignPhotosAction> { event ->
+                return@map when (event) {
+                    is AssignPhotoUiEvent.ChangeDate ->
+                        AssignPhotosAction.ShowDateDialog(event.index)
+
+                    is AssignPhotoUiEvent.ChangeType ->
+                        AssignPhotosAction.ShowTypeDialog(event.index)
+
+                    is AssignPhotoUiEvent.UsePhotoDate ->
+                        AssignPhotosAction.ChangeDate(event.index, event.photoDate)
+
+                    is AssignPhotoUiEvent.Save -> AssignPhotosAction.Save(event.index)
+
+                    else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
                 }
-                .map<AssignPhotosAction> { event ->
-                    return@map when (event) {
-                        is AssignPhotoUiEvent.ChangeDate ->
-                            AssignPhotosAction.ShowDateDialog(event.index)
-
-                        is AssignPhotoUiEvent.ChangeType ->
-                            AssignPhotosAction.ShowTypeDialog(event.index)
-
-                        is AssignPhotoUiEvent.UsePhotoDate ->
-                            AssignPhotosAction.ChangeDate(event.index, event.photoDate)
-
-                        is AssignPhotoUiEvent.Save -> AssignPhotosAction.Save(event.index)
-
-                        else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
-                    }
-                }
-                .subscribe(domain.actions)
+            }
+            .subscribe(domain.actions)
     }
 
     override fun onDetach(view: View) {
@@ -219,79 +230,88 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
     }
 }
 
-fun assignPhotoResultsToUiState(context: Context) = ObservableTransformer<AssignPhotosResult, AssignPhotoUiState> { results ->
-    results.map { result ->
-        fun getTitle(result: AssignPhotosResult): String {
-            val index = AssignPhotosResult.getIndex(result)
-            val count = AssignPhotosResult.getCount(result)
+fun assignPhotoResultsToUiState(context: Context) =
+    ObservableTransformer<AssignPhotosResult, AssignPhotoUiState> { results ->
+        results.map { result ->
+            fun getTitle(result: AssignPhotosResult): String {
+                val index = AssignPhotosResult.getIndex(result)
+                val count = AssignPhotosResult.getCount(result)
 
-            return when (count) {
-                1 -> context.getString(R.string.assign_photo)
-                else -> context.getString(R.string.assign_photo_count, index + 1, count)
+                return when (count) {
+                    1 -> context.getString(R.string.assign_photo)
+                    else -> context.getString(R.string.assign_photo_count, index + 1, count)
+                }
             }
-        }
 
-        fun shouldShowSkip(result: AssignPhotosResult): Boolean {
-            val count = AssignPhotosResult.getCount(result)
-            return count != 1
-        }
+            fun shouldShowSkip(result: AssignPhotosResult): Boolean {
+                val count = AssignPhotosResult.getCount(result)
+                return count != 1
+            }
 
-        return@map when (result) {
-            is AssignPhotosResult.Loading -> AssignPhotoUiState.Loading
+            return@map when (result) {
+                is AssignPhotosResult.Loading -> AssignPhotoUiState.Loading
 
-            is AssignPhotosResult.Display -> {
-                val photoDateToUse: LocalDate? = when {
-                    result.date == result.photoDate -> null
-                    else -> result.photoDate
+                is AssignPhotosResult.Display -> {
+                    val photoDateToUse: LocalDate? = when {
+                        result.date == result.photoDate -> null
+                        else -> result.photoDate
+                    }
+
+                    AssignPhotoUiState.Loaded(
+                        result.index, result.count, result.uri,
+                        getTitle(result), result.date.toFullDateString(context),
+                        photoDateToUse,
+                        Photo.getTypeName(result.type, context),
+                        shouldShowSkip(result)
+                    )
                 }
 
-                AssignPhotoUiState.Loaded(result.index, result.count, result.uri,
-                                          getTitle(result), result.date.toFullDateString(context),
-                                          photoDateToUse,
-                                          Photo.getTypeName(result.type, context),
-                                          shouldShowSkip(result))
-            }
+                is AssignPhotosResult.ShowDateDialog -> {
+                    val photoDateToUse: LocalDate? = when {
+                        result.date == result.photoDate -> null
+                        else -> result.photoDate
+                    }
 
-            is AssignPhotosResult.ShowDateDialog -> {
-                val photoDateToUse: LocalDate? = when {
-                    result.date == result.photoDate -> null
-                    else -> result.photoDate
+                    AssignPhotoUiState.Loaded(
+                        result.index, result.count, result.uri,
+                        getTitle(result), result.date.toFullDateString(context),
+                        photoDateToUse,
+                        Photo.getTypeName(result.type, context),
+                        shouldShowSkip(result)
+                    )
                 }
 
-                AssignPhotoUiState.Loaded(result.index, result.count, result.uri,
-                                          getTitle(result), result.date.toFullDateString(context),
-                                          photoDateToUse,
-                                          Photo.getTypeName(result.type, context),
-                                          shouldShowSkip(result))
-            }
+                is AssignPhotosResult.ShowTypeDialog -> {
+                    val photoDateToUse: LocalDate? = when {
+                        result.date == result.photoDate -> null
+                        else -> result.photoDate
+                    }
 
-            is AssignPhotosResult.ShowTypeDialog -> {
-                val photoDateToUse: LocalDate? = when {
-                    result.date == result.photoDate -> null
-                    else -> result.photoDate
+                    AssignPhotoUiState.Loaded(
+                        result.index, result.count, result.uri,
+                        getTitle(result), result.date.toFullDateString(context),
+                        photoDateToUse,
+                        Photo.getTypeName(result.type, context),
+                        shouldShowSkip(result)
+                    )
                 }
 
-                AssignPhotoUiState.Loaded(result.index, result.count, result.uri,
-                                          getTitle(result), result.date.toFullDateString(context),
-                                          photoDateToUse,
-                                          Photo.getTypeName(result.type, context),
-                                          shouldShowSkip(result))
-            }
+                is AssignPhotosResult.ErrorSavingImage -> {
+                    val photoDateToUse: LocalDate? = when {
+                        result.date == result.photoDate -> null
+                        else -> result.photoDate
+                    }
 
-            is AssignPhotosResult.ErrorSavingImage -> {
-                val photoDateToUse: LocalDate? = when {
-                    result.date == result.photoDate -> null
-                    else -> result.photoDate
+                    AssignPhotoUiState.Loaded(
+                        result.index, result.count, result.uri,
+                        getTitle(result), result.date.toFullDateString(context),
+                        photoDateToUse,
+                        Photo.getTypeName(result.type, context),
+                        shouldShowSkip(result)
+                    )
                 }
 
-                AssignPhotoUiState.Loaded(result.index, result.count, result.uri,
-                                          getTitle(result), result.date.toFullDateString(context),
-                                          photoDateToUse,
-                                          Photo.getTypeName(result.type, context),
-                                          shouldShowSkip(result))
+                else -> throw IllegalArgumentException("Unhandled result '${result.javaClass.simpleName}'")
             }
-
-            else -> throw IllegalArgumentException("Unhandled result '${result.javaClass.simpleName}'")
         }
     }
-}

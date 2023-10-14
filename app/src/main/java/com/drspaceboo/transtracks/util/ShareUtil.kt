@@ -24,13 +24,15 @@ object ShareUtil {
         val share = Intent(Intent.ACTION_SEND)
         share.type = JPEG_MIME_TYPE
 
-        val uri = FileProvider.getUriForFile(context, TransTracksFileProvider::class.java.name,
-                                             imageToShare)
+        val uri = FileProvider.getUriForFile(
+            context, TransTracksFileProvider::class.java.name, imageToShare
+        )
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putExtra(Intent.EXTRA_STREAM, uri)
 
-        controller.startActivity(Intent.createChooser(share,
-                                                      context.getString(R.string.share_image_using)))
+        controller.startActivity(
+            Intent.createChooser(share, context.getString(R.string.share_image_using))
+        )
     }
 
     fun sharePhotos(imagesToShare: List<File>, context: Context, controller: Controller) {
@@ -39,15 +41,17 @@ object ShareUtil {
 
         val files = ArrayList<Uri>()
         imagesToShare.forEach { file ->
-            files.add(FileProvider.getUriForFile(context, TransTracksFileProvider::class.java.name,
-                                                 file))
+            files.add(
+                FileProvider.getUriForFile(context, TransTracksFileProvider::class.java.name, file)
+            )
         }
 
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files)
 
-        controller.startActivity(Intent.createChooser(share,
-                                                      context.getString(R.string.share_image_using)))
+        controller.startActivity(
+            Intent.createChooser(share, context.getString(R.string.share_image_using))
+        )
     }
 
     private const val JPEG_MIME_TYPE: String = "image/jpeg"

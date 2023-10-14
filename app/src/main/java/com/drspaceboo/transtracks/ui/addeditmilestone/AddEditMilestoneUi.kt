@@ -39,16 +39,21 @@ sealed class AddEditMilestoneUiEvent {
     data class ChangeDate(val day: Long) : AddEditMilestoneUiEvent()
     data class TitleUpdated(val newTitle: String) : AddEditMilestoneUiEvent()
     data class DescriptionUpdated(val newDescription: String) : AddEditMilestoneUiEvent()
-    data class Save(val day: Long, val title: String, val description: String) : AddEditMilestoneUiEvent()
+    data class Save(
+        val day: Long, val title: String, val description: String
+    ) : AddEditMilestoneUiEvent()
 }
 
 sealed class AddEditMilestoneUiState {
     object Loading : AddEditMilestoneUiState()
-    data class Display(val day: Long, val title: String, val description: String, val isAdd: Boolean) :
-        AddEditMilestoneUiState()
+    data class Display(
+        val day: Long, val title: String, val description: String, val isAdd: Boolean
+    ) : AddEditMilestoneUiState()
 }
 
-class AddEditMilestoneView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class AddEditMilestoneView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.add_milestone_toolbar)
     private val toolbarTitle: TextView by bindView(R.id.add_milestone_toolbar_title)
 

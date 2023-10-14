@@ -22,14 +22,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
-import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.isNotDisposed
+import com.drspaceboo.transtracks.util.settings.PrefUtil
 import com.drspaceboo.transtracks.util.toV3
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-
 import kotterknife.bindView
 import java.lang.ref.WeakReference
 
@@ -43,7 +42,9 @@ sealed class SingleAlbumUiEvent {
 
 sealed class SingleAlbumUiState {
     data class Loaded(val bucketId: String) : SingleAlbumUiState()
-    data class Selection(val bucketId: String, val selectedUris: ArrayList<Uri>) : SingleAlbumUiState()
+    data class Selection(
+        val bucketId: String, val selectedUris: ArrayList<Uri>
+    ) : SingleAlbumUiState()
 
     companion object {
         fun getBucketId(state: SingleAlbumUiState): String = when (state) {
@@ -53,32 +54,34 @@ sealed class SingleAlbumUiState {
     }
 }
 
-class SingleAlbumView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class SingleAlbumView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.single_album_toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.single_album_recycler_view)
 
     private val eventRelay: PublishRelay<SingleAlbumUiEvent> = PublishRelay.create()
     val events: Observable<SingleAlbumUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().toV3().map { SingleAlbumUiEvent.Back },
-                         eventRelay.doOnNext { event ->
-                             if (event !is SingleAlbumUiEvent.SelectPhoto) {
-                                 return@doOnNext
-                             }
+        Observable.merge(
+            toolbar.navigationClicks().toV3().map { SingleAlbumUiEvent.Back },
+            eventRelay.doOnNext { event ->
+                if (event !is SingleAlbumUiEvent.SelectPhoto) {
+                    return@doOnNext
+                }
 
-                             val position = gridLayoutManager.findFirstVisibleItemPosition()
+                val position = gridLayoutManager.findFirstVisibleItemPosition()
 
-                             if (position == RecyclerView.NO_POSITION) {
-                                 return@doOnNext
-                             }
+                if (position == RecyclerView.NO_POSITION) {
+                    return@doOnNext
+                }
 
-                             adapter?.let { adapter ->
-                                 val uriString: String? = adapter.getUri(position)?.toString()
+                adapter?.let { adapter ->
+                    val uriString: String? = adapter.getUri(position)?.toString()
 
-                                 if (uriString != null) {
-                                     PrefUtil.setAlbumFirstVisible(bucketId, uriString)
-                                 }
-                             }
-                         })
+                    if (uriString != null) {
+                        PrefUtil.setAlbumFirstVisible(bucketId, uriString)
+                    }
+                }
+            })
     }
 
     private var photoClickDisposable: Disposable = Disposable.disposed()
@@ -116,7 +119,8 @@ class SingleAlbumView(context: Context, attributeSet: AttributeSet) : Constraint
 
         if (shouldShowActionMode) {
             actionModeHandler.setTitle(
-                    (state as SingleAlbumUiState.Selection).selectedUris.size.toString())
+                (state as SingleAlbumUiState.Selection).selectedUris.size.toString()
+            )
         }
 
         if (adapter == null) {
@@ -154,7 +158,7 @@ class SingleAlbumView(context: Context, attributeSet: AttributeSet) : Constraint
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             val adapter: SingleAlbumAdapter = recyclerView.adapter as SingleAlbumAdapter?
-                    ?: return false
+                ?: return false
 
             val event: SingleAlbumUiEvent = when (item.itemId) {
                 R.id.select_photo_selection_save ->

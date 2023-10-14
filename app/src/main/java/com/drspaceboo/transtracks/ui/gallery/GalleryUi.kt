@@ -28,20 +28,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.ui.home.HomeUiEvent
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
-import com.drspaceboo.transtracks.util.*
+import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
+import com.drspaceboo.transtracks.util.setGone
+import com.drspaceboo.transtracks.util.setVisible
+import com.drspaceboo.transtracks.util.toV3
+import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.jakewharton.rxbinding3.appcompat.itemClicks
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
-import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.lang.ref.WeakReference
-import java.time.LocalDate
 
 sealed class GalleryUiEvent {
     object Back : GalleryUiEvent()
@@ -57,9 +59,12 @@ sealed class GalleryUiEvent {
 
 sealed class GalleryUiState {
     data class Loaded(val type: Int, val initialDay: Long, val showAds: Boolean) : GalleryUiState()
-    data class Selection(val type: Int, val initialDay: Long,
-                         val selectedIds: ArrayList<String>,
-                         val showAds: Boolean) : GalleryUiState()
+    data class Selection(
+        val type: Int,
+        val initialDay: Long,
+        val selectedIds: ArrayList<String>,
+        val showAds: Boolean
+    ) : GalleryUiState()
 
     companion object {
         fun getInitialDay(state: GalleryUiState) = when (state) {
@@ -80,7 +85,9 @@ sealed class GalleryUiState {
     }
 }
 
-class GalleryView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class GalleryView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.gallery_toolbar)
     private val title: TextView by bindView(R.id.gallery_title)
 

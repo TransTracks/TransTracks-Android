@@ -12,9 +12,9 @@ package com.drspaceboo.transtracks.util
 
 import android.provider.MediaStore
 import com.drspaceboo.transtracks.TransTracksApp
-import java.time.LocalDate
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
@@ -63,7 +63,9 @@ object FileUtil {
 
     fun removeImageFromGallery(filePath: String) {
         TransTracksApp.instance.contentResolver.delete(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "${MediaStore.Files.FileColumns.DATA} = ?", arrayOf(filePath)
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            "${MediaStore.Files.FileColumns.DATA} = ?",
+            arrayOf(filePath)
         )
     }
 }

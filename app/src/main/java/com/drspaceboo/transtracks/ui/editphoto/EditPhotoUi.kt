@@ -35,10 +35,13 @@ sealed class EditPhotoUiEvent {
 
 sealed class EditPhotoUiState {
     object Loading : EditPhotoUiState()
-    data class Loaded(val photoPath: String, val date: String, val type: String) : EditPhotoUiState()
+    data class Loaded(
+        val photoPath: String, val date: String, val type: String
+    ) : EditPhotoUiState()
 }
 
-class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class EditPhotoView(context: Context, attributeSet: AttributeSet) :
+    ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.edit_photo_toolbar)
     private val image: ImageView by bindView(R.id.edit_photo_image)
 
@@ -51,9 +54,9 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
 
     val events: Observable<EditPhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(toolbar.navigationClicks().toV3().map { EditPhotoUiEvent.Back },
-                         date.clicks().toV3().map { EditPhotoUiEvent.ChangeDate },
-                         type.clicks().toV3().map { EditPhotoUiEvent.ChangeType },
-                         save.clicks().toV3().map { EditPhotoUiEvent.Update })
+            date.clicks().toV3().map { EditPhotoUiEvent.ChangeDate },
+            type.clicks().toV3().map { EditPhotoUiEvent.ChangeType },
+            save.clicks().toV3().map { EditPhotoUiEvent.Update })
     }
 
     override fun onAttachedToWindow() {
@@ -71,10 +74,10 @@ class EditPhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLa
 
             is EditPhotoUiState.Loaded -> {
                 Picasso.get()
-                        .load(File(state.photoPath))
-                        .fit()
-                        .centerInside()
-                        .into(image)
+                    .load(File(state.photoPath))
+                    .fit()
+                    .centerInside()
+                    .into(image)
 
                 date.text = state.date
                 type.text = state.type

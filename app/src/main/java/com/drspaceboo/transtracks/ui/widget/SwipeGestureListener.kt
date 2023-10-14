@@ -14,15 +14,21 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 
 open class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
-    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float,
-                         velocityY: Float): Boolean {
+    override fun onFling(
+        e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float
+    ): Boolean {
+        if (e1 == null) {
+            return false
+        }
+
         val dx = Math.abs(e1.x - e2.x)
         val dy = Math.abs(e1.y - e2.y)
         val absVelocityX = Math.abs(velocityX)
         val absVelocityY = Math.abs(velocityY)
 
         if ((dx < MIN_DISTANCE && dy < MIN_DISTANCE)
-                || (absVelocityX < THRESHOLD && absVelocityY < THRESHOLD)) {
+            || (absVelocityX < THRESHOLD && absVelocityY < THRESHOLD)
+        ) {
             return false
         }
 

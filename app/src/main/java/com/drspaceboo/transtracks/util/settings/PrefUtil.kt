@@ -24,24 +24,28 @@ object PrefUtil {
     //endregion
 
     //region Default Prefs
-    fun getDefaultPrefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance)
+    fun getDefaultPrefs(): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(TransTracksApp.instance)
 
-    fun getBoolean(key: Key, default: Boolean): Boolean = getDefaultPrefs().getBoolean(key.name, default)
+    fun getBoolean(key: Key, default: Boolean): Boolean =
+        getDefaultPrefs().getBoolean(key.name, default)
 
-    fun setBoolean(key: Key, value: Boolean) = getDefaultPrefs().edit().putBoolean(key.name, value).apply()
+    fun setBoolean(key: Key, value: Boolean) =
+        getDefaultPrefs().edit().putBoolean(key.name, value).apply()
 
     fun getDate(key: Key): LocalDate? = getLong(key, null)?.let { LocalDate.ofEpochDay(it) }
 
     fun setDate(key: Key, value: LocalDate) = setLong(key, value.toEpochDay())
 
-    inline fun <reified T : Enum<T>> getEnum(key: Key, default: T): T = getString(key, default.name)?.let {
-        return@let try {
-            enumValueOf<T>(it)
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-            default
-        }
-    } ?: default
+    inline fun <reified T : Enum<T>> getEnum(key: Key, default: T): T =
+        getString(key, default.name)?.let {
+            return@let try {
+                enumValueOf<T>(it)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+                default
+            }
+        } ?: default
 
     fun <T : Enum<T>> setEnum(key: Key, value: T) = setString(key, value.name)
 
@@ -57,9 +61,11 @@ object PrefUtil {
 
     fun setLong(key: Key, value: Long) = getDefaultPrefs().edit().putLong(key.name, value).apply()
 
-    fun getString(key: Key, default: String?): String? = getDefaultPrefs().getString(key.name, default)
+    fun getString(key: Key, default: String?): String? =
+        getDefaultPrefs().getString(key.name, default)
 
-    fun setString(key: Key, value: String) = getDefaultPrefs().edit().putString(key.name, value).apply()
+    fun setString(key: Key, value: String) =
+        getDefaultPrefs().edit().putString(key.name, value).apply()
     //endregion
 
     //region AlbumFirstVisible
@@ -74,13 +80,15 @@ object PrefUtil {
         getAlbumFirstVisiblePrefs().edit().putString(bucketId, uri).apply()
     }
 
-    fun getAlbumFirstVisible(bucketId: String): String? = getAlbumFirstVisiblePrefs().getString(bucketId, null)
+    fun getAlbumFirstVisible(bucketId: String): String? =
+        getAlbumFirstVisiblePrefs().getString(bucketId, null)
     //endregion
 
     //region PhotoFirstVisible
     private const val KEY_SELECT_PHOTO_FIRST_VISIBLE = "selectPhotoFirstVisible"
 
-    fun getSelectPhotoFirstVisible(): String = getDefaultPrefs().getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")!!
+    fun getSelectPhotoFirstVisible(): String =
+        getDefaultPrefs().getString(KEY_SELECT_PHOTO_FIRST_VISIBLE, "")!!
 
     fun setSelectPhotoFirstVisible(value: String) =
         getDefaultPrefs().edit().putString(KEY_SELECT_PHOTO_FIRST_VISIBLE, value).apply()

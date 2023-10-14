@@ -51,8 +51,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
     private var confirmDeleteDialog: AlertDialog? = null
 
     override fun onCreateView(
-        @NonNull inflater: LayoutInflater,
-        @NonNull container: ViewGroup
+        @NonNull inflater: LayoutInflater, @NonNull container: ViewGroup
     ): View {
         return inflater.inflate(R.layout.single_photo, container, false)
     }
@@ -151,7 +150,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                         }
 
                         realm.writeBlocking {
-                            findLatest(photoToDelete)?.let{ delete( it) }
+                            findLatest(photoToDelete)?.let { delete(it) }
                             success = true
                         }
                         realm.close()

@@ -35,25 +35,30 @@ class StoragePermissionHandler : Fragment() {
         checkPermissionGranted()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.isNotEmpty()) {
             val permissionGranted = (grantResults[0] == PackageManager.PERMISSION_GRANTED)
             storagePermissionRelay.accept(permissionGranted)
 
             if (!permissionGranted) {
                 permissionBlockedRelay.accept(
-                        ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                                                                            Manifest.permission.READ_EXTERNAL_STORAGE))
+                    ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                )
             }
         }
     }
 
     private fun checkPermissionGranted(): Boolean {
         val readPermissionStatus = ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+            requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+        )
         val writePermissionStatus = ContextCompat.checkSelfPermission(
-            requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
 
         val permissionGranted = readPermissionStatus == PackageManager.PERMISSION_GRANTED
                 && writePermissionStatus == PackageManager.PERMISSION_GRANTED
@@ -74,9 +79,11 @@ class StoragePermissionHandler : Fragment() {
 
     private fun request() {
         if (storagePermissionEnabled.blockingLatest().first()) throw IllegalStateException(
-                "StoragePermissionHandler.request() called when Storage permission already granted")
-        val storagePermissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            "StoragePermissionHandler.request() called when Storage permission already granted"
+        )
+        val storagePermissions = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
         requestPermissions(storagePermissions, REQUEST_CODE_STORAGE_PERMISSION)
     }
 
@@ -85,7 +92,8 @@ class StoragePermissionHandler : Fragment() {
         private const val REQUEST_CODE_STORAGE_PERMISSION = 568
 
         private val storagePermissionRelay = BehaviorRelay.createDefault(false)
-        val storagePermissionEnabled: Observable<Boolean> = storagePermissionRelay.distinctUntilChanged()
+        val storagePermissionEnabled: Observable<Boolean> =
+            storagePermissionRelay.distinctUntilChanged()
 
         private val permissionBlockedRelay = PublishRelay.create<Boolean>()
         val storagePermissionBlocked: Observable<Boolean> = permissionBlockedRelay
@@ -100,7 +108,7 @@ class StoragePermissionHandler : Fragment() {
         }
 
         fun requestIfNeeded(activity: AppCompatActivity): Boolean =
-                from(activity).makeRequestsIfNeeded()
+            from(activity).makeRequestsIfNeeded()
 
         fun from(activity: AppCompatActivity): StoragePermissionHandler {
             try {
@@ -111,15 +119,18 @@ class StoragePermissionHandler : Fragment() {
         }
 
         fun handleRequestingPermission(view: View, activity: AppCompatActivity) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    activity, Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
                 AlertDialog.Builder(activity)
-                        .setTitle(R.string.permission_required)
-                        .setMessage(R.string.storage_permission_required_message)
-                        .setPositiveButton(R.string.grant_permission) { _, _ ->
-                            StoragePermissionHandler.requestIfNeeded(activity)
-                        }
-                        .setNeutralButton(R.string.cancel, null)
-                        .show()
+                    .setTitle(R.string.permission_required)
+                    .setMessage(R.string.storage_permission_required_message)
+                    .setPositiveButton(R.string.grant_permission) { _, _ ->
+                        StoragePermissionHandler.requestIfNeeded(activity)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
             } else {
                 val didShow = StoragePermissionHandler.requestIfNeeded(activity)
 
@@ -131,8 +142,8 @@ class StoragePermissionHandler : Fragment() {
 
         fun showStoragePermissionDisabledSnackBar(view: View, activity: AppCompatActivity) {
             Snackbar.make(view, R.string.storage_permission_disabled, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity) }
-                    .show()
+                .setAction(R.string.settings) { _ -> Utils.goToDeviceSettings(activity) }
+                .show()
         }
     }
 }

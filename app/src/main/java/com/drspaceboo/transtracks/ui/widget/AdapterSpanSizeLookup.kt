@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.ref.WeakReference
 
-class AdapterSpanSizeLookup(recyclerView: RecyclerView,
-                            private val defaultSpan: Int = 1) : GridLayoutManager.SpanSizeLookup() {
+class AdapterSpanSizeLookup(
+    recyclerView: RecyclerView, private val defaultSpan: Int = 1
+) : GridLayoutManager.SpanSizeLookup() {
     private val recyclerViewRef: WeakReference<RecyclerView> = WeakReference(recyclerView)
 
     override fun getSpanSize(position: Int): Int {

@@ -22,17 +22,16 @@ class SquareImageView : AppCompatImageView {
         loadAttributeSet(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context, attrs: AttributeSet, defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         loadAttributeSet(attrs)
     }
 
     var orientation: Int = 0 // Vertical
 
     private fun loadAttributeSet(attrs: AttributeSet) {
-        val a = context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.SquareImageView,
-                0, 0)
+        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.SquareImageView, 0, 0)
 
         try {
             orientation = a.getInteger(R.styleable.SquareImageView_ttOrientation, 0)

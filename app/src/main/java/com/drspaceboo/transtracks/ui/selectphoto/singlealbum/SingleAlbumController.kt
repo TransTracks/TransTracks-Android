@@ -30,8 +30,10 @@ import com.drspaceboo.transtracks.util.using
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SingleAlbumController(args: Bundle) : Controller(args) {
-    constructor(bucketId: String, epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
-                tagOfControllerToPopTo: String = HomeController.TAG) : this(Bundle().apply {
+    constructor(
+        bucketId: String, epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
+        tagOfControllerToPopTo: String = HomeController.TAG
+    ) : this(Bundle().apply {
         putString(KEY_BUCKET_ID, bucketId)
 
         if (epochDay != null) {
@@ -64,37 +66,47 @@ class SingleAlbumController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.SelectPhoto>()
-                .subscribe { event ->
-                    val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                    router.pushController(RouterTransaction.with(
-                            AssignPhotosController(arrayListOf(event.uri), epochDay, type, popTo))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe { event ->
+                val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                router.pushController(
+                    RouterTransaction
+                        .with(AssignPhotosController(arrayListOf(event.uri), epochDay, type, popTo))
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.SelectionUpdate>()
-                .observeOn(RxSchedulers.main())
-                .subscribe { event ->
-                    val state = when {
-                        event.uris.isEmpty() -> SingleAlbumUiState.Loaded(bucketId)
-                        else -> SingleAlbumUiState.Selection(bucketId, event.uris)
-                    }
-                    view.display(state)
+            .observeOn(RxSchedulers.main())
+            .subscribe { event ->
+                val state = when {
+                    event.uris.isEmpty() -> SingleAlbumUiState.Loaded(bucketId)
+                    else -> SingleAlbumUiState.Selection(bucketId, event.uris)
                 }
+                view.display(state)
+            }
 
         viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.EndMultiSelect>()
-                .observeOn(RxSchedulers.main())
-                .subscribe { view.display(SingleAlbumUiState.Loaded(bucketId)) }
+            .observeOn(RxSchedulers.main())
+            .subscribe { view.display(SingleAlbumUiState.Loaded(bucketId)) }
 
         viewDisposables += sharedEvents.ofType<SingleAlbumUiEvent.SaveMultiple>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction.with(
-                            AssignPhotosController(event.uris, epochDay, type,
-                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction
+                        .with(
+                            AssignPhotosController(
+                                event.uris,
+                                epochDay,
+                                type,
+                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                            )
+                        )
+                        .using(HorizontalChangeHandler())
+                )
+            }
     }
 
     override fun onDetach(view: View) {

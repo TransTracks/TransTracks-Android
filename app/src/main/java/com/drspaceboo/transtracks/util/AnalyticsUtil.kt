@@ -45,8 +45,8 @@ object AnalyticsUtil {
 
     fun logEvent(event: Event) {
         FirebaseAnalytics
-                .getInstance(TransTracksApp.instance)
-                .logEvent(getEventName(event), getEventBundle(event))
+            .getInstance(TransTracksApp.instance)
+            .logEvent(getEventName(event), getEventBundle(event))
     }
 
     private fun getEventName(event: Event): String = when (event) {

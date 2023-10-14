@@ -21,21 +21,27 @@ fun Period.getDisplayString(): String {
 
     val builder = StringBuilder()
     if (period.years != 0) {
-        builder.append(context.resources.getQuantityString(R.plurals.years, period.years, period.years))
+        builder.append(
+            context.resources.getQuantityString(R.plurals.years, period.years, period.years)
+        )
     }
     if (period.months != 0) {
         if (builder.isNotEmpty()) {
             builder.append(", ")
         }
 
-        builder.append(context.resources.getQuantityString(R.plurals.months, period.months, period.months))
+        builder.append(
+            context.resources.getQuantityString(R.plurals.months, period.months, period.months)
+        )
     }
     if (period.days != 0) {
         if (builder.isNotEmpty()) {
             builder.append(", ")
         }
 
-        builder.append(context.resources.getQuantityString(R.plurals.days, period.days, period.days))
+        builder.append(
+            context.resources.getQuantityString(R.plurals.days, period.days, period.days)
+        )
     }
     return if (builder.isNotEmpty()) builder.toString() else context.getString(R.string.start_day)
 }

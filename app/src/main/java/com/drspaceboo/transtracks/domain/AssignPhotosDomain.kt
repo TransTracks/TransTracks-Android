@@ -36,7 +36,10 @@ import java.io.InputStream
 import java.time.LocalDate
 
 sealed class AssignPhotosAction {
-    data class InitialData(val uris: ArrayList<Uri>, val epochDay: Long?, @Photo.Type val type: Int) : AssignPhotosAction()
+    data class InitialData(
+        val uris: ArrayList<Uri>, val epochDay: Long?, @Photo.Type val type: Int
+    ) : AssignPhotosAction()
+
     data class LoadImage(val index: Int) : AssignPhotosAction()
     data class ShowDateDialog(val index: Int) : AssignPhotosAction()
     data class ChangeDate(val index: Int, val newDate: LocalDate) : AssignPhotosAction()
@@ -47,20 +50,28 @@ sealed class AssignPhotosAction {
 
 sealed class AssignPhotosResult {
     data class Loading(val index: Int, val count: Int) : AssignPhotosResult()
-    data class Display(val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
-                       @Photo.Type val type: Int, val index: Int, val count: Int) : AssignPhotosResult()
+    data class Display(
+        val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
+        @Photo.Type val type: Int, val index: Int, val count: Int
+    ) : AssignPhotosResult()
 
-    data class ShowDateDialog(val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
-                              @Photo.Type val type: Int, val index: Int, val count: Int) : AssignPhotosResult()
+    data class ShowDateDialog(
+        val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
+        @Photo.Type val type: Int, val index: Int, val count: Int
+    ) : AssignPhotosResult()
 
-    data class ShowTypeDialog(val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
-                              @Photo.Type val type: Int, val index: Int, val count: Int) : AssignPhotosResult()
+    data class ShowTypeDialog(
+        val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
+        @Photo.Type val type: Int, val index: Int, val count: Int
+    ) : AssignPhotosResult()
 
     data class SavingImage(val index: Int, val count: Int) : AssignPhotosResult()
     data class SaveSuccess(val index: Int, val count: Int) : AssignPhotosResult()
 
-    data class ErrorSavingImage(val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
-                                @Photo.Type val type: Int, val index: Int, val count: Int) : AssignPhotosResult()
+    data class ErrorSavingImage(
+        val uri: Uri, val date: LocalDate, val photoDate: LocalDate,
+        @Photo.Type val type: Int, val index: Int, val count: Int
+    ) : AssignPhotosResult()
 
     companion object {
         fun getIndex(result: AssignPhotosResult) = when (result) {
@@ -95,28 +106,29 @@ class AssignPhotosDomain {
 
     val actions: PublishRelay<AssignPhotosAction> = PublishRelay.create()
     val results: Observable<AssignPhotosResult> = actions
-            .compose(assignPhotoActionsToResults())
-            .startWithItem(AssignPhotosResult.Loading(0, 1))
-            .subscribeOn(RxSchedulers.io())
-            .observeOn(RxSchedulers.main())
-            .replay(1)
-            .refCount()
+        .compose(assignPhotoActionsToResults())
+        .startWithItem(AssignPhotosResult.Loading(0, 1))
+        .subscribeOn(RxSchedulers.io())
+        .observeOn(RxSchedulers.main())
+        .replay(1)
+        .refCount()
 
 
-    private fun assignPhotoActionsToResults() = ObservableTransformer<AssignPhotosAction, AssignPhotosResult> { actions ->
-        actions.switchMap { action ->
-            return@switchMap when (action) {
-                is AssignPhotosAction.InitialData -> {
-                    uris = action.uris
-                    type = action.type
-                    epochDay = action.epochDay
+    private fun assignPhotoActionsToResults() =
+        ObservableTransformer<AssignPhotosAction, AssignPhotosResult> { actions ->
+            actions.switchMap { action ->
+                return@switchMap when (action) {
+                    is AssignPhotosAction.InitialData -> {
+                        uris = action.uris
+                        type = action.type
+                        epochDay = action.epochDay
 
-                    this.actions.accept(AssignPhotosAction.LoadImage(0))
-                    Observable.just(AssignPhotosResult.Loading(0, uris.size))
-                }
+                        this.actions.accept(AssignPhotosAction.LoadImage(0))
+                        Observable.just(AssignPhotosResult.Loading(0, uris.size))
+                    }
 
-                is AssignPhotosAction.LoadImage -> {
-                    Observable.just(Unit)
+                    is AssignPhotosAction.LoadImage -> {
+                        Observable.just(Unit)
                             .map<AssignPhotosResult> {
                                 date = when {
                                     epochDay != null -> LocalDate.ofEpochDay(epochDay!!)
@@ -148,9 +160,9 @@ class AssignPhotosDomain {
                                         date = photoDate
                                     }
 
-                                    return@map AssignPhotosResult.Display(uri, date, photoDate,
-                                                                          type, action.index,
-                                                                          uris.size)
+                                    return@map AssignPhotosResult.Display(
+                                        uri, date, photoDate, type, action.index, uris.size
+                                    )
                                 }
 
                                 val fileDate = File(uri.path).dateCreated()
@@ -162,33 +174,44 @@ class AssignPhotosDomain {
                                     date = photoDate
                                 }
 
-                                return@map AssignPhotosResult.Display(uri, date, photoDate, type,
-                                                                      action.index, uris.size)
+                                return@map AssignPhotosResult.Display(
+                                    uri, date, photoDate, type, action.index, uris.size
+                                )
                             }
                             .startWithItem(AssignPhotosResult.Loading(action.index, uris.size))
-                }
+                    }
 
-                is AssignPhotosAction.ShowDateDialog -> Observable.just(
-                        AssignPhotosResult.ShowDateDialog(uris[action.index], date, photoDate, type,
-                                                          action.index, uris.size))
+                    is AssignPhotosAction.ShowDateDialog -> Observable.just(
+                        AssignPhotosResult.ShowDateDialog(
+                            uris[action.index], date, photoDate, type, action.index, uris.size
+                        )
+                    )
 
-                is AssignPhotosAction.ChangeDate -> {
-                    date = action.newDate
-                    Observable.just(AssignPhotosResult.Display(uris[action.index], date, photoDate,
-                                                               type, action.index, uris.size))
-                }
+                    is AssignPhotosAction.ChangeDate -> {
+                        date = action.newDate
+                        Observable.just(
+                            AssignPhotosResult.Display(
+                                uris[action.index], date, photoDate, type, action.index, uris.size
+                            )
+                        )
+                    }
 
-                is AssignPhotosAction.ShowTypeDialog -> Observable.just(
-                        AssignPhotosResult.ShowTypeDialog(uris[action.index], date, photoDate, type,
-                                                          action.index, uris.size))
+                    is AssignPhotosAction.ShowTypeDialog -> Observable.just(
+                        AssignPhotosResult.ShowTypeDialog(
+                            uris[action.index], date, photoDate, type, action.index, uris.size
+                        )
+                    )
 
-                is AssignPhotosAction.ChangeType -> {
-                    type = action.newType
-                    Observable.just(AssignPhotosResult.Display(uris[action.index], date, photoDate,
-                                                               type, action.index, uris.size))
-                }
+                    is AssignPhotosAction.ChangeType -> {
+                        type = action.newType
+                        Observable.just(
+                            AssignPhotosResult.Display(
+                                uris[action.index], date, photoDate, type, action.index, uris.size
+                            )
+                        )
+                    }
 
-                is AssignPhotosAction.Save -> Observable.just(Unit)
+                    is AssignPhotosAction.Save -> Observable.just(Unit)
                         .observeOn(RxSchedulers.io())
                         .map<Pair<AssignPhotosAction.Save, Boolean>> {
                             val contentResolver = TransTracksApp.instance.contentResolver
@@ -215,8 +238,9 @@ class AssignPhotosDomain {
                             }
 
                             val imageFile = FileUtil.getNewImageFile(date)
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,
-                                            FileOutputStream(imageFile))
+                            bitmap.compress(
+                                Bitmap.CompressFormat.JPEG, 100, FileOutputStream(imageFile)
+                            )
 
                             var exifInputStream: InputStream? = null
                             try {
@@ -250,13 +274,18 @@ class AssignPhotosDomain {
                             return@map when (success) {
                                 true -> AssignPhotosResult.SaveSuccess(action.index, uris.size)
 
-                                false -> AssignPhotosResult.ErrorSavingImage(uris[action.index],
-                                                                             date, photoDate, type,
-                                                                             action.index, uris.size)
+                                false -> AssignPhotosResult.ErrorSavingImage(
+                                    uris[action.index],
+                                    date,
+                                    photoDate,
+                                    type,
+                                    action.index,
+                                    uris.size
+                                )
                             }
                         }
                         .startWithItem(AssignPhotosResult.SavingImage(action.index, uris.size))
+                }
             }
         }
-    }
 }

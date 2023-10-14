@@ -35,9 +35,11 @@ import kotterknife.bindView
 import java.io.FileNotFoundException
 import java.lang.ref.WeakReference
 
-class SingleAlbumAdapter(context: Context, bucketId: String)
-    : CursorRecyclerViewAdapter<SingleAlbumAdapter.BaseHolder>(getSingleAlbumCursor(context, bucketId)),
-      AdapterSpanSizeLookup.Interface {
+class SingleAlbumAdapter(
+    context: Context, bucketId: String
+) : CursorRecyclerViewAdapter<SingleAlbumAdapter.BaseHolder>(
+    getSingleAlbumCursor(context, bucketId)
+), AdapterSpanSizeLookup.Interface {
     private val eventRelay: PublishRelay<SingleAlbumUiEvent> = PublishRelay.create()
     val events: Observable<SingleAlbumUiEvent> = eventRelay
 
@@ -102,7 +104,7 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
 
     private fun getUri(cursor: Cursor): Uri {
         val idIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-        if (idIndex < 0){
+        if (idIndex < 0) {
             throw IllegalStateException("couldn't find the column index of 'MediaStore.Images.Media._ID'")
         }
         val id = cursor.getLong(idIndex)
@@ -112,16 +114,18 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return when (viewType) {
             TYPE_COUNT -> {
-                CountHolder(LayoutInflater.from(parent.context)
-                                    .inflate(R.layout.single_album_adapter_count_item,
-                                             parent, false))
+                CountHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.single_album_adapter_count_item, parent, false)
+                )
             }
 
             else -> {
-                ImageHolder(LayoutInflater.from(parent.context)
-                                    .inflate(R.layout.single_album_adapter_image_item,
-                                             parent, false),
-                            this)
+                ImageHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.single_album_adapter_image_item, parent, false),
+                    this
+                )
             }
         }
     }
@@ -192,8 +196,7 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
                 val adapter = adapterRef.get() ?: return@setOnLongClickListener false
 
                 if (!adapter.selectionMode) {
-                    adapter.eventRelay.accept(
-                            SingleAlbumUiEvent.SelectionUpdate(arrayListOf(uri)))
+                    adapter.eventRelay.accept(SingleAlbumUiEvent.SelectionUpdate(arrayListOf(uri)))
                 } else {
                     itemView.performClick()
                 }
@@ -207,20 +210,19 @@ class SingleAlbumAdapter(context: Context, bucketId: String)
             val adapter = adapterRef.get() ?: return
 
             Picasso.get()
-                    .load(uri)
-                    .fit()
-                    .centerCrop()
-                    .into(image, object : Callback {
-                        override fun onSuccess() {
-                        }
+                .load(uri)
+                .fit()
+                .centerCrop()
+                .into(image, object : Callback {
+                    override fun onSuccess() {}
 
-                        override fun onError(e: Exception?) {
-                            if (e != null && e is FileNotFoundException) {
-                                FileUtil.removeImageFromGallery(uri.path!!)
-                                adapter.notifyDataSetChanged()
-                            }
+                    override fun onError(e: Exception?) {
+                        if (e != null && e is FileNotFoundException) {
+                            FileUtil.removeImageFromGallery(uri.path!!)
+                            adapter.notifyDataSetChanged()
                         }
-                    })
+                    }
+                })
 
             selection.setVisibleOrGone(selectionMode)
 

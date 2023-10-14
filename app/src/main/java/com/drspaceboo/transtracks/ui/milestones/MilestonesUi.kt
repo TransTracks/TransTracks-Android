@@ -22,7 +22,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
-import com.drspaceboo.transtracks.util.*
+import com.drspaceboo.transtracks.util.getString
+import com.drspaceboo.transtracks.util.gone
+import com.drspaceboo.transtracks.util.loadAd
+import com.drspaceboo.transtracks.util.setGone
+import com.drspaceboo.transtracks.util.setVisible
+import com.drspaceboo.transtracks.util.toV3
+import com.drspaceboo.transtracks.util.visible
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
@@ -49,7 +55,9 @@ sealed class MilestonesUiState {
     }
 }
 
-class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class MilestonesView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.milestones_toolbar)
 
     private val recyclerView: RecyclerView by bindView(R.id.milestones_recycler_view)
@@ -62,15 +70,16 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
     private val eventRelay: PublishRelay<MilestonesUiEvent> = PublishRelay.create()
     val events: Observable<MilestonesUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge<MilestonesUiEvent>(
-                toolbar.navigationClicks().toV3().map { MilestonesUiEvent.Back },
-                toolbar.itemClicks().toV3().map<MilestonesUiEvent> { item ->
-                    return@map when (item.itemId) {
-                        R.id.milestones_menu_add -> MilestonesUiEvent.AddMilestone(day)
-                        else -> throw IllegalArgumentException("Unhandled menu item id")
-                    }
-                },
-                emptyAdd.clicks().toV3().map { MilestonesUiEvent.AddMilestone(day) },
-                eventRelay)
+            toolbar.navigationClicks().toV3().map { MilestonesUiEvent.Back },
+            toolbar.itemClicks().toV3().map<MilestonesUiEvent> { item ->
+                return@map when (item.itemId) {
+                    R.id.milestones_menu_add -> MilestonesUiEvent.AddMilestone(day)
+                    else -> throw IllegalArgumentException("Unhandled menu item id")
+                }
+            },
+            emptyAdd.clicks().toV3().map { MilestonesUiEvent.AddMilestone(day) },
+            eventRelay
+        )
     }
 
     private var day: Long = 0L
@@ -90,22 +99,26 @@ class MilestonesView(context: Context, attributeSet: AttributeSet) : ConstraintL
                 day = state.initialDay
 
                 if (recyclerView.adapter == null) {
-                    recyclerView.adapter = MilestonesAdapter(eventRelay, postInitialLoad = { adapter ->
-                        val scrollTo = adapter.getPositionOfDay(MilestonesUiState.getInitialDay(state))
-                        if (scrollTo != -1) {
-                            Handler(Looper.getMainLooper()).post {
-                                layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+                    recyclerView.adapter = MilestonesAdapter(
+                        eventRelay,
+                        postInitialLoad = { adapter ->
+                            val scrollTo =
+                                adapter.getPositionOfDay(MilestonesUiState.getInitialDay(state))
+                            if (scrollTo != -1) {
+                                Handler(Looper.getMainLooper()).post {
+                                    layoutManager.scrollToPositionWithOffset(scrollTo, 0)
+                                }
                             }
-                        }
-                    }, postLoad = { adapter ->
-                        if (adapter.itemCount > 0) {
-                            setVisible(recyclerView)
-                            setGone(emptyMessage, emptyAdd)
-                        } else {
-                            setVisible(emptyMessage, emptyAdd)
-                            setGone(recyclerView)
-                        }
-                    })
+                        },
+                        postLoad = { adapter ->
+                            if (adapter.itemCount > 0) {
+                                setVisible(recyclerView)
+                                setGone(emptyMessage, emptyAdd)
+                            } else {
+                                setVisible(emptyMessage, emptyAdd)
+                                setGone(recyclerView)
+                            }
+                        })
                 }
 
                 if (state.showAds) {

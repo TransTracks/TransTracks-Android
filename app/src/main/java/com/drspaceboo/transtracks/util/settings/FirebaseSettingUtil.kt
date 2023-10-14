@@ -43,7 +43,8 @@ class FirebaseSettingUtil {
 
         fun setBool(key: Key, value: Boolean, context: Context?) {
             try {
-                getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
+                getSettingsDocRef().update(mapOf(key.name to value))
+                    .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -52,7 +53,7 @@ class FirebaseSettingUtil {
         fun <T : Enum<T>> setEnum(key: Key, value: T, context: Context?) {
             try {
                 getSettingsDocRef().update(mapOf(key.name to value.name))
-                        .addOnFailureListener(FailureListener(context))
+                    .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -60,7 +61,8 @@ class FirebaseSettingUtil {
 
         fun setInt(key: Key, value: Int, context: Context?) {
             try {
-                getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
+                getSettingsDocRef().update(mapOf(key.name to value))
+                    .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -68,7 +70,8 @@ class FirebaseSettingUtil {
 
         fun setLong(key: Key, value: Long, context: Context?) {
             try {
-                getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
+                getSettingsDocRef().update(mapOf(key.name to value))
+                    .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -76,7 +79,8 @@ class FirebaseSettingUtil {
 
         fun setString(key: Key, value: String, context: Context) {
             try {
-                getSettingsDocRef().update(mapOf(key.name to value)).addOnFailureListener(FailureListener(context))
+                getSettingsDocRef().update(mapOf(key.name to value))
+                    .addOnFailureListener(FailureListener(context))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -99,72 +103,78 @@ class FirebaseSettingUtil {
 
         val user = FirebaseAuth.getInstance().currentUser ?: return
 
-        listener = db.collection(user.uid).document(SETTINGS_DOCUMENT).addSnapshotListener { snapshot, error ->
-            error?.printStackTrace()
+        listener = db.collection(user.uid).document(SETTINGS_DOCUMENT)
+            .addSnapshotListener { snapshot, error ->
+                error?.printStackTrace()
 
-            snapshot?.data?.let { data ->
-                data.forEach { (keyString, value) ->
-                    val key = safeValueOf<Key>(keyString) ?: return@forEach
-                    when (key) {
-                        lockCode -> when (value) {
-                            is String -> {
-                                PrefUtil.setString(key, value)
-                                SettingsManager.userSettingsUpdatedRelay.accept(Unit)
-                            }
-                            else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
-                        }
-
-                        lockDelay -> when (value) {
-                            is String -> {
-                                PrefUtil.setString(key, value)
-                                SettingsManager.userSettingsUpdatedRelay.accept(Unit)
-                            }
-                            else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
-                        }
-
-                        lockType -> when (value) {
-                            is String -> when (val type = safeValueOf<LockType>(value)) {
-                                null -> Log.d(LOG_TAG, "$value is not a valid LockType")
-                                else -> {
-                                    PrefUtil.setEnum(key, type)
-                                    SettingsManager.lockTypeUpdatedRelay.accept(type)
+                snapshot?.data?.let { data ->
+                    data.forEach { (keyString, value) ->
+                        val key = safeValueOf<Key>(keyString) ?: return@forEach
+                        when (key) {
+                            lockCode -> when (value) {
+                                is String -> {
+                                    PrefUtil.setString(key, value)
+                                    SettingsManager.userSettingsUpdatedRelay.accept(Unit)
                                 }
+
+                                else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
                             }
-                            else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
-                        }
 
-                        enableCrashReports, enableAnalytics, showAds, showWelcome -> when (value) {
-                            is Boolean -> PrefUtil.setBoolean(key, value)
-                            else -> Log.d(LOG_TAG, "${key.name} is not a Boolean : '$value'")
-                        }
-
-                        startDate -> when (value) {
-                            is Int -> {
-                                PrefUtil.setInt(key, value)
-                                SettingsManager.userSettingsUpdatedRelay.accept(Unit)
-                            }
-                            else -> Log.d(LOG_TAG, "${key.name} is not a Int : '$value'")
-                        }
-
-                        theme -> when (value) {
-                            is String -> when (val theme = safeValueOf<Theme>(value)) {
-                                null -> Log.d(LOG_TAG, "$value is not a valid Theme")
-                                else -> {
-                                    PrefUtil.setEnum(key, theme)
-                                    SettingsManager.themeUpdatedRelay.accept(theme)
+                            lockDelay -> when (value) {
+                                is String -> {
+                                    PrefUtil.setString(key, value)
+                                    SettingsManager.userSettingsUpdatedRelay.accept(Unit)
                                 }
-                            }
-                            else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
-                        }
 
-                        currentAndroidVersion, incorrectPasswordCount, saveToFirebase,
-                        showAccountWarning, userLastSeen -> {
-                            //No-op
+                                else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
+                            }
+
+                            lockType -> when (value) {
+                                is String -> when (val type = safeValueOf<LockType>(value)) {
+                                    null -> Log.d(LOG_TAG, "$value is not a valid LockType")
+                                    else -> {
+                                        PrefUtil.setEnum(key, type)
+                                        SettingsManager.lockTypeUpdatedRelay.accept(type)
+                                    }
+                                }
+
+                                else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
+                            }
+
+                            enableCrashReports, enableAnalytics, showAds, showWelcome -> when (value) {
+                                is Boolean -> PrefUtil.setBoolean(key, value)
+                                else -> Log.d(LOG_TAG, "${key.name} is not a Boolean : '$value'")
+                            }
+
+                            startDate -> when (value) {
+                                is Int -> {
+                                    PrefUtil.setInt(key, value)
+                                    SettingsManager.userSettingsUpdatedRelay.accept(Unit)
+                                }
+
+                                else -> Log.d(LOG_TAG, "${key.name} is not a Int : '$value'")
+                            }
+
+                            theme -> when (value) {
+                                is String -> when (val theme = safeValueOf<Theme>(value)) {
+                                    null -> Log.d(LOG_TAG, "$value is not a valid Theme")
+                                    else -> {
+                                        PrefUtil.setEnum(key, theme)
+                                        SettingsManager.themeUpdatedRelay.accept(theme)
+                                    }
+                                }
+
+                                else -> Log.d(LOG_TAG, "${key.name} is not a String : '$value'")
+                            }
+
+                            currentAndroidVersion, incorrectPasswordCount, saveToFirebase,
+                            showAccountWarning, userLastSeen -> {
+                                //No-op
+                            }
                         }
                     }
                 }
             }
-        }
     }
 
     fun removeListener() {

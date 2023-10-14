@@ -30,8 +30,9 @@ import io.reactivex.rxjava3.core.Observable
 import kotterknife.bindView
 import java.lang.ref.WeakReference
 
-class SelectPhotoAdapter(context: Context)
-    : CursorRecyclerViewAdapter<SelectPhotoAdapter.BaseHolder>(getGalleryCursor(context)) {
+class SelectPhotoAdapter(
+    context: Context
+) : CursorRecyclerViewAdapter<SelectPhotoAdapter.BaseHolder>(getGalleryCursor(context)) {
 
     private val eventRelay: PublishRelay<SelectPhotoUiEvent> = PublishRelay.create()
     val events: Observable<SelectPhotoUiEvent> = eventRelay
@@ -64,13 +65,17 @@ class SelectPhotoAdapter(context: Context)
 
         return when (viewType) {
             R.layout.select_photo_adapter_add_image_item ->
-                TakePhotoHolder(layoutInflater.inflate(R.layout.select_photo_adapter_add_image_item,
-                                                       parent, false),
-                                eventRelay)
+                TakePhotoHolder(
+                    layoutInflater.inflate(
+                        R.layout.select_photo_adapter_add_image_item, parent, false
+                    ),
+                    eventRelay
+                )
 
-            else ->
-                ImageHolder(layoutInflater.inflate(R.layout.select_photo_adapter_item, parent, false),
-                            this)
+            else -> ImageHolder(
+                layoutInflater.inflate(R.layout.select_photo_adapter_item, parent, false),
+                this
+            )
         }
     }
 
@@ -118,7 +123,7 @@ class SelectPhotoAdapter(context: Context)
 
     private fun getUri(cursor: Cursor): Uri {
         val idIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-        if (idIndex < 0){
+        if (idIndex < 0) {
             throw IllegalStateException("couldn't find the column index of 'MediaStore.Images.Media._ID'")
         }
         val id = cursor.getLong(idIndex)
@@ -132,7 +137,9 @@ class SelectPhotoAdapter(context: Context)
 
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    class TakePhotoHolder(itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>) : BaseHolder(itemView) {
+    class TakePhotoHolder(
+        itemView: View, itemClickRelay: PublishRelay<SelectPhotoUiEvent>
+    ) : BaseHolder(itemView) {
         init {
             //Avoiding subscription so we don't need to dispose it
             itemView.setOnClickListener { itemClickRelay.accept(SelectPhotoUiEvent.TakePhoto) }
@@ -175,8 +182,7 @@ class SelectPhotoAdapter(context: Context)
                 val adapter = adapterRef.get() ?: return@setOnLongClickListener false
 
                 if (!adapter.selectionMode) {
-                    adapter.eventRelay.accept(
-                            SelectPhotoUiEvent.SelectionUpdate(arrayListOf(uri)))
+                    adapter.eventRelay.accept(SelectPhotoUiEvent.SelectionUpdate(arrayListOf(uri)))
                 } else {
                     itemView.performClick()
                 }
@@ -188,10 +194,10 @@ class SelectPhotoAdapter(context: Context)
         fun bind(uri: Uri, selectionMode: Boolean, isSelected: Boolean) {
             currentUri = uri
             Picasso.get()
-                    .load(uri)
-                    .fit()
-                    .centerCrop()
-                    .into(image)
+                .load(uri)
+                .fit()
+                .centerCrop()
+                .into(image)
 
             selection.setVisibleOrGone(selectionMode)
 

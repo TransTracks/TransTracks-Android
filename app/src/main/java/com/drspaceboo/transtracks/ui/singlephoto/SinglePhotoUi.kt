@@ -33,10 +33,14 @@ sealed class SinglePhotoUiEvent {
 }
 
 sealed class SinglePhotoUiState {
-    data class Loaded(val photoPath: String, val details: String, val photoId: String) : SinglePhotoUiState()
+    data class Loaded(
+        val photoPath: String, val details: String, val photoId: String
+    ) : SinglePhotoUiState()
 }
 
-class SinglePhotoView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class SinglePhotoView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.single_photo_toolbar)
 
     private val image: ImageView by bindView(R.id.single_photo_image)
@@ -44,15 +48,15 @@ class SinglePhotoView(context: Context, attributeSet: AttributeSet) : Constraint
 
     val events: Observable<SinglePhotoUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
         Observable.merge(
-                toolbar.navigationClicks().toV3().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back },
-                toolbar.itemClicks().toV3().map { item ->
-                    return@map when (item.itemId) {
-                        R.id.single_photo_menu_edit -> SinglePhotoUiEvent.Edit(photoId)
-                        R.id.single_photo_menu_share -> SinglePhotoUiEvent.Share(photoId)
-                        R.id.single_photo_menu_delete -> SinglePhotoUiEvent.Delete(photoId)
-                        else -> throw IllegalArgumentException("Unhandled menu item")
-                    }
-                })
+            toolbar.navigationClicks().toV3().map<SinglePhotoUiEvent> { SinglePhotoUiEvent.Back },
+            toolbar.itemClicks().toV3().map { item ->
+                return@map when (item.itemId) {
+                    R.id.single_photo_menu_edit -> SinglePhotoUiEvent.Edit(photoId)
+                    R.id.single_photo_menu_share -> SinglePhotoUiEvent.Share(photoId)
+                    R.id.single_photo_menu_delete -> SinglePhotoUiEvent.Delete(photoId)
+                    else -> throw IllegalArgumentException("Unhandled menu item")
+                }
+            })
     }
 
     private var photoId: String = ""
@@ -68,10 +72,10 @@ class SinglePhotoView(context: Context, attributeSet: AttributeSet) : Constraint
                 photoId = state.photoId
 
                 Picasso.get()
-                        .load(File(state.photoPath))
-                        .fit()
-                        .centerInside()
-                        .into(image)
+                    .load(File(state.photoPath))
+                    .fit()
+                    .centerInside()
+                    .into(image)
 
                 details.text = state.details
             }
