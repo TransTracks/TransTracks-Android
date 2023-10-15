@@ -15,8 +15,9 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 
 
-class SquareChildrenLinearLayout(context: Context,
-                                 attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
+class SquareChildrenLinearLayout(
+    context: Context, attributeSet: AttributeSet
+    ) : LinearLayout(context, attributeSet) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var maxDimension = measuredWidth
 

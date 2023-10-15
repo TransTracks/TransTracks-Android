@@ -13,7 +13,8 @@ package com.drspaceboo.transtracks.util
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.RouterTransaction
 
-fun RouterTransaction.using(changeHandler: ControllerChangeHandler): RouterTransaction = this.apply {
-    popChangeHandler(changeHandler)
-    pushChangeHandler(changeHandler)
-}
+fun RouterTransaction.using(changeHandler: ControllerChangeHandler): RouterTransaction =
+    this.apply {
+        popChangeHandler(changeHandler)
+        pushChangeHandler(changeHandler)
+    }

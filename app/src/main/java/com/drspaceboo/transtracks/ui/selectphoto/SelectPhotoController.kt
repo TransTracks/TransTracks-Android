@@ -11,7 +11,6 @@
 package com.drspaceboo.transtracks.ui.selectphoto
 
 import android.Manifest
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,21 +32,20 @@ import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
 import com.drspaceboo.transtracks.util.RxSchedulers
-import com.drspaceboo.transtracks.util.Utils
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.using
-import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-
 import java.io.File
 
 @Deprecated("This shouldn't be handled in app, let's move to use selecting with other apps")
 class SelectPhotoController(args: Bundle) : Controller(args) {
-    constructor(epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
-                tagOfControllerToPopTo: String = HomeController.TAG) : this(Bundle().apply {
+    constructor(
+        epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
+        tagOfControllerToPopTo: String = HomeController.TAG
+    ) : this(Bundle().apply {
         if (epochDay != null) {
             putLong(KEY_EPOCH_DAY, epochDay)
         }
@@ -65,7 +63,9 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
     private var photoTakenDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @NonNull container: ViewGroup): View {
+    override fun onCreateView(
+        @NonNull inflater: LayoutInflater, @NonNull container: ViewGroup
+    ): View {
         return inflater.inflate(R.layout.select_photo, container, false)
     }
 
@@ -78,94 +78,115 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents
-                .ofType<SelectPhotoUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .ofType<SelectPhotoUiEvent.Back>()
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.ViewAlbums>()
-                .subscribe {
-                    val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                    router.pushController(RouterTransaction.with(SelectAlbumController(epochDay,
-                                                                                       type, popTo))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe {
+                val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                router.pushController(
+                    RouterTransaction.with(SelectAlbumController(epochDay, type, popTo))
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.ExternalGalleries>()
-                .subscribe {
-                    CameraHandler.requestPhotoFromAnotherApp(activity as AppCompatActivity)
-                }
+            .subscribe { CameraHandler.requestPhotoFromAnotherApp(activity as AppCompatActivity) }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SelectionUpdate>()
-                .observeOn(RxSchedulers.main())
-                .subscribe { event ->
-                    val state = when {
-                        event.uris.isEmpty() -> SelectPhotoUiState.Loaded
-                        else -> SelectPhotoUiState.Selection(event.uris)
-                    }
-                    view.display(state)
+            .observeOn(RxSchedulers.main())
+            .subscribe { event ->
+                val state = when {
+                    event.uris.isEmpty() -> SelectPhotoUiState.Loaded
+                    else -> SelectPhotoUiState.Selection(event.uris)
                 }
+                view.display(state)
+            }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.EndMultiSelect>()
-                .observeOn(RxSchedulers.main())
-                .subscribe { view.display(SelectPhotoUiState.Loaded) }
+            .observeOn(RxSchedulers.main())
+            .subscribe { view.display(SelectPhotoUiState.Loaded) }
 
         viewDisposables += Observables.combineLatest(
-                sharedEvents.ofType<SelectPhotoUiEvent.TakePhoto>(),
-                CameraHandler.cameraPermissionEnabled) { _, cameraEnabled -> cameraEnabled }
-                .subscribe { cameraEnabled ->
-                    if (cameraEnabled) {
-                        CameraHandler.takePhoto(activity as AppCompatActivity)
-                    } else {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                            AlertDialog.Builder(activity!!)
-                                    .setTitle(R.string.permission_required)
-                                    .setMessage(R.string.camera_permission_required_message)
-                                    .setPositiveButton(R.string.grant_permission) { _, _ ->
-                                        CameraHandler
-                                                .requestIfNeeded(router.activity as AppCompatActivity)
-                                    }
-                                    .setNeutralButton(R.string.cancel, null)
-                                    .show()
-                        } else {
-                            val didShow = CameraHandler
-                                    .requestIfNeeded(router.activity as AppCompatActivity)
-
-                            if (!didShow) {
-                                CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
+            sharedEvents.ofType<SelectPhotoUiEvent.TakePhoto>(),
+            CameraHandler.cameraPermissionEnabled
+        ) { _, cameraEnabled -> cameraEnabled }
+            .subscribe { cameraEnabled ->
+                if (cameraEnabled) {
+                    CameraHandler.takePhoto(activity as AppCompatActivity)
+                } else {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                        AlertDialog.Builder(activity!!)
+                            .setTitle(R.string.permission_required)
+                            .setMessage(R.string.camera_permission_required_message)
+                            .setPositiveButton(R.string.grant_permission) { _, _ ->
+                                CameraHandler.requestIfNeeded(router.activity as AppCompatActivity)
                             }
+                            .setNeutralButton(R.string.cancel, null)
+                            .show()
+                    } else {
+                        val didShow =
+                            CameraHandler.requestIfNeeded(router.activity as AppCompatActivity)
+
+                        if (!didShow) {
+                            CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
                         }
                     }
                 }
+            }
 
         viewDisposables += CameraHandler.cameraPermissionBlocked
-                .filter { showRationale -> !showRationale }
-                .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
+            .filter { showRationale -> !showRationale }
+            .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
 
         viewDisposables += sharedEvents
-                .ofType<SelectPhotoUiEvent.PhotoSelected>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction.with(
-                            AssignPhotosController(arrayListOf(event.uri), epochDay, type,
-                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .ofType<SelectPhotoUiEvent.PhotoSelected>()
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction
+                        .with(
+                            AssignPhotosController(
+                                arrayListOf(event.uri),
+                                epochDay,
+                                type,
+                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                            )
+                        )
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SaveMultiple>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction.with(
-                            AssignPhotosController(event.uris, epochDay, type,
-                                                   args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction
+                        .with(
+                            AssignPhotosController(
+                                event.uris,
+                                epochDay,
+                                type,
+                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                            )
+                        )
+                        .using(HorizontalChangeHandler())
+                )
+            }
 
         if (photoTakenDisposable.isDisposed) {
-            photoTakenDisposable = CameraHandler.photoTaken
-                    .subscribe { absolutePath ->
-                        router.pushController(RouterTransaction.with(
-                                AssignPhotosController(arrayListOf(Uri.fromFile(File(absolutePath))),
-                                                       epochDay, type,
-                                                       args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!))
-                                                      .using(HorizontalChangeHandler()))
-                    }
+            photoTakenDisposable = CameraHandler.photoTaken.subscribe { absolutePath ->
+                router.pushController(
+                    RouterTransaction
+                        .with(
+                            AssignPhotosController(
+                                arrayListOf(Uri.fromFile(File(absolutePath))),
+                                epochDay,
+                                type,
+                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
+                            )
+                        )
+                        .using(HorizontalChangeHandler())
+                )
+            }
         }
     }
 

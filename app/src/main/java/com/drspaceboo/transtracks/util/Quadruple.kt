@@ -27,8 +27,9 @@ import java.io.Serializable
  * @property third Third value.
  * @property forth Forth value.
  */
-data class Quadruple<out A, out B, out C, out D>(val first: A, val second: B, val third: C,
-                                                 val forth: D) : Serializable {
+data class Quadruple<out A, out B, out C, out D>(
+    val first: A, val second: B, val third: C, val forth: D
+) : Serializable {
     /**
      * Returns string representation of the [Quadruple] including its [first], [second], [third] and
      * [forth] values.

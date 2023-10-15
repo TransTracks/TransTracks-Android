@@ -22,7 +22,9 @@ class SquareConstraintLayout : ConstraintLayout {
         loadAttributeSet(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(
+        context: Context, attrs: AttributeSet, defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr) {
         loadAttributeSet(attrs)
     }
 
@@ -30,9 +32,8 @@ class SquareConstraintLayout : ConstraintLayout {
 
     private fun loadAttributeSet(attrs: AttributeSet) {
         val a = context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.SquareConstraintLayout,
-                0, 0)
+            attrs, R.styleable.SquareConstraintLayout, 0, 0
+        )
 
         try {
             orientation = a.getInteger(R.styleable.SquareConstraintLayout_ttOrientation, 0)

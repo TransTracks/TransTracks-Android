@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by skyfishjy on 10/31/14.
  */
 
-abstract class CursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(cursor: Cursor?) : RecyclerView.Adapter<VH>() {
+abstract class CursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(
+    cursor: Cursor?
+) : RecyclerView.Adapter<VH>() {
 
     var cursor: Cursor? = null
         private set

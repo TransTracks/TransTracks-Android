@@ -199,7 +199,7 @@ class HomeController : Controller() {
                     )
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     CameraHandler.requestPhotoFromAnotherApp(activity)
-                }else {
+                } else {
                     StoragePermissionHandler.handleRequestingPermission(
                         view, activity as AppCompatActivity
                     )

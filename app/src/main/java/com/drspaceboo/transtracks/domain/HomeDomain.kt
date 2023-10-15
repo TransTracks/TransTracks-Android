@@ -17,7 +17,6 @@ import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.getDisplayString
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.settings.SettingsManager
-import com.google.android.ump.ConsentInformation.ConsentStatus
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer

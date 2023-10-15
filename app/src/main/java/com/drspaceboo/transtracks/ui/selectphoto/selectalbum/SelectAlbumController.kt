@@ -29,8 +29,11 @@ import com.drspaceboo.transtracks.util.using
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SelectAlbumController(args: Bundle) : Controller(args) {
-    constructor(epochDay: Long? = null, @Photo.Type type: Int,
-                tagOfControllerToPopTo: String = HomeController.TAG) : this(Bundle().apply {
+    constructor(
+        epochDay: Long? = null,
+        @Photo.Type type: Int,
+        tagOfControllerToPopTo: String = HomeController.TAG
+    ) : this(Bundle().apply {
         if (epochDay != null) {
             putLong(KEY_EPOCH_DAY, epochDay)
         }
@@ -60,17 +63,17 @@ class SelectAlbumController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents
-                .ofType<SelectAlbumUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .ofType<SelectAlbumUiEvent.Back>()
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents
-                .ofType<SelectAlbumUiEvent.SelectAlbum>()
-                .subscribe { event ->
-                    router.pushController(RouterTransaction
-                                                  .with(SingleAlbumController(event.bucketId,
-                                                                              epochDay, type))
-                                                  .using(HorizontalChangeHandler()))
-                }
+            .ofType<SelectAlbumUiEvent.SelectAlbum>()
+            .subscribe { event ->
+                router.pushController(
+                    RouterTransaction.with(SingleAlbumController(event.bucketId, epochDay, type))
+                        .using(HorizontalChangeHandler())
+                )
+            }
     }
 
     override fun onDetach(view: View) {

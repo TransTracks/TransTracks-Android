@@ -35,14 +35,19 @@ sealed class SelectAlbumUiState {
     object Loaded : SelectAlbumUiState()
 }
 
-class AlbumView(context: Context, attributeSet: AttributeSet) : ConstraintLayout(context, attributeSet) {
+class AlbumView(
+    context: Context, attributeSet: AttributeSet
+) : ConstraintLayout(context, attributeSet) {
     private val toolbar: Toolbar by bindView(R.id.select_album_toolbar)
     private val recyclerView: RecyclerView by bindView(R.id.select_album_recycler_view)
 
-    private val eventRelay: PublishRelay<SelectAlbumUiEvent> = PublishRelay.create<SelectAlbumUiEvent>()
+    private val eventRelay: PublishRelay<SelectAlbumUiEvent> =
+        PublishRelay.create<SelectAlbumUiEvent>()
     val events: Observable<SelectAlbumUiEvent> by lazy(LazyThreadSafetyMode.NONE) {
-        Observable.merge(toolbar.navigationClicks().toV3().map { SelectAlbumUiEvent.Back },
-                         eventRelay)
+        Observable.merge(
+            toolbar.navigationClicks().toV3().map { SelectAlbumUiEvent.Back },
+            eventRelay
+        )
     }
 
     private var albumClickDisposable: Disposable = Disposable.disposed()

@@ -47,7 +47,6 @@ import com.google.firebase.auth.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import java.time.LocalDate
 import java.util.*
 

@@ -63,66 +63,70 @@ class EditPhotoController(args: Bundle) : Controller(args) {
 
         if (resultsDisposable.isDisposed) {
             resultsDisposable = domain.results
-                    .doOnSubscribe {
-                        Handler().postDelayed(
-                                {
-                                    domain.actions.accept(EditPhotoAction.InitialLoad(
-                                            args.getString(KEY_PHOTO_ID)!!))
-                                }, 200)
-                    }.subscribe()
+                .doOnSubscribe {
+                    Handler().postDelayed(
+                        {
+                            domain.actions.accept(
+                                EditPhotoAction.InitialLoad(args.getString(KEY_PHOTO_ID)!!)
+                            )
+                        }, 200
+                    )
+                }.subscribe()
         }
 
         viewDisposables += domain.results
-                .filter { result ->
-                    result !== EditPhotoResult.ErrorLoadingPhoto
-                            && result !== EditPhotoResult.UpdatingImage
-                            && result !== EditPhotoResult.UpdateSuccess
-                }
-                .compose(editPhotoResultsToUiState(view.context))
-                .subscribe { state -> view.display(state) }
+            .filter { result ->
+                result !== EditPhotoResult.ErrorLoadingPhoto
+                        && result !== EditPhotoResult.UpdatingImage
+                        && result !== EditPhotoResult.UpdateSuccess
+            }
+            .compose(editPhotoResultsToUiState(view.context))
+            .subscribe { state -> view.display(state) }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.ErrorLoadingPhoto>()
-                .subscribe {
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.error_loading_photo)
-                            .setMessage(R.string.error_loading_photo_message)
-                            .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
-                                dialog.dismiss()
-                                router.handleBack()
-                            }
-                            .setCancelable(false)
-                            .show()
-                }
+            .ofType<EditPhotoResult.ErrorLoadingPhoto>()
+            .subscribe {
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.error_loading_photo)
+                    .setMessage(R.string.error_loading_photo_message)
+                    .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
+                        dialog.dismiss()
+                        router.handleBack()
+                    }
+                    .setCancelable(false)
+                    .show()
+            }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.ShowDateDialog>()
-                .subscribe { result ->
-                    //Note: The DatePickerDialog uses 0 based months
-                    val dialog = DatePickerDialog(view.context, { _, year, month, dayOfMonth ->
-                        domain.actions.accept(
-                                EditPhotoAction.ChangeDate(
-                                        LocalDate.of(year, month + 1, dayOfMonth)))
-                    }, result.date.year, result.date.monthValue - 1, result.date.dayOfMonth)
+            .ofType<EditPhotoResult.ShowDateDialog>()
+            .subscribe { result ->
+                //Note: The DatePickerDialog uses 0 based months
+                val dialog = DatePickerDialog(view.context, { _, year, month, dayOfMonth ->
+                    domain.actions.accept(
+                        EditPhotoAction.ChangeDate(LocalDate.of(year, month + 1, dayOfMonth))
+                    )
+                }, result.date.year, result.date.monthValue - 1, result.date.dayOfMonth)
 
-                    dialog.datePicker.maxDate = System.currentTimeMillis()
-                    dialog.show()
-                }
+                dialog.datePicker.maxDate = System.currentTimeMillis()
+                dialog.show()
+            }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.ShowTypeDialog>()
-                .subscribe { result ->
-                    AlertDialog.Builder(view.context)
-                            .setTitle(R.string.select_type)
-                            .setSingleChoiceItems(arrayOf(view.getString(R.string.face), view.getString(R.string.body)),
-                                                  result.type) { dialog: DialogInterface, index: Int ->
-                                if (result.type != index) {
-                                    domain.actions.accept(EditPhotoAction.ChangeType(index))
-                                }
-                                dialog.dismiss()
-                            }
-                            .show()
-                }
+            .ofType<EditPhotoResult.ShowTypeDialog>()
+            .subscribe { result ->
+                AlertDialog.Builder(view.context)
+                    .setTitle(R.string.select_type)
+                    .setSingleChoiceItems(
+                        arrayOf(view.getString(R.string.face), view.getString(R.string.body)),
+                        result.type
+                    ) { dialog: DialogInterface, index: Int ->
+                        if (result.type != index) {
+                            domain.actions.accept(EditPhotoAction.ChangeType(index))
+                        }
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
 
         viewDisposables += domain.results
             .ofType<EditPhotoResult.UpdatingImage>()
@@ -134,40 +138,40 @@ class EditPhotoController(args: Bundle) : Controller(args) {
             }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.UpdateSuccess>()
-                .subscribe {
-                    savingDialog?.dismiss()
-                    savingDialog = null
+            .ofType<EditPhotoResult.UpdateSuccess>()
+            .subscribe {
+                savingDialog?.dismiss()
+                savingDialog = null
 
-                    router.handleBack()
-                }
+                router.handleBack()
+            }
 
         viewDisposables += domain.results
-                .ofType<EditPhotoResult.ErrorUpdatingImage>()
-                .subscribe {
-                    savingDialog?.dismiss()
-                    savingDialog = null
+            .ofType<EditPhotoResult.ErrorUpdatingImage>()
+            .subscribe {
+                savingDialog?.dismiss()
+                savingDialog = null
 
-                    Snackbar.make(view, R.string.error_updating_photo, Snackbar.LENGTH_LONG).show()
-                }
+                Snackbar.make(view, R.string.error_updating_photo, Snackbar.LENGTH_LONG).show()
+            }
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents
-                .ofType<EditPhotoUiEvent.Back>()
-                .subscribe { router.handleBack() }
+            .ofType<EditPhotoUiEvent.Back>()
+            .subscribe { router.handleBack() }
 
         viewDisposables += sharedEvents
-                .filter { event -> event !== EditPhotoUiEvent.Back }
-                .map<EditPhotoAction> { event ->
-                    return@map when (event) {
-                        EditPhotoUiEvent.ChangeDate -> EditPhotoAction.ShowDateDialog
-                        EditPhotoUiEvent.ChangeType -> EditPhotoAction.ShowTypeDialog
-                        EditPhotoUiEvent.Update -> EditPhotoAction.Update
-                        else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
-                    }
+            .filter { event -> event !== EditPhotoUiEvent.Back }
+            .map<EditPhotoAction> { event ->
+                return@map when (event) {
+                    EditPhotoUiEvent.ChangeDate -> EditPhotoAction.ShowDateDialog
+                    EditPhotoUiEvent.ChangeType -> EditPhotoAction.ShowTypeDialog
+                    EditPhotoUiEvent.Update -> EditPhotoAction.Update
+                    else -> throw IllegalArgumentException("Unhandled event '${event.javaClass.simpleName}'")
                 }
-                .subscribe(domain.actions)
+            }
+            .subscribe(domain.actions)
     }
 
     override fun onDestroyView(view: View) {
@@ -183,28 +187,37 @@ class EditPhotoController(args: Bundle) : Controller(args) {
     }
 }
 
-fun editPhotoResultsToUiState(context: Context) = ObservableTransformer<EditPhotoResult, EditPhotoUiState> { results ->
-    results.map { result ->
-        return@map when (result) {
-            EditPhotoResult.Loading -> EditPhotoUiState.Loading
+fun editPhotoResultsToUiState(context: Context) =
+    ObservableTransformer<EditPhotoResult, EditPhotoUiState> { results ->
+        results.map { result ->
+            return@map when (result) {
+                EditPhotoResult.Loading -> EditPhotoUiState.Loading
 
-            is EditPhotoResult.Display ->
-                EditPhotoUiState.Loaded(result.path, result.date.toFullDateString(context),
-                                        Photo.getTypeName(result.type, context))
+                is EditPhotoResult.Display ->
+                    EditPhotoUiState.Loaded(
+                        result.path, result.date.toFullDateString(context),
+                        Photo.getTypeName(result.type, context)
+                    )
 
-            is EditPhotoResult.ShowDateDialog ->
-                EditPhotoUiState.Loaded(result.path, result.date.toFullDateString(context),
-                                        Photo.getTypeName(result.type, context))
+                is EditPhotoResult.ShowDateDialog ->
+                    EditPhotoUiState.Loaded(
+                        result.path, result.date.toFullDateString(context),
+                        Photo.getTypeName(result.type, context)
+                    )
 
-            is EditPhotoResult.ShowTypeDialog ->
-                EditPhotoUiState.Loaded(result.path, result.date.toFullDateString(context),
-                                        Photo.getTypeName(result.type, context))
+                is EditPhotoResult.ShowTypeDialog ->
+                    EditPhotoUiState.Loaded(
+                        result.path, result.date.toFullDateString(context),
+                        Photo.getTypeName(result.type, context)
+                    )
 
-            is EditPhotoResult.ErrorUpdatingImage ->
-                EditPhotoUiState.Loaded(result.path, result.date.toFullDateString(context),
-                                        Photo.getTypeName(result.type, context))
+                is EditPhotoResult.ErrorUpdatingImage ->
+                    EditPhotoUiState.Loaded(
+                        result.path, result.date.toFullDateString(context),
+                        Photo.getTypeName(result.type, context)
+                    )
 
-            else -> throw IllegalArgumentException("Unhandled result '${result.javaClass.simpleName}'")
+                else -> throw IllegalArgumentException("Unhandled result '${result.javaClass.simpleName}'")
+            }
         }
     }
-}

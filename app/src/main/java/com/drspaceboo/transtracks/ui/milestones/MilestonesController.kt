@@ -18,7 +18,6 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
-import com.drspaceboo.transtracks.ui.MainActivity
 import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event

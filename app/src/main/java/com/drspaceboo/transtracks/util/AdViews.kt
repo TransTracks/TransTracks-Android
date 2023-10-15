@@ -24,7 +24,8 @@ fun AdView.loadAd(context: Context) {
 }
 
 private fun getAdaptiveAdSize(context: Context): AdSize {
-    val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val windowManager: WindowManager =
+        context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val display: Display = windowManager.defaultDisplay
 
     val outMetrics = DisplayMetrics()
