@@ -16,21 +16,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickMultipleVisualMedia
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VisualMediaType
+import androidx.annotation.IdRes
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.drspaceboo.transtracks.BuildConfig
+import com.drspaceboo.transtracks.MainNavDirections
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.CameraHandler
@@ -39,11 +37,9 @@ import com.drspaceboo.transtracks.data.Milestone
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.databinding.ActivityMainBinding
 import com.drspaceboo.transtracks.domain.SettingsAction
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
-import com.drspaceboo.transtracks.ui.home.HomeController
-import com.drspaceboo.transtracks.ui.lock.LockController
 import com.drspaceboo.transtracks.util.FileUtil
 import com.drspaceboo.transtracks.util.RxSchedulers
+import com.drspaceboo.transtracks.util.boxed
 import com.drspaceboo.transtracks.util.copyPhotoToTempFiles
 import com.drspaceboo.transtracks.util.fileName
 import com.drspaceboo.transtracks.util.gone
@@ -51,7 +47,6 @@ import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.LockType
 import com.drspaceboo.transtracks.util.settings.SettingsManager
-import com.drspaceboo.transtracks.util.using
 import com.drspaceboo.transtracks.util.visible
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.snackbar.Snackbar
@@ -68,7 +63,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
-import kotterknife.bindView
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -81,9 +75,7 @@ class MainActivity : AppCompatActivity() {
         private const val BUFFER_SIZE = 8_192
     }
 
-    private var router: Router? = null
     private lateinit var binding: ActivityMainBinding
-    private val container: ViewGroup by bindView(R.id.controller_container)
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
@@ -121,19 +113,16 @@ class MainActivity : AppCompatActivity() {
 
             val photos = uris.mapNotNull { copyPhotoToTempFiles(it) }
                 .map { Uri.fromFile(File(it)) }
-                .let { ArrayList(it) }
+                .toTypedArray()
 
-            router?.pushController(
-                RouterTransaction
-                    .with(
-                        AssignPhotosController(
-                            uris = photos,
-                            epochDay = pickMediaHandlingData.epochDay,
-                            type = pickMediaHandlingData.type,
-                            tagOfControllerToPopTo = pickMediaHandlingData.popToTag
-                        )
-                    )
-                    .using(HorizontalChangeHandler())
+            val navController = findNavController(R.id.nav_host_fragment)
+            navController.navigate(
+                MainNavDirections.actionGlobalAssignPhotos(
+                    uris = photos,
+                    type = pickMediaHandlingData.type,
+                    destinationToPopTo = pickMediaHandlingData.popToId,
+                    epochDay = pickMediaHandlingData.epochDay?.boxed()
+                )
             )
         }
 
@@ -152,20 +141,14 @@ class MainActivity : AppCompatActivity() {
             TransTracksApp.instance.domainManager.settingsDomain.actions.accept(SettingsAction.SettingsUpdated)
         }
 
-        router = Conductor.attachRouter(this, container, savedInstanceState)
-        if (!router!!.hasRootController()) {
-            if (SettingsManager.getLockType() == LockType.off) {
-                router!!.setRoot(RouterTransaction.with(HomeController()).tag(HomeController.TAG))
-            } else {
-                router!!.setBackstack(
-                    listOf(
-                        RouterTransaction.with(HomeController()).tag(HomeController.TAG),
-                        RouterTransaction.with(LockController()).tag(LockController.TAG)
-                            .using(VerticalChangeHandler())
-                    ),
-                    null
-                )
-            }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        if (SettingsManager.getLockType() != LockType.off
+            && navController.currentDestination?.id != R.id.lockFragment
+        ) {
+            navController.navigate(R.id.action_global_lockFragment)
         }
 
         processIntent(intent)
@@ -253,15 +236,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        val localRouter = router
-
-        if (localRouter == null || !localRouter.handleBack()) {
-            super.onBackPressed()
-        }
-    }
-
     override fun onStart() {
         super.onStart()
 
@@ -270,8 +244,9 @@ class MainActivity : AppCompatActivity() {
             SettingsManager.getUserLastSeen() + SettingsManager.getLockDelay().getMilli() + 1000L
         if (SettingsManager.getLockType() == LockType.off) {
             //Remove lock screen if the lock turned off in the background
-            router?.apply {
-                getControllerWithTag(LockController.TAG)?.let { popController(it) }
+            val navController = findNavController(R.id.nav_host_fragment)
+            if (navController.currentDestination?.id == R.id.lockFragment) {
+                navController.popBackStack()
             }
         } else if (SettingsManager.getLockType() != LockType.off && timeToLock <= System.currentTimeMillis()) {
             showLockControllerIfNotAlreadyShowing()
@@ -285,14 +260,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLockControllerIfNotAlreadyShowing() {
-        val lockController = router?.getControllerWithTag(LockController.TAG)
-
-        if (lockController == null) {
-            router?.pushController(
-                RouterTransaction.with(LockController())
-                    .tag(LockController.TAG)
-                    .popChangeHandler(VerticalChangeHandler())
-            )
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (navController.currentDestination?.id != R.id.lockFragment) {
+            navController.navigate(R.id.action_global_lockFragment)
         }
     }
 
@@ -311,7 +281,7 @@ class MainActivity : AppCompatActivity() {
             }
         },
         {
-            Snackbar.make(container, R.string.unable_to_show_form, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, R.string.unable_to_show_form, Snackbar.LENGTH_SHORT).show()
             FirebaseCrashlytics.getInstance()
                 .recordException(Error("UMP Error Code '${it.errorCode}' message '${it.message}'"))
         }
@@ -513,9 +483,7 @@ class MainActivity : AppCompatActivity() {
 
                             else -> {
                                 Snackbar.make(
-                                    findViewById(R.id.controller_container),
-                                    R.string.import_complete_success,
-                                    LENGTH_SHORT
+                                    binding.root, R.string.import_complete_success, LENGTH_SHORT
                                 ).show()
                             }
                         }
@@ -531,7 +499,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 data class PickMediaHandlingData(
-    val epochDay: Long? = null,
     @Photo.Type val type: Int = Photo.TYPE_BODY,
-    val popToTag: String = HomeController.TAG
+    @IdRes val popToId: Int = R.id.homeFragment,
+    val epochDay: Long? = null
 )

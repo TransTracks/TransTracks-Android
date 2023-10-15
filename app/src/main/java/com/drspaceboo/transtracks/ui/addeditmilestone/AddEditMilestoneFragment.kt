@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -13,15 +13,13 @@ package com.drspaceboo.transtracks.ui.addeditmilestone
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.Router
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Milestone
@@ -47,29 +45,18 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import java.time.LocalDate
 
-class AddEditMilestoneController(args: Bundle) : Controller(args) {
-    constructor(initialDay: Long) : this(Bundle().apply {
-        putLong(KEY_INITIAL_DAY, initialDay)
-    })
-
-    constructor(milestoneId: String) : this(Bundle().apply {
-        putString(KEY_MILESTONE_ID, milestoneId)
-    })
+class AddEditMilestoneFragment : Fragment(R.layout.add_milestone) {
+    val args: AddEditMilestoneFragmentArgs by navArgs()
 
     private var resultsDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null
 
-    private val initialDay: Long = args.getLong(KEY_INITIAL_DAY, -1)
-    private val milestoneId: String? = args.getString(KEY_MILESTONE_ID, null)
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.add_milestone, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is AddEditMilestoneView) throw AssertionError("View must be AddEditMilestoneView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? AddEditMilestoneView
+            ?: throw AssertionError("View must be AddEditMilestoneView")
 
         AnalyticsUtil.logEvent(Event.AddEditMilestoneControllerShown)
 
@@ -81,6 +68,8 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                 .doOnSubscribe {
                     Handler().postDelayed(
                         {
+                            val initialDay = args.initialDay
+                            val milestoneId = args.milestoneId
                             domain.actions.accept(
                                 when {
                                     initialDay != -1L -> InitialAdd(initialDay)
@@ -95,7 +84,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
         }
 
         viewDisposables += domain.results
-            .compose(addEditMilestoneResultToViewState(view.context, router))
+            .compose(addEditMilestoneResultToViewState(view.context, findNavController()))
             .subscribe { state -> view.display(state) }
 
         val sharedEvents = view.events.share()
@@ -111,13 +100,13 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
             .subscribe(domain.actions)
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<AddEditMilestoneUiEvent.Delete>()
             .subscribe { _ ->
                 confirmDeleteDialog?.dismissIfShowing()
 
-                if (milestoneId != null) {
+                if (args.milestoneId != null) {
                     confirmDeleteDialog = AlertDialog.Builder(view.context)
                         .setTitle(R.string.are_you_sure)
                         .setMessage(R.string.confirm_delete_milestone)
@@ -126,7 +115,8 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                             val realm = Realm.openDefault()
                             realm.writeBlocking {
                                 val milestoneToDelete: Milestone = query(
-                                    Milestone::class, "${Milestone.FIELD_ID} == '$milestoneId'"
+                                    Milestone::class,
+                                    "${Milestone.FIELD_ID} == '${args.milestoneId}'"
                                 )
                                     .first()
                                     .find() ?: return@writeBlocking
@@ -137,7 +127,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
 
                             dialog.dismiss()
                             if (success) {
-                                router.handleBack()
+                                findNavController().popBackStack()
                             } else {
                                 Snackbar.make(
                                     view,
@@ -180,7 +170,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
             .subscribe { event ->
                 val realm = Realm.openDefault()
 
-                if (milestoneId == null) {
+                if (args.milestoneId == null) {
                     realm.writeBlocking {
                         val milestone = Milestone()
                         milestone.timestamp = System.currentTimeMillis()
@@ -191,7 +181,10 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                     }
                 } else {
                     val milestone: Milestone? =
-                        realm.query(Milestone::class, "${Milestone.FIELD_ID} == '$milestoneId'")
+                        realm.query(
+                            Milestone::class,
+                            "${Milestone.FIELD_ID} == '${args.milestoneId}'"
+                        )
                             .first()
                             .find()
 
@@ -200,7 +193,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                             .setTitle(R.string.unable_to_find_milestone)
                             .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
                                 dialog.dismiss()
-                                router.handleBack()
+                                findNavController().popBackStack()
                             }
                             .setCancelable(false)
                             .show()
@@ -221,33 +214,32 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                 }
 
                 @StringRes
-                val messageRes: Int = when (milestoneId) {
+                val messageRes: Int = when (args.milestoneId) {
                     null -> R.string.milestone_saved
                     else -> R.string.milestone_updated
                 }
 
                 Snackbar.make(view, messageRes, Snackbar.LENGTH_LONG).show()
-                router.handleBack()
+                findNavController().popBackStack()
             }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
+        super.onDetach()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         if (resultsDisposable.isNotDisposed()) {
             resultsDisposable.dispose()
         }
+        super.onDestroyView()
     }
 
     companion object {
-        private const val KEY_INITIAL_DAY = "initialDay"
-        private const val KEY_MILESTONE_ID = "milestoneId"
-
         fun addEditMilestoneResultToViewState(
             context: Context,
-            router: Router
+            navController: NavController
         ): ObservableTransformer<AddEditMilestoneResult, AddEditMilestoneUiState> {
             return ObservableTransformer { results ->
                 results.map { result ->
@@ -266,7 +258,7 @@ class AddEditMilestoneController(args: Bundle) : Controller(args) {
                                 .setTitle(R.string.unable_to_find_milestone)
                                 .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
                                     dialog.dismiss()
-                                    router.handleBack()
+                                    navController.popBackStack()
                                 }
                                 .setCancelable(false)
                                 .show()

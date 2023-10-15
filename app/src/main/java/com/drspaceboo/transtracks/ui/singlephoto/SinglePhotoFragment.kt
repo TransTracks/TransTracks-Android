@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -11,18 +11,14 @@
 package com.drspaceboo.transtracks.ui.singlephoto
 
 import android.content.DialogInterface
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.ui.editphoto.EditPhotoController
+import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoFragmentArgs
+import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoFragmentDirections
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ShareUtil
@@ -32,37 +28,28 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.toFullDateString
-import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.realm.kotlin.Realm
 import java.io.File
 import java.time.LocalDate
 
-class SinglePhotoController(args: Bundle) : Controller(args) {
-    constructor(photoId: String) : this(Bundle().apply {
-        putString(KEY_PHOTO_ID, photoId)
-    })
-
-    private val photoId: String = args.getString(KEY_PHOTO_ID)!!
+class SinglePhotoFragment : Fragment(R.layout.single_photo) {
+    val args: SinglePhotoFragmentArgs by navArgs()
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null
 
-    override fun onCreateView(
-        @NonNull inflater: LayoutInflater, @NonNull container: ViewGroup
-    ): View {
-        return inflater.inflate(R.layout.single_photo, container, false)
-    }
+    override fun onStart() {
+        super.onStart()
 
-    override fun onAttach(view: View) {
-        if (view !is SinglePhotoView) throw AssertionError("View must be SinglePhotoView")
+        val view = view as? SinglePhotoView ?: throw AssertionError("View must be SinglePhotoView")
 
         AnalyticsUtil.logEvent(Event.SinglePhotoControllerShown)
 
         val loadRealm = Realm.openDefault()
-        val photo = loadRealm.query(Photo::class, "${Photo.FIELD_ID} == '$photoId'")
+        val photo = loadRealm.query(Photo::class, "${Photo.FIELD_ID} == '${args.photoId}'")
             .first()
             .find()
 
@@ -72,7 +59,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                 .setMessage(R.string.error_loading_photo_message)
                 .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
                     dialog.dismiss()
-                    router.handleBack()
+                    findNavController().popBackStack()
                 }
                 .setCancelable(false)
                 .show()
@@ -91,13 +78,12 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Edit>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction.with(EditPhotoController(event.photoId))
-                        .using(HorizontalChangeHandler())
+                findNavController().navigate(
+                    SinglePhotoFragmentDirections.actionEditPhoto(photoId = event.photoId)
                 )
             }
 
@@ -117,7 +103,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
                     return@subscribe
                 }
 
-                ShareUtil.sharePhoto(File(filePath), view.context, this)
+                ShareUtil.sharePhoto(File(filePath), view.context)
             }
 
         viewDisposables += sharedEvents.ofType<SinglePhotoUiEvent.Delete>()
@@ -157,7 +143,7 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
 
                         dialog.dismiss()
                         if (success) {
-                            router.handleBack()
+                            findNavController().popBackStack()
                         } else {
                             Snackbar.make(
                                 view, R.string.error_deleting_photo,
@@ -174,11 +160,8 @@ class SinglePhotoController(args: Bundle) : Controller(args) {
             }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
-    }
-
-    companion object {
-        private const val KEY_PHOTO_ID = "photoId"
+        super.onDetach()
     }
 }

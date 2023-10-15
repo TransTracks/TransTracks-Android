@@ -14,13 +14,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.bluelinelabs.conductor.Controller
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.TransTracksFileProvider
 import java.io.File
 
 object ShareUtil {
-    fun sharePhoto(imageToShare: File, context: Context, controller: Controller) {
+    fun sharePhoto(imageToShare: File, context: Context) {
         val share = Intent(Intent.ACTION_SEND)
         share.type = JPEG_MIME_TYPE
 
@@ -30,12 +29,12 @@ object ShareUtil {
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putExtra(Intent.EXTRA_STREAM, uri)
 
-        controller.startActivity(
+        context.startActivity(
             Intent.createChooser(share, context.getString(R.string.share_image_using))
         )
     }
 
-    fun sharePhotos(imagesToShare: List<File>, context: Context, controller: Controller) {
+    fun sharePhotos(imagesToShare: List<File>, context: Context) {
         val share = Intent(Intent.ACTION_SEND_MULTIPLE)
         share.type = JPEG_MIME_TYPE
 
@@ -49,7 +48,7 @@ object ShareUtil {
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files)
 
-        controller.startActivity(
+        context.startActivity(
             Intent.createChooser(share, context.getString(R.string.share_image_using))
         )
     }

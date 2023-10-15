@@ -37,7 +37,7 @@ import java.time.LocalDate
 
 sealed class AssignPhotosAction {
     data class InitialData(
-        val uris: ArrayList<Uri>, val epochDay: Long?, @Photo.Type val type: Int
+        val uris: Array<Uri>, val epochDay: Long?, @Photo.Type val type: Int
     ) : AssignPhotosAction()
 
     data class LoadImage(val index: Int) : AssignPhotosAction()
@@ -97,7 +97,7 @@ sealed class AssignPhotosResult {
 }
 
 class AssignPhotosDomain {
-    private var uris: ArrayList<Uri> = ArrayList()
+    private var uris: Array<Uri> = emptyArray()
     private var type: Int = Photo.TYPE_FACE
     private var epochDay: Long? = null
 

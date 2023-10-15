@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -10,15 +10,12 @@
 
 package com.drspaceboo.transtracks.ui.milestones
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
-import com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneController
+import com.drspaceboo.transtracks.ui.milestones.MilestonesFragmentDirections
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ofType
@@ -26,23 +23,20 @@ import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-class MilestonesController(args: Bundle) : Controller(args) {
-    constructor(initialDay: Long) : this(Bundle().apply { putLong(KEY_INITIAL_DAY, initialDay) })
+class MilestonesFragment : Fragment(R.layout.milestones) {
+    val args: MilestonesFragmentArgs by navArgs()
 
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.milestones, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is MilestonesView) throw AssertionError("View must be MilestonesView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? MilestonesView ?: throw AssertionError("View must be MilestonesView")
 
         AnalyticsUtil.logEvent(Event.MilestonesControllerShown)
 
         view.display(
             MilestonesUiState.Loaded(
-                args.getLong(KEY_INITIAL_DAY),
+                args.initialDay,
                 TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
             )
         )
@@ -50,34 +44,23 @@ class MilestonesController(args: Bundle) : Controller(args) {
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.AddMilestone>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction.with(
-                        AddEditMilestoneController(event.day)
-                    )
-                )
+                findNavController()
+                    .navigate(MilestonesFragmentDirections.actionAddMilestone(event.day))
             }
 
         viewDisposables += sharedEvents.ofType<MilestonesUiEvent.EditMilestone>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction.with(
-                        AddEditMilestoneController(event.id)
-                    )
-                )
+                findNavController()
+                    .navigate(MilestonesFragmentDirections.actionEditMilestone(event.id))
             }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
-    }
-
-    companion object {
-        private const val KEY_INITIAL_DAY = "initialDay"
-
-        const val TAG = "MilestonesController"
+        super.onDetach()
     }
 }

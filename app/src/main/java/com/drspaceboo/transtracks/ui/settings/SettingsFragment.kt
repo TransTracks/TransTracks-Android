@@ -19,13 +19,12 @@ import android.net.Uri
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.drspaceboo.transtracks.BuildConfig
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
@@ -36,6 +35,7 @@ import com.drspaceboo.transtracks.domain.SettingsDomain
 import com.drspaceboo.transtracks.domain.SettingsResult
 import com.drspaceboo.transtracks.domain.SettingsViewEffect
 import com.drspaceboo.transtracks.ui.MainActivity
+import com.drspaceboo.transtracks.ui.settings.SettingsFragmentDirections
 import com.drspaceboo.transtracks.ui.widget.SimpleTextWatcher
 import com.drspaceboo.transtracks.util.*
 import com.drspaceboo.transtracks.util.settings.*
@@ -50,15 +50,12 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.time.LocalDate
 import java.util.*
 
-class SettingsController : Controller() {
+class SettingsFragment : Fragment(R.layout.settings) {
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.settings, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is SettingsView) throw AssertionError("View must be SettingsView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? SettingsView ?: throw AssertionError("View must be SettingsView")
 
         AnalyticsUtil.logEvent(Event.SettingsControllerShown)
 
@@ -106,7 +103,7 @@ class SettingsController : Controller() {
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.SignIn>()
@@ -168,14 +165,14 @@ class SettingsController : Controller() {
         viewDisposables += sharedEvents
             .ofType<SettingsUiEvent.ChangeStartDate>()
             .subscribe {
-                val startDate = SettingsManager.getStartDate(activity!!)
+                val startDate = SettingsManager.getStartDate(requireActivity())
 
                 //Note: The DatePickerDialog uses 0 based months
                 DatePickerDialog(
                     view.context,
                     { _, year, month, dayOfMonth ->
                         SettingsManager.setStartDate(
-                            LocalDate.of(year, month + 1, dayOfMonth), activity!!
+                            LocalDate.of(year, month + 1, dayOfMonth), requireActivity()
                         )
                     },
                     startDate.year, startDate.monthValue - 1, startDate.dayOfMonth
@@ -199,8 +196,8 @@ class SettingsController : Controller() {
                         theme.ordinal
                     ) { dialog: DialogInterface, index: Int ->
                         if (theme.ordinal != index) {
-                            SettingsManager.setTheme(Theme.values()[index], activity!!)
-                            router.replaceTopController(RouterTransaction.with(SettingsController()))
+                            SettingsManager.setTheme(Theme.values()[index], requireActivity())
+                            findNavController().navigate(SettingsFragmentDirections.actionReloadSettingsFragment())
                         }
                         dialog.dismiss()
                     }
@@ -230,7 +227,9 @@ class SettingsController : Controller() {
                         delay.ordinal
                     ) { dialog: DialogInterface, index: Int ->
                         if (delay.ordinal != index) {
-                            SettingsManager.setLockDelay(LockDelay.values()[index], activity!!)
+                            SettingsManager.setLockDelay(
+                                LockDelay.values()[index], requireActivity()
+                            )
                         }
                         dialog.dismiss()
                     }
@@ -257,13 +256,13 @@ class SettingsController : Controller() {
             }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAnalytics>()
-            .subscribe { SettingsManager.toggleEnableAnalytics(activity!!) }
+            .subscribe { SettingsManager.toggleEnableAnalytics(requireActivity()) }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleCrashReports>()
-            .subscribe { SettingsManager.toggleEnableCrashReports(activity!!) }
+            .subscribe { SettingsManager.toggleEnableCrashReports(requireActivity()) }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ToggleAds>()
-            .subscribe { SettingsManager.toggleShowAds(activity!!) }
+            .subscribe { SettingsManager.toggleShowAds(requireActivity()) }
 
         viewDisposables += sharedEvents.ofType<SettingsUiEvent.ShowAdConsent>()
             .subscribe { (activity as? MainActivity)?.showConsentForm() }
@@ -291,13 +290,14 @@ class SettingsController : Controller() {
             }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
+        super.onDetach()
     }
 
     private fun showAppNameChangeSnackbar(view: View, @StringRes newAppName: Int) {
-        //Don't try to show the Snackbar if the Controller isn't currently attached or is being destroyed
-        if (!isAttached || isDestroyed || isBeingDestroyed) {
+        //Don't try to show the Snackbar if the Controller isn't currently attached or is removing
+        if (isDetached || isRemoving) {
             return
         }
 
@@ -351,8 +351,8 @@ class SettingsController : Controller() {
                         return@setOnClickListener
                     }
 
-                    SettingsManager.setLockCode("", activity!!)
-                    SettingsManager.setLockType(LockType.off, activity!!)
+                    SettingsManager.setLockCode("", requireActivity())
+                    SettingsManager.setLockType(LockType.off, requireActivity())
                     dialog.dismiss()
                 }
             }
@@ -403,9 +403,9 @@ class SettingsController : Controller() {
                         EncryptionUtil.encryptAndEncode(
                             password.text.toString(), PrefUtil.CODE_SALT
                         ),
-                        activity!!
+                        requireActivity()
                     )
-                    SettingsManager.setLockType(newLockType, activity!!)
+                    SettingsManager.setLockType(newLockType, requireActivity())
 
                     if (newLockType == LockType.trains) {
                         showAppNameChangeSnackbar(view, R.string.train_tracks_title)
@@ -458,7 +458,7 @@ class SettingsController : Controller() {
 
                         hasCode -> {
                             //Changing to another type with the code on, just update type
-                            SettingsManager.setLockType(newLockType, activity!!)
+                            SettingsManager.setLockType(newLockType, requireActivity())
 
                             if (newLockType == LockType.trains) {
                                 showAppNameChangeSnackbar(view, R.string.train_tracks_title)

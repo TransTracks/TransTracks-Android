@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -13,20 +13,18 @@ package com.drspaceboo.transtracks.ui.assignphoto
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.net.Uri
-import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import com.bluelinelabs.conductor.Controller
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.domain.AssignPhotosAction
 import com.drspaceboo.transtracks.domain.AssignPhotosDomain
 import com.drspaceboo.transtracks.domain.AssignPhotosResult
+import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosFragmentArgs
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ProgressDialog
@@ -39,32 +37,19 @@ import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-
 import java.time.LocalDate
 
-class AssignPhotosController(args: Bundle) : Controller(args) {
-    constructor(
-        uris: ArrayList<Uri>, epochDay: Long?, @Photo.Type type: Int, tagOfControllerToPopTo: String
-    ) : this(Bundle().apply {
-        putParcelableArrayList(KEY_URIS, uris)
-        if (epochDay != null) {
-            putLong(KEY_EPOCH_DAY, epochDay)
-        }
-        putInt(KEY_TYPE, type)
-        putString(KEY_TAG_OF_CONTROLLER_TO_POP_TO, tagOfControllerToPopTo)
-    })
+class AssignPhotosFragment : Fragment(R.layout.assign_photo) {
+    val args: AssignPhotosFragmentArgs by navArgs()
 
     private var resultsDisposable: Disposable = Disposable.disposed()
     private val viewDisposables = CompositeDisposable()
 
     private var savingDialog: AlertDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.assign_photo, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is AssignPhotoView) throw AssertionError("View must be AssignPhotoView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? AssignPhotoView ?: throw AssertionError("View must be AssignPhotoView")
 
         AnalyticsUtil.logEvent(Event.AssignPhotoControllerShown)
 
@@ -75,22 +60,13 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
                 .doOnSubscribe {
                     Handler().postDelayed(
                         {
-                            val day: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
-                                true -> args.getLong(KEY_EPOCH_DAY)
-                                else -> null
-                            }
-
+                            val day: Long? = args.epochDay?.value
                             domain.actions.accept(
-                                AssignPhotosAction.InitialData(
-                                    args.getParcelableArrayList<Uri>(KEY_URIS)!!, day,
-                                    args.getInt(KEY_TYPE)
-                                )
+                                AssignPhotosAction.InitialData(args.uris, day, args.type)
                             )
                         }, 200
                     )
                 }.subscribe()
-
-
         }
 
         viewDisposables += domain.results
@@ -159,7 +135,9 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
                 if (result.index + 1 < result.count) {
                     domain.actions.accept(AssignPhotosAction.LoadImage(result.index + 1))
                 } else {
-                    router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
+                    findNavController().popBackStack(
+                        destinationId = args.destinationToPopTo, inclusive = false
+                    )
                 }
             }
 
@@ -176,7 +154,7 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
 
         viewDisposables += sharedEvents
             .ofType<AssignPhotoUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<AssignPhotoUiEvent.Skip>()
             .subscribe { event ->
@@ -185,7 +163,9 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
                 if (event.index + 1 < event.count) {
                     domain.actions.accept(AssignPhotosAction.LoadImage(event.index + 1))
                 } else {
-                    router.popToTag(args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!)
+                    findNavController().popBackStack(
+                        destinationId = args.destinationToPopTo, inclusive = false
+                    )
                 }
             }
 
@@ -212,21 +192,16 @@ class AssignPhotosController(args: Bundle) : Controller(args) {
             .subscribe(domain.actions)
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
+        super.onDetach()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         if (resultsDisposable.isNotDisposed()) {
             resultsDisposable.dispose()
         }
-    }
-
-    companion object {
-        private const val KEY_URIS = "uris"
-        private const val KEY_EPOCH_DAY = "epochDay"
-        private const val KEY_TYPE = "type"
-        private const val KEY_TAG_OF_CONTROLLER_TO_POP_TO = "tagOfControllerToPopTo"
+        super.onDestroyView()
     }
 }
 

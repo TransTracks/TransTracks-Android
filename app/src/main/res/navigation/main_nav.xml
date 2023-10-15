@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright © 2023 TransTracks. All rights reserved.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.drspaceboo.transtracks.ui.home.HomeFragment"
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_goToSettings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_showMilestones"
+            app:destination="@id/milestonesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_showGallery"
+            app:destination="@id/galleryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_selectPhoto"
+            app:destination="@id/selectPhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_singlePhoto"
+            app:destination="@id/singlePhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/lockFragment"
+        android:name="com.drspaceboo.transtracks.ui.lock.LockFragment"
+        android:label="LockFragment" />
+    <action
+        android:id="@+id/action_global_lockFragment"
+        app:destination="@id/lockFragment"
+        app:enterAnim="@anim/still"
+        app:popEnterAnim="@anim/still"
+        app:popExitAnim="@anim/slide_out_bottom" />
+    <fragment
+        android:id="@+id/assignPhotosFragment"
+        android:name="com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosFragment"
+        android:label="AssignPhotosFragment">
+        <argument
+            android:name="uris"
+            app:argType="android.net.Uri[]" />
+        <argument
+            android:name="epochDay"
+            android:defaultValue="@null"
+            app:argType="com.drspaceboo.transtracks.util.BoxedLong"
+            app:nullable="true" />
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="destinationToPopTo"
+            app:argType="integer" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_assignPhotos"
+        app:destination="@id/assignPhotosFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/still"
+        app:popEnterAnim="@anim/still"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.drspaceboo.transtracks.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_reloadSettingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/milestonesFragment"
+        android:name="com.drspaceboo.transtracks.ui.milestones.MilestonesFragment"
+        android:label="MilestonesFragment">
+        <action
+            android:id="@+id/action_editMilestone"
+            app:destination="@id/addEditMilestoneFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="milestoneId"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="initialDay"
+                android:defaultValue="-1L"
+                app:argType="long" />
+        </action>
+        <argument
+            android:name="initialDay"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_addMilestone"
+            app:destination="@id/addEditMilestoneFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="initialDay"
+                app:argType="long" />
+            <argument
+                android:name="milestoneId"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/addEditMilestoneFragment"
+        android:name="com.drspaceboo.transtracks.ui.addeditmilestone.AddEditMilestoneFragment"
+        android:label="AddEditMilestoneFragment">
+        <argument
+            android:name="initialDay"
+            app:argType="long" />
+        <argument
+            android:name="milestoneId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.drspaceboo.transtracks.ui.gallery.GalleryFragment"
+        android:label="GalleryFragment">
+        <argument
+            android:name="isFaceGallery"
+            app:argType="boolean" />
+        <argument
+            android:name="initialDay"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_gallery_to_selectPhoto"
+            app:destination="@id/selectPhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="epochDay"
+                android:defaultValue="@null"
+                app:argType="com.drspaceboo.transtracks.util.BoxedLong"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_gallery_to_singlePhoto"
+            app:destination="@id/singlePhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectPhotoFragment"
+        android:name="com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoFragment"
+        android:label="SelectPhotoFragment">
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="destinationToPopTo"
+            app:argType="integer" />
+        <argument
+            android:name="epochDay"
+            android:defaultValue="@null"
+            app:argType="com.drspaceboo.transtracks.util.BoxedLong"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_selectAlbum"
+            app:destination="@id/selectAlbumFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectAlbumFragment"
+        android:name="com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumFragment"
+        android:label="SelectAlbumFragment">
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="destinationToPopTo"
+            app:argType="integer" />
+        <argument
+            android:name="epochDay"
+            android:defaultValue="@null"
+            app:argType="com.drspaceboo.transtracks.util.BoxedLong"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_singleAlbum"
+            app:destination="@id/singleAlbumFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleAlbumFragment"
+        android:name="com.drspaceboo.transtracks.ui.selectphoto.singlealbum.SingleAlbumFragment"
+        android:label="SingleAlbumFragment">
+        <argument
+            android:name="bucketId"
+            app:argType="string" />
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="destinationToPopTo"
+            app:argType="integer" />
+        <argument
+            android:name="epochDay"
+            android:defaultValue="@null"
+            app:argType="com.drspaceboo.transtracks.util.BoxedLong"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/singlePhotoFragment"
+        android:name="com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoFragment"
+        android:label="SinglePhotoFragment">
+        <argument
+            android:name="photoId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editPhoto"
+            app:destination="@id/editPhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/still"
+            app:popEnterAnim="@anim/still"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPhotoFragment"
+        android:name="com.drspaceboo.transtracks.ui.editphoto.EditPhotoFragment"
+        android:label="EditPhotoFragment">
+        <argument
+            android:name="photoId"
+            app:argType="string" />
+    </fragment>
+</navigation>

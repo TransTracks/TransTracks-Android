@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -10,11 +10,18 @@
 
 package com.drspaceboo.transtracks.util
 
-import com.bluelinelabs.conductor.ControllerChangeHandler
-import com.bluelinelabs.conductor.RouterTransaction
+import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
 
-fun RouterTransaction.using(changeHandler: ControllerChangeHandler): RouterTransaction =
-    this.apply {
-        popChangeHandler(changeHandler)
-        pushChangeHandler(changeHandler)
-    }
+/**
+ * This Boxed long class is used to allow nullable long values as arguments for navigation.
+ * @param value The non-null value
+ */
+@Keep
+@Parcelize
+data class BoxedLong(val value: Long) : Parcelable {
+    operator fun invoke(): Long = value
+}
+
+fun Long.boxed(): BoxedLong = BoxedLong(this)
