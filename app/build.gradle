@@ -159,7 +159,7 @@ dependencies {
     implementation "io.realm.kotlin:library-base:$realm_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.7.3'
 
     testImplementation 'junit:junit:4.13.2'
 
