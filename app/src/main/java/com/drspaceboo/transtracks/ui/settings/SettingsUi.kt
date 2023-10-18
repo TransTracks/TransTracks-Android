@@ -13,11 +13,13 @@ package com.drspaceboo.transtracks.ui.settings
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.databinding.SettingsBinding
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Content
 import com.drspaceboo.transtracks.ui.settings.SettingsUiState.Loading
+import com.drspaceboo.transtracks.util.HideViewOnFailedAdLoad
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -25,9 +27,7 @@ import com.drspaceboo.transtracks.util.setVisibleOrGone
 import com.drspaceboo.transtracks.util.toFullDateString
 import com.drspaceboo.transtracks.util.toV3
 import com.drspaceboo.transtracks.util.visible
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.checkedChanges
@@ -126,6 +126,14 @@ class SettingsView(context: Context, attributeSet: AttributeSet) :
         binding.settingsLockDelayLabel.setOnClickListener { binding.settingsLockDelay.performClick() }
     }
 
+    override fun onDetachedFromWindow() {
+        if (binding.settingsAdLayout.childCount > 0) {
+            (binding.settingsAdLayout[0] as? AdView)?.destroy()
+            binding.settingsAdLayout.removeAllViews()
+        }
+        super.onDetachedFromWindow()
+    }
+
     fun display(state: SettingsUiState) {
         userAction = false
         when (state) {
@@ -187,11 +195,7 @@ class SettingsView(context: Context, attributeSet: AttributeSet) :
                     adUnitId = getString(R.string.ADS_SETTINGS_AD_ID)
                     binding.settingsAdLayout.addView(this)
                     loadAd(context)
-                    adListener = object : AdListener() {
-                        override fun onAdFailedToLoad(error: LoadAdError) {
-                            binding.settingsAdLayout.gone()
-                        }
-                    }
+                    adListener = HideViewOnFailedAdLoad(binding.settingsAdLayout)
                 }
             }
         } else {

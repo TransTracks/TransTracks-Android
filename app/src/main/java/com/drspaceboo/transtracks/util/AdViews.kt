@@ -13,10 +13,23 @@ package com.drspaceboo.transtracks.util
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Display
+import android.view.View
 import android.view.WindowManager
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
+import io.realm.kotlin.internal.platform.WeakReference
+
+class HideViewOnFailedAdLoad(viewToHide: View) : AdListener() {
+    private val viewToHideRef = WeakReference(viewToHide)
+
+    override fun onAdFailedToLoad(error: LoadAdError) {
+        super.onAdFailedToLoad(error)
+        viewToHideRef.get()?.gone()
+    }
+}
 
 fun AdView.loadAd(context: Context) {
     setAdSize(getAdaptiveAdSize(context))

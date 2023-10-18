@@ -19,9 +19,11 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
+import com.drspaceboo.transtracks.util.HideViewOnFailedAdLoad
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -93,6 +95,14 @@ class MilestonesView(
         recyclerView.layoutManager = layoutManager
     }
 
+    override fun onDetachedFromWindow() {
+        if (adViewLayout.childCount > 0) {
+            (adViewLayout[0] as? AdView)?.destroy()
+            adViewLayout.removeAllViews()
+        }
+        super.onDetachedFromWindow()
+    }
+
     fun display(state: MilestonesUiState) {
         when (state) {
             is MilestonesUiState.Loaded -> {
@@ -129,11 +139,7 @@ class MilestonesView(
                             adUnitId = getString(R.string.ADS_MILESTONES_AD_ID)
                             adViewLayout.addView(this)
                             loadAd(context)
-                            adListener = object : AdListener() {
-                                override fun onAdFailedToLoad(error: LoadAdError) {
-                                    adViewLayout.gone()
-                                }
-                            }
+                            adListener = HideViewOnFailedAdLoad(adViewLayout)
                         }
                     }
                 } else {
