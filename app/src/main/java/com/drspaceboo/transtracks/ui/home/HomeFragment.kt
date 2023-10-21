@@ -16,16 +16,12 @@ import android.content.DialogInterface
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.CameraHandler
@@ -36,39 +32,31 @@ import com.drspaceboo.transtracks.domain.HomeDomain
 import com.drspaceboo.transtracks.domain.HomeResult
 import com.drspaceboo.transtracks.ui.MainActivity
 import com.drspaceboo.transtracks.ui.PickMediaHandlingData
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
-import com.drspaceboo.transtracks.ui.gallery.GalleryController
-import com.drspaceboo.transtracks.ui.milestones.MilestonesController
-import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
-import com.drspaceboo.transtracks.ui.settings.SettingsController
-import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.ui.home.HomeFragmentDirections
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
+import com.drspaceboo.transtracks.util.boxed
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
 import com.drspaceboo.transtracks.util.toFullDateString
-import com.drspaceboo.transtracks.util.using
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.File
 
-class HomeController : Controller() {
+class HomeFragment : Fragment(R.layout.home) {
     private var resultDisposable: Disposable = Disposable.disposed()
     private var photoTakenDisposable: Disposable = Disposable.disposed()
     private var viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var lastCameraEvent: HomeUiEvent.AddPhotoCamera? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.home, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is HomeView) throw AssertionError("View must be HomeView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? HomeView ?: throw AssertionError("View must be HomeView")
 
         AnalyticsUtil.logEvent(Event.HomeControllerShown)
 
@@ -81,7 +69,7 @@ class HomeController : Controller() {
         domain.actions.accept(HomeAction.ReloadDay)
 
         if (SettingsManager.showWelcome()) {
-            val builder = AlertDialog.Builder(view.context)
+            val builder = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.welcome)
                 .setMessage(R.string.welcome_message)
 
@@ -90,32 +78,28 @@ class HomeController : Controller() {
 
             val startDate: TextView = welcomeView.findViewById(R.id.welcome_start_date)
             startDate.text =
-                SettingsManager.getStartDate(activity!!).toFullDateString(startDate.context)
+                SettingsManager.getStartDate(requireActivity()).toFullDateString(startDate.context)
 
             builder.setView(welcomeView)
                 .setPositiveButton(R.string.looks_good, null)
                 .setNegativeButton(R.string.change_setting) { dialog: DialogInterface, _: Int ->
-                    router.pushController(
-                        RouterTransaction.with(SettingsController()).using(VerticalChangeHandler())
-                    )
+                    findNavController().navigate(HomeFragmentDirections.actionGoToSettings())
                     dialog.dismiss()
                 }
                 .show()
 
-            SettingsManager.setShowWelcome(false, activity!!)
+            SettingsManager.setShowWelcome(false, requireActivity())
         } else if (SettingsManager.showAccountWarning()) {
-            AlertDialog.Builder(view.context)
+            AlertDialog.Builder(requireContext())
                 .setTitle(R.string.warning_title)
                 .setMessage(R.string.warning_message)
                 .setPositiveButton(R.string.create_account) { dialog, _ ->
-                    SettingsManager.setAccountWarning(false, view.context)
+                    SettingsManager.setAccountWarning(false, context)
                     dialog.dismiss()
-                    router.pushController(
-                        RouterTransaction.with(SettingsController()).using(VerticalChangeHandler())
-                    )
+                    findNavController().navigate(HomeFragmentDirections.actionGoToSettings())
                 }
                 .setNegativeButton(R.string.risk_it) { dialog, _ ->
-                    SettingsManager.setAccountWarning(false, view.context)
+                    SettingsManager.setAccountWarning(false, context)
                     dialog.dismiss()
                 }
                 .show()
@@ -154,21 +138,23 @@ class HomeController : Controller() {
                     CameraHandler.takePhoto(activity as AppCompatActivity)
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                        AlertDialog.Builder(activity!!)
+                        AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.permission_required)
                             .setMessage(R.string.camera_permission_required_message)
                             .setPositiveButton(R.string.grant_permission) { _, _ ->
                                 CameraHandler
-                                    .requestIfNeeded(router.activity as AppCompatActivity)
+                                    .requestIfNeeded(requireActivity() as AppCompatActivity)
                             }
                             .setNeutralButton(R.string.cancel, null)
                             .show()
                     } else {
                         val didShow = CameraHandler
-                            .requestIfNeeded(router.activity as AppCompatActivity)
+                            .requestIfNeeded(requireActivity() as AppCompatActivity)
 
                         if (!didShow) {
-                            CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
+                            CameraHandler.showCameraPermissionDisabledSnackBar(
+                                view, requireActivity()
+                            )
                         }
                     }
                 }
@@ -176,26 +162,32 @@ class HomeController : Controller() {
 
         viewDisposables += CameraHandler.cameraPermissionBlocked
             .filter { showRationale -> !showRationale }
-            .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
+            .subscribe {
+                CameraHandler.showCameraPermissionDisabledSnackBar(view, requireActivity())
+            }
 
         viewDisposables += Observables.combineLatest(
             sharedEvents.ofType<HomeUiEvent.AddPhotoGallery>(),
             StoragePermissionHandler.storagePermissionEnabled
         ) { event, storageEnabled -> event to storageEnabled }
             .subscribe { (event, storageEnabled) ->
-                val activity = activity as? MainActivity ?: return@subscribe
+                val activity = requireActivity() as? MainActivity ?: return@subscribe
                 val type = event.type ?: Photo.TYPE_BODY
 
-                if (PickVisualMedia.isPhotoPickerAvailable()) {
+                if (PickVisualMedia.isPhotoPickerAvailable(requireContext())) {
                     activity.launchPickMedia(
                         PickVisualMedia.ImageOnly,
-                        PickMediaHandlingData(event.currentDate?.toEpochDay(), type, TAG)
+                        PickMediaHandlingData(
+                            type, R.id.homeFragment, event.currentDate?.toEpochDay()
+                        )
                     )
                 } else if (storageEnabled) {
-                    router.pushController(
-                        RouterTransaction
-                            .with(SelectPhotoController(event.currentDate?.toEpochDay(), type))
-                            .using(VerticalChangeHandler())
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionHomeToSelectPhoto(
+                            type = type,
+                            destinationToPopTo = R.id.homeFragment,
+                            epochDay = event.currentDate?.toEpochDay()?.boxed(),
+                        )
                     )
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     CameraHandler.requestPhotoFromAnotherApp(activity)
@@ -215,32 +207,26 @@ class HomeController : Controller() {
             }
             .subscribe { event ->
                 when (event) {
-                    is HomeUiEvent.Settings -> router.pushController(
-                        RouterTransaction.with(SettingsController()).using(VerticalChangeHandler())
+                    is HomeUiEvent.Settings -> findNavController()
+                        .navigate(HomeFragmentDirections.actionGoToSettings())
+
+                    is HomeUiEvent.Milestones -> findNavController()
+                        .navigate(HomeFragmentDirections.actionShowMilestones(event.day))
+
+                    is HomeUiEvent.FaceGallery -> findNavController().navigate(
+                        HomeFragmentDirections.actionShowGallery(
+                            isFaceGallery = true, initialDay = event.day
+                        )
                     )
 
-                    is HomeUiEvent.Milestones -> router.pushController(
-                        RouterTransaction.with(MilestonesController(event.day))
-                            .tag(MilestonesController.TAG)
+                    is HomeUiEvent.BodyGallery -> findNavController().navigate(
+                        HomeFragmentDirections.actionShowGallery(
+                            isFaceGallery = false, initialDay = event.day
+                        )
                     )
 
-                    is HomeUiEvent.FaceGallery -> router.pushController(
-                        RouterTransaction
-                            .with(GalleryController(isFaceGallery = true, initialDay = event.day))
-                            .tag(GalleryController.TAG)
-                            .using(VerticalChangeHandler())
-                    )
-
-                    is HomeUiEvent.BodyGallery -> router.pushController(
-                        RouterTransaction
-                            .with(GalleryController(isFaceGallery = false, initialDay = event.day))
-                            .tag(GalleryController.TAG)
-                            .using(VerticalChangeHandler())
-                    )
-
-                    is HomeUiEvent.ImageClick -> router.pushController(
-                        RouterTransaction.with(SinglePhotoController(event.photoId))
-                            .using(VerticalChangeHandler())
+                    is HomeUiEvent.ImageClick -> findNavController().navigate(
+                        HomeFragmentDirections.actionHomeToSinglePhoto(photoId = event.photoId)
                     )
 
                     is HomeUiEvent.AddPhotoCamera,
@@ -253,37 +239,32 @@ class HomeController : Controller() {
         if (photoTakenDisposable.isDisposed) {
             photoTakenDisposable = CameraHandler.photoTaken
                 .subscribe { absolutePath ->
-                    router.pushController(
-                        RouterTransaction
-                            .with(
-                                AssignPhotosController(
-                                    arrayListOf(Uri.fromFile(File(absolutePath))),
-                                    lastCameraEvent?.currentDate?.toEpochDay(),
-                                    lastCameraEvent?.type ?: Photo.TYPE_BODY,
-                                    TAG
-                                )
-                            )
-                            .using(HorizontalChangeHandler())
+                    val navController = findNavController()
+                    navController.navigate(
+                        HomeFragmentDirections.actionGlobalAssignPhotos(
+                            uris = arrayOf(Uri.fromFile(File(absolutePath))),
+                            type = lastCameraEvent?.type ?: Photo.TYPE_BODY,
+                            destinationToPopTo = R.id.homeFragment,
+                            epochDay = lastCameraEvent?.currentDate?.toEpochDay()?.boxed()
+                        )
                     )
                 }
         }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
+        super.onDetach()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         if (resultDisposable.isNotDisposed()) {
             resultDisposable.dispose()
         }
         if (photoTakenDisposable.isNotDisposed()) {
             photoTakenDisposable.dispose()
         }
-    }
-
-    companion object {
-        const val TAG = "HomeController"
+        super.onDestroyView()
     }
 }
 

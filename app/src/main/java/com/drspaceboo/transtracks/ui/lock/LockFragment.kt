@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -10,14 +10,16 @@
 
 package com.drspaceboo.transtracks.ui.lock
 
-import android.app.Activity
+import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import com.bluelinelabs.conductor.Controller
+import androidx.fragment.app.Fragment
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.EncryptionUtil
@@ -32,10 +34,24 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-class LockController : Controller() {
+class LockFragment : Fragment() {
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    //Blocking the back button from popping the lock
+    private val onBackPressedCallback = object : OnBackPressedCallback(enabled = true) {
+        override fun handleOnBackPressed() {
+            requireActivity().finish()
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(owner = this, onBackPressedCallback)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         @LayoutRes val layoutRes: Int = when (SettingsManager.getLockType()) {
             LockType.normal -> R.layout.normal_lock
             else -> R.layout.train_lock
@@ -44,8 +60,9 @@ class LockController : Controller() {
         return inflater.inflate(layoutRes, container, false)
     }
 
-    override fun onAttach(view: View) {
-        if (view !is LockView) throw AssertionError("View must be LockView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? LockView ?: throw AssertionError("View must be LockView")
 
         AnalyticsUtil.logEvent(Event.LockControllerShown(SettingsManager.getLockType()))
 
@@ -56,14 +73,14 @@ class LockController : Controller() {
                         .encryptAndEncode(event.code, PrefUtil.CODE_SALT)
                 ) {
                     view.hideKeyboard()
-                    router.popCurrentController()
+                    requireActivity().supportFragmentManager.popBackStackImmediate()
                     activity?.let { SettingsManager.resetIncorrectPasswordCount(it) }
                 } else if (SettingsManager.getLockCode() == EncryptionUtil
                         .encryptAndEncode(event.code, "tzDEzR6dHptPbKwgkvdCIsY1NPT9YZ6c")
                 ) {
                     // Also checking the example salt... for that time we accidentally sent it to production...
                     view.hideKeyboard()
-                    router.popCurrentController()
+                    requireActivity().supportFragmentManager.popBackStackImmediate()
                     activity?.let { SettingsManager.resetIncorrectPasswordCount(it) }
 
                     //Recording non-fatal to see how many people are effected
@@ -86,36 +103,26 @@ class LockController : Controller() {
             }
     }
 
-    override fun onActivityResumed(activity: Activity) {
-        super.onActivityResumed(activity)
-        SettingsManager.resetIncorrectPasswordCount(activity)
-    }
-
-    override fun onDetach(view: View) {
+    override fun onDestroyView() {
         viewDisposables.clear()
-    }
-
-    //Block back presses
-    override fun handleBack(): Boolean {
-        activity?.finish()
-        return true
+        super.onDestroyView()
     }
 
     private fun showOneChanceDialog(view: View) {
-        AlertDialog.Builder(activity!!)
+        AlertDialog.Builder(requireActivity())
             .setTitle(R.string.one_chance_title)
             .setMessage(R.string.one_chance_message)
             .setPositiveButton(R.string.yes) { dialog, _ ->
-                SettingsManager.setAccountWarning(false, activity!!)
-                SettingsManager.setLockType(LockType.off, activity!!)
-                SettingsManager.setLockCode("", activity!!)
+                SettingsManager.setAccountWarning(false, requireActivity())
+                SettingsManager.setLockType(LockType.off, requireActivity())
+                SettingsManager.setLockCode("", requireActivity())
 
                 dialog.dismiss()
                 view.hideKeyboard()
-                router.popCurrentController()
+                requireActivity().supportFragmentManager.popBackStackImmediate()
             }
             .setNegativeButton(R.string.no) { dialog, _ ->
-                SettingsManager.setAccountWarning(false, activity!!)
+                SettingsManager.setAccountWarning(false, requireActivity())
                 dialog.dismiss()
             }
             .show()

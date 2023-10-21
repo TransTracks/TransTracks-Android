@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -13,19 +13,18 @@ package com.drspaceboo.transtracks.ui.editphoto
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import com.bluelinelabs.conductor.Controller
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.domain.EditPhotoAction
 import com.drspaceboo.transtracks.domain.EditPhotoDomain
 import com.drspaceboo.transtracks.domain.EditPhotoResult
+import com.drspaceboo.transtracks.ui.editphoto.EditPhotoFragmentArgs
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.ProgressDialog
@@ -37,25 +36,20 @@ import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-
 import java.time.LocalDate
 
-class EditPhotoController(args: Bundle) : Controller(args) {
-    constructor(photoId: String) : this(Bundle().apply {
-        putString(KEY_PHOTO_ID, photoId)
-    })
+class EditPhotoFragment : Fragment(R.layout.edit_photo) {
+    val args: EditPhotoFragmentArgs by navArgs()
 
     private var resultsDisposable: Disposable = Disposable.disposed()
     private val viewDisposables = CompositeDisposable()
 
     private var savingDialog: AlertDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.edit_photo, container, false)
-    }
+    override fun onStart() {
+        super.onStart()
 
-    override fun onAttach(view: View) {
-        if (view !is EditPhotoView) throw AssertionError("View must be EditPhotoView")
+        val view = view as? EditPhotoView ?: throw AssertionError("View must be EditPhotoView")
 
         AnalyticsUtil.logEvent(Event.EditPhotoControllerShown)
 
@@ -66,9 +60,7 @@ class EditPhotoController(args: Bundle) : Controller(args) {
                 .doOnSubscribe {
                     Handler().postDelayed(
                         {
-                            domain.actions.accept(
-                                EditPhotoAction.InitialLoad(args.getString(KEY_PHOTO_ID)!!)
-                            )
+                            domain.actions.accept(EditPhotoAction.InitialLoad(args.photoId))
                         }, 200
                     )
                 }.subscribe()
@@ -91,7 +83,7 @@ class EditPhotoController(args: Bundle) : Controller(args) {
                     .setMessage(R.string.error_loading_photo_message)
                     .setPositiveButton(R.string.ok) { dialog: DialogInterface, _: Int ->
                         dialog.dismiss()
-                        router.handleBack()
+                        findNavController().popBackStack()
                     }
                     .setCancelable(false)
                     .show()
@@ -143,7 +135,7 @@ class EditPhotoController(args: Bundle) : Controller(args) {
                 savingDialog?.dismiss()
                 savingDialog = null
 
-                router.handleBack()
+                findNavController().popBackStack()
             }
 
         viewDisposables += domain.results
@@ -159,7 +151,7 @@ class EditPhotoController(args: Bundle) : Controller(args) {
 
         viewDisposables += sharedEvents
             .ofType<EditPhotoUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents
             .filter { event -> event !== EditPhotoUiEvent.Back }
@@ -174,16 +166,14 @@ class EditPhotoController(args: Bundle) : Controller(args) {
             .subscribe(domain.actions)
     }
 
-    override fun onDestroyView(view: View) {
+    override fun onDestroyView() {
         viewDisposables.clear()
+        super.onDestroyView()
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         resultsDisposable.dispose()
-    }
-
-    companion object {
-        private const val KEY_PHOTO_ID = "photoId"
+        super.onDetach()
     }
 }
 

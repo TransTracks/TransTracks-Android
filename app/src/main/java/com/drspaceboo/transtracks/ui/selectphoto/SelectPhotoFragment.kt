@@ -1,5 +1,5 @@
 /*
- * Copyright © 2018 TransTracks. All rights reserved.
+ * Copyright © 2018-2023 TransTracks. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
@@ -12,22 +12,14 @@ package com.drspaceboo.transtracks.ui.selectphoto
 
 import android.Manifest
 import android.net.Uri
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.background.CameraHandler
-import com.drspaceboo.transtracks.data.Photo
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
-import com.drspaceboo.transtracks.ui.home.HomeController
-import com.drspaceboo.transtracks.ui.selectphoto.selectalbum.SelectAlbumController
+import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoFragmentDirections
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
@@ -35,42 +27,20 @@ import com.drspaceboo.transtracks.util.RxSchedulers
 import com.drspaceboo.transtracks.util.isNotDisposed
 import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.plusAssign
-import com.drspaceboo.transtracks.util.using
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.File
 
 @Deprecated("This shouldn't be handled in app, let's move to use selecting with other apps")
-class SelectPhotoController(args: Bundle) : Controller(args) {
-    constructor(
-        epochDay: Long? = null, @Photo.Type type: Int = Photo.TYPE_FACE,
-        tagOfControllerToPopTo: String = HomeController.TAG
-    ) : this(Bundle().apply {
-        if (epochDay != null) {
-            putLong(KEY_EPOCH_DAY, epochDay)
-        }
-        putInt(KEY_TYPE, type)
-        putString(KEY_TAG_OF_CONTROLLER_TO_POP_TO, tagOfControllerToPopTo)
-    })
-
-    private val epochDay: Long? = when (args.containsKey(KEY_EPOCH_DAY)) {
-        true -> args.getLong(KEY_EPOCH_DAY)
-        false -> null
-    }
-
-    private val type: Int = args.getInt(KEY_TYPE)
+class SelectPhotoFragment : Fragment(R.layout.select_photo) {
+    val args: SelectPhotoFragmentArgs by navArgs()
 
     private var photoTakenDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreateView(
-        @NonNull inflater: LayoutInflater, @NonNull container: ViewGroup
-    ): View {
-        return inflater.inflate(R.layout.select_photo, container, false)
-    }
-
-    override fun onAttach(view: View) {
-        if (view !is SelectPhotoView) throw AssertionError("View must be SelectPhotoView")
+    override fun onStart() {
+        super.onStart()
+        val view = view as? SelectPhotoView ?: throw AssertionError("View must be SelectPhotoView")
         AnalyticsUtil.logEvent(Event.SelectPhotoControllerShown)
 
         view.display(SelectPhotoUiState.Loaded)
@@ -79,14 +49,16 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
         viewDisposables += sharedEvents
             .ofType<SelectPhotoUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.ViewAlbums>()
             .subscribe {
-                val popTo = args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                router.pushController(
-                    RouterTransaction.with(SelectAlbumController(epochDay, type, popTo))
-                        .using(HorizontalChangeHandler())
+                findNavController().navigate(
+                    SelectPhotoFragmentDirections.actionSelectAlbum(
+                        type = args.type,
+                        destinationToPopTo = args.destinationToPopTo,
+                        epochDay = args.epochDay
+                    )
                 )
             }
 
@@ -116,20 +88,22 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
                     CameraHandler.takePhoto(activity as AppCompatActivity)
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                        AlertDialog.Builder(activity!!)
+                        AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.permission_required)
                             .setMessage(R.string.camera_permission_required_message)
                             .setPositiveButton(R.string.grant_permission) { _, _ ->
-                                CameraHandler.requestIfNeeded(router.activity as AppCompatActivity)
+                                CameraHandler.requestIfNeeded(requireActivity() as AppCompatActivity)
                             }
                             .setNeutralButton(R.string.cancel, null)
                             .show()
                     } else {
                         val didShow =
-                            CameraHandler.requestIfNeeded(router.activity as AppCompatActivity)
+                            CameraHandler.requestIfNeeded(requireActivity() as AppCompatActivity)
 
                         if (!didShow) {
-                            CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
+                            CameraHandler.showCameraPermissionDisabledSnackBar(
+                                view, requireActivity()
+                            )
                         }
                     }
                 }
@@ -137,72 +111,59 @@ class SelectPhotoController(args: Bundle) : Controller(args) {
 
         viewDisposables += CameraHandler.cameraPermissionBlocked
             .filter { showRationale -> !showRationale }
-            .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
+            .subscribe {
+                CameraHandler.showCameraPermissionDisabledSnackBar(view, requireActivity())
+            }
 
         viewDisposables += sharedEvents
             .ofType<SelectPhotoUiEvent.PhotoSelected>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction
-                        .with(
-                            AssignPhotosController(
-                                arrayListOf(event.uri),
-                                epochDay,
-                                type,
-                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                            )
-                        )
-                        .using(HorizontalChangeHandler())
+                findNavController().navigate(
+                    SelectPhotoFragmentDirections.actionGlobalAssignPhotos(
+                        uris = arrayOf(event.uri),
+                        type = args.type,
+                        destinationToPopTo = args.destinationToPopTo,
+                        epochDay = args.epochDay
+                    )
                 )
             }
 
         viewDisposables += sharedEvents.ofType<SelectPhotoUiEvent.SaveMultiple>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction
-                        .with(
-                            AssignPhotosController(
-                                event.uris,
-                                epochDay,
-                                type,
-                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                            )
-                        )
-                        .using(HorizontalChangeHandler())
+                findNavController().navigate(
+                    SelectPhotoFragmentDirections.actionGlobalAssignPhotos(
+                        uris = event.uris.toTypedArray(),
+                        type = args.type,
+                        destinationToPopTo = args.destinationToPopTo,
+                        epochDay = args.epochDay
+                    )
                 )
             }
 
         if (photoTakenDisposable.isDisposed) {
-            photoTakenDisposable = CameraHandler.photoTaken.subscribe { absolutePath ->
-                router.pushController(
-                    RouterTransaction
-                        .with(
-                            AssignPhotosController(
-                                arrayListOf(Uri.fromFile(File(absolutePath))),
-                                epochDay,
-                                type,
-                                args.getString(KEY_TAG_OF_CONTROLLER_TO_POP_TO)!!
-                            )
+            photoTakenDisposable = CameraHandler.photoTaken
+                .subscribe { absolutePath ->
+                    findNavController().navigate(
+                        SelectPhotoFragmentDirections.actionGlobalAssignPhotos(
+                            uris = arrayOf(Uri.fromFile(File(absolutePath))),
+                            type = args.type,
+                            destinationToPopTo = args.destinationToPopTo,
+                            epochDay = args.epochDay
                         )
-                        .using(HorizontalChangeHandler())
-                )
-            }
+                    )
+                }
         }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
+        super.onDetach()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         if (photoTakenDisposable.isNotDisposed()) {
             photoTakenDisposable.dispose()
         }
-    }
-
-    companion object {
-        private const val KEY_EPOCH_DAY = "epochDay"
-        private const val KEY_TYPE = "type"
-        private const val KEY_TAG_OF_CONTROLLER_TO_POP_TO = "tagOfControllerToPopTo"
+        super.onDestroyView()
     }
 }

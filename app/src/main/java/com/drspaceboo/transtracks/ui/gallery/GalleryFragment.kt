@@ -14,17 +14,12 @@ import android.Manifest
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.TransTracksApp
 import com.drspaceboo.transtracks.background.CameraHandler
@@ -32,10 +27,8 @@ import com.drspaceboo.transtracks.background.StoragePermissionHandler
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.MainActivity
 import com.drspaceboo.transtracks.ui.PickMediaHandlingData
-import com.drspaceboo.transtracks.ui.assignphoto.AssignPhotosController
-import com.drspaceboo.transtracks.ui.home.HomeController
-import com.drspaceboo.transtracks.ui.selectphoto.SelectPhotoController
-import com.drspaceboo.transtracks.ui.singlephoto.SinglePhotoController
+import com.drspaceboo.transtracks.ui.gallery.GalleryFragmentArgs
+import com.drspaceboo.transtracks.ui.gallery.GalleryFragmentDirections
 import com.drspaceboo.transtracks.util.AnalyticsUtil
 import com.drspaceboo.transtracks.util.Event
 import com.drspaceboo.transtracks.util.Observables
@@ -45,57 +38,48 @@ import com.drspaceboo.transtracks.util.ofType
 import com.drspaceboo.transtracks.util.openDefault
 import com.drspaceboo.transtracks.util.plusAssign
 import com.drspaceboo.transtracks.util.settings.SettingsManager
-import com.drspaceboo.transtracks.util.using
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.realm.kotlin.Realm
 import java.io.File
 
-class GalleryController(args: Bundle) : Controller(args) {
-    constructor(isFaceGallery: Boolean, initialDay: Long) : this(Bundle().apply {
-        putBoolean(KEY_IS_FACE_GALLERY, isFaceGallery)
-        putLong(KEY_INITIAL_DAY, initialDay)
-    })
-
-    private val isFaceGallery: Boolean = args.getBoolean(KEY_IS_FACE_GALLERY)
-    private val initialDay: Long = args.getLong(KEY_INITIAL_DAY)
+class GalleryFragment : Fragment(R.layout.gallery) {
+    val args: GalleryFragmentArgs by navArgs()
 
     private var photoTakenDisposable: Disposable = Disposable.disposed()
     private val viewDisposables: CompositeDisposable = CompositeDisposable()
 
     private var confirmDeleteDialog: AlertDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.gallery, container, false)
-    }
+    override fun onStart() {
+        super.onStart()
+        val view = view as? GalleryView ?: throw AssertionError("View must be GalleryView")
 
-    override fun onAttach(view: View) {
-        if (view !is GalleryView) throw AssertionError("View must be GalleryView")
+        AnalyticsUtil.logEvent(Event.GalleryControllerShown(args.isFaceGallery))
 
-        AnalyticsUtil.logEvent(Event.GalleryControllerShown(isFaceGallery))
-
-        val type: Int = when (isFaceGallery) {
+        val type: Int = when (args.isFaceGallery) {
             true -> Photo.TYPE_FACE
             false -> Photo.TYPE_BODY
         }
 
         view.display(
             GalleryUiState.Loaded(
-                type, initialDay, TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
+                type,
+                args.initialDay,
+                TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
             )
         )
 
         val sharedEvents = view.events.share()
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.Back>()
-            .subscribe { router.handleBack() }
+            .subscribe { requireActivity().onBackPressed() }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.ImageClick>()
             .subscribe { event ->
-                router.pushController(
-                    RouterTransaction.with(SinglePhotoController(event.photoId))
-                        .using(HorizontalChangeHandler())
+                findNavController().navigate(
+                    GalleryFragmentDirections.actionGalleryToSinglePhoto(event.photoId)
                 )
             }
 
@@ -113,7 +97,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                 view.display(
                     GalleryUiState.Selection(
                         type,
-                        initialDay,
+                        args.initialDay,
                         selectedIds,
                         TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
                     )
@@ -125,7 +109,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                 view.display(
                     GalleryUiState.Loaded(
                         type,
-                        initialDay,
+                        args.initialDay,
                         TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
                     )
                 )
@@ -140,21 +124,23 @@ class GalleryController(args: Bundle) : Controller(args) {
                     CameraHandler.takePhoto(activity as AppCompatActivity)
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                        AlertDialog.Builder(activity!!)
+                        AlertDialog.Builder(requireActivity())
                             .setTitle(R.string.permission_required)
                             .setMessage(R.string.camera_permission_required_message)
                             .setPositiveButton(R.string.grant_permission) { _, _ ->
                                 CameraHandler
-                                    .requestIfNeeded(router.activity as AppCompatActivity)
+                                    .requestIfNeeded(requireActivity() as AppCompatActivity)
                             }
                             .setNeutralButton(R.string.cancel, null)
                             .show()
                     } else {
                         val didShow = CameraHandler
-                            .requestIfNeeded(router.activity as AppCompatActivity)
+                            .requestIfNeeded(requireActivity() as AppCompatActivity)
 
                         if (!didShow) {
-                            CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!)
+                            CameraHandler.showCameraPermissionDisabledSnackBar(
+                                view, requireActivity()
+                            )
                         }
                     }
                 }
@@ -162,7 +148,9 @@ class GalleryController(args: Bundle) : Controller(args) {
 
         viewDisposables += CameraHandler.cameraPermissionBlocked
             .filter { showRationale -> !showRationale }
-            .subscribe { CameraHandler.showCameraPermissionDisabledSnackBar(view, activity!!) }
+            .subscribe {
+                CameraHandler.showCameraPermissionDisabledSnackBar(view, requireActivity())
+            }
 
         viewDisposables += Observables.combineLatest(
             sharedEvents.ofType<GalleryUiEvent.AddPhotoGallery>(),
@@ -174,21 +162,16 @@ class GalleryController(args: Bundle) : Controller(args) {
                 if (PickVisualMedia.isPhotoPickerAvailable(activity)) {
                     activity.launchPickMedia(
                         PickVisualMedia.ImageOnly,
-                        PickMediaHandlingData(type = event.type, popToTag = HomeController.TAG)
+                        PickMediaHandlingData(type = event.type, popToId = R.id.homeFragment)
                     )
-                } else if (storageEnabled) {
-                    router.pushController(
-                        RouterTransaction
-                            .with(
-                                SelectPhotoController(
-                                    type = event.type, tagOfControllerToPopTo = TAG
-                                )
-                            )
-                            .using(VerticalChangeHandler())
-                    )
-
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     CameraHandler.requestPhotoFromAnotherApp(activity)
+                } else if (storageEnabled) {
+                    findNavController().navigate(
+                        GalleryFragmentDirections.actionGalleryToSelectPhoto(
+                            type = event.type, destinationToPopTo = R.id.galleryFragment
+                        )
+                    )
                 } else {
                     StoragePermissionHandler.handleRequestingPermission(
                         view, activity as AppCompatActivity
@@ -232,12 +215,12 @@ class GalleryController(args: Bundle) : Controller(args) {
                 view.display(
                     GalleryUiState.Loaded(
                         type,
-                        initialDay,
+                        args.initialDay,
                         TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
                     )
                 )
 
-                ShareUtil.sharePhotos(filePaths.map { path -> File(path) }, view.context, this)
+                ShareUtil.sharePhotos(filePaths.map { path -> File(path) }, view.context)
             }
 
         viewDisposables += sharedEvents.ofType<GalleryUiEvent.Delete>()
@@ -293,7 +276,7 @@ class GalleryController(args: Bundle) : Controller(args) {
                             view.display(
                                 GalleryUiState.Loaded(
                                     type,
-                                    initialDay,
+                                    args.initialDay,
                                     TransTracksApp.hasConsentToShowAds() && SettingsManager.showAds()
                                 )
                             )
@@ -313,30 +296,19 @@ class GalleryController(args: Bundle) : Controller(args) {
         if (photoTakenDisposable.isDisposed) {
             photoTakenDisposable = CameraHandler.photoTaken
                 .subscribe { absolutePath ->
-                    router.pushController(
-                        RouterTransaction
-                            .with(
-                                AssignPhotosController(
-                                    uris = arrayListOf(Uri.fromFile(File(absolutePath))),
-                                    epochDay = null,
-                                    type = type,
-                                    tagOfControllerToPopTo = TAG
-                                )
-                            )
-                            .using(HorizontalChangeHandler())
+                    findNavController().navigate(
+                        GalleryFragmentDirections.actionGlobalAssignPhotos(
+                            uris = arrayOf(Uri.fromFile(File(absolutePath))),
+                            type = type,
+                            destinationToPopTo = R.id.galleryFragment
+                        )
                     )
                 }
         }
     }
 
-    override fun onDetach(view: View) {
+    override fun onDetach() {
         viewDisposables.clear()
-    }
-
-    companion object {
-        private const val KEY_IS_FACE_GALLERY = "isFaceGallery"
-        private const val KEY_INITIAL_DAY = "initialDay"
-
-        const val TAG = "GalleryController"
+        super.onDetach()
     }
 }

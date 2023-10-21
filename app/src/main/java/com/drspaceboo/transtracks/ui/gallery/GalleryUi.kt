@@ -24,11 +24,13 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drspaceboo.transtracks.R
 import com.drspaceboo.transtracks.data.Photo
 import com.drspaceboo.transtracks.ui.widget.AdapterSpanSizeLookup
+import com.drspaceboo.transtracks.util.HideViewOnFailedAdLoad
 import com.drspaceboo.transtracks.util.getString
 import com.drspaceboo.transtracks.util.gone
 import com.drspaceboo.transtracks.util.loadAd
@@ -36,9 +38,7 @@ import com.drspaceboo.transtracks.util.setGone
 import com.drspaceboo.transtracks.util.setVisible
 import com.drspaceboo.transtracks.util.toV3
 import com.drspaceboo.transtracks.util.visible
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 import com.jakewharton.rxbinding3.appcompat.navigationClicks
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
@@ -129,6 +129,14 @@ class GalleryView(
         emptyAdd.setOnClickListener { showPhotoSourceMenu(emptyAdd) }
     }
 
+    override fun onDetachedFromWindow() {
+        if (adViewLayout.childCount > 0) {
+            (adViewLayout[0] as? AdView)?.destroy()
+            adViewLayout.removeAllViews()
+        }
+        super.onDetachedFromWindow()
+    }
+
     fun display(state: GalleryUiState) {
         type = GalleryUiState.getType(state)
 
@@ -200,11 +208,7 @@ class GalleryView(
                     adUnitId = getString(R.string.ADS_GALLERY_AD_ID)
                     adViewLayout.addView(this)
                     loadAd(context)
-                    adListener = object : AdListener() {
-                        override fun onAdFailedToLoad(error: LoadAdError) {
-                            adViewLayout.gone()
-                        }
-                    }
+                    adListener = HideViewOnFailedAdLoad(adViewLayout)
                 }
             }
         } else {
