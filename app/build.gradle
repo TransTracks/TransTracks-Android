@@ -118,7 +118,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     testImplementation "androidx.lifecycle:lifecycle-runtime-testing:$lifecycle_version"
 
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.exifinterface:exifinterface:1.3.6'
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
