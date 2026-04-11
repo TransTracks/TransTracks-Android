@@ -1,18 +1,43 @@
 # TransTracks-Android
-TransTracks is a transition tracking application made specifically for Transgender people. Is is based mostly around photo tracking at the moment.
 
-The purpose of this repository is to help the community work together to improve the application.
+> **This project is archived and no longer maintained.** TransTracks has been retired from the Google Play Store, and the source here is no longer being updated. Issues and pull requests are disabled. If you had the app installed and want to recover your data, see [Recovering your data](#recovering-your-data-if-the-app-was-on-your-phone) below.
 
-## Preparing for development
+TransTracks was a transition tracking application made for transgender people, focused on photo-based progress tracking.
 
-1) Set up a Firebase project to use during development
-1) Download the `google-services.json` file from the app settings page in the Firebase console
-1) Place the `google-services.json` file in the app folder
-1) Make a copy of the `secrets.properties.example` file called `secrets.properties`
+## Project status
 
-## Contributing
+No new features, no bug fixes, no pull requests being reviewed, no issues being triaged. The code is preserved here for reference and so former users can recover their data. For data recovery, see the section below.
 
-If you are looking to help contribute but are not sure on what to work on please take a look at the issues for ideas.
+## Recovering your data if the app was on your phone
+
+TransTracks has been retired from the Google Play Store. Unlike many retired apps, the Android version shipped with a built-in Export feature that bundles all your entries and photos into a single `.ttbackup` file. If you still have the app installed, or you can reinstall it, you can get everything out yourself.
+
+### If the app is still installed on your phone
+
+This is the simple path.
+
+1. Open TransTracks.
+2. Go to **Settings**.
+3. Tap **Export**. The app will bundle your data into a `.ttbackup` file and open Android's share sheet.
+4. Share or save that file somewhere safe: email it to yourself, upload it to Google Drive, save it to your Files app, whatever works best.
+
+The `.ttbackup` is just a zip file with a custom extension. If you rename it to `.zip`, you can open it on any computer to see the raw photos and the exported data inside.
+
+### If you uninstalled the app but still use the same Google account on your phone
+
+Apps that have been removed from the Play Store are still available for reinstall by people who previously installed them. Open the Play Store, go to **Manage apps and device → Manage → Not installed**, find TransTracks, and tap Install. If Android's auto-backup was enabled on your phone (it usually is by default), your data should restore along with the app. Then follow the steps above to export it.
+
+If the data doesn't come back after reinstalling, the auto-backup either wasn't enabled or has expired. Google automatically deletes an app's cloud backup after roughly two months of not using the device, so if the phone sat unused for a while, the backup may be gone.
+
+### If the app is gone and the phone has been wiped
+
+Unfortunately, this is the case with no realistic recovery path. Your data lived in the app's private internal storage, which Android's sandbox protects from other apps and which is erased when the app is uninstalled. Third-party "recovery" tools that claim to extract protected app data without root access do not actually work for this use case, so please don't spend money on them.
+
+### If you had TransTracks on iOS as well
+
+See the [TransTracks-iOS repo](https://github.com/TransTracks/TransTracks-iOS) for its recovery instructions. The iOS app stored its data differently and the steps are not the same.
+
+I'm unfortunately not able to do one-on-one troubleshooting on this, so I really hope the steps above get you there. Good luck!
 
 ## License
 
